@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "675362611661",
+    "project_id": "ease-it-bfceb",
+    "storage_bucket": "ease-it-bfceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675362611661:android:0a04bbbb728b8947922484",
+        "android_client_info": {
+          "package_name": "com.example.ease_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675362611661-ttcafrc0spvvkmenulugs0c3mrdf5de9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1PcDi1NODVRDPG2-AB-rXJ-xwX1TtBNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675362611661-ttcafrc0spvvkmenulugs0c3mrdf5de9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
