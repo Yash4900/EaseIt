@@ -25,7 +25,7 @@ class _SecurityState extends State<Security> {
       child: Column(
         children: [
           Text(
-            'Hello, $name',
+            'Hi, $name',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
           )
         ],
