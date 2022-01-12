@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/screens/resident.dart';
-import 'package:ease_it/screens/security.dart';
+import 'package:ease_it/screens/resident/resident.dart';
+import 'package:ease_it/screens/security/security.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 
@@ -52,25 +51,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await Auth().logout();
-              }),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: loading ? Loading() : showScreen(),
-    );
+    return loading ? Scaffold(body: Loading()) : showScreen();
   }
 }
-
-// Drawer widget will be common for security and resident and will contain common functionalities
-
-// Body will be different for resident and security
