@@ -46,7 +46,6 @@ class _ResidentState extends State<Resident> {
       body: pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
-        // backgroundColor: Colors.white,
         onTap: (value) => setState(() => _pageIndex = value),
         selectedItemColor: Color(0xff1a73e8),
         unselectedItemColor: Colors.grey,
