@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         title: 'EaseIt',
         theme: ThemeData(
           primaryColor: Color(0xff1a73e8),
-          textTheme: GoogleFonts.interTextTheme(),
+          textTheme: GoogleFonts.sourceSansProTextTheme(),
         ),
         home: Wrapper(),
       ),
