@@ -1,9 +1,9 @@
 // Resident Landing page
 
 import 'package:ease_it/firebase/authentication.dart';
-import 'package:ease_it/screens/security/approval.dart';
+import 'package:ease_it/screens/security/approval/approval.dart';
 import 'package:ease_it/screens/resident/forum.dart';
-import 'package:ease_it/screens/security/home.dart';
+import 'package:ease_it/screens/security/securityHome.dart';
 import 'package:ease_it/screens/security/child_safety.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -18,7 +18,7 @@ class _SecurityState extends State<Security> {
   Globals g = Globals();
   String name;
   int _pageIndex = 0;
-  List<Widget> pages = [Home(), Approval(), ChildSafety(), Forum()];
+  List<Widget> pages = [SecurityHome(), Approval(), ChildSafety(), Forum()];
 
   @override
   void initState() {
