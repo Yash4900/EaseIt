@@ -1,5 +1,5 @@
-import 'package:ease_it/screens/resident/add_complaint.dart';
-import 'package:ease_it/screens/resident/single_complaint.dart';
+import 'package:ease_it/screens/resident/complaints/add_complaint.dart';
+import 'package:ease_it/screens/resident/complaints/single_complaint.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
