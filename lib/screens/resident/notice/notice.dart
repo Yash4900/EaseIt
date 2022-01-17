@@ -4,19 +4,19 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Not {
+class Notice {
   String title;
   String content;
   DateTime postedOn;
-  Not(this.title, this.content, this.postedOn);
+  Notice(this.title, this.content, this.postedOn);
 }
 
-class Notice extends StatefulWidget {
+class NoticeView extends StatefulWidget {
   @override
-  _NoticeState createState() => _NoticeState();
+  _NoticeViewState createState() => _NoticeViewState();
 }
 
-class _NoticeState extends State<Notice> {
+class _NoticeViewState extends State<NoticeView> {
   Globals g = Globals();
   List<String> days = [
     "Jan",
@@ -32,16 +32,16 @@ class _NoticeState extends State<Notice> {
     "Nov",
     "Dec"
   ];
-  List<Not> notices = [
-    Not(
+  List<Notice> notices = [
+    Notice(
         "Regarding electric supply",
         "On Wednesday i.e. 19th Jan there will be power cut from afternoon 1 PM till evening 7 PM. Please take the note of same.",
         DateTime.now()),
-    Not(
+    Notice(
         "Regarding electric supply",
         "On Wednesday i.e. 19th Jan there will be power cut from afternoon 1 PM till evening 7 PM. Please take the note of same.",
         DateTime.now()),
-    Not(
+    Notice(
         "Regarding electric supply",
         "On Wednesday i.e. 19th Jan there will be power cut from afternoon 1 PM till evening 7 PM. Please take the note of same.",
         DateTime.now())

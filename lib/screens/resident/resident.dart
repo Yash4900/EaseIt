@@ -2,7 +2,7 @@
 
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/resident/approval.dart';
-import 'package:ease_it/screens/resident/forum.dart';
+import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/resident/home.dart';
 import 'package:ease_it/screens/resident/maintenance.dart';
 import 'package:ease_it/utility/drawer.dart';
