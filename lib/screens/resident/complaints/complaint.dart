@@ -4,23 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Comp {
+class Complaint {
   String title;
   String desc;
   String image;
   DateTime date;
   String postedBy;
   String status;
-  Comp(
+  Complaint(
       this.title, this.desc, this.image, this.date, this.postedBy, this.status);
 }
 
-class Complaint extends StatefulWidget {
+class ComplaintView extends StatefulWidget {
   @override
-  _ComplaintState createState() => _ComplaintState();
+  _ComplaintViewState createState() => _ComplaintViewState();
 }
 
-class _ComplaintState extends State<Complaint> {
+class _ComplaintViewState extends State<ComplaintView> {
   List<String> days = [
     "Jan",
     "Feb",
@@ -35,15 +35,15 @@ class _ComplaintState extends State<Complaint> {
     "Nov",
     "Dec"
   ];
-  List<Comp> complaints = [
-    Comp(
+  List<Complaint> complaints = [
+    Complaint(
         "Disturbance caused by children playing during night",
         "From last few weeks some childrens are observed playing in the society after 10 A.M which is causing disturbance to many people. Playing after 10 A.M must should not be allowed",
         "https://outdooralways.com/wp-content/uploads/2020/01/night-games-for-whole-family.jpg",
         DateTime.now(),
         "Yash Satra",
         "Resolved"),
-    Comp(
+    Complaint(
         "Children playing during night",
         "From last few weeks some childrens are observed playing in the society after 10 A.M which is causing disturbance to many people. Playing after 10 A.M must should not be allowed",
         "https://outdooralways.com/wp-content/uploads/2020/01/night-games-for-whole-family.jpg",

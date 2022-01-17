@@ -38,8 +38,8 @@ class _ForumState extends State<Forum> {
               ]),
           Expanded(
             child: TabBarView(children: [
-              Notice(),
-              Complaint(),
+              NoticeView(),
+              ComplaintView(),
             ]),
           ),
         ]),
