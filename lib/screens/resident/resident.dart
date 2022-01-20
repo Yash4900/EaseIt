@@ -3,8 +3,8 @@
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/resident/approval.dart';
 import 'package:ease_it/screens/common/forum.dart';
-import 'package:ease_it/screens/resident/home.dart';
-import 'package:ease_it/screens/resident/maintenance.dart';
+import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
+import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _ResidentState extends State<Resident> {
   Globals g = Globals();
   String name;
   int _pageIndex = 0;
-  List<Widget> pages = [Home(), Forum(), Approval(), Maintenance()];
+  List<Widget> pages = [ResidentHome(), Forum(), Approval(), Maintenance()];
 
   @override
   void initState() {

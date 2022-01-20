@@ -1,12 +1,12 @@
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+class ResidentHome extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _ResidentHomeState createState() => _ResidentHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ResidentHomeState extends State<ResidentHome> {
   Globals g = Globals();
   @override
   Widget build(BuildContext context) {
