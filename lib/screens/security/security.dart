@@ -2,9 +2,9 @@
 
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/security/approval/approval.dart';
-import 'package:ease_it/screens/resident/forum.dart';
-import 'package:ease_it/screens/security/securityHome.dart';
+import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/security/child_safety.dart';
+import 'package:ease_it/screens/security/securityHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class _SecurityState extends State<Security> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: 'Visitor Approval'),
+              icon: Icon(Icons.person_outline), label: 'Approval'),
           BottomNavigationBarItem(
               icon: Icon(Icons.child_care_outlined), label: 'Child Safety'),
           BottomNavigationBarItem(

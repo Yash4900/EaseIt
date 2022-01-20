@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:animate_icons/animate_icons.dart';
 // import 'package:firebase_core/firebase_core.dart';
-
-import 'upload_visitor_data.dart';
+// import 'upload_visitor_data.dart';
 
 // ignore: must_be_immutable
 class CheckIfVisitor extends StatefulWidget {
@@ -21,8 +20,13 @@ class CheckIfVisitor extends StatefulWidget {
 class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStateMixin {
   TextEditingController visitorNameController = TextEditingController();
   TextEditingController flatNoController = TextEditingController();
-  TextEditingController wingController = TextEditingController();
+  TextEditingController wingController = TextEditingController();  
+  TextEditingController vehicleTypeController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  List<String> dropDownItems = ["Car", "Bike", "Truck", "Tempo", "Auto-Rickshaw", "Taxi"];
+  List<String> wingsDropDown = ["A", "B", "C"];
+  String chosenWing = "A";
+  String dropDownValue = "Car";
   bool isVisitor = true;
   final db = FirebaseFirestore.instance;
   String type = "Resident";
@@ -30,6 +34,10 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
   @override
   void initState(){
     super.initState();
+    wingController.text = "A";
+    vehicleTypeController.text = "Car";
+    print("WS = " + widget.status);
+    print("vno = " + widget.vehicleNo);
   }
  
   @override
@@ -41,9 +49,9 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
           if (snapshot.hasData) {
             for (int i = 0; i < snapshot.data.docs.length; i++) {
               String ss = snapshot.data.docs[i]["vehicleNo"].toString().toLowerCase();
-              print(ss + " ss");
-              print(widget.vehicleNo.toLowerCase());
-              print(ss.compareTo(widget.vehicleNo.toLowerCase()));
+              // print(ss + " ss");
+              // print(widget.vehicleNo.toLowerCase());
+              // print(ss.compareTo(widget.vehicleNo.toLowerCase()));
               if (ss.compareTo(widget.vehicleNo.toLowerCase()) == 0) {
                 isVisitor = false;
                 break;
@@ -55,7 +63,7 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
               type = "Visitor";
             else{
               type = "Resident";
-              print("Res");
+              // print("Res");
             }
             // final _animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
             //uploadResidentData(flatNoController.text, widget.vehicleNo, entry, time);
@@ -67,7 +75,7 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
                   children: <Widget>[
                     Center(
                       child: Image(
-                        image: new AssetImage('assets/images/check-mark-verified.gif')
+                        image: new AssetImage('assets/check-mark-verified.gif')
                       )
                     ),
                     SizedBox(
@@ -89,9 +97,9 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
                         ),
                         onPressed: () { 
                           if(type == "Visitor")
-                            uploadVisitorData(visitorNameController.text, wingController.text, flatNoController.text, widget.vehicleNo, phoneNumberController.text, widget.status);                      
+                            uploadVisitorData(visitorNameController.text, wingController.text, flatNoController.text, vehicleTypeController.text, widget.vehicleNo, phoneNumberController.text, widget.status);                      
                           else
-                            uploadResidentData(flatNoController.text, wingController.text,widget.vehicleNo, widget.status);                      
+                            uploadResidentData(widget.vehicleNo, widget.status);                      
 
                           Navigator.push(
                             context,
@@ -114,7 +122,7 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
             );          
           }
           else{
-            print("Visitor");
+            // print("Visitor");
             return Padding(
               padding: EdgeInsets.all(20),
               child: Center(child: Column(
@@ -143,12 +151,32 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
                   const SizedBox(
                     height: 10
                   ),                    
-                  TextField(
-                    controller: wingController,
-                    decoration: const InputDecoration(  
-                      labelText: 'Wing',  
-                    ),  
-                  ),
+                  Row(
+                      children: [
+                        Text(
+                          'Wing ',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(width: 20),
+                        DropdownButton(
+                          value: chosenWing,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: wingsDropDown.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() => {chosenWing = value, wingController.text = value});
+                          },
+                        ),
+                      ],
+                    ),
                   const SizedBox(
                     height: 10
                   ),                    
@@ -159,6 +187,35 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
                       labelText: 'Flat No. Visiting',  
                     ),  
                   ),
+                  const SizedBox(
+                    height: 10
+                  ),                    
+                  Row(
+                      children: [
+                        Text(
+                          'Vehicle Type is ',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(width: 20),
+                        DropdownButton(
+                          value: dropDownValue,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: dropDownItems.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() => {dropDownValue = value, vehicleTypeController.text = value});
+                          },
+                        ),
+                      ],
+                    ),
                   const SizedBox(
                     height: 10
                   ),                    
@@ -178,18 +235,19 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
                         foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                       ),
                       onPressed: () { 
-                        uploadVisitorData(visitorNameController.text, wingController.text, flatNoController.text, widget.vehicleNo, phoneNumberController.text, widget.status);                      
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UploadToDatabase(
-                            visitorNameController.text,
-                            flatNoController.text,
-                            widget.vehicleNo,
-                            phoneNumberController.text
-                          )),
-                        );
+                        uploadVisitorData(visitorNameController.text, wingController.text, flatNoController.text, vehicleTypeController.text, widget.vehicleNo, phoneNumberController.text, widget.status);                      
+                        // uploadVisitorVehicleData(visitorNameController.text, wingController.text, flatNoController.text, vehicleTypeController.text, widget.vehicleNo, phoneNumberController.text, widget.status);                      
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => UploadToDatabase(
+                        //     visitorNameController.text,
+                        //     flatNoController.text,
+                        //     widget.vehicleNo,
+                        //     phoneNumberController.text
+                        //   )),
+                        // );
                       },
-                      child: const Text('Upload Info To Database',                      
+                      child: const Text('Send Approval Request',                      
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),  
                       ),
                     ),
@@ -204,52 +262,90 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
   }
 
   final visLog = FirebaseFirestore.instance.collection('Visitor_Log');
-
-  Future<void> uploadVisitorData(String name, String wing, String flatNo, String vehicleNo, String phoneNo, String status){
+  // final vehicleInfo = FirebaseFirestore.instance.collection('Visitor_Vehicle_Info');
+  
+  Future<void> uploadVisitorData(String name, String wing, String flatNo, String vehicleType, String vehicleNo, String phoneNo, String status){    
     DateTime now = DateTime.now();
-    String formattedDate = DateFormat('d MMM y kk:mm').format(now);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: "Pending Approval",
-        description: "Approval Request Sent to Resident at $wing-$flatNo",
-        buttonText: "Okay",
-      ),
-    );
-    return visLog
-      .add({
-        "visitorName": name,
-        "flatNo": flatNo,
-        "vehicleNo": vehicleNo,
-        "phoneNo": phoneNo,
-        "status": status,
-        "time": formattedDate,
-      })
-      .then(
-        (value) => print("Visitor Log Uploaded on Firestore"),
-      )
-      .catchError(
-        (error) => print("Failed to add Visitor Log: $error"),
+    String formattedDate = DateFormat('d MMM y kk:mm').format(now);    
+    if(status != "Exit"){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: "Pending Approval",
+          description: "Approval Request Sent to Resident at $wing-$flatNo",
+          buttonText: "Okay",
+        ),
       );
+      return visLog
+        .add({
+          "approved": "No",
+          "visitorName": name,
+          "wing": wing,
+          "flatNo": flatNo,
+          "vehicleNo": vehicleNo,
+          "vehicleType": vehicleType,
+          "phoneNo": phoneNo,
+          "status": status,
+          "entryTime": formattedDate,
+          "exitTime": "",
+        });
     }
+    else{
+      String docId;
+      // StreamBuilder(
+      //     stream: db.collection('Visitor_Log').snapshots(),
+      //     builder:
+      //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      //           if (snapshot.hasData) {
+      //               for (int i = 0; i < snapshot.data.docs.length; i++) {
+      //                 print("ins");                      
+      //                 if(snapshot.data.docs[i]['vehicleNo'] == vehicleNo){
+      //                     print("ins2");                      
+      //                     db.collection('Visitor_Log')
+      //                         .get()
+      //                         .then(
+      //                           (QuerySnapshot snapshot) => {
+      //                             snapshot.docs.forEach(
+      //                               (f) {
+      //                                 docId = f.reference.id.toString();
+      //                               },
+      //                         )
+      //                   });
+      //                   break;
+      //                 }
+      //               }
+      //             }
+      //             return Container();
+      //           },
+      //         );
+      final userRef = db.collection('Visitor_Log');
+      userRef.get().then((snapshot) {
+        snapshot.docs.forEach((doc) {
+          // print("de"+doc["exitTime"]+" vnoo = " + doc["vehicleNo"] + " vn = "+vehicleNo);
+          // print("did"+doc.id+" time = "+formattedDate);
+          if(doc["exitTime"] == "" && doc["vehicleNo"] == vehicleNo){
+            db.collection('Visitor_Log')
+              .doc(doc.id)
+              .set({
+              'exitTime': formattedDate,
+              'status': "Exited"
+              },SetOptions(merge: true)).then((value){
+            });
+          }
+        });
+      });          
+    }
+  }
 
   final resLog = FirebaseFirestore.instance.collection('Resident_Log');
-  Future<void> uploadResidentData(String wing, String flatNo, String vehicleNo, String status){
+  Future<void> uploadResidentData(String vehicleNo, String status){
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('d MMM y kk:mm').format(now);
     return resLog
       .add({
-        "flatNo": flatNo,
         "vehicleNo": vehicleNo,
         "status": status,
         "time": formattedDate,
-      })
-      .then(
-        (value) => print("Resident Log Uploaded on Firestore"),
-      )
-      .catchError(
-        (error) => print("Failed to add Resident Log: $error"),
-      );
-  }  
-}  
-  
+      });
+  }    
+}

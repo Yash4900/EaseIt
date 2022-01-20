@@ -1,3 +1,4 @@
+import 'package:ease_it/screens/security/approval/pre_approved.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -180,7 +181,10 @@ class _SecurityHomeState extends State<SecurityHome> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => PreApproved()),
+                                      );
                                     });
                                   },
                                   child: Text("Pre-Approved Visitors", style: TextStyle(

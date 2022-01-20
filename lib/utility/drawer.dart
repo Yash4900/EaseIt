@@ -1,3 +1,4 @@
+import 'package:ease_it/screens/common/events.dart';
 import 'package:ease_it/screens/common/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,17 @@ Drawer showDrawer(BuildContext context) {
           ),
           onTap: () {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Profile()),
-            );
+                context, MaterialPageRoute(builder: (context) => Profile()));
+          },
+        ),
+        ListTile(
+          title: Text(
+            'Events',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EventsView()));
           },
         ),
         ListTile(

@@ -2,9 +2,9 @@
 
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/resident/approval.dart';
-import 'package:ease_it/screens/resident/forum.dart';
-import 'package:ease_it/screens/resident/residentHome.dart';
+import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
+import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class Resident extends StatefulWidget {
 }
 
 class _ResidentState extends State<Resident> {
-  static Globals g = Globals();
+  Globals g = Globals();
   String name;
   int _pageIndex = 0;
   List<Widget> pages = [ResidentHome(), Forum(), Approval(), Maintenance()];
@@ -46,7 +46,6 @@ class _ResidentState extends State<Resident> {
       body: pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
-        // backgroundColor: Colors.white,
         onTap: (value) => setState(() => _pageIndex = value),
         selectedItemColor: Color(0xff1a73e8),
         unselectedItemColor: Colors.grey,

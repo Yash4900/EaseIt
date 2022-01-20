@@ -27,11 +27,11 @@ class CustomDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: dialogContent(context, "Pending Approval"),
+      child: dialogContent(context),
     );
   }
 
-  dialogContent(BuildContext context, String address) {
+  dialogContent(BuildContext context) {
     double totalWidth = MediaQuery.of(context).size.width;
     double totalHeight = MediaQuery.of(context).size.height;
     return Stack(
@@ -59,11 +59,13 @@ class CustomDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: totalHeight * 5.0 / 100,
-                  fontWeight: FontWeight.w700,
+              Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: totalHeight * 3.0 / 100,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               SizedBox(height: totalHeight * 10.0 / 100),
@@ -71,7 +73,7 @@ class CustomDialog extends StatelessWidget {
                 description,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: totalHeight * 3.0 / 100,
+                  fontSize: totalHeight * 2.5 / 100,
                 ),
               ),
               SizedBox(height: totalHeight * 10.0 / 100),
