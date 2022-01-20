@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/recentPayments.dart';
 import 'package:ease_it/screens/resident/maintenance/residentStatus.dart';
 import 'package:ease_it/screens/resident/maintenance/transactionHistory.dart';
-import 'package:ease_it/screens/resident/maintenance/yourPaymentHistory.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
@@ -21,112 +20,44 @@ class SecretaryPOV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-                    length: 3,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text(
-                          'Maintenance',
-                          style: GoogleFonts.sourceSansPro(
-                              fontSize: 25, fontWeight: FontWeight.w900),
-                        ),
-                        SizedBox(height: 15),
-                        TabBar(
-                            indicatorColor: Color(0xff1a73e8),
-                            labelColor: Colors.black,
-                            indicatorWeight: 2.5,
-                            labelStyle: GoogleFonts.sourceSansPro(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                            tabs: [
-                              Tab(
-                                text: 'Recent',
-                              ),
-                              Tab(
-                                text: 'Status',
-                              ),
-                              Tab(
-                                text: 'My History',
-                              )
-                            ]),
-                        Expanded(
-                          child: TabBarView(children: [
-                            RecentPayments(),
-                            ResidentStatus(),
-                            YourPaymentHistory(),              
-                          ]),
-                        ),
-                      ]),
-                    ));
-
+    length: 3,
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          'Maintenance',
+          style: GoogleFonts.sourceSansPro(
+              fontSize: 25, fontWeight: FontWeight.w900),
+        ),
+        SizedBox(height: 15),
+        TabBar(
+            indicatorColor: Color(0xff1a73e8),
+            labelColor: Colors.black,
+            indicatorWeight: 2.5,
+            labelStyle: GoogleFonts.sourceSansPro(
+                fontSize: 16, fontWeight: FontWeight.w600),
+            tabs: [
+              Tab(
+                text: 'Recent',
+              ),
+              Tab(
+                text: 'Status',
+              ),
+              Tab(
+                text: 'My History',
+              )
+            ]),
+        Expanded(
+          child: TabBarView(children: [
+            RecentPayments(),
+            ResidentStatus(),
+            TransactionHistory(),              
+          ]),
+        ),
+      ]),
+    ));
   }
 }
-
-// class CustomButton extends StatelessWidget {
-//   final ButtonType buttonType;
-//   const CustomButton({Key key, this.buttonType}) : super(key: key);
-//   @override
-//   Widget build(BuildContext context) {
-//     String buttonText = "", buttonImage;
-//     switch (buttonType) {
-//       case ButtonType.payBills:
-//         buttonText = "History";
-//         buttonImage = "assets/receipt.png";
-//         break;
-//       case ButtonType.donate:
-//         buttonText = "Donate";
-//         buttonImage = "assets/donation.png";
-//         break;
-//       case ButtonType.receiptients:
-//         buttonText = "User Status";
-//         buttonImage = "assets/users.png";
-//         break;
-//       case ButtonType.offers:
-//         buttonText = "Offers";
-//         buttonImage = "assets/discount.png";
-//         break;
-//     }
-//     return Material(
-//       color: Colors.transparent,
-//       child: InkWell(
-//         onTap: () {},
-//         child: Container(
-//           padding: EdgeInsets.all(5.0),
-//           child: Column(
-//             children: <Widget>[
-//               Container(
-//                 padding: EdgeInsets.all(17),
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(7.0),
-//                   gradient: LinearGradient(
-//                     colors: [Colors.white10, Colors.black12],
-//                     begin: Alignment.topCenter,
-//                     end: Alignment.bottomCenter,
-//                   ),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.black12,
-//                       blurRadius: 5.0,
-//                       offset: Offset(0, 3),
-//                     ),
-//                   ],
-//                 ),
-//                 child: Image.asset(
-//                   buttonImage,
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 5.0,
-//               ),
-//               FittedBox(
-//                 child: Text(buttonText),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class PayeeContainer extends StatefulWidget {
 

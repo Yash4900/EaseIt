@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/screens/resident/maintenance/credit_card_page.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:flutter/material.dart';
 
 class TransactionHistory extends StatefulWidget {
   const TransactionHistory({ Key key }) : super(key: key);
@@ -9,44 +11,122 @@ class TransactionHistory extends StatefulWidget {
 }
 
 class _TransactionHistoryState extends State<TransactionHistory> {
+  bool visibilityPending = true;
+  bool visibilityPaid = false;
   final db = FirebaseFirestore.instance;
+  
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.all(0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            ListView(
               scrollDirection: Axis.vertical,
               shrinkWrap: true, children: [
-      StreamBuilder<QuerySnapshot>(
-        stream: db.collection('Maintenance').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView(              
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: snapshot.data.docs.map((doc) {
-                print(doc["name"]);
-                return TransactionBill(
-                  name: doc["name"],
-                  wing: doc["wing"],
-                  flatNo: doc["flatNo"],
-                  transactionAmount: doc["billAmount"],
-                  transactionDate: doc["datePayed"],
-                  status: doc["status"],
-                );
-              }).toList(),            
-          );
-        }
-        else
-        return Container();
-        }),
-                      ],
-                    );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [                  
+                  Text("Pending", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  IconButton(
+                    icon: visibilityPending ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down),
+                    tooltip: 'Show/Hide Pending Bills',
+                    onPressed: () {
+                      setState(() {
+                        visibilityPending = !visibilityPending;
+                      });
+                    },
+                  ),
+                ]),
+                SizedBox(height: 5),
+              visibilityPending ? StreamBuilder<QuerySnapshot>(
+                stream: db.collection('Maintenance').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView(              
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children: snapshot.data.docs.map((doc) {
+                        if(doc["status"] == "Pending" && doc["flatNo"] == Globals().flatNo && doc["wing"] == Globals().wing){                  
+                          return TransactionBill(
+                            name: doc["name"],
+                            wing: doc["wing"],
+                            flatNo: doc["flatNo"],
+                            transactionAmount: doc["billAmount"],
+                            transactionDate: "",
+                            month: doc["month"],
+                            status: doc["status"],
+                            payable: true
+                          );
+                        }
+                        else
+                          return Container();
+                      }).toList(),            
+                  );
+                }
+                else
+                return Container();
+                }):Container(),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [                  
+                  Text("Paid", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  IconButton(
+                    icon: visibilityPaid ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down),
+                    tooltip: 'Show/Hide Paid Bills',
+                    onPressed: () {
+                      setState(() {
+                        visibilityPaid = !visibilityPaid;
+                      });
+                    },
+                  ),
+                ]),
+                SizedBox(height: 5),
+              visibilityPaid ? StreamBuilder<QuerySnapshot>(
+                stream: db.collection('Maintenance').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView(              
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children: snapshot.data.docs.map((doc) {
+                        if(doc["status"] == "Paid"  && doc["flatNo"] == Globals().flatNo && doc["wing"] == Globals().wing){                  
+                          return TransactionBill(
+                            name: doc["name"],
+                            wing: doc["wing"],
+                            flatNo: doc["flatNo"],
+                            transactionAmount: doc["billAmount"],
+                            transactionDate: doc["datePayed"],
+                            month: doc["month"],
+                            status: doc["status"],
+                            payable: false
+                          );
+                        }
+                        else
+                          return Container();
+                      }).toList(),           
+                  );
+                }
+                else
+                return Container();
+                }):Container(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
-
 enum TransactionType { received, pending }
 
 class TransactionBill extends StatelessWidget {
-  final String name, status, wing, flatNo, transactionAmount, transactionDate;
+  final bool payable;
+  final String name, status, wing, flatNo, month, transactionAmount, transactionDate;
   const TransactionBill(
       {Key key,
       this.name,
@@ -54,7 +134,9 @@ class TransactionBill extends StatelessWidget {
       this.flatNo,
       this.status,
       this.transactionAmount,
-      this.transactionDate})
+      this.transactionDate,
+      this.month,
+      this.payable})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -130,6 +212,11 @@ class TransactionBill extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       "$name",
+                      // payable ? "${Globals().fname}" : "$name",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "$month",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -153,7 +240,23 @@ class TransactionBill extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
+                ),                
+                if(payable)
+                Center(child: SizedBox(
+                  width: 100.0,
+                  height: 25.0,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 15)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreditCardPage()),
+                      );
+                    },
+                    child: const Text('Pay Now'),
+                  ),   
+                ),  
+                ),                            
               ],
             ),
           ),
