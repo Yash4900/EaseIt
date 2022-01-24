@@ -1,5 +1,7 @@
 import 'package:ease_it/screens/common/events.dart';
 import 'package:ease_it/screens/common/profile.dart';
+import 'package:ease_it/screens/resident/myVehicle.dart';
+import 'package:ease_it/screens/resident/myVisitors.dart';
 import 'package:flutter/material.dart';
 
 Drawer showDrawer(BuildContext context) {
@@ -47,7 +49,20 @@ Drawer showDrawer(BuildContext context) {
             'My Vehicle',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyVehicle()));
+          },
+        ),
+        ListTile(
+          title: Text(
+            'My Visitors',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyVisitors()));
+          },
         ),
         ListTile(
           title: Text(

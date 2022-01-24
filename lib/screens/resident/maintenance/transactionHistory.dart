@@ -141,17 +141,15 @@ class TransactionBill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String transactionName;
-    IconData transactionIconData;
     Color color;
+    Globals g = Globals();
     switch (status) {
       case "Paid":
         transactionName = "Paid";
-        transactionIconData = Icons.arrow_downward;
         color = Colors.green;
         break;
       case "Pending":
         transactionName = "Pending";
-        transactionIconData = Icons.arrow_downward;
         color = Colors.orange;
         break;
     }
@@ -159,7 +157,7 @@ class TransactionBill extends StatelessWidget {
       margin: EdgeInsets.all(9.0),
       padding: EdgeInsets.all(9.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white54,
         boxShadow: [
           BoxShadow(
             blurRadius: 5.0,
@@ -171,38 +169,6 @@ class TransactionBill extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Flexible(
-            flex: 1,
-            child: Stack(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    "https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_960_720.jpg",
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    width: 15.0,
-                    height: 15.0,
-                    decoration: BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
-                    ),
-                    child: FittedBox(
-                      child: Icon(
-                        transactionIconData,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(width: 5.0),
-          Flexible(
             flex: 4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -211,12 +177,13 @@ class TransactionBill extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "$name",
-                      // payable ? "${Globals().fname}" : "$name",
+                      // "$name",
+                      flatNo == g.flatNo && wing == g.wing ? "${g.fname}" : "$name",
                       style: TextStyle(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "$month",
+                      "Month: $month",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -229,7 +196,12 @@ class TransactionBill extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "$wing-$flatNo       $transactionDate",
+                      "$wing-$flatNo",
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    if(transactionName == "Paid")
+                    Text(
+                      "Paid: $transactionDate",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     Text(
