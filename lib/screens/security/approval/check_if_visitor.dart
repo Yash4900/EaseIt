@@ -274,6 +274,7 @@ class _CheckIfVisitorState extends State<CheckIfVisitor> with TickerProviderStat
           title: "Pending Approval",
           description: "Approval Request Sent to Resident at $wing-$flatNo",
           buttonText: "Okay",
+          homePage: Security(),
         ),
       );
       return visLog
