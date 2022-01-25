@@ -1,7 +1,7 @@
 // Resident Landing page
 
 import 'package:ease_it/firebase/authentication.dart';
-import 'package:ease_it/screens/resident/approval.dart';
+import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
@@ -30,6 +30,7 @@ class _ResidentState extends State<Resident> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [

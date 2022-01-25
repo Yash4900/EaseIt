@@ -10,11 +10,13 @@ class CustomDialog extends StatelessWidget {
   static const double avatarRadius = 11.0;
   final String title, description, buttonText;
   final Image image;
+  var homePage;
 
   CustomDialog({
     @required this.title,
     @required this.description,
     @required this.buttonText,
+    this.homePage,
     this.image,
   });
 
@@ -80,7 +82,7 @@ class CustomDialog extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
