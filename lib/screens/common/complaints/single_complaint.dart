@@ -1,3 +1,4 @@
+import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,6 +16,7 @@ class SingleComplaint extends StatefulWidget {
 }
 
 class _SingleComplaintState extends State<SingleComplaint> {
+  Globals g = Globals();
   List<String> days = [
     "Jan",
     "Feb",
@@ -112,20 +114,31 @@ class _SingleComplaintState extends State<SingleComplaint> {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     )
                   ])
-                : TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xff1a73e8).withOpacity(0.2)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.symmetric(horizontal: 15))),
-                    child: Text(
-                      'Mark as Resolved',
-                      style: TextStyle(
-                          color: Color(0xff1a73e8),
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
+                : g.role == "Secretary"
+                    ? TextButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xff1a73e8).withOpacity(0.2)),
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                    EdgeInsets.symmetric(horizontal: 15))),
+                        child: Text(
+                          'Mark as Resolved',
+                          style: TextStyle(
+                              color: Color(0xff1a73e8),
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    : Row(children: [
+                        Icon(Icons.cancel_outlined, color: Color(0xffbb121a)),
+                        SizedBox(width: 10),
+                        Text(
+                          'Unresolved',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )
+                      ]),
           )
         ],
       ),

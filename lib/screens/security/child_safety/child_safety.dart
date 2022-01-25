@@ -1,14 +1,14 @@
-import 'package:ease_it/screens/common/complaints/complaint.dart';
-import 'package:ease_it/screens/common/notice/notice.dart';
+import 'package:ease_it/screens/security/child_safety/past_approvals.dart';
+import 'package:ease_it/screens/security/child_safety/recent_approvals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Forum extends StatefulWidget {
+class ChildSafety extends StatefulWidget {
   @override
-  _ForumState createState() => _ForumState();
+  _ChildSafetyState createState() => _ChildSafetyState();
 }
 
-class _ForumState extends State<Forum> {
+class _ChildSafetyState extends State<ChildSafety> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,7 +17,7 @@ class _ForumState extends State<Forum> {
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Forum',
+            'Approval Status',
             style: GoogleFonts.sourceSansPro(
                 fontSize: 25, fontWeight: FontWeight.w900),
           ),
@@ -30,20 +30,18 @@ class _ForumState extends State<Forum> {
                   fontSize: 16, fontWeight: FontWeight.w600),
               tabs: [
                 Tab(
-                  text: 'Notice',
+                  text: 'Past',
                 ),
                 Tab(
-                  text: 'Complaints',
+                  text: 'Today',
                 )
               ]),
           Expanded(
-            child: TabBarView(children: [
-              NoticeView(),
-              ComplaintView(),
-            ]),
+            child: TabBarView(children: [PastApproval(), RecentApproval()]),
           ),
         ]),
       ),
     );
+    ;
   }
 }

@@ -9,11 +9,12 @@ class SelectDropList extends StatefulWidget {
   SelectDropList(this.itemSelected, this.dropListModel, this.onOptionSelected);
 
   @override
-  _SelectDropListState createState() => _SelectDropListState(itemSelected, dropListModel);
+  _SelectDropListState createState() =>
+      _SelectDropListState(itemSelected, dropListModel);
 }
 
-class _SelectDropListState extends State<SelectDropList> with SingleTickerProviderStateMixin {
-
+class _SelectDropListState extends State<SelectDropList>
+    with SingleTickerProviderStateMixin {
   OptionItem optionItemSelected;
   final DropListModel dropListModel;
 
@@ -27,10 +28,8 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    expandController = AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: 350)
-    );
+    expandController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
     animation = CurvedAnimation(
       parent: expandController,
       curve: Curves.fastOutSlowIn,
@@ -39,7 +38,7 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
   }
 
   void _runExpandCheck() {
-    if(isShow) {
+    if (isShow) {
       expandController.forward();
     } else {
       expandController.reverse();
@@ -58,38 +57,38 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 15, vertical: 17),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 17),
             decoration: new BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    blurRadius: 10,
-                    color: Colors.black26,
-                    offset: Offset(0, 2))
+                    blurRadius: 10, color: Colors.black26, offset: Offset(0, 2))
               ],
             ),
             child: new Row(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.car_rental_sharp, color: Color(0xFF307DF1),),
-                SizedBox(width: 10,),
+                Icon(
+                  Icons.car_rental,
+                  color: Color(0xFF307DF1),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
                 Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        this.isShow = !this.isShow;
-                        _runExpandCheck();
-                        setState(() {
-
-                        });
-                      },
-                      child: Text(optionItemSelected.title, style: TextStyle(
-                          color: Color(0xFF307DF1),
-                          fontSize: 16),),
-                    )
-                ),
+                  onTap: () {
+                    this.isShow = !this.isShow;
+                    _runExpandCheck();
+                    setState(() {});
+                  },
+                  child: Text(
+                    optionItemSelected.title,
+                    style: TextStyle(color: Color(0xFF307DF1), fontSize: 16),
+                  ),
+                )),
                 Align(
                   alignment: Alignment(1, 0),
                   child: Icon(
@@ -105,10 +104,12 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
               axisAlignment: 1.0,
               sizeFactor: animation,
               child: Container(
-                margin: const EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: new BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
@@ -117,9 +118,8 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
                           offset: Offset(0, 4))
                     ],
                   ),
-                  child: _buildDropListOptions(dropListModel.listOptionItems, context)
-              )
-          ),
+                  child: _buildDropListOptions(
+                      dropListModel.listOptionItems, context))),
         ],
       ),
     );
@@ -165,5 +165,4 @@ class _SelectDropListState extends State<SelectDropList> with SingleTickerProvid
       ),
     );
   }
-
 }
