@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CustomDialog extends StatelessWidget {
   static const double padding = 4.0;
@@ -87,8 +86,7 @@ class CustomDialog extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            homePage
+                        builder: (context) => Security(),
                       ),
                     );
                   },

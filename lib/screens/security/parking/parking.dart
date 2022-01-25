@@ -1,14 +1,16 @@
-import 'package:ease_it/screens/common/complaints/complaint.dart';
-import 'package:ease_it/screens/common/notice/notice.dart';
+import 'package:ease_it/screens/security/parking/status.dart';
+
+import 'package:ease_it/screens/security/parking/actions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Forum extends StatefulWidget {
+class Parking extends StatefulWidget {
   @override
-  _ForumState createState() => _ForumState();
+  _ParkingState createState() => _ParkingState();
 }
 
-class _ForumState extends State<Forum> {
+class _ParkingState extends State<Parking> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,7 +19,7 @@ class _ForumState extends State<Forum> {
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Forum',
+            'Parking Management',
             style: GoogleFonts.sourceSansPro(
                 fontSize: 25, fontWeight: FontWeight.w900),
           ),
@@ -30,20 +32,18 @@ class _ForumState extends State<Forum> {
                   fontSize: 16, fontWeight: FontWeight.w600),
               tabs: [
                 Tab(
-                  text: 'Notice',
+                  text: 'Current Status',
                 ),
                 Tab(
-                  text: 'Complaints',
+                  text: 'Actions',
                 )
               ]),
           Expanded(
-            child: TabBarView(children: [
-              NoticeView(),
-              ComplaintView(),
-            ]),
+            child: TabBarView(children: [Status(), ActionList()]),
           ),
         ]),
       ),
     );
+    ;
   }
 }
