@@ -41,6 +41,8 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   flutter_masked_text: ^0.8.0
   cached_network_image: ^3.2.0
+  otp_text_field: ^1.1.1
+
   
 dev_dependencies:
   flutter_test:
