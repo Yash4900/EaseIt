@@ -284,26 +284,12 @@ class _CardDetailPageState extends State<CardDetailPage> {
 
   Future<void> findPicture() async {
     if (widget.type == "Car")
-<<<<<<< HEAD
       img = "assets/taxi.png";
     else if (widget.type == "Bike")
       img = "assets/bycicle.png";
     else if (widget.type == "Truck")
       img = "assets/delivery.jpg";
     else if (widget.type == "Auto-Rickshaw") img = "assets/ricksaw.jpg";
-=======
-      img = "assets/car.jpeg";
-    else if (widget.type == "Bike")
-      img = "assets/bike.png";
-    else if (widget.type == "Truck")
-      img = "assets/truck.jpg";
-    else if (widget.type == "Tempo")
-      img = "assets/tempo.jpg";
-    else if (widget.type == "Auto-Rickshaw")
-      img = "assets/auto.jpg";
-    else
-      img = "assets/taxi.jpg";
->>>>>>> 39dd9161891082f5b95a6afaa2ad95862cac5e22
   }
 
   List<Map<String, String>> visitorsLog = [
@@ -324,7 +310,6 @@ class _CardDetailPageState extends State<CardDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -399,178 +384,6 @@ class _CardDetailPageState extends State<CardDetailPage> {
                     ),
                   )
                   .toList(),
-=======
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
-    return Material(
-      type: MaterialType.transparency,
-      child: new Container(
-        height: height * 0.8,
-        width: width * 0.8,
-        child: Column(
-          children: [
-            Container(
-              height: 230,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(50),
-                ),
-                color: Color(0xFF363f93),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 80,
-                    left: 0,
-                    child: Container(
-                      height: 100,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          bottomRight: Radius.circular(50),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 115,
-                    left: 20,
-                    child: Text(
-                      "Your Vehicle",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xFF363f93),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: height * 0.05),
-            Container(
-                height: 230,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        top: 35,
-                        left: 20,
-                        child: Material(
-                          child: Container(
-                            height: 180,
-                            width: width * 0.9,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(0.0),
-                              // new BoxShadow(
-                              //   color: Colors.grey.withOpacity(0.3),
-                              //   offset: new Offset(-10, 10),
-                              //   blurRadius: 20,
-                              //   spreadRadius: 4),
-                              // ),
-                            ),
-                          ),
-                        )),
-                    Positioned(
-                      top: 30,
-                      left: 30,
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  fit: BoxFit.fill, image: AssetImage(img))),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 60,
-                      left: 200,
-                      child: Container(
-                        height: 150,
-                        width: 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.vehicleNo,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xFF363f93),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              widget.type,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Divider(
-                              color: Colors.black,
-                            ),
-                            Flexible(
-                              child: Text(
-                                widget.color,
-                                // overflow: TextOverflow,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF363f93),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Flexible(
-                              child: Text(
-                                widget.model,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF363f93),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                )),
-            SizedBox(height: 20),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: width * 0.25,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xFF363f93))),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Resident()),
-                      );
-                    },
-                    child: const Text('Home Page',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  ),
-                ],
-              ),
->>>>>>> 39dd9161891082f5b95a6afaa2ad95862cac5e22
             ),
           ],
         ),
