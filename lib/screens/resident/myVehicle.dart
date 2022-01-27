@@ -5,6 +5,7 @@ import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/rendering.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -27,6 +28,7 @@ class _MyVehicleState extends State<MyVehicle> {
   TextEditingController vehicleColorController = TextEditingController();
   TextEditingController vehicleModelController = TextEditingController();
   TextEditingController vehicleTypeController = TextEditingController();
+
   List<Map<String, String>> dropDownItems = [
     {"name": "Car", "imageLink": "assets/taxi.png"},
     {"name": "Bike", "imageLink": "assets/bycicle.png"},
@@ -239,6 +241,7 @@ class _MyVehicleState extends State<MyVehicle> {
   final vehicleLog = FirebaseFirestore.instance.collection('Vehicle_Info');
   Future<void> uploadVehicleData(
       String vehicleNo, String model, String color, String type) {
+
     Navigator.pop(context);
     showMessageDialog(context, "Vehicle Successfully Registered",
         "Kindly contact the security guard for updation of vehicle details");

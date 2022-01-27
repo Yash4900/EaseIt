@@ -12,6 +12,11 @@ class FirebaseMLApi {
   }
 
   String extractText(VisionText visionText) {
+    RegExp regExp = new RegExp(
+      r"[A-Z]{2}[0-9]{2}[A-Z]+[0-9]{4}$",
+      caseSensitive: false,
+      multiLine: false,
+    );
     String text = "";
     for (TextBlock block in visionText.blocks) {
       for (TextLine line in block.lines) {
@@ -19,6 +24,15 @@ class FirebaseMLApi {
           text = text + element.text;
         }
       }
+    }
+    text = text.replaceAll(".", "");
+    text = text.replaceAll("-", "");
+    text = text.replaceAll(" ", "");
+    text = text.replaceAll("O", "0");
+
+    print(text);
+    if (regExp.hasMatch(text)) {
+      text = regExp.stringMatch(text);
     }
     return text;
   }
