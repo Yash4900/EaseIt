@@ -296,15 +296,14 @@ class _CardDetailPageState extends State<CardDetailPage> {
     {
       "name": "Maruti Suzuki",
       "type": "Car",
-      "vehicleNumber":"MH12AE2323",
-      "imageLink":"assets/taxi.png",
-
+      "vehicleNumber": "MH12AE2323",
+      "imageLink": "assets/taxi.png",
     },
     {
       "name": "Acitva",
       "type": "Bike",
-      "vehicleNumber":"MH12RE2398",
-      "imageLink":"assets/bycicle.png",
+      "vehicleNumber": "MH12RE2398",
+      "imageLink": "assets/bycicle.png",
     },
   ];
 
@@ -365,7 +364,11 @@ class _CardDetailPageState extends State<CardDetailPage> {
                                   ),
                                   Row(
                                     children: [
-                                      Text(e["vehicleNumber"],style: GoogleFonts.montserrat(textStyle: Helper().headingStyle ),),
+                                      Text(
+                                        e["vehicleNumber"],
+                                        style: GoogleFonts.montserrat(
+                                            textStyle: Helper().headingStyle),
+                                      ),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -374,7 +377,6 @@ class _CardDetailPageState extends State<CardDetailPage> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  
                                 ],
                               ),
                             ),

@@ -4,6 +4,7 @@ import 'package:ease_it/screens/resident/myVehicle.dart';
 import 'package:ease_it/screens/resident/myVisitors.dart';
 import 'package:ease_it/screens/common/all_residents_info.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/screens/common/all_security_guards_info.dart';
 
 Drawer showDrawer(BuildContext context) {
   return Drawer(
@@ -73,7 +74,10 @@ Drawer showDrawer(BuildContext context) {
             'Security Guards',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SecurityGuardInfo()));
+          },
         ),
         ListTile(
           title: Text(
