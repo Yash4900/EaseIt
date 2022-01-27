@@ -3,8 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/residentPOV.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/screens/resident/resident.dart';
-import 'package:ease_it/screens/security/security.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +27,7 @@ class _MaintenanceState extends State<Maintenance> {
     g.setLname = snapshot.get('lname');
     g.setPhoneNum = snapshot.get('phoneNum');
 
-    role = snapshot.get('role');    
+    role = snapshot.get('role');
 
     setState(() => loading = false);
   }

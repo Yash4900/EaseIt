@@ -2,7 +2,6 @@ import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ResidentHome extends StatefulWidget {
   @override
@@ -17,8 +16,7 @@ class _ResidentHomeState extends State<ResidentHome> {
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/homeBackground.png'),
-              fit: BoxFit.cover)),
+              image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
       child: Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: ListView(
@@ -31,9 +29,7 @@ class _ResidentHomeState extends State<ResidentHome> {
               height: 40,
             ),
             Row(children: [
-              Text('Approve Visitor',
-                  style:
-                      GoogleFonts.montserrat(textStyle: Helper().headingStyle))
+              Text('Approve Visitor', style: Helper().headingStyle)
             ]),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -41,8 +37,6 @@ class _ResidentHomeState extends State<ResidentHome> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    // NewWidget(),
-
                     CircularImageIcon(
                       firstName: "Amol",
                       lastName: "Thopate",
@@ -76,21 +70,15 @@ class _ResidentHomeState extends State<ResidentHome> {
                 ),
               ),
             ),
-
             Row(children: [
-              Text('Approve Child Exit',
-                  style:
-                      GoogleFonts.montserrat(textStyle: Helper().headingStyle))
+              Text('Approve Child Exit', style: Helper().headingStyle)
             ]),
-            // SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    // NewWidget(),
-
                     CircularImageIcon(
                         operation: () {
                           return showDialog(
@@ -148,17 +136,14 @@ class _ResidentHomeState extends State<ResidentHome> {
 }
 
 class ApprovalAlert extends StatelessWidget {
-  String message;
-  Function operation;
+  final String message;
+  final Function operation;
   ApprovalAlert({this.message, this.operation});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        message,
-        style: GoogleFonts.montserrat(textStyle: Helper().headingStyle),
-      ),
+      title: Text(message, style: Helper().headingStyle),
       content: Container(
         decoration: new BoxDecoration(
           shape: BoxShape.rectangle,

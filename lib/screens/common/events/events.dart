@@ -1,4 +1,4 @@
-import 'package:ease_it/screens/common/add_event.dart';
+import 'package:ease_it/screens/common/events/add_event.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,7 +57,7 @@ class _EventsViewState extends State<EventsView> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.arrow_back, color: Colors.black),
+              Icon(Icons.keyboard_backspace, color: Colors.black),
               SizedBox(width: 5),
               Text(
                 'Back',

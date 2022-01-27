@@ -17,10 +17,7 @@ class _PreApprovalState extends State<PreApproval> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
-            'Allow Future Enteries',
-            style: GoogleFonts.montserrat(textStyle: Helper().headingStyle),
-          ),
+          Text('Allow Future Enteries', style: Helper().headingStyle),
         ],
       ),
       content: Container(
@@ -34,9 +31,8 @@ class _PreApprovalState extends State<PreApproval> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Create pre approval entry of expected visitor to ensure hassle-free entry for them",
-              style: GoogleFonts.montserrat(textStyle: Helper().normalStyle),
-            ),
+                "Create pre approval entry of expected visitor to ensure hassle-free entry for them",
+                style: Helper().normalStyle),
             Row(
               children: [
                 CircularButtonIcon2(
@@ -73,9 +69,8 @@ class _PreApprovalState extends State<PreApproval> {
 }
 
 class CircularButtonIcon2 extends StatelessWidget {
-  String firstName, lastName, type;
+  final String firstName, lastName, type, imageLink;
 
-  String imageLink;
   CircularButtonIcon2(
       {this.firstName, this.lastName, this.imageLink, this.type});
 
@@ -92,11 +87,8 @@ class CircularButtonIcon2 extends StatelessWidget {
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text(
-                          "Select Guest to Invite",
-                          style: GoogleFonts.montserrat(
-                              textStyle: Helper().headingStyle),
-                        ),
+                        title: Text("Select Guest to Invite",
+                            style: Helper().headingStyle),
                         content: Container(
                           decoration: new BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -118,7 +110,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               TextFormField(
-                                
                                 decoration: InputDecoration(
                                   hintText: 'Enter email',
                                   hintStyle: TextStyle(fontSize: 14),
@@ -164,11 +155,8 @@ class CircularButtonIcon2 extends StatelessWidget {
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text(
-                          "Allow my cab to enter today in next ",
-                          style: GoogleFonts.montserrat(
-                              textStyle: Helper().headingStyle),
-                        ),
+                        title: Text("Allow my cab to enter today in next ",
+                            style: Helper().headingStyle),
                         content: Container(
                           decoration: new BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -190,7 +178,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               TextFormField(
-                                
                                 decoration: InputDecoration(
                                   hintText: 'Enter car Number',
                                   hintStyle: TextStyle(fontSize: 14),
@@ -203,8 +190,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  
-
                                   Navigator.of(context).pop();
                                 },
                                 style: ButtonStyle(
@@ -228,7 +213,7 @@ class CircularButtonIcon2 extends StatelessWidget {
                       ));
             }
             break;
-            case "delivery":
+          case "delivery":
             {
               TextEditingController companyController = TextEditingController();
               TextEditingController hourController = TextEditingController();
@@ -236,10 +221,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                         title: Text(
-                          "Allow Delivery Guy to enter today in next ",
-                          style: GoogleFonts.montserrat(
-                              textStyle: Helper().headingStyle),
-                        ),
+                            "Allow Delivery Guy to enter today in next ",
+                            style: Helper().headingStyle),
                         content: Container(
                           decoration: new BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -261,7 +244,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               TextFormField(
-                                
                                 decoration: InputDecoration(
                                   hintText: 'Enter Company Name',
                                   hintStyle: TextStyle(fontSize: 14),
@@ -274,8 +256,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  
-
                                   Navigator.of(context).pop();
                                 },
                                 style: ButtonStyle(
@@ -299,18 +279,15 @@ class CircularButtonIcon2 extends StatelessWidget {
                       ));
             }
             break;
-            case "visitingHelp":
+          case "visitingHelp":
             {
               TextEditingController hourController = TextEditingController();
               TextEditingController companyController = TextEditingController();
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text(
-                          "Allow my cab to enter today in next ",
-                          style: GoogleFonts.montserrat(
-                              textStyle: Helper().headingStyle),
-                        ),
+                        title: Text("Allow my cab to enter today in next ",
+                            style: Helper().headingStyle),
                         content: Container(
                           decoration: new BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -332,7 +309,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               TextFormField(
-                                
                                 decoration: InputDecoration(
                                   hintText: 'Enter company',
                                   hintStyle: TextStyle(fontSize: 14),
@@ -345,8 +321,6 @@ class CircularButtonIcon2 extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  
-
                                   Navigator.of(context).pop();
                                 },
                                 style: ButtonStyle(
@@ -389,10 +363,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                 ),
               ),
             ),
-            Text(firstName,
-                style: GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
-            Text(lastName,
-                style: GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
+            Text(firstName, style: Helper().normalStyle),
+            Text(lastName, style: Helper().normalStyle)
           ],
         ),
       ),
