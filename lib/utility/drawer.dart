@@ -2,7 +2,9 @@ import 'package:ease_it/screens/common/events.dart';
 import 'package:ease_it/screens/common/profile.dart';
 import 'package:ease_it/screens/resident/myVehicle.dart';
 import 'package:ease_it/screens/resident/myVisitors.dart';
+import 'package:ease_it/screens/common/all_residents_info.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/screens/common/all_security_guards_info.dart';
 
 Drawer showDrawer(BuildContext context) {
   return Drawer(
@@ -23,8 +25,8 @@ Drawer showDrawer(BuildContext context) {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Profile()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfilePage()));
           },
         ),
         ListTile(
@@ -42,7 +44,10 @@ Drawer showDrawer(BuildContext context) {
             'All Members',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ResidentInfoPage()));
+          },
         ),
         ListTile(
           title: Text(
@@ -69,7 +74,10 @@ Drawer showDrawer(BuildContext context) {
             'Security Guards',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SecurityGuardInfo()));
+          },
         ),
         ListTile(
           title: Text(
