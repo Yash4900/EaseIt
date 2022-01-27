@@ -1,20 +1,9 @@
-import 'package:ease_it/screens/resident/resident.dart';
-import 'package:ease_it/screens/resident/residentHome.dart';
-import 'package:ease_it/screens/security/approval/custom_dialog.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/rendering.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/size_config.dart';
-import 'package:ease_it/utility/vehicleCardConstants.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
 
 class MyVehicle extends StatefulWidget {
   const MyVehicle({Key key}) : super(key: key);
@@ -96,9 +85,7 @@ class _MyVehicleState extends State<MyVehicle> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             document != null
-                ?
-                // Container(child: Text("h"),):
-                CardDetailPage(
+                ? CardDetailPage(
                     vehicleNo: vehicleNoController.text,
                     wing: g.wing,
                     flatNo: g.flatNo,
@@ -124,11 +111,9 @@ class _MyVehicleState extends State<MyVehicle> {
                             height: 10,
                           ),
                           Center(
-                            child: Text(
-                                "Hello ${g.fname}, enter below details to register your vehicle !",
-                                style: GoogleFonts.montserrat(
-                                    textStyle: Helper().mediumStyle)),
-                          ),
+                              child: Text(
+                                  "Hello ${g.fname}, enter below details to register your vehicle !",
+                                  style: Helper().mediumStyle)),
                           const SizedBox(height: 30),
                           Row(
                             children: [
@@ -153,8 +138,7 @@ class _MyVehicleState extends State<MyVehicle> {
                           Row(
                             children: [
                               Text('Vehicle Type is ',
-                                  style: GoogleFonts.montserrat(
-                                      textStyle: Helper().mediumStyle)),
+                                  style: Helper().mediumStyle),
                               SizedBox(width: 20),
                               DropdownButton(
                                 value: dropDownValue,
@@ -241,7 +225,6 @@ class _MyVehicleState extends State<MyVehicle> {
   final vehicleLog = FirebaseFirestore.instance.collection('Vehicle_Info');
   Future<void> uploadVehicleData(
       String vehicleNo, String model, String color, String type) {
-
     Navigator.pop(context);
     showMessageDialog(context, "Vehicle Successfully Registered",
         "Kindly contact the security guard for updation of vehicle details");
@@ -339,7 +322,7 @@ class _CardDetailPageState extends State<CardDetailPage> {
                               width: 90,
                               height: 90,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
+                                // shape: BoxShape.circle,
                                 image: DecorationImage(
                                     image: AssetImage(e["imageLink"]),
                                     fit: BoxFit.fill),
@@ -350,28 +333,20 @@ class _CardDetailPageState extends State<CardDetailPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    e["name"],
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: Helper().mediumStyle,
-                                    ),
-                                  ),
+                                  Text(e["name"],
+                                      style: TextStyle(fontSize: 16)),
                                   SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
                                   Text(e["type"],
-                                      style: GoogleFonts.montserrat(
-                                          textStyle: Helper().normalStyle)),
+                                      style: TextStyle(fontSize: 16)),
                                   SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
                                   Row(
                                     children: [
-                                      Text(
-                                        e["vehicleNumber"],
-                                        style: GoogleFonts.montserrat(
-                                            textStyle: Helper().headingStyle),
-                                      ),
+                                      Text(e["vehicleNumber"],
+                                          style: Helper().headingStyle),
                                       SizedBox(
                                         width: 10,
                                       ),

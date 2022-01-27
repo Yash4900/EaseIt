@@ -1,7 +1,6 @@
-import 'package:ease_it/screens/common/events.dart';
+import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile.dart';
 import 'package:ease_it/screens/resident/myVehicle.dart';
-import 'package:ease_it/screens/resident/myVisitors.dart';
 import 'package:ease_it/screens/common/all_residents_info.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/all_security_guards_info.dart';
@@ -20,9 +19,10 @@ Drawer showDrawer(BuildContext context) {
           ),
         ),
         ListTile(
+          leading: Icon(Icons.person_outline_sharp),
           title: Text(
             'Profile',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(context,
@@ -30,9 +30,10 @@ Drawer showDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          leading: Icon(Icons.calendar_today_rounded),
           title: Text(
             'Events',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(
@@ -40,9 +41,10 @@ Drawer showDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          leading: Icon(Icons.group_outlined),
           title: Text(
             'All Members',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(context,
@@ -50,9 +52,10 @@ Drawer showDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          leading: Icon(Icons.time_to_leave),
           title: Text(
             'My Vehicle',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(
@@ -60,19 +63,10 @@ Drawer showDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text(
-            'My Visitors',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyVisitors()));
-          },
-        ),
-        ListTile(
+          leading: Icon(Icons.security_outlined),
           title: Text(
             'Security Guards',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(context,
@@ -80,9 +74,10 @@ Drawer showDrawer(BuildContext context) {
           },
         ),
         ListTile(
+          leading: Icon(Icons.logout),
           title: Text(
             'Logout',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {},
         ),

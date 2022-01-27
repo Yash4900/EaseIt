@@ -1,7 +1,5 @@
 import 'package:ease_it/screens/security/parking/status.dart';
-
 import 'package:ease_it/screens/security/parking/actions.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,6 +42,5 @@ class _ParkingState extends State<Parking> {
         ]),
       ),
     );
-    ;
   }
 }

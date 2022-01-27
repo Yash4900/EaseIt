@@ -23,7 +23,7 @@ class _AddEventState extends State<AddEvent> {
   }
 
   Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay picked_s = await showTimePicker(
+    final TimeOfDay pickedS = await showTimePicker(
         context: context,
         initialTime: selectedStartTime,
         builder: (BuildContext context, Widget child) {
@@ -33,14 +33,14 @@ class _AddEventState extends State<AddEvent> {
           );
         });
 
-    if (picked_s != null && picked_s != selectedStartTime)
+    if (pickedS != null && pickedS != selectedStartTime)
       setState(() {
-        selectedStartTime = picked_s;
+        selectedStartTime = pickedS;
       });
   }
 
   Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay picked_s = await showTimePicker(
+    final TimeOfDay pickedS = await showTimePicker(
         context: context,
         initialTime: selectedEndTime,
         builder: (BuildContext context, Widget child) {
@@ -50,9 +50,9 @@ class _AddEventState extends State<AddEvent> {
           );
         });
 
-    if (picked_s != null && picked_s != selectedEndTime)
+    if (pickedS != null && pickedS != selectedEndTime)
       setState(() {
-        selectedEndTime = picked_s;
+        selectedEndTime = pickedS;
       });
   }
 
@@ -68,7 +68,7 @@ class _AddEventState extends State<AddEvent> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.arrow_back, color: Colors.black),
+              Icon(Icons.keyboard_backspace, color: Colors.black),
               SizedBox(width: 5),
               Text(
                 'Back',

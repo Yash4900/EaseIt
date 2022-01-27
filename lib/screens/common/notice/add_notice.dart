@@ -18,7 +18,7 @@ class _AddNoticeState extends State<AddNotice> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.arrow_back, color: Colors.black),
+              Icon(Icons.keyboard_backspace, color: Colors.black),
               SizedBox(width: 5),
               Text(
                 'Back',

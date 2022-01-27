@@ -1,8 +1,6 @@
-import 'package:ease_it/screens/common/profile.dart';
 import 'package:ease_it/screens/resident/Approval/visitorProfile.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DailyHelpers extends StatefulWidget {
   @override
@@ -54,10 +52,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            "Add Helper",
-            style: GoogleFonts.montserrat(textStyle: Helper().headingStyle),
-          ),
+          title: Text("Add Helper", style: Helper().headingStyle),
           backgroundColor: Colors.white,
           shadowColor: Colors.white24,
           iconTheme: IconThemeData(color: Colors.black)),
@@ -109,8 +104,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                   Row(
                                     children: [
                                       Text(e["name"],
-                                          style: GoogleFonts.montserrat(
-                                              textStyle: Helper().mediumStyle)),
+                                          style: Helper().mediumStyle)
                                     ],
                                   ),
                                   SizedBox(
@@ -120,11 +114,9 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text("Rating ",
-                                          style: GoogleFonts.montserrat(
-                                              textStyle: Helper().mediumStyle)),
+                                          style: Helper().mediumStyle),
                                       Text(e["rating"],
-                                          style: GoogleFonts.montserrat(
-                                              textStyle: Helper().mediumStyle)),
+                                          style: Helper().mediumStyle),
                                       Image(
                                         image: AssetImage('assets/star.png'),
                                         width: 20,

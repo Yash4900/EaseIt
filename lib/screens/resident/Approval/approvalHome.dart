@@ -9,7 +9,6 @@ import 'package:ease_it/screens/resident/Approval/preapproval.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Approval extends StatefulWidget {
   @override
@@ -18,20 +17,12 @@ class Approval extends StatefulWidget {
 
 class _ApprovalState extends State<Approval> {
   @override
-  void initState() {
-    // TODO: implement initState
-    print('In');
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/homeBackground.png'),
-              fit: BoxFit.cover)),
+              image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
       child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
@@ -39,9 +30,7 @@ class _ApprovalState extends State<Approval> {
             child: Column(
               children: [
                 Row(children: [
-                  Text('Recent Visitor',
-                      style: GoogleFonts.montserrat(
-                          textStyle: Helper().headingStyle))
+                  Text('Recent Visitor', style: Helper().headingStyle)
                 ]),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -94,8 +83,7 @@ class _ApprovalState extends State<Approval> {
                   children: [
                     Text(
                       "Daily Helper",
-                      style: GoogleFonts.montserrat(
-                          textStyle: Helper().headingStyle),
+                      style: Helper().headingStyle,
                     ),
                   ],
                 ),
@@ -149,11 +137,7 @@ class _ApprovalState extends State<Approval> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      "Child Approval",
-                      style: GoogleFonts.montserrat(
-                          textStyle: Helper().headingStyle),
-                    ),
+                    Text("Child Approval", style: Helper().headingStyle),
                   ],
                 ),
                 Padding(
@@ -176,7 +160,7 @@ class _ApprovalState extends State<Approval> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Outline_button(
+                      customOutlinedButton(
                           "View All Activites",
                           Icons.access_time,
                           () => {
@@ -187,8 +171,6 @@ class _ApprovalState extends State<Approval> {
                                   ),
                                 )
                               }),
-                      // SizedBox(width: 10,),
-                      
                     ],
                   ),
                 )
@@ -200,9 +182,8 @@ class _ApprovalState extends State<Approval> {
 }
 
 class CircularButtonIcon extends StatelessWidget {
-  String firstName, lastName, type;
+  final String firstName, lastName, type, imageLink;
 
-  String imageLink;
   CircularButtonIcon(
       {this.firstName, this.lastName, this.imageLink, this.type});
 
@@ -233,77 +214,72 @@ class CircularButtonIcon extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AddComplaint()));
             }
             break;
-            case "approveChild":
+          case "approveChild":
             {
               TextEditingController nameController = TextEditingController();
               TextEditingController phoneController = TextEditingController();
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text(
-                          "Allow my child to Exit",
-                          style: GoogleFonts.montserrat(
-                              textStyle: Helper().headingStyle),
+                      title: Text("Allow my child to Exit",
+                          style: Helper().headingStyle),
+                      content: Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: const Color(0xFFFFFF),
+                          borderRadius:
+                              new BorderRadius.all(new Radius.circular(32.0)),
                         ),
-                        content: Container(
-                          decoration: new BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: const Color(0xFFFFFF),
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(32.0)),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Name',
-                                  hintStyle: TextStyle(fontSize: 14),
-                                ),
-                                controller: nameController,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 20),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter Name',
+                                hintStyle: TextStyle(fontSize: 14),
                               ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                
-                                decoration: InputDecoration(
-                                  hintText: 'Enter hrs',
-                                  hintStyle: TextStyle(fontSize: 14),
-                                ),
-                                keyboardType: TextInputType.number,
-                                controller: phoneController,
+                              controller: nameController,
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter hrs',
+                                hintStyle: TextStyle(fontSize: 14),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  print(phoneController.text);
-                                  print(nameController.text);
+                              keyboardType: TextInputType.number,
+                              controller: phoneController,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                print(phoneController.text);
+                                print(nameController.text);
 
-                                  Navigator.of(context).pop();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8)),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                                  child: Text(
-                                    'Generate Token',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                Navigator.of(context).pop();
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xff1a73e8)),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                                child: Text(
+                                  'Generate Token',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                  ));
-                  }
+                            ),
+                          ],
+                        ),
+                      )));
+            }
         }
       },
       child: Container(
@@ -324,10 +300,8 @@ class CircularButtonIcon extends StatelessWidget {
                 ),
               ),
             ),
-            Text(firstName,
-                style: GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
-            Text(lastName,
-                style: GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
+            Text(firstName, style: Helper().normalStyle),
+            Text(lastName, style: Helper().normalStyle)
           ],
         ),
       ),
@@ -336,10 +310,9 @@ class CircularButtonIcon extends StatelessWidget {
 }
 
 class CircularImageIcon extends StatelessWidget {
-  String firstName, lastName;
-  Function operation;
+  final String firstName, lastName, imageLink;
+  final Function operation;
 
-  String imageLink;
   CircularImageIcon(
       {this.firstName, this.lastName, this.imageLink, this.operation});
 
@@ -364,12 +337,8 @@ class CircularImageIcon extends StatelessWidget {
                       image: NetworkImage(imageLink), fit: BoxFit.fill),
                 ),
               ),
-              Text(firstName,
-                  style:
-                      GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
-              Text(lastName,
-                  style:
-                      GoogleFonts.montserrat(textStyle: Helper().normalStyle)),
+              Text(firstName, style: Helper().normalStyle),
+              Text(lastName, style: Helper().normalStyle)
             ],
           ),
         ),
@@ -378,7 +347,7 @@ class CircularImageIcon extends StatelessWidget {
   }
 }
 
-Widget Outline_button(String name, IconData icon, Function operation) {
+Widget customOutlinedButton(String name, IconData icon, Function operation) {
   return OutlinedButton.icon(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -390,8 +359,7 @@ Widget Outline_button(String name, IconData icon, Function operation) {
       ),
     ),
     onPressed: operation,
-    label: Text(name,
-        style: GoogleFonts.montserrat(textStyle: Helper().buttonTextStyle)),
+    label: Text(name, style: Helper().buttonTextStyle),
     icon: Icon(
       icon,
       size: 15,

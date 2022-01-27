@@ -42,6 +42,5 @@ class _ChildSafetyState extends State<ChildSafety> {
         ]),
       ),
     );
-    ;
   }
 }
