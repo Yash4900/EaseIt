@@ -1,33 +1,17 @@
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ApproveVisitor extends StatefulWidget {
+class AddVehicle extends StatefulWidget {
   @override
-  _ApproveVisitorState createState() => _ApproveVisitorState();
+  _AddVehicleState createState() => _AddVehicleState();
 }
 
-class _ApproveVisitorState extends State<ApproveVisitor> {
-  List<String> dropDownItems = [
-    "Maid",
-    "Cook",
-    "Driver",
-    "Milkman",
-    "Newspaper",
-    "Laundry",
-    "Car Cleaner",
-    "Gym Instructor",
-    "Tution Teacher",
-    "Mechanic",
-    "Plumber",
-    "Delivery",
-    "Technician",
-    "Nanny",
-    "Salesman"
-  ];
-
-  String dropDownValue = "Maid";
+class _AddVehicleState extends State<AddVehicle> {
   File _profilePicture;
+  String dropDownValue = "Four Wheeler";
+  List<String> dropDownItems = ["Four Wheeler", "Two Wheeler"];
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +43,12 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
         child: ListView(
           children: [
             Text(
-              'Visitor Approval',
+              'Add Vehicle',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
             Text(
-              'Add visitor details below',
+              'Add details of vehicle below',
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(height: 30),
@@ -86,7 +70,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: _profilePicture == null
-                        ? AssetImage('assets/profile_dummy.png')
+                        ? AssetImage('assets/dummy_image.jpg')
                         : FileImage(_profilePicture),
                   ),
                 ),
@@ -97,13 +81,49 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter name'),
+                  decoration:
+                      InputDecoration(hintText: 'Enter license plate number'),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter phone number'),
+                  decoration: InputDecoration(hintText: 'Enter model'),
+                ),
+                SizedBox(width: 20),
+                Row(children: [
+                  Text(
+                    "Vehicle Type",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(width: 15),
+                  DropdownButton(
+                    value: dropDownValue,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    onChanged: (value) => setState(() => dropDownValue = value),
+                    items: dropDownItems.map((String item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: Row(children: [
+                          Icon(item == "Two Wheeler"
+                              ? FontAwesomeIcons.motorcycle
+                              : FontAwesomeIcons.car),
+                          SizedBox(width: 10),
+                          Text(
+                            item,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ]),
+                      );
+                    }).toList(),
+                  ),
+                ]),
+                SizedBox(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(hintText: 'Parking space number'),
                 ),
                 SizedBox(height: 20),
+                Text("Owner",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.grey)),
                 Row(
                   children: [
                     Flexible(
@@ -128,28 +148,6 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                     ),
                   ],
                 ),
-                SizedBox(width: 20),
-                Row(children: [
-                  Text(
-                    "Purpose",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(width: 15),
-                  DropdownButton(
-                    value: dropDownValue,
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    onChanged: (value) => setState(() => dropDownValue = value),
-                    items: dropDownItems.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(
-                          items,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ]),
                 SizedBox(height: 40),
                 Center(
                   child: TextButton(
@@ -161,7 +159,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(50, 3, 50, 3),
                       child: Text(
-                        'Send Request',
+                        'Add Vehicle',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),

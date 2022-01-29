@@ -35,7 +35,7 @@ class _EventsViewState extends State<EventsView> {
   List<Event> events = [
     Event("Society Meeting", "Multipurpose Hall",
         DateTime.now().add(Duration(days: 3)), "9:00", "11:00"),
-    Event("Republic day celebration", "Society Compound",
+    Event("Fire Safety and Evacuation Demo", "Society Compound",
         DateTime.now().add(Duration(days: 9)), "8:00", "12:00")
   ];
   List<Color> colors = [
