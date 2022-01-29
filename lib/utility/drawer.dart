@@ -2,10 +2,11 @@ import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile.dart';
 import 'package:ease_it/screens/resident/myVehicle.dart';
 import 'package:ease_it/screens/common/all_residents_info.dart';
+import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/all_security_guards_info.dart';
 
-Drawer showDrawer(BuildContext context) {
+Drawer showDrawer(BuildContext context, String role) {
   return Drawer(
     child: ListView(
       children: [
@@ -54,12 +55,15 @@ Drawer showDrawer(BuildContext context) {
         ListTile(
           leading: Icon(Icons.time_to_leave),
           title: Text(
-            'My Vehicle',
+            role == "Security Guard" ? 'Add Vehicle' : 'My Vehicle',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyVehicle()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        role == "Security Guard" ? AddVehicle() : MyVehicle()));
           },
         ),
         ListTile(

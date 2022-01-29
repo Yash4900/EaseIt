@@ -48,7 +48,7 @@ class _SecurityState extends State<Security> {
               }),
         ],
       ),
-      drawer: showDrawer(context),
+      drawer: showDrawer(context, g.role),
       backgroundColor: Colors.white,
       body: pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(

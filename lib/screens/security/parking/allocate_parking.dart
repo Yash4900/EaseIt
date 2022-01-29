@@ -64,12 +64,25 @@ class _AllocateParkingState extends State<AllocateParking> {
                   SizedBox(height: 20),
                   TextFormField(
                     decoration:
-                        InputDecoration(hintText: 'Enter visiting flat'),
+                        InputDecoration(hintText: 'Enter vehicle model'),
                   ),
                   SizedBox(height: 20),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(hintText: 'Enter vehicle model'),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          decoration:
+                              InputDecoration(hintText: 'Enter visiting flat'),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              hintText: 'Enter expected stay time'),
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(height: 50),
                   Center(

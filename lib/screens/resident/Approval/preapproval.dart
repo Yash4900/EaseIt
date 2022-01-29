@@ -1,10 +1,7 @@
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PreApproval extends StatefulWidget {
-  // const PreApproval({ Key? key }) : super(key: key);
-
   @override
   _PreApprovalState createState() => _PreApprovalState();
 }
