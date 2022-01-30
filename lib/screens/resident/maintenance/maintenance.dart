@@ -5,6 +5,7 @@ import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Maintenance extends StatefulWidget {
   @override
@@ -17,7 +18,10 @@ class _MaintenanceState extends State<Maintenance> {
   static Globals g = Globals();
 
   void getUserInfo(String uid) async {
-    DocumentSnapshot snapshot = await Database().getUserDetails(uid);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    DocumentSnapshot snapshot =
+        await Database().getUserDetails(prefs.getString("society"), uid);
 
     // Defining user properties globally
     g.setUid = uid;

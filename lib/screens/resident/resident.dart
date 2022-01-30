@@ -42,7 +42,7 @@ class _ResidentState extends State<Resident> {
               }),
         ],
       ),
-      drawer: showDrawer(context, g.role),
+      drawer: showDrawer(context, g.role, g.fname + " " + g.lname),
       backgroundColor: Colors.white,
       body: pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(

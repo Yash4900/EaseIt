@@ -5,12 +5,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Database {
   final _firestore = FirebaseFirestore.instance;
 
-  Future createUser(String uid, String fname, String lname, String email,
-      String phoneNum, String role,
+  Future<List<String>> getAllSocieties() async {
+    List<String> societies = [];
+    await _firestore.collection('Society').get().then((value) {
+      value.docs.forEach((doc) {
+        societies.add(doc.id);
+      });
+    });
+    return societies;
+  }
+
+  Future<bool> checkRegisteredUser(String society, String email) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('email', isEqualTo: email)
+          .get();
+      if (snapshot.size == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Future createUser(String society, String uid, String fname, String lname,
+      String email, String phoneNum, String role,
       [String wing, String flatNo]) async {
     try {
-      if (role == 'Resident') {
-        await _firestore.collection('Users').doc(uid).set({
+      if (role == 'Resident' || role == 'Tenant') {
+        await _firestore
+            .collection(society)
+            .doc('users')
+            .collection('User')
+            .doc(uid)
+            .set({
           'fname': fname,
           'lname': lname,
           'email': email,
@@ -20,7 +54,12 @@ class Database {
           'flatNo': flatNo
         });
       } else {
-        await _firestore.collection('Users').doc(uid).set({
+        await _firestore
+            .collection(society)
+            .doc('users')
+            .collection('User')
+            .doc(uid)
+            .set({
           'fname': fname,
           'lname': lname,
           'email': email,
@@ -33,9 +72,14 @@ class Database {
     }
   }
 
-  Future getUserDetails(String uid) async {
+  Future getUserDetails(String society, String uid) async {
     try {
-      return await _firestore.collection('Users').doc(uid).get();
+      return await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .doc(uid)
+          .get();
     } catch (e) {
       print(e.toString());
     }
