@@ -1,13 +1,16 @@
 // Login page
 
 import 'package:ease_it/firebase/authentication.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   final Function toggleScreen;
-  LoginPage(this.toggleScreen);
+  final List<String> societies;
+  final String society;
+  LoginPage(this.toggleScreen, this.societies, this.society);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -15,10 +18,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  List<String> dropDownItems = ["Resident", "Security Guard"];
+  List<String> dropDownItems = ["Resident", "Tenant", "Security Guard"];
   String dropDownValue = "Resident";
+  String selectedSociety;
   final formKey = GlobalKey<FormState>();
   bool loading = false;
+
+  @override
+  void initState() {
+    selectedSociety = widget.society;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +60,33 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.grey[500]),
                     ),
                     SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text(
+                          'Select your society',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(width: 20),
+                        DropdownButton(
+                          value: selectedSociety,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: widget.societies.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() => selectedSociety = value);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Enter email',
@@ -74,12 +111,22 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (formKey.currentState.validate()) {
                           setState(() => loading = true);
-                          dynamic result = await Auth().login(
-                              emailController.text, passwordController.text);
-                          setState(() => loading = false);
-                          if (result == null) {
+                          // Checking if user is registered or not
+                          bool isRegistered = await Database()
+                              .checkRegisteredUser(
+                                  selectedSociety, emailController.text);
+                          if (isRegistered) {
+                            dynamic result = await Auth().login(selectedSociety,
+                                emailController.text, passwordController.text);
+                            setState(() => loading = false);
+                            if (result == null) {
+                              showMessageDialog(context, "Oops!",
+                                  "Could not Log In with those credentials. Make sure you have an account and entered valid credentials.");
+                            }
+                          } else {
+                            setState(() => loading = false);
                             showMessageDialog(context, "Oops!",
-                                "Could not Log In with those credentials. Make sure you have an account and entered valid credentials.");
+                                "User not found for the selected society! Please register into your society.");
                           }
                         }
                       },

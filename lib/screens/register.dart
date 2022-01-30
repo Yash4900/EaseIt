@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleScreen;
-  RegisterPage(this.toggleScreen);
+  final List<String> societies;
+  final String society;
+  RegisterPage(this.toggleScreen, this.societies, this.society);
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -21,10 +23,17 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController flatController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  List<String> dropDownItems = ["Resident", "Security Guard"];
+  List<String> dropDownItems = ["Resident", "Tenant", "Security Guard"];
   String dropDownValue = "Resident";
+  String selectedSociety;
   bool loading = false;
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    selectedSociety = widget.society;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +61,33 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Colors.grey[500]),
                     ),
                     SizedBox(height: 30),
+                    Row(
+                      children: [
+                        Text(
+                          'Select your society',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(width: 20),
+                        DropdownButton(
+                          value: selectedSociety,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: widget.societies.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() => selectedSociety = value);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Row(
                       children: [
                         Text(
@@ -201,6 +237,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result = await Auth().register(
+                              selectedSociety,
                               fnameController.text,
                               lnameController.text,
                               emailController.text,

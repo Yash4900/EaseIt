@@ -6,7 +6,7 @@ import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/all_security_guards_info.dart';
 
-Drawer showDrawer(BuildContext context, String role) {
+Drawer showDrawer(BuildContext context, String role, String name) {
   return Drawer(
     child: ListView(
       children: [
@@ -17,6 +17,16 @@ Drawer showDrawer(BuildContext context, String role) {
               image: AssetImage('assets/drawer_image.png'),
               fit: BoxFit.cover,
             ),
+          ),
+        ),
+        ListTile(
+          title: Text(
+            name,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            role,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ),
         ListTile(

@@ -5,6 +5,7 @@ import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   final String uid;
@@ -18,7 +19,10 @@ class _HomeState extends State<Home> {
   String role = '';
 
   void getUserInfo(String uid) async {
-    DocumentSnapshot snapshot = await Database().getUserDetails(uid);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    DocumentSnapshot snapshot =
+        await Database().getUserDetails(prefs.getString("society"), uid);
 
     // Defining user properties globally
     Globals g = Globals();
