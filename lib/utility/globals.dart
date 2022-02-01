@@ -1,6 +1,7 @@
 // Global variables
 
 class Globals {
+  String _society;
   String _uid;
   String _email;
   String _fname;
@@ -17,6 +18,7 @@ class Globals {
   Globals._internal();
 
   // Getters
+  String get society => _society;
   String get uid => _uid;
   String get email => _email;
   String get fname => _fname;
@@ -27,6 +29,7 @@ class Globals {
   String get role => _role;
 
   //   Setters
+  set setSociety(String society) => _society = society;
   set setUid(String uid) => _uid = uid;
   set setEmail(String email) => _email = email;
   set setFname(String fname) => _fname = fname;

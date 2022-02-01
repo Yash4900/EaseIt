@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,17 +7,18 @@ class SingleComplaint extends StatefulWidget {
   final String title;
   final String desc;
   final String image;
-  final DateTime date;
+  final Timestamp postedOn;
   final String postedBy;
   final String status;
-  SingleComplaint(
-      this.title, this.desc, this.image, this.date, this.postedBy, this.status);
+  SingleComplaint(this.title, this.desc, this.image, this.postedOn,
+      this.postedBy, this.status);
   @override
   _SingleComplaintState createState() => _SingleComplaintState();
 }
 
 class _SingleComplaintState extends State<SingleComplaint> {
   Globals g = Globals();
+  DateTime date;
   List<String> days = [
     "Jan",
     "Feb",
@@ -31,6 +33,13 @@ class _SingleComplaintState extends State<SingleComplaint> {
     "Nov",
     "Dec"
   ];
+
+  @override
+  void initState() {
+    date = widget.postedOn.toDate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +101,7 @@ class _SingleComplaintState extends State<SingleComplaint> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "${widget.date.day} ${days[widget.date.month - 1]}, ${widget.date.year}",
+                  "${date.day} ${days[date.month - 1]}, ${date.year}",
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -130,15 +139,17 @@ class _SingleComplaintState extends State<SingleComplaint> {
                               fontWeight: FontWeight.w600),
                         ),
                       )
-                    : Row(children: [
-                        Icon(Icons.cancel_outlined, color: Color(0xffbb121a)),
-                        SizedBox(width: 10),
-                        Text(
-                          'Unresolved',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )
-                      ]),
+                    : Row(
+                        children: [
+                          Icon(Icons.cancel_outlined, color: Color(0xffbb121a)),
+                          SizedBox(width: 10),
+                          Text(
+                            'Unresolved',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
           )
         ],
       ),

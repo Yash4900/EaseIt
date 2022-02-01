@@ -85,4 +85,37 @@ class Database {
     }
     return null;
   }
+
+  Stream<QuerySnapshot> fetchComplaints(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('complaints')
+          .collection('Complaint')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> addComplaint(String societyName, String title,
+      String description, String imageUrl, String postedBy) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('complaints')
+          .collection('Complaint')
+          .add({
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'status': 'Unresolved',
+        'postedBy': postedBy,
+        'postedOn': DateTime.now()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
