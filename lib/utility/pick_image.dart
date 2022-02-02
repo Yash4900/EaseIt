@@ -23,31 +23,32 @@ class PickImage {
 
   Future<File> showPicker(context) {
     return showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () async {
-                        XFile file = await _imageFromGallery();
-                        Navigator.of(context).pop(File(file.path));
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
                     onTap: () async {
-                      XFile file = await _imageFromCamera();
+                      XFile file = await _imageFromGallery();
                       Navigator.of(context).pop(File(file.path));
-                    },
-                  ),
-                ],
-              ),
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () async {
+                    XFile file = await _imageFromCamera();
+                    Navigator.of(context).pop(File(file.path));
+                  },
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

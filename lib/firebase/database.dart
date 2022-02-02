@@ -85,4 +85,52 @@ class Database {
     }
     return null;
   }
+
+  // Complaints related queries
+  Stream<QuerySnapshot> fetchComplaints(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('complaints')
+          .collection('Complaint')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> addComplaint(String id, String societyName, String title,
+      String description, String imageUrl, String postedBy) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('complaints')
+          .collection('Complaint')
+          .doc(id)
+          .set({
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'status': 'Unresolved',
+        'postedBy': postedBy,
+        'postedOn': DateTime.now()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> markResolved(String id, String societyName) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('complaints')
+          .collection('Complaint')
+          .doc(id)
+          .update({'status': 'Resolved'});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
