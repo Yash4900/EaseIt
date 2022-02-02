@@ -120,17 +120,16 @@ class _AddComplaintState extends State<AddComplaint> {
                                     "Are you sure you want to add this complaint?");
                                 if (confirmation) {
                                   setState(() => loading = true);
+                                  String id = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
                                   String imageUrl = _profilePicture == null
                                       ? ""
                                       : await Storage().storeImage(
-                                          'complaints',
-                                          (DateTime.now()
-                                                      .millisecondsSinceEpoch /
-                                                  1000)
-                                              .toString(),
-                                          _profilePicture);
+                                          'complaints', id, _profilePicture);
                                   Database()
                                       .addComplaint(
+                                          id,
                                           g.society,
                                           _titleController.text,
                                           _descController.text,
@@ -140,6 +139,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                     setState(() => loading = false);
                                     showToast(context, "success", "Success!",
                                         "Complaint added successfully");
+                                    Navigator.pop(context);
                                   }).catchError(() {
                                     setState(() => loading = false);
                                     showToast(context, "error", "Oops!",

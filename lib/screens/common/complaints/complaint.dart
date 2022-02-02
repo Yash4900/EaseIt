@@ -56,6 +56,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SingleComplaint(
+                                      ds.id,
                                       ds['title'],
                                       ds['description'],
                                       ds['imageUrl'],
@@ -102,8 +103,11 @@ class _ComplaintViewState extends State<ComplaintView> {
                                   Padding(
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      ds['description'].length>100?ds['description'].substring(0, 100) +
-                                          " ...":ds['description'],
+                                      ds['description'].length > 100
+                                          ? ds['description']
+                                                  .substring(0, 100) +
+                                              " ..."
+                                          : ds['description'],
                                       style: TextStyle(
                                         fontSize: 14.5,
                                         color: Colors.grey[500],
