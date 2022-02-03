@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SingleNotice extends StatefulWidget {
   final String title;
-  final String content;
-  final DateTime postedOn;
-  SingleNotice(this.title, this.content, this.postedOn);
+  final String body;
+  final Timestamp postedOn;
+  SingleNotice(this.title, this.body, this.postedOn);
   @override
   _SingleNoticeState createState() => _SingleNoticeState();
 }
@@ -25,6 +26,13 @@ class _SingleNoticeState extends State<SingleNotice> {
     "Nov",
     "Dec"
   ];
+  DateTime date;
+  @override
+  void initState() {
+    date = widget.postedOn.toDate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,13 +72,26 @@ class _SingleNoticeState extends State<SingleNotice> {
           Padding(
             padding: EdgeInsets.all(10),
             child: Text(
-              widget.content,
+              widget.body,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[500],
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "${date.day} ${days[date.month - 1]}, ${date.year}",
+                  style: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

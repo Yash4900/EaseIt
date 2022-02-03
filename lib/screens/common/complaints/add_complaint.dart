@@ -17,7 +17,7 @@ class _AddComplaintState extends State<AddComplaint> {
   File _profilePicture;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   Globals g = Globals();
   bool loading = false;
 
@@ -87,7 +87,7 @@ class _AddComplaintState extends State<AddComplaint> {
                     ),
                   ),
                   Form(
-                    key: formKey,
+                    key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -113,7 +113,7 @@ class _AddComplaintState extends State<AddComplaint> {
                         Center(
                           child: TextButton(
                             onPressed: () async {
-                              if (formKey.currentState.validate()) {
+                              if (_formKey.currentState.validate()) {
                                 bool confirmation = await showConfirmationDialog(
                                     context,
                                     "Alert!",

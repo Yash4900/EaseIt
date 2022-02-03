@@ -72,10 +72,10 @@ class Database {
     }
   }
 
-  Future getUserDetails(String society, String uid) async {
+  Future getUserDetails(String societyName, String uid) async {
     try {
       return await _firestore
-          .collection(society)
+          .collection(societyName)
           .doc('users')
           .collection('User')
           .doc(uid)
@@ -129,6 +129,81 @@ class Database {
           .collection('Complaint')
           .doc(id)
           .update({'status': 'Resolved'});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Notice related queries
+  Stream<QuerySnapshot> fetchNotices(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('notices')
+          .collection('Notice')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> addNotice(String societyName, String title, String body) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('notices')
+          .collection('Notice')
+          .add({'title': title, 'body': body, 'postedOn': DateTime.now()});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Events related queries
+
+  Stream<QuerySnapshot> fetchPastEvents(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('events')
+          .collection('Event')
+          .where('date', isLessThan: DateTime.now())
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot> fetchUpcomingEvents(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('events')
+          .collection('Event')
+          .where('date', isGreaterThanOrEqualTo: DateTime.now())
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> addEvent(String societyName, String name, String venue,
+      DateTime date, String from, String to) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('events')
+          .collection('Event')
+          .add({
+        'name': name,
+        'venue': venue,
+        'date': date,
+        'from': from,
+        'to': to
+      });
     } catch (e) {
       print(e.toString());
     }

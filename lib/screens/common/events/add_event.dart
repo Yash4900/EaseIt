@@ -1,3 +1,7 @@
+import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 
 class AddEvent extends StatefulWidget {
@@ -6,9 +10,28 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  Globals g = Globals();
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedStartTime = TimeOfDay.now();
   TimeOfDay selectedEndTime = TimeOfDay.now();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _venueController = TextEditingController();
+  List<String> days = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -81,101 +104,148 @@ class _AddEventState extends State<AddEvent> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(15),
-        child: ListView(
-          children: [
-            Text(
-              'Post a new Event!!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: loading
+          ? Loading()
+          : Padding(
+              padding: EdgeInsets.all(15),
+              child: ListView(
+                children: [
+                  Text(
+                    'Post a new Event!!',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Specify the details of the event below',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(height: 30),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          decoration:
+                              InputDecoration(hintText: 'Enter event name'),
+                          maxLines: null,
+                          controller: _nameController,
+                          validator: (value) => value.length == 0
+                              ? 'Please enter event name'
+                              : null,
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          decoration:
+                              InputDecoration(hintText: 'Enter event venue'),
+                          maxLines: null,
+                          controller: _venueController,
+                          validator: (value) => value.length == 0
+                              ? 'Please enter venue name'
+                              : null,
+                        ),
+                        SizedBox(height: 20),
+                        Column(children: [
+                          TextButton(
+                            onPressed: () {
+                              _selectDate(context);
+                            },
+                            child: Text(
+                              'Select Date',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.grey[300]),
+                            ),
+                          ),
+                          Text(
+                              '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}')
+                        ]),
+                        SizedBox(height: 20),
+                        Row(children: [
+                          Column(children: [
+                            TextButton(
+                              onPressed: () {
+                                _selectStartTime(context);
+                              },
+                              child: Text(
+                                'Select Start Time',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.grey[300]),
+                              ),
+                            ),
+                            Text(
+                                '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}')
+                          ]),
+                          SizedBox(width: 20),
+                          Column(children: [
+                            TextButton(
+                              onPressed: () {
+                                _selectEndTime(context);
+                              },
+                              child: Text(
+                                'Select End Time',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.grey[300]),
+                              ),
+                            ),
+                            Text(
+                                '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
+                          ]),
+                        ]),
+                        SizedBox(height: 40),
+                        Center(
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                setState(() => loading = true);
+                                Database()
+                                    .addEvent(
+                                        g.society,
+                                        _nameController.text,
+                                        _venueController.text,
+                                        selectedDate,
+                                        '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
+                                        '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
+                                    .then((value) {
+                                  setState(() => loading = false);
+                                  showToast(context, "success", "Success!",
+                                      "Event added successfully");
+                                  Navigator.pop(context);
+                                });
+                              }
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 5),
+                              child: Text(
+                                'Post',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff1a73e8)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            SizedBox(height: 5),
-            Text(
-              'Specify the details of the event below',
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 30),
-            Form(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter event name'),
-                  maxLines: null,
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter event venue'),
-                  maxLines: null,
-                ),
-                SizedBox(height: 20),
-                TextButton(
-                  onPressed: () {
-                    _selectDate(context);
-                  },
-                  child: Text(
-                    'Select Date',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey[300]),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(children: [
-                  TextButton(
-                    onPressed: () {
-                      _selectStartTime(context);
-                    },
-                    child: Text(
-                      'Select Start Time',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.grey[300]),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  TextButton(
-                    onPressed: () {
-                      _selectEndTime(context);
-                    },
-                    child: Text(
-                      'Select End Time',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.grey[300]),
-                    ),
-                  ),
-                ]),
-                SizedBox(height: 40),
-                Center(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                      child: Text(
-                        'Post',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
-                    ),
-                  ),
-                )
-              ],
-            ))
-          ],
-        ),
-      ),
     );
   }
 }
