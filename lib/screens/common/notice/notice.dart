@@ -95,7 +95,7 @@ class _NoticeViewState extends State<NoticeView> {
                                                 " ...",
                                         style: TextStyle(
                                           fontSize: 14.5,
-                                          color: Colors.grey[500],
+                                          color: Colors.grey[600],
                                         ),
                                       ),
                                     ),

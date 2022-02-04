@@ -1,4 +1,5 @@
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
@@ -14,8 +15,8 @@ class _AddEventState extends State<AddEvent> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedStartTime = TimeOfDay.now();
-  TimeOfDay selectedEndTime = TimeOfDay.now();
+  TimeOfDay selectedStartTime = TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay selectedEndTime = TimeOfDay(hour: 11, minute: 0);
   TextEditingController _nameController = TextEditingController();
   TextEditingController _venueController = TextEditingController();
   List<String> days = [
@@ -145,83 +146,97 @@ class _AddEventState extends State<AddEvent> {
                               : null,
                         ),
                         SizedBox(height: 20),
-                        Column(children: [
-                          TextButton(
-                            onPressed: () {
-                              _selectDate(context);
-                            },
+                        Row(children: [
+                          Text(
+                            'Date ',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            color: Colors.grey[200],
                             child: Text(
-                              'Select Date',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.grey[300]),
+                              '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          Text(
-                              '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}')
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey[700],
+                            ),
+                            onPressed: () => _selectDate(context),
+                          )
                         ]),
                         SizedBox(height: 20),
                         Row(children: [
-                          Column(children: [
-                            TextButton(
-                              onPressed: () {
-                                _selectStartTime(context);
-                              },
-                              child: Text(
-                                'Select Start Time',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.grey[300]),
-                              ),
+                          Text(
+                            'from ',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            color: Colors.grey[200],
+                            child: Text(
+                              '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                                '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}')
-                          ]),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey[700],
+                            ),
+                            onPressed: () => _selectStartTime(context),
+                          ),
                           SizedBox(width: 20),
-                          Column(children: [
-                            TextButton(
-                              onPressed: () {
-                                _selectEndTime(context);
-                              },
-                              child: Text(
-                                'Select End Time',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.grey[300]),
-                              ),
+                          Text(
+                            'to ',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            color: Colors.grey[200],
+                            child: Text(
+                              '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                                '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
-                          ]),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.grey[700],
+                            ),
+                            onPressed: () => _selectEndTime(context),
+                          )
                         ]),
+                        SizedBox(height: 20),
+                        Row(children: []),
                         SizedBox(height: 40),
                         Center(
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                setState(() => loading = true);
-                                Database()
-                                    .addEvent(
-                                        g.society,
-                                        _nameController.text,
-                                        _venueController.text,
-                                        selectedDate,
-                                        '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
-                                        '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
-                                    .then((value) {
-                                  setState(() => loading = false);
-                                  showToast(context, "success", "Success!",
-                                      "Event added successfully");
-                                  Navigator.pop(context);
-                                });
+                                bool confirmation = await showConfirmationDialog(
+                                    context,
+                                    "Alert!",
+                                    "Are you sure you want to add this event?");
+                                if (confirmation) {
+                                  setState(() => loading = true);
+                                  Database()
+                                      .addEvent(
+                                          g.society,
+                                          _nameController.text,
+                                          _venueController.text,
+                                          selectedDate,
+                                          '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
+                                          '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
+                                      .then((value) {
+                                    setState(() => loading = false);
+                                    showToast(context, "success", "Success!",
+                                        "Event added successfully");
+                                    Navigator.pop(context);
+                                  });
+                                }
                               }
                             },
                             child: Padding(

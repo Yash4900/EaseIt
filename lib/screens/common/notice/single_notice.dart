@@ -75,7 +75,7 @@ class _SingleNoticeState extends State<SingleNotice> {
               widget.body,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[500],
+                color: Colors.grey[600],
               ),
             ),
           ),

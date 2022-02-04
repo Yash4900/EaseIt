@@ -88,11 +88,13 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                       Text(
                                         ds['venue'],
                                         style: TextStyle(
+                                            color: Colors.grey[800],
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
                                         ds['from'] + " - " + ds['to'],
                                         style: TextStyle(
+                                            color: Colors.grey[800],
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ],
