@@ -80,6 +80,15 @@ class _AddEventState extends State<AddEvent> {
       });
   }
 
+  String getTime(TimeOfDay time) {
+    String str = '${time.hour.toString()}:${time.minute.toString()}';
+    String min = str.split(":")[1];
+    if (min.length == 1) {
+      str = str + "0";
+    }
+    return str;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +135,11 @@ class _AddEventState extends State<AddEvent> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          'EVENT NAME',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration:
                               InputDecoration(hintText: 'Enter event name'),
@@ -136,6 +150,11 @@ class _AddEventState extends State<AddEvent> {
                               : null,
                         ),
                         SizedBox(height: 20),
+                        Text(
+                          'EVENT VENUE',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration:
                               InputDecoration(hintText: 'Enter event venue'),
@@ -146,71 +165,112 @@ class _AddEventState extends State<AddEvent> {
                               : null,
                         ),
                         SizedBox(height: 20),
-                        Row(children: [
-                          Text(
-                            'Date ',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            color: Colors.grey[200],
-                            child: Text(
-                              '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          'DATE',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        SizedBox(height: 5),
+                        InkWell(
+                          onTap: () => _selectDate(context),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey[400]),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}',
+                                ),
+                                SizedBox(width: 10),
+                                Icon(
+                                  Icons.calendar_today_outlined,
+                                  size: 16,
+                                )
+                              ],
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.grey[700],
-                            ),
-                            onPressed: () => _selectDate(context),
-                          )
-                        ]),
+                        ),
                         SizedBox(height: 20),
                         Row(children: [
-                          Text(
-                            'from ',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            color: Colors.grey[200],
-                            child: Text(
-                              '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.grey[700],
-                            ),
-                            onPressed: () => _selectStartTime(context),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'FROM',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              SizedBox(height: 5),
+                              InkWell(
+                                onTap: () => _selectStartTime(context),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey[400]),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        getTime(selectedStartTime),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 18,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(width: 20),
-                          Text(
-                            'to ',
-                            style: TextStyle(fontSize: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'TO',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              SizedBox(height: 5),
+                              InkWell(
+                                onTap: () => _selectEndTime(context),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey[400]),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        getTime(selectedEndTime),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 18,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            color: Colors.grey[200],
-                            child: Text(
-                              '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.grey[700],
-                            ),
-                            onPressed: () => _selectEndTime(context),
-                          )
                         ]),
-                        SizedBox(height: 20),
-                        Row(children: []),
                         SizedBox(height: 40),
                         Center(
                           child: TextButton(

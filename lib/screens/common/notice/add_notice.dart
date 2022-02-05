@@ -63,15 +63,25 @@ class _AddNoticeState extends State<AddNotice> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          'HEADING',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration:
-                              InputDecoration(hintText: 'Enter a title'),
+                              InputDecoration(hintText: 'Enter a heading'),
                           maxLines: null,
                           controller: _titleController,
                           validator: (value) =>
                               value.length == 0 ? 'Please enter a title' : null,
                         ),
                         SizedBox(height: 20),
+                        Text(
+                          'BODY',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration: InputDecoration(hintText: 'Enter body'),
                           maxLines: null,

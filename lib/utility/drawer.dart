@@ -13,29 +13,39 @@ Container showDrawer(BuildContext context, String role, String name) {
     child: Drawer(
       child: ListView(
         children: [
-          DrawerHeader(
-            child: Container(),
+          Container(
+            height: 150,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/drawer_image.png'),
+                image: AssetImage('assets/apartment.PNG'),
                 fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5), BlendMode.srcATop),
               ),
             ),
-          ),
-          ListTile(
-            title: Text(
-              name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              role,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Divider(
-              color: Colors.grey,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    role,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
           ListTile(
