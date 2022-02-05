@@ -62,7 +62,7 @@ Future<bool> showConfirmationDialog(
               Center(
                 child: Text(
                   message,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 16),
                 ),
               ),
             ],

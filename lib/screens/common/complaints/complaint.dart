@@ -110,7 +110,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                           : ds['description'],
                                       style: TextStyle(
                                         fontSize: 14.5,
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[600],
                                       ),
                                     ),
                                   ),

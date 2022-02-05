@@ -17,7 +17,7 @@ class _AddComplaintState extends State<AddComplaint> {
   File _profilePicture;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   Globals g = Globals();
   bool loading = false;
 
@@ -62,6 +62,11 @@ class _AddComplaintState extends State<AddComplaint> {
                     style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(height: 30),
+                  Text(
+                    'IMAGE',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  SizedBox(height: 5),
                   GestureDetector(
                     onTap: () async {
                       _profilePicture = await PickImage().showPicker(context);
@@ -86,11 +91,17 @@ class _AddComplaintState extends State<AddComplaint> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 25),
                   Form(
-                    key: formKey,
+                    key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          'TITLE',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration:
                               InputDecoration(hintText: 'Enter a title'),
@@ -100,6 +111,11 @@ class _AddComplaintState extends State<AddComplaint> {
                               value.length == 0 ? 'Please enter a title' : null,
                         ),
                         SizedBox(height: 20),
+                        Text(
+                          'DESCRIPTION',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
                         TextFormField(
                           decoration:
                               InputDecoration(hintText: 'Enter description'),
@@ -113,7 +129,7 @@ class _AddComplaintState extends State<AddComplaint> {
                         Center(
                           child: TextButton(
                             onPressed: () async {
-                              if (formKey.currentState.validate()) {
+                              if (_formKey.currentState.validate()) {
                                 bool confirmation = await showConfirmationDialog(
                                     context,
                                     "Alert!",

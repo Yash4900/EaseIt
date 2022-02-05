@@ -97,7 +97,7 @@ class _SingleComplaintState extends State<SingleComplaint> {
                     widget.desc,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey[500],
+                      color: Colors.grey[600],
                     ),
                   ),
                 ),

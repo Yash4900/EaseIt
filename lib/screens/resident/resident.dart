@@ -33,14 +33,6 @@ class _ResidentState extends State<Resident> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await Auth().logout();
-              }),
-        ],
       ),
       drawer: showDrawer(context, g.role, g.fname + " " + g.lname),
       backgroundColor: Colors.white,

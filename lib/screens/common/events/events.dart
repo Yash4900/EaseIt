@@ -1,16 +1,9 @@
 import 'package:ease_it/screens/common/events/add_event.dart';
+import 'package:ease_it/screens/common/events/past_events.dart';
+import 'package:ease_it/screens/common/events/upcoming_events.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-class Event {
-  String name;
-  String venue;
-  DateTime date;
-  String startsAt;
-  String endsAt;
-  Event(this.name, this.venue, this.date, this.startsAt, this.endsAt);
-}
 
 class EventsView extends StatefulWidget {
   @override
@@ -18,26 +11,6 @@ class EventsView extends StatefulWidget {
 }
 
 class _EventsViewState extends State<EventsView> {
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
-  List<Event> events = [
-    Event("Society Meeting", "Multipurpose Hall",
-        DateTime.now().add(Duration(days: 3)), "9:00", "11:00"),
-    Event("Fire Safety and Evacuation Demo", "Society Compound",
-        DateTime.now().add(Duration(days: 9)), "8:00", "12:00")
-  ];
   List<Color> colors = [
     Color(0xff2680eb),
     Color(0xffe34850),
@@ -70,89 +43,47 @@ class _EventsViewState extends State<EventsView> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                'Events',
-                style: GoogleFonts.sourceSansPro(
-                    fontSize: 25, fontWeight: FontWeight.w900),
+      body: DefaultTabController(
+        length: 2,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  'Events',
+                  style: GoogleFonts.sourceSansPro(
+                      fontSize: 25, fontWeight: FontWeight.w900),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 9,
-              child: ListView.builder(
-                  itemCount: events.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              '${events[index].date.day} ${days[events[index].date.month - 1]} ${events[index].date.year}',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: colors[index % 4].withOpacity(0.2),
-                                border: Border(
-                                  left: BorderSide(
-                                      color: colors[index % 4], width: 2),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      events[index].name,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: colors[index % 4],
-                                          fontSize: 16),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      events[index].venue,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      events[index].startsAt +
-                                          " - " +
-                                          events[index].endsAt,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            g.role == "Secretary"
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextButton(
+              TabBar(
+                  indicatorColor: Color(0xff1a73e8),
+                  labelColor: Colors.black,
+                  indicatorWeight: 2.5,
+                  labelStyle: GoogleFonts.sourceSansPro(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                  tabs: [
+                    Tab(
+                      text: 'Past',
+                    ),
+                    Tab(
+                      text: 'Upcoming',
+                    )
+                  ]),
+              Expanded(
+                flex: 9,
+                child: TabBarView(children: [
+                  PastEvents(),
+                  UpcomingEvents(),
+                ]),
+              ),
+              g.role == "Secretary"
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -171,11 +102,13 @@ class _EventsViewState extends State<EventsView> {
                             style: TextStyle(
                                 color: Color(0xff1a73e8),
                                 fontWeight: FontWeight.w600),
-                          )),
-                    ),
-                  )
-                : Container()
-          ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
         ),
       ),
     );
