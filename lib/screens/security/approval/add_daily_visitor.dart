@@ -130,6 +130,10 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(height: 30),
+            Text(
+              'IMAGE',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
             GestureDetector(
               onTap: () async {
                 _profilePicture = await PickImage().showPicker(context);
@@ -143,7 +147,7 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                     size: 30,
                   ),
                 ),
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.25,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -158,16 +162,33 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
+                Text(
+                  'NAME',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter name'),
+                  decoration:
+                      InputDecoration(hintText: 'Enter visitor\'s name'),
                 ),
                 SizedBox(height: 20),
+                Text(
+                  'PHONE NUMBER',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
-                  decoration: InputDecoration(hintText: 'Enter phone number'),
+                  decoration: InputDecoration(
+                      hintText: 'Enter visitor\'s phone number'),
                 ),
                 SizedBox(height: 20),
-                TextButton(
-                    onPressed: () async {
+                Row(children: [
+                  Text(
+                    'FLATS',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  SizedBox(width: 10),
+                  InkWell(
+                    onTap: () async {
                       String flat = await showFlatDialog();
                       if (flat != "") {
                         flats.add(flat);
@@ -176,34 +197,54 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                       wingController.clear();
                       flatController.clear();
                     },
-                    child: Text(
-                      'Add Flat',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Color(0xff1a73e8).withOpacity(0.2),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.add, size: 16, color: Color(0xff1a73e8)),
+                          Icon(Icons.home_outlined,
+                              size: 16, color: Color(0xff1a73e8))
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
+                SizedBox(height: 5),
                 Wrap(
                   children: flats
                       .map(
-                        (flat) => Container(
-                          margin: EdgeInsets.all(5),
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
+                        (flat) => InkWell(
+                          onTap: () {
+                            flats.remove(flat);
+                            setState(() {});
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            width: 90,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(width: 15),
-                              Text(flat),
-                              IconButton(
-                                  icon: Icon(Icons.clear),
-                                  onPressed: () {
-                                    flats.remove(flat);
-                                    setState(() {});
-                                  })
-                            ],
+                            child: Row(
+                              children: [
+                                SizedBox(width: 15),
+                                Text(flat),
+                                SizedBox(width: 5),
+                                Icon(
+                                  Icons.clear,
+                                  size: 15,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )
@@ -212,8 +253,8 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                 SizedBox(width: 20),
                 Row(children: [
                   Text(
-                    "Purpose",
-                    style: TextStyle(fontSize: 16),
+                    'PURPOSE',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   SizedBox(width: 15),
                   DropdownButton(

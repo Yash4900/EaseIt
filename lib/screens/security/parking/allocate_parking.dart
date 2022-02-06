@@ -52,21 +52,37 @@ class _AllocateParkingState extends State<AllocateParking> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'NAME',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   TextFormField(
                     decoration:
                         InputDecoration(hintText: 'Enter owner\'s name'),
                   ),
                   SizedBox(height: 20),
+                  Text(
+                    'PHONE NUMBER',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                         hintText: 'Enter owner\'s phone number'),
                   ),
                   SizedBox(height: 20),
+                  Text(
+                    'MODEL',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   TextFormField(
                     decoration:
                         InputDecoration(hintText: 'Enter vehicle model'),
                   ),
                   SizedBox(height: 20),
+                  Text(
+                    'FLAT',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   Row(
                     children: [
                       Flexible(
