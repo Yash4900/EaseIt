@@ -68,6 +68,10 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(height: 30),
+            Text(
+              'IMAGE',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
             GestureDetector(
               onTap: () async {
                 _profilePicture = await PickImage().showPicker(context);
@@ -81,7 +85,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                     size: 30,
                   ),
                 ),
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.25,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -96,14 +100,27 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
+                Text(
+                  'NAME',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'Enter name'),
                 ),
                 SizedBox(height: 20),
+                Text(
+                  'PHONE NUMBER',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'Enter phone number'),
                 ),
                 SizedBox(height: 20),
+                Text(
+                  'WING AND FLAT',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 Row(
                   children: [
                     Flexible(
@@ -131,8 +148,8 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                 SizedBox(width: 20),
                 Row(children: [
                   Text(
-                    "Purpose",
-                    style: TextStyle(fontSize: 16),
+                    'PURPOSE',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   SizedBox(width: 15),
                   DropdownButton(
