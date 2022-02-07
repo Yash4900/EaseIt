@@ -85,16 +85,26 @@ class _PastEventsState extends State<PastEvents> {
                                             fontSize: 16),
                                       ),
                                       SizedBox(height: 10),
-                                      Text(
-                                        ds['venue'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        ds['from'] + " - " + ds['to'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                      Row(children: [
+                                        Icon(Icons.location_on_outlined,
+                                            size: 18),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          ds['venue'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ]),
+                                      SizedBox(height: 5),
+                                      Row(children: [
+                                        Icon(Icons.access_time, size: 18),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          ds['from'] + " - " + ds['to'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ]),
                                     ],
                                   ),
                                 ),

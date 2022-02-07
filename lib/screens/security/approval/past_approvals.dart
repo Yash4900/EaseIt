@@ -71,7 +71,10 @@ class _PastApprovalState extends State<PastApproval> {
                 ),
                 trailing: Container(
                   padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                  color: getColor(approvals[index].status).withOpacity(0.3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: getColor(approvals[index].status).withOpacity(0.2),
+                  ),
                   child: Text(
                     approvals[index].status,
                     style: TextStyle(color: getColor(approvals[index].status)),
