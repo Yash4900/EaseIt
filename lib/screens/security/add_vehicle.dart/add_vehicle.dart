@@ -52,6 +52,10 @@ class _AddVehicleState extends State<AddVehicle> {
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(height: 30),
+            Text(
+              'IMAGE',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
             GestureDetector(
               onTap: () async {
                 _profilePicture = await PickImage().showPicker(context);
@@ -65,7 +69,7 @@ class _AddVehicleState extends State<AddVehicle> {
                     size: 30,
                   ),
                 ),
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.25,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -80,19 +84,28 @@ class _AddVehicleState extends State<AddVehicle> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
+                Text(
+                  'LICENSE PLATE NO',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
                   decoration:
                       InputDecoration(hintText: 'Enter license plate number'),
                 ),
                 SizedBox(height: 20),
+                Text(
+                  'MODEL',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'Enter model'),
                 ),
                 SizedBox(width: 20),
                 Row(children: [
                   Text(
-                    "Vehicle Type",
-                    style: TextStyle(fontSize: 16),
+                    'VEHICLE TYPE',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   SizedBox(width: 15),
                   DropdownButton(
@@ -116,7 +129,11 @@ class _AddVehicleState extends State<AddVehicle> {
                     }).toList(),
                   ),
                 ]),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
+                Text(
+                  'PARKING SPACE',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'Parking space number'),
                 ),
@@ -124,6 +141,11 @@ class _AddVehicleState extends State<AddVehicle> {
                 Text("Owner",
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.grey)),
+                SizedBox(height: 5),
+                Text(
+                  'FLAT DETAILS',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                ),
                 Row(
                   children: [
                     Flexible(

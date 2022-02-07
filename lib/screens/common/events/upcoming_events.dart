@@ -27,9 +27,9 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
     "Dec"
   ];
   List<Color> colors = [
-    Color(0xff2680eb),
     Color(0xffe34850),
     Color(0xffe68619),
+    Color(0xff2680eb),
     Color(0xff2d9d78)
   ];
   @override
@@ -85,18 +85,26 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                             fontSize: 16),
                                       ),
                                       SizedBox(height: 10),
-                                      Text(
-                                        ds['venue'],
-                                        style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        ds['from'] + " - " + ds['to'],
-                                        style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                      Row(children: [
+                                        Icon(Icons.location_on_outlined,
+                                            size: 18),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          ds['venue'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ]),
+                                      SizedBox(height: 5),
+                                      Row(children: [
+                                        Icon(Icons.access_time, size: 18),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          ds['from'] + " - " + ds['to'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ]),
                                     ],
                                   ),
                                 ),
