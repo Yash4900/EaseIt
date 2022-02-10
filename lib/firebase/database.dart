@@ -86,7 +86,7 @@ class Database {
     return null;
   }
 
-  // Complaints related queries
+  // Complaints queries
   Stream<QuerySnapshot> fetchComplaints(String societyName) {
     try {
       return _firestore
@@ -134,7 +134,7 @@ class Database {
     }
   }
 
-  // Notice related queries
+  // Notice queries
   Stream<QuerySnapshot> fetchNotices(String societyName) {
     try {
       return _firestore
@@ -160,8 +160,7 @@ class Database {
     }
   }
 
-  // Events related queries
-
+  // Events queries
   Stream<QuerySnapshot> fetchPastEvents(String societyName) {
     try {
       return _firestore
@@ -207,5 +206,50 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Vehicle management queries
+  Future<void> addVehicle(
+      String societyName,
+      String imageUrl,
+      String licensePlateNo,
+      String model,
+      String parkingSpaceNo,
+      String vehicleType,
+      String wing,
+      String flatNo) async {
+    try {
+      await _firestore
+          .collection(societyName)
+          .doc('vehicles')
+          .collection('Vehicle')
+          .add({
+        'imageUrl': imageUrl,
+        'licensePlateNo': licensePlateNo,
+        'model': model,
+        'parkingSpaceNo': parkingSpaceNo,
+        'vehicleType': vehicleType,
+        'wing': wing,
+        'flatNo': flatNo
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<QuerySnapshot> getMyVehicle(
+      String societyName, String wing, String flatNo) async {
+    try {
+      return await _firestore
+          .collection(societyName)
+          .doc('vehicles')
+          .collection('Vehicle')
+          .where('wing', isEqualTo: wing)
+          .where('flatNo', isEqualTo: flatNo)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 }

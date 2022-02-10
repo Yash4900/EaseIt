@@ -151,7 +151,6 @@ class ApprovalAlert extends StatelessWidget {
           borderRadius: new BorderRadius.all(new Radius.circular(32.0)),
         ),
         child: Row(
-          // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             TextButton(

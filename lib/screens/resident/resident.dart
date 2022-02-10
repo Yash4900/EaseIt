@@ -1,13 +1,14 @@
 // Resident Landing page
 
-import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
+import 'package:ease_it/screens/resident/my_vehicle/my_vehicle.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Resident extends StatefulWidget {
   @override
@@ -18,7 +19,13 @@ class _ResidentState extends State<Resident> {
   Globals g = Globals();
   String name;
   int _pageIndex = 0;
-  List<Widget> pages = [ResidentHome(), Forum(), Approval(), Maintenance()];
+  List<Widget> pages = [
+    ResidentHome(),
+    MyVehicle(),
+    Forum(),
+    Approval(),
+    Maintenance()
+  ];
 
   @override
   void initState() {
@@ -47,6 +54,8 @@ class _ResidentState extends State<Resident> {
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.car), label: 'My Vehicle'),
           BottomNavigationBarItem(
               icon: Icon(Icons.people_alt_outlined), label: 'Forum'),
           BottomNavigationBarItem(
