@@ -9,6 +9,7 @@ import 'package:ease_it/screens/security/home/securityHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Security extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _SecurityState extends State<Security> {
           BottomNavigationBarItem(
               icon: Icon(Icons.person_outline), label: 'Approval'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.local_taxi), label: 'Parking'),
+              icon: Icon(FontAwesomeIcons.car), label: 'Parking'),
           BottomNavigationBarItem(
               icon: Icon(Icons.child_care_outlined), label: 'Child Safety'),
           BottomNavigationBarItem(

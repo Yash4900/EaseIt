@@ -6,6 +6,7 @@ import 'package:ease_it/screens/common/all_residents_info.dart';
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/all_security_guards_info.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Container showDrawer(BuildContext context, String role, String name) {
   return Container(
@@ -82,7 +83,7 @@ Container showDrawer(BuildContext context, String role, String name) {
             },
           ),
           ListTile(
-            leading: Icon(Icons.time_to_leave),
+            leading: Icon(FontAwesomeIcons.car),
             title: Text(
               role == "Security Guard" ? 'Add Vehicle' : 'My Vehicle',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
