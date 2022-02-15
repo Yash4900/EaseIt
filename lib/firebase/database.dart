@@ -45,6 +45,7 @@ class Database {
             .collection('User')
             .doc(uid)
             .set({
+          'imageUrl': '',
           'fname': fname,
           'lname': lname,
           'email': email,
@@ -60,6 +61,7 @@ class Database {
             .collection('User')
             .doc(uid)
             .set({
+          'imageUrl': '',
           'fname': fname,
           'lname': lname,
           'email': email,

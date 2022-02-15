@@ -33,6 +33,7 @@ class _HomeState extends State<Home> {
     g.setFname = snapshot.get('fname');
     g.setLname = snapshot.get('lname');
     g.setPhoneNum = snapshot.get('phoneNum');
+    g.setImageUrl = snapshot.get('imageUrl');
 
     role = snapshot.get('role');
     if (role != 'Security Guard') {

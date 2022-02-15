@@ -10,6 +10,7 @@ class Globals {
   String _flatNo;
   String _wing;
   String _role;
+  String _imageUrl;
 
   static final Globals _instance = Globals._internal();
 
@@ -27,6 +28,7 @@ class Globals {
   String get flatNo => _flatNo;
   String get wing => _wing;
   String get role => _role;
+  String get imageUrl => _imageUrl;
 
   //   Setters
   set setSociety(String society) => _society = society;
@@ -38,4 +40,5 @@ class Globals {
   set setFlatNo(String flatNo) => _flatNo = flatNo;
   set setWing(String wing) => _wing = wing;
   set setRole(String role) => _role = role;
+  set setImageUrl(String imageUrl) => _imageUrl = imageUrl;
 }
