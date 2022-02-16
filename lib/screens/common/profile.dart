@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/profile_form.dart';
+import 'dart:io';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -99,11 +100,13 @@ class ProfileCard extends StatelessWidget {
                       size: 40,
                       color: Color(0xff707070),
                     ),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      File _profilePicture = await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ProfileForm()),
                       );
+                      print("inside profile");
+                      print(_profilePicture.path);
                     },
                     highlightColor: Colors.grey,
                     splashColor: Colors.grey,

@@ -3,8 +3,6 @@ import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:ease_it/screens/common/view_image.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 class ProfileForm extends StatefulWidget {
@@ -121,63 +119,42 @@ class _ProfileFormState extends State<ProfileForm> {
                 children: [
                   Center(
                     child: GestureDetector(
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            height: 90,
-                            width: 90,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xffd3d3d3),
-                              image: DecorationImage(
-                                image: AssetImage(imageUrl),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 1,
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
+                      child: GestureDetector(
+                        onTap: () async {
+                          File tempImg = await PickImage().showPicker(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ImageViewer(imageFile: tempImg),
                             ),
-                          ),
-                          Positioned(
-                            bottom: -7,
-                            right: -5,
-                            child: GestureDetector(
-                              onTap: () async {
-                                PickImage()
-                                    .showPicker(context)
-                                    .then((val) => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ImageViewer(
-                                                imageFileToView: val),
-                                          ),
-                                        ));
-
-                                File tempImg =
-                                    await PickImage().showPicker(context);
-
-                                if (tempImg != null) {
-                                  print("Inside profile form");
-                                  print(tempImg.path);
-                                  setState(() {
-                                    _profilePicture = File(tempImg.path);
-                                    temp = tempImg.path;
-                                  });
-                                  print(_profilePicture.path);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ImageViewer(
-                                          imageFileToView: _profilePicture),
-                                    ),
-                                  );
-                                }
-                              },
+                          );
+                        },
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              height: 90,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xffd3d3d3),
+                                image: DecorationImage(
+                                  image: AssetImage(imageUrl),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -7,
+                              right: -5,
                               child: Container(
                                 height: 35,
                                 width: 35,
@@ -194,8 +171,8 @@ class _ProfileFormState extends State<ProfileForm> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
