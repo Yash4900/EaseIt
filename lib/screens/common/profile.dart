@@ -105,8 +105,6 @@ class ProfileCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (context) => ProfileForm()),
                       );
-                      print("inside profile");
-                      print(_profilePicture.path);
                     },
                     highlightColor: Colors.grey,
                     splashColor: Colors.grey,

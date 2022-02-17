@@ -118,62 +118,129 @@ class _ProfileFormState extends State<ProfileForm> {
               child: ListView(
                 children: [
                   Center(
-                    child: GestureDetector(
-                      child: GestureDetector(
-                        onTap: () async {
-                          File tempImg = await PickImage().showPicker(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ImageViewer(imageFile: tempImg),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            if (imageUrl ==
+                                'assets/default_profile_picture.png') {
+                              _profilePicture =
+                                  await PickImage().showPicker(context);
+                              if (_profilePicture != null) {
+                                File temp = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImageViewer(
+                                      imageFile: _profilePicture,
+                                    ),
+                                  ),
+                                );
+                                if (temp != null) {
+                                  setState(() {
+                                    _profilePicture = temp;
+                                    imageUrl = _profilePicture.path;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _profilePicture = null;
+                                    imageUrl =
+                                        'assets/default_profile_picture.png';
+                                  });
+                                }
+                              }
+                            } else {
+                              File temp = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImageViewer(
+                                    imageFile: _profilePicture,
+                                  ),
+                                ),
+                              );
+                              if (temp != null) {
+                                setState(() {
+                                  _profilePicture = temp;
+                                  imageUrl = _profilePicture.path;
+                                });
+                              } else {
+                                setState(() {
+                                  _profilePicture = null;
+                                  imageUrl =
+                                      'assets/default_profile_picture.png';
+                                });
+                              }
+                            }
+                          },
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xfff3f3f3),
+                              image: DecorationImage(
+                                image: imageUrl ==
+                                        'assets/default_profile_picture.png'
+                                    ? AssetImage(imageUrl)
+                                    : FileImage(File(imageUrl)),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              height: 90,
-                              width: 90,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -7,
+                          right: -5,
+                          child: GestureDetector(
+                            onTap: () async {
+                              _profilePicture =
+                                  await PickImage().showPicker(context);
+                              setState(() {});
+                              if (_profilePicture != null) {
+                                File temp = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImageViewer(
+                                      imageFile: _profilePicture,
+                                    ),
+                                  ),
+                                );
+                                if (temp != null) {
+                                  setState(() {
+                                    _profilePicture = temp;
+                                    imageUrl = _profilePicture.path;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _profilePicture = null;
+                                    imageUrl =
+                                        'assets/default_profile_picture.png';
+                                  });
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: 35,
+                              width: 35,
+                              child: Icon(
+                                imageUrl == '' ? Icons.add : Icons.edit,
+                                color: Colors.white,
+                              ),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: const Color(0xffd3d3d3),
-                                image: DecorationImage(
-                                  image: AssetImage(imageUrl),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    spreadRadius: 1,
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
+                                color: const Color(0xff1a73e8),
                               ),
                             ),
-                            Positioned(
-                              bottom: -7,
-                              right: -5,
-                              child: Container(
-                                height: 35,
-                                width: 35,
-                                child: Icon(
-                                  imageUrl ==
-                                          'assets/default_profile_picture.png'
-                                      ? Icons.add
-                                      : Icons.edit,
-                                  color: Colors.white,
-                                ),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xff1a73e8),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   SizedBox(
