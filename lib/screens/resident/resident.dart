@@ -47,10 +47,11 @@ class _ResidentState extends State<Resident> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
         onTap: (value) => setState(() => _pageIndex = value),
-        selectedItemColor: Color(0xff1a73e8),
+        selectedItemColor: Color(0xff037DD6),
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         showUnselectedLabels: true,
+        selectedFontSize: 15,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: 'Home'),

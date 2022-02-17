@@ -23,7 +23,7 @@ class _ChildSafetyState extends State<ChildSafety> {
           ),
           SizedBox(height: 15),
           TabBar(
-              indicatorColor: Color(0xff1a73e8),
+              indicatorColor: Color(0xff037DD6),
               labelColor: Colors.black,
               indicatorWeight: 2.5,
               labelStyle: GoogleFonts.sourceSansPro(

@@ -192,13 +192,13 @@ class _ComplaintViewState extends State<ComplaintView> {
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color(0xff1a73e8).withOpacity(0.2)),
+                        Color(0xff037DD6).withOpacity(0.2)),
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(horizontal: 15))),
                 child: Text(
                   '+ Add Complaint/Suggestion',
                   style: TextStyle(
-                      color: Color(0xff1a73e8), fontWeight: FontWeight.w600),
+                      color: Color(0xff037DD6), fontWeight: FontWeight.w600),
                 ),
               ),
             ))

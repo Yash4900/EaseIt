@@ -59,7 +59,7 @@ class _EventsViewState extends State<EventsView> {
                 ),
               ),
               TabBar(
-                  indicatorColor: Color(0xff1a73e8),
+                  indicatorColor: Color(0xff037DD6),
                   labelColor: Colors.black,
                   indicatorWeight: 2.5,
                   labelStyle: GoogleFonts.sourceSansPro(
@@ -93,14 +93,14 @@ class _EventsViewState extends State<EventsView> {
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff1a73e8).withOpacity(0.2)),
+                                  Color(0xff037DD6).withOpacity(0.2)),
                               padding:
                                   MaterialStateProperty.all<EdgeInsetsGeometry>(
                                       EdgeInsets.symmetric(horizontal: 15))),
                           child: Text(
                             '+ Add Event',
                             style: TextStyle(
-                                color: Color(0xff1a73e8),
+                                color: Color(0xff037DD6),
                                 fontWeight: FontWeight.w600),
                           ),
                         ),

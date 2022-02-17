@@ -11,6 +11,8 @@ class ActionList extends StatefulWidget {
 
 class _ActionListState extends State<ActionList> {
   void showResidentBottomSheet(String licensePlateNo) {
+    TextEditingController _licensePlateController = TextEditingController();
+    _licensePlateController.text = licensePlateNo;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -24,8 +26,10 @@ class _ActionListState extends State<ActionList> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Text(
-                  licensePlateNo,
+                TextField(
+                  textAlign: TextAlign.center,
+                  controller: _licensePlateController,
+                  decoration: InputDecoration(border: InputBorder.none),
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 Text('belongs to a resident!'),
@@ -77,6 +81,8 @@ class _ActionListState extends State<ActionList> {
   }
 
   void showVisitorBottomSheet(String licensePlateNo) {
+    TextEditingController _licensePlateController = TextEditingController();
+    _licensePlateController.text = licensePlateNo;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -90,8 +96,10 @@ class _ActionListState extends State<ActionList> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Text(
-                  licensePlateNo,
+                TextField(
+                  textAlign: TextAlign.center,
+                  controller: _licensePlateController,
+                  decoration: InputDecoration(border: InputBorder.none),
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 Text('doesn\'t belong to a resident!'),
@@ -166,7 +174,7 @@ class _ActionListState extends State<ActionList> {
     return Column(
       children: [
         Card(
-          child: GestureDetector(
+          child: ListTile(
             onTap: () async {
               File file = await PickImage().showPicker(context);
               if (file != null) {
@@ -176,23 +184,23 @@ class _ActionListState extends State<ActionList> {
                 }
               }
             },
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_forward),
-                  SizedBox(width: 20),
-                  Text(
-                    "Vehicle Entry",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
+            leading: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: Icon(Icons.login, color: Colors.grey[700]),
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey,
+              size: 16,
+            ),
+            title: Text(
+              "Vehicle Entry",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         ),
         Card(
-          child: GestureDetector(
+          child: ListTile(
             onTap: () async {
               File file = await PickImage().showPicker(context);
               if (file != null) {
@@ -202,18 +210,18 @@ class _ActionListState extends State<ActionList> {
                 }
               }
             },
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_back),
-                  SizedBox(width: 20),
-                  Text(
-                    "Vehicle Exit",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
+            leading: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: Icon(Icons.logout, color: Colors.grey[700]),
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey,
+              size: 16,
+            ),
+            title: Text(
+              "Vehicle Exit",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         )

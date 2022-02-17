@@ -155,14 +155,14 @@ class _SingleComplaintState extends State<SingleComplaint> {
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8).withOpacity(0.2)),
+                                          Color(0xff037DD6).withOpacity(0.2)),
                                   padding: MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
                                       EdgeInsets.symmetric(horizontal: 15))),
                               child: Text(
                                 'Mark as Resolved',
                                 style: TextStyle(
-                                    color: Color(0xff1a73e8),
+                                    color: Color(0xff037DD6),
                                     fontWeight: FontWeight.w600),
                               ),
                             )
