@@ -67,7 +67,9 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                   color: colors[index % 4].withOpacity(0.2),
                                   border: Border(
                                     left: BorderSide(
-                                        color: colors[index % 4], width: 2),
+                                        color:
+                                            colors[index % 4].withOpacity(0.6),
+                                        width: 3),
                                   ),
                                 ),
                                 child: Padding(
@@ -84,7 +86,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                             color: colors[index % 4],
                                             fontSize: 16),
                                       ),
-                                      SizedBox(height: 10),
+                                      SizedBox(height: 15),
                                       Row(children: [
                                         Icon(Icons.location_on_outlined,
                                             size: 18),

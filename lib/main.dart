@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'EaseIt',
         theme: ThemeData(
-          primaryColor: Color(0xff1a73e8),
+          primaryColor: Color(0xff037DD6),
           textTheme: GoogleFonts.sourceSansProTextTheme(),
         ),
         home: Wrapper(),

@@ -109,7 +109,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xff1a73e8).withOpacity(0.3)),
+                          Color(0xff037DD6).withOpacity(0.3)),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -120,7 +120,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                     child: Text(
                       'New Approval',
                       style: TextStyle(
-                          color: Color(0xff1a73e8),
+                          color: Color(0xff037DD6),
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -132,7 +132,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xff1a73e8).withOpacity(0.3)),
+                          Color(0xff037DD6).withOpacity(0.3)),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -143,7 +143,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                     child: Text(
                       'Add to Daily Visitor',
                       style: TextStyle(
-                          color: Color(0xff1a73e8),
+                          color: Color(0xff037DD6),
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),

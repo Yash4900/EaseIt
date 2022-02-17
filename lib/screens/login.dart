@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                           'Select your society',
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 20),
                         DropdownButton(
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Enter email',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       controller: emailController,
                     ),
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Enter password',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       obscureText: true,
                       controller: passwordController,
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
                       ),
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
@@ -149,7 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Text(
                           'Don\'t have an account? ',
-                          style: TextStyle(color: Colors.grey[700]),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[700]),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -157,7 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Text(
                             'Sign Up',
-                            style: TextStyle(color: Color(0xff1a73e8)),
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xff037DD6)),
                           ),
                         )
                       ],
