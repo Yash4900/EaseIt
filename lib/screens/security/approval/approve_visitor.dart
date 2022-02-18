@@ -173,7 +173,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                     onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
                     ),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(50, 3, 50, 3),
