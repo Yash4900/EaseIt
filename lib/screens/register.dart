@@ -256,6 +256,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(50, 8, 50, 8),

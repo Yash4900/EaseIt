@@ -24,8 +24,7 @@ class _MyVehicleState extends State<MyVehicle> {
         elevation: 1,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0))),
+                topLeft: Radius.circular(15), topRight: Radius.circular(15))),
         builder: (BuildContext bc) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.6,
@@ -71,7 +70,7 @@ class _MyVehicleState extends State<MyVehicle> {
                           margin: EdgeInsets.only(left: 10),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Color(0xff1a73e8),
+                            color: Color(0xff037DD6),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Column(

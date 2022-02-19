@@ -50,6 +50,12 @@ class _ActionListState extends State<ActionList> {
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.grey[200]),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                       child: Text(
                         'Cancel',
@@ -62,7 +68,13 @@ class _ActionListState extends State<ActionList> {
                       onPressed: () async {},
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                       child: Text(
                         'Log activity',
@@ -120,6 +132,12 @@ class _ActionListState extends State<ActionList> {
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.grey[200]),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                       child: Text(
                         'Cancel',
@@ -132,7 +150,13 @@ class _ActionListState extends State<ActionList> {
                       onPressed: () async {},
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                       child: Text(
                         'Log activity',
@@ -151,7 +175,13 @@ class _ActionListState extends State<ActionList> {
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                       child: Text(
                         'Assign Parking',

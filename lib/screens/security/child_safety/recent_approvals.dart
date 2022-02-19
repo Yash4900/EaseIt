@@ -163,7 +163,16 @@ class _RecentApprovalState extends State<RecentApproval> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(23),
+                          side: BorderSide(
+                            color: Color(0xff037DD6),
+                            width: 2,
+                          ),
+                        ),
+                      ),
                     ),
                     onPressed: () {
                       showModalBottomSheet(
@@ -266,6 +275,15 @@ class _RecentApprovalState extends State<RecentApproval> {
                                                     MaterialStateProperty.all<
                                                             Color>(
                                                         Colors.grey[200]),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            23),
+                                                  ),
+                                                ),
                                               ),
                                               child: Text(
                                                 'Cancel',
@@ -319,6 +337,15 @@ class _RecentApprovalState extends State<RecentApproval> {
                                                     MaterialStateProperty.all<
                                                             Color>(
                                                         Color(0xff1a73e8)),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            23),
+                                                  ),
+                                                ),
                                               ),
                                               child: Text(
                                                 'Send Request',
@@ -338,15 +365,18 @@ class _RecentApprovalState extends State<RecentApproval> {
                             );
                           });
                     },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                      child: Text(
-                        'New Approval',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, color: Color(0xff037DD6)),
+                          SizedBox(width: 10),
+                          Text(
+                            'New Approval',
+                            style: TextStyle(
+                                color: Color(0xff037DD6),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
                   ),
                 ),
               )

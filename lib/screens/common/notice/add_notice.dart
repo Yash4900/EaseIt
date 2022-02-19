@@ -119,6 +119,12 @@ class _AddNoticeState extends State<AddNotice> {
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Color(0xff037DD6)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(22),
+                                ),
+                              ),
                             ),
                           ),
                         )

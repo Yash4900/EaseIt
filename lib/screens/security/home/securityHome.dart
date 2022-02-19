@@ -117,6 +117,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                       child: Text(
                         'Verify Visitor',
                         style: TextStyle(
+                            letterSpacing: 1.2,
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
@@ -155,7 +156,7 @@ class Button extends StatelessWidget {
             child: Text(
               value.toString(),
               style: GoogleFonts.urbanist(
-                  fontSize: 25, fontWeight: FontWeight.w500),
+                  fontSize: 30, fontWeight: FontWeight.w400),
             ),
           ),
         ),

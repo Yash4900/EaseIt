@@ -106,7 +106,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                       onPressed: () {},
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         child: Text(
                           'Allocate',
                           style: TextStyle(
@@ -115,7 +115,13 @@ class _AllocateParkingState extends State<AllocateParking> {
                       ),
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                        ),
                       ),
                     ),
                   )
