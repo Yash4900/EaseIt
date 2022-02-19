@@ -1,4 +1,8 @@
+import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/firebase/authentication.dart';
+import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/screens/common/profile_form.dart';
 import 'dart:io';
 
@@ -30,7 +34,7 @@ class ProfilePage extends StatelessWidget {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
+        children: <Widget>[
           ProfileCard(),
           SizedBox(height: 25),
           ButtonOptions(),
@@ -40,127 +44,161 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class ProfileCard extends StatelessWidget {
-  const ProfileCard({Key key}) : super(key: key);
+class ProfileCard extends StatefulWidget {
+  ProfileCard({Key key}) : super(key: key);
+
+  @override
+  State<ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  Globals g = Globals();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 90, left: 10),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Container(
-            //Container for displaying data
-            //margin: EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return FutureBuilder(
+      future: Database().getUserDetails(g.society, g.uid),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "An Error Occured",
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.redAccent,
+              ),
+            ),
+          );
+        } else if (snapshot.hasData) {
+          String fname = snapshot.data['fname'];
+          String lname = snapshot.data['lname'];
+          String phoneNum = snapshot.data['phoneNum'];
+          String email = snapshot.data['email'];
+          return Padding(
+            padding: const EdgeInsets.only(top: 90, left: 10),
+            child: Stack(
+              clipBehavior: Clip.none,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 72.5, left: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text(
-                        "Ankit Thakker",
-                        style: TextStyle(
-                          color: Color(0xff707070),
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                Container(
+                  //Container for displaying data
+                  //margin: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 72.5, left: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              fname + " " + lname,
+                              style: TextStyle(
+                                color: Color(0xff707070),
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "+91-" + phoneNum,
+                              style: TextStyle(
+                                color: Color(
+                                  0xffa0a0a0,
+                                ),
+                                fontSize: 15,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              email,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Color(0xffa0a0a0),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        "+91-xxxxxxxxxx",
-                        style: TextStyle(
-                          color: Color(
-                            0xffa0a0a0,
+                      SizedBox(width: MediaQuery.of(context).size.width / 4),
+                      Material(
+                        color: Colors.white,
+                        child: InkWell(
+                          child: const Icon(
+                            Icons.edit_rounded,
+                            size: 40,
+                            color: Color(0xff707070),
                           ),
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "ankitthakker47@gmail.com",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xffa0a0a0),
+                          onTap: () async {
+                            File _profilePicture = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileForm()),
+                            );
+                            setState(() {});
+                          },
+                          highlightColor: Colors.grey,
+                          splashColor: Colors.grey,
                         ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(width: MediaQuery.of(context).size.width / 4),
-                Material(
-                  color: Colors.white,
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.edit_rounded,
-                      size: 40,
-                      color: Color(0xff707070),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(33),
                     ),
-                    onTap: () async {
-                      File _profilePicture = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfileForm()),
-                      );
-                    },
-                    highlightColor: Colors.grey,
-                    splashColor: Colors.grey,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                    color: Colors.white,
+                  ),
+                  height: MediaQuery.of(context).size.height * 25 / 100,
+                  width: MediaQuery.of(context).size.width * 92.5 / 100,
+                ),
+                Positioned(
+                  //Container for Image
+                  top: -45,
+                  left: (MediaQuery.of(context).size.width / 2) -
+                      ((MediaQuery.of(context).size.width -
+                              (MediaQuery.of(context).size.width *
+                                  92.5 /
+                                  100)) /
+                          2) -
+                      50,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: g.imageUrl == ""
+                            ? AssetImage("assets/default_profile_picture.png")
+                            : NetworkImage(g.imageUrl),
+                      ),
+                      shape: BoxShape.circle,
+                      color: const Color(0xfff3f3f3),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    height: 100,
+                    width: 100,
                   ),
                 ),
               ],
             ),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(33),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 0),
-                ),
-              ],
-              color: Colors.white,
-            ),
-            height: MediaQuery.of(context).size.height * 25 / 100,
-            width: MediaQuery.of(context).size.width * 92.5 / 100,
-          ),
-          Positioned(
-            //Container for Image
-            top: -45,
-            left: (MediaQuery.of(context).size.width / 2) -
-                ((MediaQuery.of(context).size.width -
-                        (MediaQuery.of(context).size.width * 92.5 / 100)) /
-                    2) -
-                50,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xffd3d3d3),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              height: 100,
-              width: 100,
-              child: const Icon(
-                Icons.person,
-                size: 65,
-                color: Color(0xff000000),
-              ),
-            ),
-          ),
-        ],
-      ),
+          );
+        } else {
+          return Center(child: Loading());
+        }
+      },
     );
   }
 }
@@ -190,8 +228,9 @@ class ButtonOptions extends StatelessWidget {
           color: Colors.white,
         ),
         child: Column(
-          children: const <Widget>[
+          children: <Widget>[
             ButtonOption(
+              onTapFunction: () {},
               iconData: Icons.feedback,
               iconText: "Support and Feedback",
             ),
@@ -202,6 +241,10 @@ class ButtonOptions extends StatelessWidget {
               ),
             ),
             ButtonOption(
+              onTapFunction: () {
+                Auth().logout();
+                Navigator.pop(context);
+              },
               iconData: Icons.logout,
               iconText: "Logout",
             )
@@ -214,11 +257,15 @@ class ButtonOptions extends StatelessWidget {
 
 class ButtonOption extends StatelessWidget {
   const ButtonOption(
-      {Key key, @required this.iconData, @required this.iconText})
+      {Key key,
+      @required this.iconData,
+      @required this.iconText,
+      @required this.onTapFunction})
       : super(key: key);
 
   final IconData iconData;
   final String iconText;
+  final Function onTapFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +274,7 @@ class ButtonOption extends StatelessWidget {
       child: Material(
         color: Colors.white,
         child: InkWell(
-          onTap: () {},
+          onTap: onTapFunction,
           highlightColor: Colors.grey,
           splashColor: Colors.grey,
           child: Row(

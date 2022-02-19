@@ -60,7 +60,7 @@ class _ImageViewerState extends State<ImageViewer> {
               size: 25,
             ),
             onPressed: () async {
-              widget.imageFile = await ImageCropper.cropImage(
+              File tempCroppedImage = await ImageCropper.cropImage(
                 sourcePath: widget.imageFile.path,
                 androidUiSettings: AndroidUiSettings(
                   toolbarTitle: 'Crop Image',
@@ -69,7 +69,8 @@ class _ImageViewerState extends State<ImageViewer> {
                   lockAspectRatio: true,
                 ),
               );
-              setState(() {});
+              if (tempCroppedImage != null)
+                setState(() => widget.imageFile = tempCroppedImage);
             },
           ),
           IconButton(

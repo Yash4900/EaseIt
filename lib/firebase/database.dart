@@ -74,6 +74,27 @@ class Database {
     }
   }
 
+  Future updateUserDetails(String societyName, String uid, String fname,
+      String lname, String email, String phoneNumber, String imageUrl) async {
+    try {
+      return await _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .doc(uid)
+          .update({
+        'fname': fname,
+        'lname': lname,
+        'email': email,
+        'phoneNum': phoneNumber,
+        'imageUrl': imageUrl,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future getUserDetails(String societyName, String uid) async {
     try {
       return await _firestore
@@ -143,6 +164,20 @@ class Database {
           .collection(societyName)
           .doc('notices')
           .collection('Notice')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<DocumentSnapshot> userStream(String societyName, String uid) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .doc(uid)
           .snapshots();
     } catch (e) {
       print(e.toString());

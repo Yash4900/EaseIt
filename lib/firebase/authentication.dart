@@ -47,6 +47,39 @@ class Auth {
     return null;
   }
 
+  Future<bool> reAuthenticate(String currentEmail, String currentPassword,
+      {String newEmail = "", String newPassword = ""}) async {
+    final currUser = _auth.currentUser;
+    final userCred = EmailAuthProvider.credential(
+        email: currentEmail, password: currentPassword);
+    bool detailsChanged = true;
+    if (newEmail != "") {
+      currUser.reauthenticateWithCredential(userCred).then((value) {
+        currUser.updateEmail(newEmail).then((value) {
+          detailsChanged = true;
+        }).catchError((onError) {
+          detailsChanged = false;
+        });
+      }).catchError((onError) {
+        detailsChanged = false;
+      });
+    }
+    print("DetailsChanged In auth " + detailsChanged.toString());
+    if (newPassword != "") {
+      currUser.reauthenticateWithCredential(userCred).then((value) {
+        currUser.updatePassword(newPassword).then((value) {
+          detailsChanged = true;
+        }).catchError((onError) {
+          detailsChanged = false;
+        });
+      }).catchError((onError) {
+        detailsChanged = false;
+      });
+    }
+    print("DetailsChanged In auth " + detailsChanged.toString());
+    return detailsChanged;
+  }
+
   logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _auth.signOut();
