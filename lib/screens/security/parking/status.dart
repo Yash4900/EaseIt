@@ -38,62 +38,70 @@ class _StatusState extends State<Status> {
         itemCount: carDetails.length,
         itemBuilder: (context, index) {
           return Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
-            child: Card(
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ParkingStatus(
-                              carDetails[index].owner,
-                              carDetails[index].phoneNum,
-                              carDetails[index].flatNo,
-                              carDetails[index].vehicleNo,
-                              carDetails[index].model,
-                              carDetails[index].parkedAt,
-                              carDetails[index].inTime)));
-                },
-                title: Text(
-                  carDetails[index].vehicleNo,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[200],
+                  blurRadius: 3.0,
+                  spreadRadius: 1.0,
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      carDetails[index].owner,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[500],
-                          fontSize: 15),
-                    ),
-                    Text(
-                      carDetails[index].model,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[500],
-                          fontSize: 15),
-                    ),
-                    Text(
-                      carDetails[index].inTime.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[500],
-                          fontSize: 15),
-                    )
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                  color: Color(0xff095aba).withOpacity(0.2),
-                  child: Text(
-                    carDetails[index].parkedAt,
+              ],
+            ),
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ParkingStatus(
+                            carDetails[index].owner,
+                            carDetails[index].phoneNum,
+                            carDetails[index].flatNo,
+                            carDetails[index].vehicleNo,
+                            carDetails[index].model,
+                            carDetails[index].parkedAt,
+                            carDetails[index].inTime)));
+              },
+              title: Text(
+                carDetails[index].vehicleNo,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    carDetails[index].owner,
                     style: TextStyle(
-                        color: Color(0xff095aba),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[500],
+                        fontSize: 15),
                   ),
+                  Text(
+                    carDetails[index].model,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[500],
+                        fontSize: 15),
+                  ),
+                  Text(
+                    carDetails[index].inTime.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[500],
+                        fontSize: 15),
+                  )
+                ],
+              ),
+              trailing: Container(
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                color: Color(0xff095aba).withOpacity(0.2),
+                child: Text(
+                  carDetails[index].parkedAt,
+                  style: TextStyle(
+                      color: Color(0xff095aba),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
                 ),
               ),
             ),

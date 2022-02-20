@@ -73,54 +73,63 @@ class _RecentApprovalState extends State<RecentApproval> {
                                 DocumentSnapshot ds = snapshot.data.docs[index];
                                 DateTime date = ds['date'].toDate();
                                 return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  child: Card(
-                                    child: ListTile(
-                                      title: Text(
-                                        ds['name'],
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey[200],
+                                        blurRadius: 3.0,
+                                        spreadRadius: 1.0,
                                       ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Flat No: ${ds['flatNo']}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.grey[500]),
-                                          ),
-                                          Text(
-                                            'Age: ${ds['age']}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.grey[500]),
-                                          ),
-                                          Text(
-                                            "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.grey[500]),
-                                          )
-                                        ],
-                                      ),
-                                      trailing: Container(
-                                        decoration: BoxDecoration(
-                                            color: getColor(
-                                                    ds['status'].toUpperCase())
-                                                .withOpacity(0.2),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 5),
-                                        child: Text(
-                                          ds['status'].toUpperCase(),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      ds['name'],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Flat No: ${ds['flatNo']}',
                                           style: TextStyle(
-                                              color: getColor(
-                                                  ds['status'].toUpperCase())),
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey[500]),
                                         ),
+                                        Text(
+                                          'Age: ${ds['age']}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey[500]),
+                                        ),
+                                        Text(
+                                          "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey[500]),
+                                        )
+                                      ],
+                                    ),
+                                    trailing: Container(
+                                      decoration: BoxDecoration(
+                                          color: getColor(
+                                                  ds['status'].toUpperCase())
+                                              .withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 5),
+                                      child: Text(
+                                        ds['status'].toUpperCase(),
+                                        style: TextStyle(
+                                            color: getColor(
+                                                ds['status'].toUpperCase())),
                                       ),
                                     ),
                                   ),
@@ -154,7 +163,16 @@ class _RecentApprovalState extends State<RecentApproval> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(23),
+                          side: BorderSide(
+                            color: Color(0xff037DD6),
+                            width: 2,
+                          ),
+                        ),
+                      ),
                     ),
                     onPressed: () {
                       showModalBottomSheet(
@@ -257,6 +275,15 @@ class _RecentApprovalState extends State<RecentApproval> {
                                                     MaterialStateProperty.all<
                                                             Color>(
                                                         Colors.grey[200]),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            23),
+                                                  ),
+                                                ),
                                               ),
                                               child: Text(
                                                 'Cancel',
@@ -310,6 +337,15 @@ class _RecentApprovalState extends State<RecentApproval> {
                                                     MaterialStateProperty.all<
                                                             Color>(
                                                         Color(0xff1a73e8)),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            23),
+                                                  ),
+                                                ),
                                               ),
                                               child: Text(
                                                 'Send Request',
@@ -329,15 +365,18 @@ class _RecentApprovalState extends State<RecentApproval> {
                             );
                           });
                     },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                      child: Text(
-                        'New Approval',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, color: Color(0xff037DD6)),
+                          SizedBox(width: 10),
+                          Text(
+                            'New Approval',
+                            style: TextStyle(
+                                color: Color(0xff037DD6),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
                   ),
                 ),
               )

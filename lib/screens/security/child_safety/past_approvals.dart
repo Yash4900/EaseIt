@@ -60,49 +60,57 @@ class _PastApprovalState extends State<PastApproval> {
                     DocumentSnapshot ds = snapshot.data.docs[index];
                     DateTime date = ds['date'].toDate();
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Card(
-                        child: ListTile(
-                          title: Text(
-                            ds['name'],
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[200],
+                            blurRadius: 3.0,
+                            spreadRadius: 1.0,
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Flat No: ${ds['flatNo']}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[500]),
-                              ),
-                              Text(
-                                'Age: ${ds['age']}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[500]),
-                              ),
-                              Text(
-                                "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[500]),
-                              )
-                            ],
-                          ),
-                          trailing: Container(
-                            decoration: BoxDecoration(
-                                color: getColor(ds['status'].toUpperCase())
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 5),
-                            child: Text(
-                              ds['status'].toUpperCase(),
+                        ],
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          ds['name'],
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Flat No: ${ds['flatNo']}',
                               style: TextStyle(
-                                  color: getColor(ds['status'].toUpperCase())),
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
                             ),
+                            Text(
+                              'Age: ${ds['age']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            ),
+                            Text(
+                              "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            )
+                          ],
+                        ),
+                        trailing: Container(
+                          decoration: BoxDecoration(
+                              color: getColor(ds['status'].toUpperCase())
+                                  .withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          child: Text(
+                            ds['status'].toUpperCase(),
+                            style: TextStyle(
+                                color: getColor(ds['status'].toUpperCase())),
                           ),
                         ),
                       ),

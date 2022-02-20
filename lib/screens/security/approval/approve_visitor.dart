@@ -173,10 +173,15 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                     onPressed: () {},
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                      ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(50, 3, 50, 3),
+                      padding: EdgeInsets.fromLTRB(20, 3, 20, 3),
                       child: Text(
                         'Send Request',
                         style: TextStyle(

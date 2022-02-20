@@ -153,16 +153,30 @@ class _NoticeViewState extends State<NoticeView> {
                       );
                     },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xff037DD6).withOpacity(0.2)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.symmetric(horizontal: 15))),
-                    child: Text(
-                      '+ Publish a notice',
-                      style: TextStyle(
-                          color: Color(0xff037DD6),
-                          fontWeight: FontWeight.w600),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(23),
+                          side: BorderSide(
+                            color: Color(0xff037DD6),
+                            width: 2,
+                          ),
+                        ),
+                      ),
                     ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, color: Color(0xff037DD6)),
+                          SizedBox(width: 10),
+                          Text(
+                            'Publish a notice',
+                            style: TextStyle(
+                                color: Color(0xff037DD6),
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ]),
                   ),
                 ),
               )
