@@ -1,8 +1,11 @@
 // Cloud Firestore functions
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:flutter/cupertino.dart';
 
 class Database {
+  Globals g = Globals();
   final _firestore = FirebaseFirestore.instance;
 
   Future<List<String>> getAllSocieties() async {
@@ -199,6 +202,21 @@ class Database {
     return null;
   }
 
+  // Resident Fetch queries
+  Stream<QuerySnapshot> fetchResidentsOfSociety(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .where('role', isNotEqualTo: "Security Guard")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future<void> addNotice(String societyName, String title, String body) async {
     try {
       await _firestore
@@ -257,6 +275,60 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> addMaintenance(String societyName, String billAmount, String month) async {    
+    // print("12Inside Add Maintenance");
+    QuerySnapshot snap = await 
+    _firestore.collection(societyName)
+                .doc('users')
+                .collection('User')
+                .where('role', isNotEqualTo: "Security Guard")
+                .get();
+
+  snap.docs.forEach((doc) {
+    return _firestore
+      .collection(societyName)
+      .doc('maintenance')
+      .collection('Maintenance')
+      .add({
+        'status': "Pending",
+        'billAmount': billAmount,
+        'month': month,
+        'name': doc["fname"],
+        'flatNo': doc["flatNo"],
+        'wing': doc["wing"]
+      });
+    });
+    // StreamBuilder<QuerySnapshot>(
+    //   stream: fetchResidentsOfSociety(societyName),
+    //   builder: (context, snapshot) {
+    //       print("Inside ADDD Maintenance");
+    //     if (snapshot.hasData) {
+    //       return Column(              
+    //         children: snapshot.data.docs.map((doc) {
+    //           if(true){                  
+    //             return _firestore
+    //             .collection(societyName)
+    //             .doc('maintenance')
+    //             .collection('Maintenance')
+    //             .add({
+    //               'status': "Pending",
+    //               'billAmount': billAmount,
+    //               'month': month,
+    //               'name': doc["fname"],
+    //               'flatNo': doc["flatNo"],
+    //               'wing': doc["wing"]
+    //             });
+    //           }
+    //           else
+    //             return Container();
+    //         }).toList(),            
+    //     );
+    //   }
+    //   else
+    //     return Container();
+    //   });
   }
 
   // Vehicle management queries

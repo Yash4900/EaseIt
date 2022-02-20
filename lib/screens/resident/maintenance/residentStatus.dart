@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/screens/resident/maintenance/addMaintenance.dart';
 import 'package:ease_it/screens/resident/maintenance/transactionHistory.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,18 @@ class _ResidentStatusState extends State<ResidentStatus> {
         physics: ClampingScrollPhysics(),
         shrinkWrap: true, 
         children: [
+          Padding(padding: EdgeInsets.all(10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(elevation: 2),
+              onPressed: () { 
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddMaintenance()),
+                );
+              },
+              child: Text(' + Add Maintenance', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [                  
