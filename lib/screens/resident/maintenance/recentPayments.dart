@@ -30,7 +30,6 @@ class _RecentPaymentsState extends State<RecentPayments> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  print(doc["name"]);
                   if(doc["status"] == "Paid" && noOfBills < 5){      
                     noOfBills++;            
                     return TransactionBill(

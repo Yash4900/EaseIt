@@ -1,8 +1,11 @@
 // Cloud Firestore functions
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:flutter/cupertino.dart';
 
 class Database {
+  Globals g = Globals();
   final _firestore = FirebaseFirestore.instance;
 
   Future<List<String>> getAllSocieties() async {
@@ -45,6 +48,7 @@ class Database {
             .collection('User')
             .doc(uid)
             .set({
+          'imageUrl': '',
           'fname': fname,
           'lname': lname,
           'email': email,
@@ -60,6 +64,7 @@ class Database {
             .collection('User')
             .doc(uid)
             .set({
+          'imageUrl': '',
           'fname': fname,
           'lname': lname,
           'email': email,
@@ -70,6 +75,27 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future updateUserDetails(String societyName, String uid, String fname,
+      String lname, String email, String phoneNumber, String imageUrl) async {
+    try {
+      return await _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .doc(uid)
+          .update({
+        'fname': fname,
+        'lname': lname,
+        'email': email,
+        'phoneNum': phoneNumber,
+        'imageUrl': imageUrl,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   Future getUserDetails(String societyName, String uid) async {
@@ -148,6 +174,20 @@ class Database {
     return null;
   }
 
+  Stream<DocumentSnapshot> userStream(String societyName, String uid) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .doc(uid)
+          .snapshots();
+      } catch (e) {
+        print(e.toString());
+      }
+      return null;
+    }
+
   // Maintenance queries
   Stream<QuerySnapshot> fetchMaintenance(String societyName) {
     try {
@@ -155,6 +195,21 @@ class Database {
           .collection(societyName)
           .doc('maintenance')
           .collection('Maintenance')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Resident Fetch queries
+  Stream<QuerySnapshot> fetchResidentsOfSociety(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('users')
+          .collection('User')
+          .where('role', isNotEqualTo: "Security Guard")
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -220,6 +275,60 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> addMaintenance(String societyName, String billAmount, String month) async {    
+    // print("12Inside Add Maintenance");
+    QuerySnapshot snap = await 
+    _firestore.collection(societyName)
+                .doc('users')
+                .collection('User')
+                .where('role', isNotEqualTo: "Security Guard")
+                .get();
+
+  snap.docs.forEach((doc) {
+    return _firestore
+      .collection(societyName)
+      .doc('maintenance')
+      .collection('Maintenance')
+      .add({
+        'status': "Pending",
+        'billAmount': billAmount,
+        'month': month,
+        'name': doc["fname"],
+        'flatNo': doc["flatNo"],
+        'wing': doc["wing"]
+      });
+    });
+    // StreamBuilder<QuerySnapshot>(
+    //   stream: fetchResidentsOfSociety(societyName),
+    //   builder: (context, snapshot) {
+    //       print("Inside ADDD Maintenance");
+    //     if (snapshot.hasData) {
+    //       return Column(              
+    //         children: snapshot.data.docs.map((doc) {
+    //           if(true){                  
+    //             return _firestore
+    //             .collection(societyName)
+    //             .doc('maintenance')
+    //             .collection('Maintenance')
+    //             .add({
+    //               'status': "Pending",
+    //               'billAmount': billAmount,
+    //               'month': month,
+    //               'name': doc["fname"],
+    //               'flatNo': doc["flatNo"],
+    //               'wing': doc["wing"]
+    //             });
+    //           }
+    //           else
+    //             return Container();
+    //         }).toList(),            
+    //     );
+    //   }
+    //   else
+    //     return Container();
+    //   });
   }
 
   // Vehicle management queries
