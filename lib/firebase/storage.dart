@@ -13,8 +13,8 @@ class Storage {
       return url;
     } catch (e) {
       print(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<bool> deleteImage(String fileUrl) async {
@@ -23,7 +23,7 @@ class Storage {
       return true;
     } catch (e) {
       print(e.toString());
+      return false;
     }
-    return false;
   }
 }

@@ -1,19 +1,18 @@
-import 'package:photo_view/photo_view.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:photo_view/photo_view.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:ease_it/utility/pick_image.dart';
+import 'dart:io';
 
-class ImageViewer extends StatefulWidget {
+class SingleImageEditor extends StatefulWidget {
   File imageFile;
-
-  ImageViewer({Key key, @required this.imageFile}) : super(key: key);
+  SingleImageEditor({Key key, @required this.imageFile}) : super(key: key);
 
   @override
-  _ImageViewerState createState() => _ImageViewerState();
+  _SingleImageEditorState createState() => _SingleImageEditorState();
 }
 
-class _ImageViewerState extends State<ImageViewer> {
+class _SingleImageEditorState extends State<SingleImageEditor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +27,7 @@ class _ImageViewerState extends State<ImageViewer> {
             size: 25,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, widget.imageFile);
           },
         ),
         actions: [
@@ -72,16 +71,6 @@ class _ImageViewerState extends State<ImageViewer> {
               if (tempCroppedImage != null)
                 setState(() => widget.imageFile = tempCroppedImage);
             },
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context, widget.imageFile);
-            },
-            icon: Icon(
-              Icons.check_outlined,
-              color: Colors.white,
-              size: 30,
-            ),
           ),
         ],
       ),

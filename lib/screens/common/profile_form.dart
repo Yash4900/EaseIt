@@ -1,14 +1,16 @@
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/single_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:ease_it/firebase/storage.dart';
-import 'package:ease_it/screens/common/view_image.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:ease_it/utility/single_image_Editor.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'dart:io';
@@ -23,7 +25,8 @@ class ProfileForm extends StatefulWidget {
 class _ProfileFormState extends State<ProfileForm> {
   bool isLoading = false;
   File _profilePicture;
-  String temp;
+  File _defaultProfilePicture;
+  //String temp;
   Globals g = Globals();
   String imageUrl = '';
   final _formKey = GlobalKey<FormState>();
@@ -49,6 +52,24 @@ class _ProfileFormState extends State<ProfileForm> {
     });
   }
 
+  void createFileFromAssetImage() async {
+    setState(() {
+      isLoading = true;
+    });
+    final byteData =
+        await rootBundle.load('assets/default_profile_picture.png');
+
+    final tempFile = File(
+        "${(await getTemporaryDirectory()).path}/default_profile_picutre.png");
+    _defaultProfilePicture = await tempFile.writeAsBytes(
+      byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     imageUrl =
@@ -60,6 +81,7 @@ class _ProfileFormState extends State<ProfileForm> {
     if (g.imageUrl != "") {
       createFileFromNetworkImage(g.imageUrl);
     }
+    createFileFromAssetImage();
     super.initState();
   }
 
@@ -106,53 +128,18 @@ class _ProfileFormState extends State<ProfileForm> {
                         clipBehavior: Clip.none,
                         children: [
                           GestureDetector(
-                            onTap: () async {
-                              if (_profilePicture == null) {
-                                _profilePicture =
-                                    await PickImage().showPicker(context);
-                                if (_profilePicture != null) {
-                                  File temp = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ImageViewer(
-                                        imageFile: _profilePicture,
-                                      ),
-                                    ),
-                                  );
-                                  if (temp != null) {
-                                    setState(() {
-                                      _profilePicture = temp;
-                                      imageUrl = _profilePicture.path;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      _profilePicture = null;
-                                      imageUrl =
-                                          'assets/default_profile_picture.png';
-                                    });
-                                  }
-                                }
-                              } else {
-                                File temp = await Navigator.push(
+                            onTap: () {
+                              if (_profilePicture != null) {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ImageViewer(
-                                      imageFile: _profilePicture,
-                                    ),
+                                    builder: (context) => SingleImageViewer(
+                                        imageFile: _profilePicture),
                                   ),
                                 );
-                                if (temp != null) {
-                                  setState(() {
-                                    _profilePicture = temp;
-                                    imageUrl = _profilePicture.path;
-                                  });
-                                } else {
-                                  setState(() {
-                                    _profilePicture = null;
-                                    imageUrl =
-                                        'assets/default_profile_picture.png';
-                                  });
-                                }
+                              } else {
+                                showToast(context, "general", "Info",
+                                    "Please upload a profile photo first to view");
                               }
                             },
                             child: Container(
@@ -163,8 +150,8 @@ class _ProfileFormState extends State<ProfileForm> {
                                 color: const Color(0xfff3f3f3),
                                 image: DecorationImage(
                                   image: _profilePicture == null
-                                      ? AssetImage(
-                                          "assets/default_profile_picture.png")
+                                      ? FileImage(
+                                          File(_defaultProfilePicture.path))
                                       : FileImage(File(_profilePicture.path)),
                                 ),
                                 boxShadow: [
@@ -183,30 +170,29 @@ class _ProfileFormState extends State<ProfileForm> {
                             right: -5,
                             child: GestureDetector(
                               onTap: () async {
-                                _profilePicture =
-                                    await PickImage().showPicker(context);
-                                setState(() {});
-                                if (_profilePicture != null) {
-                                  File temp = await Navigator.push(
+                                if (_profilePicture == null) {
+                                  _profilePicture =
+                                      await PickImage().showPicker(context);
+                                  setState(() {});
+                                  if (_profilePicture != null) {
+                                    _profilePicture = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SingleImageEditor(
+                                            imageFile: _profilePicture),
+                                      ),
+                                    );
+                                    setState(() {});
+                                  }
+                                } else {
+                                  _profilePicture = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ImageViewer(
-                                        imageFile: _profilePicture,
-                                      ),
+                                      builder: (context) => SingleImageEditor(
+                                          imageFile: _profilePicture),
                                     ),
                                   );
-                                  if (temp != null) {
-                                    setState(() {
-                                      _profilePicture = temp;
-                                      imageUrl = _profilePicture.path;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      _profilePicture = null;
-                                      imageUrl =
-                                          'assets/default_profile_picture.png';
-                                    });
-                                  }
+                                  setState(() {});
                                 }
                               },
                               child: Container(
@@ -439,13 +425,13 @@ class _ProfileFormState extends State<ProfileForm> {
                             showToast(context, "error", "Error", message);
                             return;
                           }
-                          g.setImageUrl = newImageUrl;
                           if (g.email != emailController.text) {
                             emailChanged = true;
                           }
                           if (passwordController.text != "" &&
                               oldPasswordController.text !=
-                                  passwordController.text) {
+                                  passwordController.text &&
+                              oldPasswordController.text != "") {
                             passwordChanged = true;
                           }
                           print("Email change " +

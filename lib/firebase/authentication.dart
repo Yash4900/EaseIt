@@ -50,13 +50,15 @@ class Auth {
   Future<bool> reAuthenticate(String currentEmail, String currentPassword,
       {String newEmail = "", String newPassword = ""}) async {
     final currUser = _auth.currentUser;
-    final userCred = EmailAuthProvider.credential(
+    dynamic userCred = EmailAuthProvider.credential(
         email: currentEmail, password: currentPassword);
     bool detailsChanged = true;
     if (newEmail != "") {
       currUser.reauthenticateWithCredential(userCred).then((value) {
         currUser.updateEmail(newEmail).then((value) {
           detailsChanged = true;
+          userCred = EmailAuthProvider.credential(
+              email: newEmail, password: currentPassword);
         }).catchError((onError) {
           detailsChanged = false;
         });
