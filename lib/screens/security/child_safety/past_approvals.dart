@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/firebase/database2.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Approval {
   String name;
@@ -17,61 +22,120 @@ class PastApproval extends StatefulWidget {
 }
 
 class _PastApprovalState extends State<PastApproval> {
-  List<Approval> approvals = [
-    Approval("Bunty", "A-101", 12, DateTime.now(), "APPROVED"),
-    Approval("Monty", "B-101", 8, DateTime.now(), "DECLINED")
+  bool loading = false;
+  List<String> days = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
   ];
+  Globals g = Globals();
 
   Color getColor(String status) {
-    if (status == "PENDING") return Color(0xff095aba);
+    if (status == "PENDING") return Color(0xff037DD6);
     if (status == "APPROVED") return Color(0xff107154);
     return Color(0xffbb121a);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: approvals.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
-            child: Card(
-              child: ListTile(
-                title: Text(
-                  approvals[index].name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Flat No: ${approvals[index].flatNo}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.grey[500]),
-                    ),
-                    Text(
-                      'Age: ${approvals[index].age}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.grey[500]),
-                    ),
-                    Text(
-                      "Time: 22 Jan 2021, 13:45",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.grey[500]),
-                    )
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                  color: getColor(approvals[index].status).withOpacity(0.3),
-                  child: Text(
-                    approvals[index].status,
-                    style: TextStyle(color: getColor(approvals[index].status)),
+    return StreamBuilder(
+      stream: Database2().getPastChildApproval(g.society),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Loading();
+        } else {
+          return snapshot.data.docs.length > 0
+              ? ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    DateTime date = ds['date'].toDate();
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[200],
+                            blurRadius: 3.0,
+                            spreadRadius: 1.0,
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          ds['name'],
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Flat No: ${ds['flatNo']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            ),
+                            Text(
+                              'Age: ${ds['age']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            ),
+                            Text(
+                              "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            )
+                          ],
+                        ),
+                        trailing: Container(
+                          decoration: BoxDecoration(
+                              color: getColor(ds['status'].toUpperCase())
+                                  .withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          child: Text(
+                            ds['status'].toUpperCase(),
+                            style: TextStyle(
+                                color: getColor(ds['status'].toUpperCase())),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.search,
+                        size: 50,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'No Recent Approvals',
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
                   ),
-                ),
-              ),
-            ),
-          );
-        });
+                );
+        }
+      },
+    );
   }
 }

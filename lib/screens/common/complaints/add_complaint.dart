@@ -176,7 +176,13 @@ class _AddComplaintState extends State<AddComplaint> {
                             ),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff1a73e8)),
+                                  Color(0xff037DD6)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(22),
+                                ),
+                              ),
                             ),
                           ),
                         )

@@ -234,7 +234,7 @@ class _AddVehicleState extends State<AddVehicle> {
                                     String imageUrl = _profilePicture == null
                                         ? ""
                                         : await Storage().storeImage(
-                                            'complaints', id, _profilePicture);
+                                            'vehicles', id, _profilePicture);
                                     Database()
                                         .addVehicle(
                                             g.society,
@@ -249,7 +249,6 @@ class _AddVehicleState extends State<AddVehicle> {
                                       setState(() => loading = false);
                                       showToast(context, "success", "Success!",
                                           "Vehicle added successfully in the database.");
-                                      Navigator.pop(context);
                                     }).catchError(() {
                                       setState(() => loading = false);
                                       showToast(context, "error", "Oops!",
@@ -261,10 +260,16 @@ class _AddVehicleState extends State<AddVehicle> {
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color(0xff1a73e8)),
+                                        Color(0xff037DD6)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                ),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(50, 3, 50, 3),
+                                padding: EdgeInsets.fromLTRB(20, 3, 20, 3),
                                 child: Text(
                                   'Add Vehicle',
                                   style: TextStyle(

@@ -9,7 +9,7 @@ class Loading extends StatelessWidget {
       children: [
         CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(
-            Color(0xff1a73e8),
+            Color(0xff037DD6),
           ),
         ),
         SizedBox(height: 20),

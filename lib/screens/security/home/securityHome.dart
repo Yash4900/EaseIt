@@ -1,7 +1,6 @@
-import 'package:ease_it/screens/security/approval/add_daily_visitor.dart';
-import 'package:ease_it/screens/security/approval/approve_visitor.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SecurityHome extends StatefulWidget {
   @override
@@ -25,10 +24,13 @@ class _SecurityHomeState extends State<SecurityHome> {
           Expanded(
             flex: 1,
             child: Center(
-                child: Text(
-              _codeController.text == "" ? "Enter code" : _codeController.text,
-              style: TextStyle(fontSize: 25),
-            )),
+              child: _codeController.text == ""
+                  ? Text('Enter code', style: TextStyle(fontSize: 25))
+                  : Text(
+                      _codeController.text,
+                      style: GoogleFonts.urbanist(fontSize: 27),
+                    ),
+            ),
           ),
           Expanded(
             flex: 3,
@@ -70,7 +72,8 @@ class _SecurityHomeState extends State<SecurityHome> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: GestureDetector(
+                        child: InkWell(
+                          highlightColor: Color(0xff037DD6),
                           onTap: () {
                             if (_codeController.text.length > 0) {
                               _codeController.text = _codeController.text
@@ -81,7 +84,6 @@ class _SecurityHomeState extends State<SecurityHome> {
                           },
                           child: Container(
                             margin: EdgeInsets.all(3),
-                            color: Colors.grey[300],
                             child: Center(child: Icon(Icons.backspace)),
                           ),
                         ),
@@ -89,16 +91,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                       Button(0, _codeController, onClick),
                       Expanded(
                         flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
-                            // check if visitor code is valid
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(3),
-                            color: Colors.grey[300],
-                            child: Center(child: Icon(Icons.check)),
-                          ),
-                        ),
+                        child: SizedBox(),
                       ),
                     ],
                   ),
@@ -108,48 +101,31 @@ class _SecurityHomeState extends State<SecurityHome> {
                   width: double.infinity,
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xff1a73e8).withOpacity(0.3)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                      ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ApproveVisitor()));
+                      // Todo: Verify visitor by code
                     },
-                    child: Text(
-                      'New Approval',
-                      style: TextStyle(
-                          color: Color(0xff1a73e8),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.0),
+                      child: Text(
+                        'Verify Visitor',
+                        style: TextStyle(
+                            letterSpacing: 1.2,
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Container(
-                  width: double.infinity,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color(0xff1a73e8).withOpacity(0.3)),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddDailyVisitor()));
-                    },
-                    child: Text(
-                      'Add to Daily Visitor',
-                      style: TextStyle(
-                          color: Color(0xff1a73e8),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20)
+                SizedBox(height: 15),
               ],
             ),
           )
@@ -168,18 +144,19 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: GestureDetector(
+      child: InkWell(
+        highlightColor: Color(0xff037DD6),
         onTap: () {
           controller.text = controller.text + value.toString();
           onClick();
         },
         child: Container(
           margin: EdgeInsets.all(3),
-          color: Colors.grey[300],
           child: Center(
             child: Text(
               value.toString(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: GoogleFonts.urbanist(
+                  fontSize: 30, fontWeight: FontWeight.w400),
             ),
           ),
         ),

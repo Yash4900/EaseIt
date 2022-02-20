@@ -66,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Text(
                           'Select your society',
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 20),
                         DropdownButton(
@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               value: items,
                               child: Text(
                                 items,
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 15),
                               ),
                             );
                           }).toList(),
@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Text(
                           'I\'m a',
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 20),
                         DropdownButton(
@@ -104,7 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               value: items,
                               child: Text(
                                 items,
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 15),
                               ),
                             );
                           }).toList(),
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               hintText: 'First Name',
-                              hintStyle: TextStyle(fontSize: 14),
+                              hintStyle: TextStyle(fontSize: 15),
                             ),
                             controller: fnameController,
                             validator: (value) => value.length < 2
@@ -136,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               hintText: 'Last Name',
-                              hintStyle: TextStyle(fontSize: 14),
+                              hintStyle: TextStyle(fontSize: 15),
                             ),
                             controller: lnameController,
                             validator: (value) => value.length < 2
@@ -150,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Email',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       controller: emailController,
                     ),
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Phone Number',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       controller: phoneController,
                       keyboardType: TextInputType.number,
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     hintText: 'Wing',
-                                    hintStyle: TextStyle(fontSize: 14),
+                                    hintStyle: TextStyle(fontSize: 15),
                                   ),
                                   controller: wingController,
                                   validator: (value) =>
@@ -190,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     hintText: 'Flat No',
-                                    hintStyle: TextStyle(fontSize: 14),
+                                    hintStyle: TextStyle(fontSize: 15),
                                   ),
                                   controller: flatController,
                                   keyboardType: TextInputType.number,
@@ -211,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       controller: passwordController,
                       obscureText: true,
@@ -223,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Confirm Password',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: TextStyle(fontSize: 15),
                       ),
                       controller: confirmPasswordController,
                       obscureText: true,
@@ -255,7 +255,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
@@ -272,7 +278,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Text(
                           'Already have an account? ',
-                          style: TextStyle(color: Colors.grey[700]),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[700]),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -280,7 +287,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                           child: Text(
                             'Log In',
-                            style: TextStyle(color: Color(0xff1a73e8)),
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xff037DD6)),
                           ),
                         )
                       ],

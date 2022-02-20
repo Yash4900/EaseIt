@@ -179,6 +179,20 @@ class Database {
           .collection('User')
           .doc(uid)
           .snapshots();
+      } catch (e) {
+        print(e.toString());
+      }
+      return null;
+    }
+
+  // Maintenance queries
+  Stream<QuerySnapshot> fetchMaintenance(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('maintenance')
+          .collection('Maintenance')
+          .snapshots();
     } catch (e) {
       print(e.toString());
     }
