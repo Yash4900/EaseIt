@@ -54,4 +54,19 @@ class Database2 {
       print(e.toString());
     }
   }
+
+  Future<QuerySnapshot> searchVehicle(
+      String society, String licensePlateNo) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('vehicles')
+          .collection('Vehicle')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 }
