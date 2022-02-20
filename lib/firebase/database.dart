@@ -148,6 +148,20 @@ class Database {
     return null;
   }
 
+  // Maintenance queries
+  Stream<QuerySnapshot> fetchMaintenance(String societyName) {
+    try {
+      return _firestore
+          .collection(societyName)
+          .doc('maintenance')
+          .collection('Maintenance')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future<void> addNotice(String societyName, String title, String body) async {
     try {
       await _firestore
