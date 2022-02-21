@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:intl/intl.dart';
 
 class Database {
   Globals g = Globals();
@@ -194,6 +195,7 @@ class Database {
           .collection(societyName)
           .doc('maintenance')
           .collection('Maintenance')
+          .orderBy('datePaid', descending: true)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -278,7 +280,6 @@ class Database {
 
   Future<void> addMaintenance(
       String societyName, String billAmount, String month) async {
-    // print("12Inside Add Maintenance");
     QuerySnapshot snap = await _firestore
         .collection(societyName)
         .doc('users')
@@ -295,40 +296,44 @@ class Database {
         'status': "Pending",
         'billAmount': billAmount,
         'month': month,
+        'datePaid': "",
         'name': doc["fname"],
         'flatNo': doc["flatNo"],
         'wing': doc["wing"]
       });
     });
-    // StreamBuilder<QuerySnapshot>(
-    //   stream: fetchResidentsOfSociety(societyName),
-    //   builder: (context, snapshot) {
-    //       print("Inside ADDD Maintenance");
-    //     if (snapshot.hasData) {
-    //       return Column(
-    //         children: snapshot.data.docs.map((doc) {
-    //           if(true){
-    //             return _firestore
-    //             .collection(societyName)
-    //             .doc('maintenance')
-    //             .collection('Maintenance')
-    //             .add({
-    //               'status': "Pending",
-    //               'billAmount': billAmount,
-    //               'month': month,
-    //               'name': doc["fname"],
-    //               'flatNo': doc["flatNo"],
-    //               'wing': doc["wing"]
-    //             });
-    //           }
-    //           else
-    //             return Container();
-    //         }).toList(),
-    //     );
-    //   }
-    //   else
-    //     return Container();
-    //   });
+  }
+
+  Future<void> markMaintenanceAsPaid(
+      String societyName, String wing, String flatNo, String month, String billAmount) async {
+    // print("12Inside Add Maintenance");
+    String docID = "";
+    QuerySnapshot snap = await _firestore
+        .collection(societyName)
+        .doc('maintenance')        
+        .collection('Maintenance')                        
+        .where('wing', isEqualTo: wing)
+        .where('flatNo', isEqualTo: flatNo)
+        .where('month', isEqualTo: month)        
+        .get();
+
+    snap.docs.forEach((doc) {
+      docID = doc.id.toString();
+    });
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+
+    return _firestore
+      .collection(societyName)
+      .doc('maintenance')        
+      .collection('Maintenance')   
+      .doc(docID)
+      .update({
+        'status': "Paid",
+        'datePaid': formattedDate
+      });
   }
 
   // Vehicle management queries
