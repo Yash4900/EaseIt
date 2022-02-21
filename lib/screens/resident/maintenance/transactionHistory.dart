@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/screens/resident/maintenance/credit_card_page.dart';
+import 'package:ease_it/screens/resident/maintenance/razorpay.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 
@@ -219,8 +219,10 @@ class TransactionBill extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CreditCardPage()),
-                      );
+                        MaterialPageRoute(builder: (context) => RazorPay(
+                          month: month, 
+                          billAmount: transactionAmount)),
+                      );                      
                     },
                     child: const Text('Pay Now'),
                   ),   
