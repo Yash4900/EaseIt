@@ -1,11 +1,11 @@
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/common/events/events.dart';
-import 'package:ease_it/screens/common/profile.dart';
+import 'package:ease_it/screens/common/profile/profile.dart';
 import 'package:ease_it/screens/resident/myVehicle.dart';
-import 'package:ease_it/screens/common/all_residents_info.dart';
+import 'package:ease_it/screens/common/info/all_residents_info.dart';
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:flutter/material.dart';
-import 'package:ease_it/screens/common/all_security_guards_info.dart';
+import 'package:ease_it/screens/common/info/all_security_guards_info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Container showDrawer(BuildContext context, String role, String name) {
