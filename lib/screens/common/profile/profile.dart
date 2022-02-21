@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/screens/common/profile_form.dart';
+import 'package:ease_it/screens/common/profile/profile_form.dart';
 import 'dart:io';
 
 class ProfilePage extends StatelessWidget {

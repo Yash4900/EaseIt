@@ -1,4 +1,4 @@
-import 'package:ease_it/screens/authscreen.dart';
+import 'package:ease_it/screens/auth/authscreen.dart';
 import 'package:ease_it/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
