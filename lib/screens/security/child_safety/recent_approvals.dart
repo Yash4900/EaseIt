@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ease_it/firebase/database2.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
@@ -61,7 +61,7 @@ class _RecentApprovalState extends State<RecentApproval> {
               Expanded(
                 flex: 6,
                 child: StreamBuilder(
-                  stream: Database2().getRecentChildApproval(g.society),
+                  stream: Database().getRecentChildApproval(g.society),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Loading();
@@ -306,7 +306,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                                                   if (confirmation) {
                                                     setState(
                                                         () => loading = true);
-                                                    Database2()
+                                                    Database()
                                                         .sendChildApprovalRequest(
                                                             g.society,
                                                             _nameController

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ease_it/firebase/database2.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +22,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
 
   getVehicleDetails() async {
     if (!loading) setState(() => loading = true);
-    qs = await Database2()
-        .searchVehicle(g.society, _licensePlateController.text);
+    qs =
+        await Database().searchVehicle(g.society, _licensePlateController.text);
     showSearch = false;
     setState(() => loading = false);
   }

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ease_it/firebase/database2.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _PastApprovalState extends State<PastApproval> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Database2().getPastChildApproval(g.society),
+      stream: Database().getPastChildApproval(g.society),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Loading();

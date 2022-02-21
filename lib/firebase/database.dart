@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
-import 'package:flutter/cupertino.dart';
 
 class Database {
   Globals g = Globals();
@@ -182,11 +181,11 @@ class Database {
           .collection('User')
           .doc(uid)
           .snapshots();
-      } catch (e) {
-        print(e.toString());
-      }
-      return null;
+    } catch (e) {
+      print(e.toString());
     }
+    return null;
+  }
 
   // Maintenance queries
   Stream<QuerySnapshot> fetchMaintenance(String societyName) {
@@ -277,21 +276,22 @@ class Database {
     }
   }
 
-  Future<void> addMaintenance(String societyName, String billAmount, String month) async {    
+  Future<void> addMaintenance(
+      String societyName, String billAmount, String month) async {
     // print("12Inside Add Maintenance");
-    QuerySnapshot snap = await 
-    _firestore.collection(societyName)
-                .doc('users')
-                .collection('User')
-                .where('role', isNotEqualTo: "Security Guard")
-                .get();
+    QuerySnapshot snap = await _firestore
+        .collection(societyName)
+        .doc('users')
+        .collection('User')
+        .where('role', isNotEqualTo: "Security Guard")
+        .get();
 
-  snap.docs.forEach((doc) {
-    return _firestore
-      .collection(societyName)
-      .doc('maintenance')
-      .collection('Maintenance')
-      .add({
+    snap.docs.forEach((doc) {
+      return _firestore
+          .collection(societyName)
+          .doc('maintenance')
+          .collection('Maintenance')
+          .add({
         'status': "Pending",
         'billAmount': billAmount,
         'month': month,
@@ -305,9 +305,9 @@ class Database {
     //   builder: (context, snapshot) {
     //       print("Inside ADDD Maintenance");
     //     if (snapshot.hasData) {
-    //       return Column(              
+    //       return Column(
     //         children: snapshot.data.docs.map((doc) {
-    //           if(true){                  
+    //           if(true){
     //             return _firestore
     //             .collection(societyName)
     //             .doc('maintenance')
@@ -323,7 +323,7 @@ class Database {
     //           }
     //           else
     //             return Container();
-    //         }).toList(),            
+    //         }).toList(),
     //     );
     //   }
     //   else
@@ -374,5 +374,71 @@ class Database {
       print(e.toString());
     }
     return null;
+  }
+
+  Future<QuerySnapshot> searchVehicle(
+      String society, String licensePlateNo) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('vehicles')
+          .collection('Vehicle')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Child approval
+  Stream<QuerySnapshot> getPastChildApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('childApprovals')
+          .collection('ChildApproval')
+          .where('date', isLessThan: DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot> getRecentChildApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('childApprovals')
+          .collection('ChildApproval')
+          .where('date',
+              isGreaterThanOrEqualTo:
+                  DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> sendChildApprovalRequest(String society, String name, String age,
+      String wing, String flatNo) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('childApprovals')
+          .collection('ChildApproval')
+          .add({
+        'name': name,
+        'age': age,
+        'wing': wing,
+        'flatNo': flatNo,
+        'date': DateTime.now(),
+        'status': 'Pending'
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
