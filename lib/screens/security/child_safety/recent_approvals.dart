@@ -128,8 +128,11 @@ class _RecentApprovalState extends State<RecentApproval> {
                                       child: Text(
                                         ds['status'].toUpperCase(),
                                         style: TextStyle(
-                                            color: getColor(
-                                                ds['status'].toUpperCase())),
+                                          fontSize: 12,
+                                          color: getColor(
+                                              ds['status'].toUpperCase()),
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ),

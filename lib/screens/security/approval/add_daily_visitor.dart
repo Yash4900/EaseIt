@@ -69,7 +69,23 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
             onPressed: () {
               Navigator.of(context).pop("");
             },
-            child: Text("CANCEL"),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.grey[200]),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.grey[600], fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -80,7 +96,23 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                     .pop(wingController.text + "-" + flatController.text);
               }
             },
-            child: Text("ADD"),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                'Add',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            ),
           )
         ],
       ),

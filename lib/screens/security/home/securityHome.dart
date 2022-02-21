@@ -28,7 +28,8 @@ class _SecurityHomeState extends State<SecurityHome> {
                   ? Text('Enter code', style: TextStyle(fontSize: 25))
                   : Text(
                       _codeController.text,
-                      style: GoogleFonts.urbanist(fontSize: 27),
+                      style:
+                          GoogleFonts.urbanist(fontSize: 30, letterSpacing: 2),
                     ),
             ),
           ),
@@ -117,7 +118,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                       child: Text(
                         'Verify Visitor',
                         style: TextStyle(
-                            letterSpacing: 1.2,
+                            // letterSpacing: 1.2,
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),

@@ -95,11 +95,13 @@ class _StatusState extends State<Status> {
               ),
               trailing: Container(
                 padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                color: Color(0xff095aba).withOpacity(0.2),
+                decoration: BoxDecoration(
+                    color: Color(0xff037DD6).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10)),
                 child: Text(
                   carDetails[index].parkedAt,
                   style: TextStyle(
-                      color: Color(0xff095aba),
+                      color: Color(0xff037DD6),
                       fontWeight: FontWeight.w600,
                       fontSize: 16),
                 ),

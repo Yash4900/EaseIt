@@ -23,21 +23,24 @@ class _ParkingState extends State<Parking> {
           ),
           SizedBox(height: 15),
           TabBar(
-              indicatorColor: Color(0xff1a73e8),
+              indicatorColor: Color(0xff037DD6),
               labelColor: Colors.black,
               indicatorWeight: 2.5,
               labelStyle: GoogleFonts.sourceSansPro(
                   fontSize: 16, fontWeight: FontWeight.w600),
               tabs: [
                 Tab(
-                  text: 'Current Status',
+                  text: 'Actions',
                 ),
                 Tab(
-                  text: 'Actions',
-                )
+                  text: 'Current Status',
+                ),
               ]),
           Expanded(
-            child: TabBarView(children: [Status(), ActionList()]),
+            child: TabBarView(children: [
+              ActionList(),
+              Status(),
+            ]),
           ),
         ]),
       ),
