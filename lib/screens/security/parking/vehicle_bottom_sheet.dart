@@ -44,7 +44,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
           Positioned(
             bottom: 0,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(10),

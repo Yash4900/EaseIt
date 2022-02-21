@@ -86,7 +86,10 @@ class _PastApprovalState extends State<PastApproval> {
                 ),
                 child: Text(
                   approvals[index].status,
-                  style: TextStyle(color: getColor(approvals[index].status)),
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: getColor(approvals[index].status),
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ),
