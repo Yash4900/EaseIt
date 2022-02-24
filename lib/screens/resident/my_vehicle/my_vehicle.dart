@@ -248,7 +248,9 @@ class _MyVehicleState extends State<MyVehicle> {
                                   child: Center(
                                     child: Text(
                                       days[i],
-                                      style: TextStyle(fontSize: 12),
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.grey[600]),
                                     ),
                                   ),
                                 ),
@@ -298,7 +300,19 @@ class _MyVehicleState extends State<MyVehicle> {
                                   itemBuilder: (context, index) {
                                     DocumentSnapshot ds =
                                         snapshot.data.docs[index];
-                                    return Card(
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey[200],
+                                            blurRadius: 3.0,
+                                            spreadRadius: 1.0,
+                                          ),
+                                        ],
+                                      ),
                                       child: ListTile(
                                         onTap: () async {
                                           setState(() => loading = true);
@@ -366,7 +380,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                       ),
                                       SizedBox(height: 10),
                                       Text(
-                                        'No Events found',
+                                        'No vehicles registered',
                                         style: TextStyle(color: Colors.grey),
                                       )
                                     ],
