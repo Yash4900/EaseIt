@@ -1,6 +1,9 @@
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
+import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/helper.dart';
+import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
 
 class ResidentHome extends StatefulWidget {
@@ -75,26 +78,55 @@ class _ResidentHomeState extends State<ResidentHome> {
             ]),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    CircularImageIcon(
-                        operation: () {
-                          return showDialog(
-                              barrierColor: Colors.red[50],
-                              context: context,
-                              builder: (context) => ApprovalAlert(
-                                    message: "Approve the Child",
-                                    operation: () {},
-                                  ));
-                        },
-                        firstName: "Rajat",
-                        lastName: "Sharma",
-                        imageLink:
-                            'https://cdn.cdnparenting.com/articles/2018/12/19195307/Featured-image1.jpg'),
-                  ],
-                ),
+              child: StreamBuilder(
+                stream: Database().getPendingChildApproval(g.society, g.flatNo, g.wing),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Loading();}
+                  else
+                  {if(snapshot.hasData && snapshot.data.docs.length>0){
+                    print("Hello");
+                    List<dynamic> list=snapshot.data.docs; 
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      
+                     children: list.map((data)=>
+                         CircularImageIcon(
+                            operation: () {
+                              print(data.id);
+                              return showDialog(
+                                  barrierColor: Color.fromRGBO(0, 0, 100, 0.5),
+                                  context: context,
+                                  builder: (context) => ApprovalAlert(
+                                        message: "Approve the Child",
+                                        operation: Database().updateChildApprovalStatus,
+                                        data:data
+                                      ));
+                            },
+                            firstName: data['name'],
+                            lastName: "",
+                            imageLink:
+                                'https://cdn.cdnparenting.com/articles/2018/12/19195307/Featured-image1.jpg'),
+                      ).toList(),
+                    
+                      
+                    ),
+                  );
+                  }
+                  else{
+                    return Row(
+                      children: [
+                        CircularButtonIcon(
+                          firstName: "No",
+                          lastName: "Approval",
+                          imageLink: "assets/child.png",
+                        ),
+                      ],
+                    );
+                  }
+                }
+                }
               ),
             ),
             Container(
@@ -138,7 +170,8 @@ class _ResidentHomeState extends State<ResidentHome> {
 class ApprovalAlert extends StatelessWidget {
   final String message;
   final Function operation;
-  ApprovalAlert({this.message, this.operation});
+  dynamic data;
+  ApprovalAlert({this.message, this.operation,this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +188,7 @@ class ApprovalAlert extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () async {
+                operation(g.society,data.id,true);
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
@@ -170,6 +204,7 @@ class ApprovalAlert extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
+                operation(g.society,data.id,false);
                 Navigator.of(context).pop();
               },
               style: ButtonStyle(
