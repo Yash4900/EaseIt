@@ -24,10 +24,9 @@ class _ActionListState extends State<ActionList> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (context, _, __) =>
-                          VehicleBottomSheet(text, true),
-                    ),
+                        opaque: false,
+                        pageBuilder: (context, _, __) =>
+                            VehicleBottomSheet(text)),
                   );
                 }
               }
@@ -57,10 +56,9 @@ class _ActionListState extends State<ActionList> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (context, _, __) =>
-                          VehicleBottomSheet(text, false),
-                    ),
+                        opaque: false,
+                        pageBuilder: (context, _, __) =>
+                            VehicleBottomSheet(text)),
                   );
                 }
               }
