@@ -349,7 +349,7 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                 bool confirmation = await showConfirmationDialog(
                                     context,
                                     "Alert!",
-                                    "Are you sure you want to add to daily helper");
+                                    "Are you sure you want to add to daily helper?");
                                 if (confirmation) {
                                   setState(() => loading = true);
                                   String id = DateTime.now()

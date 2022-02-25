@@ -22,4 +22,24 @@ class Database2 {
       print(e.toString());
     }
   }
+
+  Future<void> sendApproval(String society, String name, String phoneNum,
+      String imageUrl, String purpose, String wing, String flatNo) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .add({
+        'name': name,
+        'phoneNum': phoneNum,
+        'flatNo': flatNo,
+        'imageUrl': imageUrl,
+        'purpose': purpose,
+        'wing': wing
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
