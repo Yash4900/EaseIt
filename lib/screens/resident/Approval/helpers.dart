@@ -1,51 +1,18 @@
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/visitorProfile.dart';
+import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 
 class DailyHelpers extends StatefulWidget {
+  String dailyHelperType;
+  DailyHelpers({this.dailyHelperType});
   @override
   _DailyHelpersState createState() => _DailyHelpersState();
 }
 
 class _DailyHelpersState extends State<DailyHelpers> {
-  List<Map<String, String>> totalHelper = [
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-    {
-      "name": "Sarika Kamble",
-      "imageLink":
-          "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l",
-      "rating": "5"
-    },
-  ];
+  
   // Map<String,String> totalHelper={};
 
   @override
@@ -60,78 +27,90 @@ class _DailyHelpersState extends State<DailyHelpers> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: totalHelper
-                .map((e) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        // width: 45,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VisitorProfile(),
+          child: StreamBuilder(
+            stream: Database().getAllDailyHelperCategory(g.society,widget.dailyHelperType),
+            builder: (context, snapshot) {
+              if(snapshot.hasData && snapshot.data.docs.length>0)
+              {
+                List<dynamic> list=snapshot.data.docs;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: list
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            // width: 45,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white),
                               ),
-                            );
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: NetworkImage(e["imageLink"]),
-                                        fit: BoxFit.fill),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VisitorProfile(),
                                   ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                );
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(e["name"],
-                                          style: Helper().mediumStyle)
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: NetworkImage(e["imageUrl"]),
+                                            fit: BoxFit.fill),
+                                      ),
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Rating ",
-                                          style: Helper().mediumStyle),
-                                      Text(e["rating"],
-                                          style: Helper().mediumStyle),
-                                      Image(
-                                        image: AssetImage('assets/star.png'),
-                                        width: 20,
-                                        height: 20,
-                                      )
+                                      Row(
+                                        children: [
+                                          Text(e["name"],
+                                              style: Helper().mediumStyle)
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text("Rating ",
+                                              style: Helper().mediumStyle),
+                                          Text("5",
+                                              style: Helper().mediumStyle),
+                                          Image(
+                                            image: AssetImage('assets/star.png'),
+                                            width: 20,
+                                            height: 20,
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ))
-                .toList(),
+                        ))
+                    .toList(),
+              );
+            }
+            else{
+              return Container();
+            }
+            }
           ),
         ),
       ),

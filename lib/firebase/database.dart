@@ -469,7 +469,7 @@ class Database {
           .collection(society)
           .doc('childApprovals')
           .collection('ChildApproval')
-          .where('status',isEqualTo: "Pending")
+          .where('status', isEqualTo: "Pending")
           .where('wing', isEqualTo: wing)
           .where('flatNo', isEqualTo: flatNo)
           .snapshots();
@@ -480,23 +480,61 @@ class Database {
   }
 
 // Updating the status of child Approval
-Future<void> updateChildApprovalStatus(String society,String docId,bool status) async
-{
-  try{
-    
-    if(status){
-    return _firestore.collection(society).doc('childApprovals').collection('ChildApproval').doc(docId).update({'status':'Approved'});
+  Future<void> updateChildApprovalStatus(
+      String society, String docId, bool status) async {
+    try {
+      if (status) {
+        return _firestore
+            .collection(society)
+            .doc('childApprovals')
+            .collection('ChildApproval')
+            .doc(docId)
+            .update({'status': 'Approved'});
+      } else {
+        return _firestore
+            .collection(society)
+            .doc('childApprovals')
+            .collection('ChildApproval')
+            .doc(docId)
+            .update({'status': 'Rejected'});
+      }
+    } catch (e) {
+      print(e.toString());
     }
-    else{
-    return _firestore.collection(society).doc('childApprovals').collection('ChildApproval').doc(docId).update({'status':'Rejected'});
- 
-    }
+    return;
   }
-  catch (e)
-  {
-    print(e.toString());
-  }
-  return;
-}
 
+// Fetch All Daily Helper in give flat
+
+  Stream<QuerySnapshot> getAllDailyHelperForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .where('worksAt',
+              arrayContains: wing.toUpperCase().toString() + "-" + flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get All helpers categorywise
+  Stream<QuerySnapshot> getAllDailyHelperCategory(
+      String society, String category) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .where('purpose', isEqualTo: category)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 }

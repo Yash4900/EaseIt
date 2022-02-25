@@ -101,6 +101,7 @@ class _ApprovalState extends State<Approval> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
                           // NewWidget(),
@@ -109,39 +110,28 @@ class _ApprovalState extends State<Approval> {
                               lastName: "Helper",
                               imageLink: 'assets/add-user.png',
                               type: "addHelper"),
-
-                          CircularImageIcon(
-                              firstName: "Amol",
-                              lastName: "Thopate",
+                          StreamBuilder(
+                            stream: Database().getAllDailyHelperForGivenFlat(g.society, g.flatNo, g.wing),
+                            builder: (context, snapshot) {
+                              // print(snapshot.data.docs.length);
+                              if(snapshot.hasData && snapshot.data.docs.length>0){
+                              List<dynamic> list=snapshot.data.docs;
+                              return Row(
+                                children: list.map((data) => CircularImageIcon(
+                              firstName: data['name'].split(' ')[0],
+                              lastName: data['name'].split(' ').length>1?data['name'].split(' ')[1]:"",
                               imageLink:
-                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
-                          CircularImageIcon(
-                              firstName: "Ramu",
-                              lastName: "Thopate",
-                              imageLink:
-                                  'https://lh3.googleusercontent.com/mT4DqgvnPFpzmHQrPV66ud9kUrdBd4wSjR90HyPxn2F5qYn2QuChVy1m_yKU_Awd5_tyqifHElUBh4YkbTZ1HsmT'),
-                          CircularImageIcon(
-                            firstName: "Himesh",
-                            lastName: "Thopate",
-                            imageLink:
-                                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l',
+                                  data['imageUrl']),).toList(),
+                              );
+                            }
+                            else{
+                              return Container();
+                            }
+                            }
                           ),
-                          CircularImageIcon(
-                              firstName: "Salman",
-                              lastName: "Thopate",
-                              imageLink:
-                                  'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTOj2HVmgtYgoxxh9hcakq_c_SmfqtFeciy7QJRGA0bfkPeHkAU'),
-                          CircularImageIcon(
-                              firstName: "Akshay",
-                              lastName: "Thopate",
-                              imageLink:
-                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
-                          CircularImageIcon(
-                              firstName: "Amol",
-                              lastName: "Thopate",
-                              imageLink:
-                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg')
-                        ],
+
+                          
+                            ],
                       ),
                     ),
                   ),

@@ -64,7 +64,7 @@ class _AddHelperState extends State<AddHelper> {
                             return Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DailyHelpers(),
+                                builder: (context) => DailyHelpers(dailyHelperType: e['name'],),
                               ),
                             );
                           },
