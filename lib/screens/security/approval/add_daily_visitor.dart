@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:ease_it/firebase/database2.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -359,7 +359,7 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                       : await Storage().storeImage(
                                           'dailyHelpers', id, _profilePicture);
                                   int code = generateCode();
-                                  await Database2()
+                                  await Database()
                                       .addDailyHelper(
                                           g.society,
                                           _nameController.text,
