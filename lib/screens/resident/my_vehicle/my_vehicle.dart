@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -15,28 +18,35 @@ class MyVehicle extends StatefulWidget {
 class _MyVehicleState extends State<MyVehicle> {
   Globals g = Globals();
 
-  void showBottomSheeet(String imageUrl, String licensePlateNo, String model,
-      String type, String owner, String parkinSpaceNo) {
+  void showBottomSheeet(
+      String imageUrl,
+      String licensePlateNo,
+      String model,
+      String type,
+      String owner,
+      String parkinSpaceNo,
+      List<dynamic> exitTime,
+      List<dynamic> entryTime,
+      List<dynamic> days,
+      dynamic usage,
+      dynamic inUse) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         backgroundColor: Colors.white,
         elevation: 1,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        ),
         builder: (BuildContext bc) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.65,
             padding: EdgeInsets.all(10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: 10),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(imageUrl),
-                  radius: 90,
-                ),
-                SizedBox(height: 10),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -45,20 +55,21 @@ class _MyVehicleState extends State<MyVehicle> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            licensePlateNo,
-                            style: GoogleFonts.sourceSansPro(
-                                fontSize: 25, fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            '$owner . Owner',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
+                          ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(imageUrl),
+                            ),
+                            title: Text(
+                              licensePlateNo,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              'Owner . $owner',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          SizedBox(height: 20),
-                          Usage(23),
+                          Usage(usage),
                         ],
                       ),
                     ),
@@ -86,7 +97,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                 height: 5,
                               ),
                               Text(
-                                'Parked in premises',
+                                inUse ? 'In Use' : 'Parked in premises',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
@@ -150,6 +161,95 @@ class _MyVehicleState extends State<MyVehicle> {
                     )
                   ],
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Text(
+                    'Usage Pattern',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            height: 180,
+                            width: 25,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('23:59', style: TextStyle(fontSize: 10)),
+                                Text('21:00', style: TextStyle(fontSize: 10)),
+                                Text('18:00', style: TextStyle(fontSize: 10)),
+                                Text('15:00', style: TextStyle(fontSize: 10)),
+                                Text('12:00', style: TextStyle(fontSize: 10)),
+                                Text('09:00', style: TextStyle(fontSize: 10)),
+                                Text('06:00', style: TextStyle(fontSize: 10)),
+                                Text('03:00', style: TextStyle(fontSize: 10)),
+                                Text('00:00', style: TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                          for (int i = 0; i < days.length; i++)
+                            Expanded(
+                              child: exitTime[i] == 0
+                                  ? Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 1),
+                                      height: 180,
+                                      color: Colors.red.withOpacity(0.4),
+                                    )
+                                  : Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          height: (86400 - entryTime[i]) *
+                                              180 /
+                                              86400,
+                                          color: Colors.green.withOpacity(0.2),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          height: (entryTime[i] - exitTime[i]) *
+                                              180 /
+                                              86400,
+                                          color: Colors.green,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          height: exitTime[i] * 180 / 86400,
+                                          color: Colors.green.withOpacity(0.2),
+                                        )
+                                      ],
+                                    ),
+                            )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 25,
+                          ),
+                          for (int i = 0; i < days.length; i++)
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  days[i],
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ),
+                            ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           );
@@ -188,13 +288,27 @@ class _MyVehicleState extends State<MyVehicle> {
                               DocumentSnapshot ds = snapshot.data.docs[index];
                               return Card(
                                 child: ListTile(
-                                  onTap: () => showBottomSheeet(
-                                      ds['imageUrl'],
-                                      ds['licensePlateNo'],
-                                      ds['model'],
-                                      ds['vehicleType'],
-                                      ds['wing'] + ' - ' + ds['flatNo'],
-                                      ds['parkingSpaceNo']),
+                                  onTap: () async {
+                                    var response = await API().getUsage(
+                                        g.society
+                                            .replaceAll(" ", "")
+                                            .toLowerCase(),
+                                        "MH01AE1111");
+                                    Map<String, dynamic> map =
+                                        jsonDecode(response);
+                                    showBottomSheeet(
+                                        ds['imageUrl'],
+                                        ds['licensePlateNo'],
+                                        ds['model'],
+                                        ds['vehicleType'],
+                                        ds['wing'] + ' - ' + ds['flatNo'],
+                                        ds['parkingSpaceNo'],
+                                        map['exit_time'],
+                                        map['entry_time'],
+                                        map['day'],
+                                        map['usage'],
+                                        map['in_use']);
+                                  },
                                   leading: CircleAvatar(
                                     backgroundImage:
                                         NetworkImage(ds['imageUrl']),

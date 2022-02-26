@@ -1,14 +1,17 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'allocate_parking.dart';
 
 class VehicleBottomSheet extends StatefulWidget {
   final String licensePlateNo;
-  VehicleBottomSheet(this.licensePlateNo);
+  final bool isEntry;
+  VehicleBottomSheet(this.licensePlateNo, this.isEntry);
   @override
   _VehicleBottomSheetState createState() => _VehicleBottomSheetState();
 }
@@ -26,6 +29,34 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
         await Database().searchVehicle(g.society, _licensePlateController.text);
     showSearch = false;
     setState(() => loading = false);
+  }
+
+  void logActivity() async {
+    if (qs.size == 0) {
+    } else {
+      // Resident
+      if (widget.isEntry) {
+        setState(() => loading = true);
+        try {
+          await API().vehicleEntry(g.society.replaceAll(" ", ""), "MH01AE2222");
+          showToast(
+              context, "success", "Success!", "Log generated successfully");
+        } catch (e) {
+          showToast(context, "error", "Oops!", e.toString());
+        }
+        setState(() => loading = false);
+      } else {
+        setState(() => loading = true);
+        try {
+          await API().vehicleExit(g.society.replaceAll(" ", ""), "MH01AE2222");
+          showToast(
+              context, "success", "Success!", "Log generated successfully");
+        } catch (e) {
+          showToast(context, "error", "Oops!", e.toString());
+        }
+        setState(() => loading = false);
+      }
+    }
   }
 
   @override
@@ -138,7 +169,9 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                               ),
                               SizedBox(width: 10),
                               TextButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  logActivity();
+                                },
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
