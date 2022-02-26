@@ -304,17 +304,17 @@ class Database {
     });
   }
 
-  Future<void> markMaintenanceAsPaid(
-      String societyName, String wing, String flatNo, String month, String billAmount) async {
+  Future<void> markMaintenanceAsPaid(String societyName, String wing,
+      String flatNo, String month, String billAmount) async {
     // print("12Inside Add Maintenance");
     String docID = "";
     QuerySnapshot snap = await _firestore
         .collection(societyName)
-        .doc('maintenance')        
-        .collection('Maintenance')                        
+        .doc('maintenance')
+        .collection('Maintenance')
         .where('wing', isEqualTo: wing)
         .where('flatNo', isEqualTo: flatNo)
-        .where('month', isEqualTo: month)        
+        .where('month', isEqualTo: month)
         .get();
 
     snap.docs.forEach((doc) {
@@ -326,14 +326,11 @@ class Database {
     String formattedDate = formatter.format(now);
 
     return _firestore
-      .collection(societyName)
-      .doc('maintenance')        
-      .collection('Maintenance')   
-      .doc(docID)
-      .update({
-        'status': "Paid",
-        'datePaid': formattedDate
-      });
+        .collection(societyName)
+        .doc('maintenance')
+        .collection('Maintenance')
+        .doc(docID)
+        .update({'status': "Paid", 'datePaid': formattedDate});
   }
 
   // Vehicle management queries
@@ -446,4 +443,60 @@ class Database {
       print(e.toString());
     }
   }
+
+  // Fetching all child Approval
+  Stream<QuerySnapshot> getAllChildApproval(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('childApprovals')
+          .collection('ChildApproval')
+          .where('wing', isEqualTo: wing)
+          .where('flatNo', isEqualTo: flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Fetching pending child approval
+  Stream<QuerySnapshot> getPendingChildApproval(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('childApprovals')
+          .collection('ChildApproval')
+          .where('status',isEqualTo: "Pending")
+          .where('wing', isEqualTo: wing)
+          .where('flatNo', isEqualTo: flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+// Updating the status of child Approval
+Future<void> updateChildApprovalStatus(String society,String docId,bool status) async
+{
+  try{
+    
+    if(status){
+    return _firestore.collection(society).doc('childApprovals').collection('ChildApproval').doc(docId).update({'status':'Approved'});
+    }
+    else{
+    return _firestore.collection(society).doc('childApprovals').collection('ChildApproval').doc(docId).update({'status':'Rejected'});
+ 
+    }
+  }
+  catch (e)
+  {
+    print(e.toString());
+  }
+  return;
+}
+
 }

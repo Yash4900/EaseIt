@@ -2,13 +2,18 @@
 
 // import 'dart:js';
 
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/complaints/add_complaint.dart';
 import 'package:ease_it/screens/resident/Approval/addHelper.dart';
 import 'package:ease_it/screens/resident/Approval/allActivities.dart';
 import 'package:ease_it/screens/resident/Approval/preapproval.dart';
+import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class Approval extends StatefulWidget {
   @override
@@ -89,49 +94,55 @@ class _ApprovalState extends State<Approval> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        // NewWidget(),
-                        CircularButtonIcon(
-                            firstName: "Add",
-                            lastName: "Helper",
-                            imageLink: 'assets/add-user.png',
-                            type: "addHelper"),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
 
-                        CircularImageIcon(
-                            firstName: "Amol",
+                          // NewWidget(),
+                          CircularButtonIcon(
+                              firstName: "Add",
+                              lastName: "Helper",
+                              imageLink: 'assets/add-user.png',
+                              type: "addHelper"),
+
+                          CircularImageIcon(
+                              firstName: "Amol",
+                              lastName: "Thopate",
+                              imageLink:
+                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
+                          CircularImageIcon(
+                              firstName: "Ramu",
+                              lastName: "Thopate",
+                              imageLink:
+                                  'https://lh3.googleusercontent.com/mT4DqgvnPFpzmHQrPV66ud9kUrdBd4wSjR90HyPxn2F5qYn2QuChVy1m_yKU_Awd5_tyqifHElUBh4YkbTZ1HsmT'),
+                          CircularImageIcon(
+                            firstName: "Himesh",
                             lastName: "Thopate",
                             imageLink:
-                                'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
-                        CircularImageIcon(
-                            firstName: "Ramu",
-                            lastName: "Thopate",
-                            imageLink:
-                                'https://lh3.googleusercontent.com/mT4DqgvnPFpzmHQrPV66ud9kUrdBd4wSjR90HyPxn2F5qYn2QuChVy1m_yKU_Awd5_tyqifHElUBh4YkbTZ1HsmT'),
-                        CircularImageIcon(
-                          firstName: "Himesh",
-                          lastName: "Thopate",
-                          imageLink:
-                              'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l',
-                        ),
-                        CircularImageIcon(
-                            firstName: "Salman",
-                            lastName: "Thopate",
-                            imageLink:
-                                'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTOj2HVmgtYgoxxh9hcakq_c_SmfqtFeciy7QJRGA0bfkPeHkAU'),
-                        CircularImageIcon(
-                            firstName: "Akshay",
-                            lastName: "Thopate",
-                            imageLink:
-                                'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
-                        CircularImageIcon(
-                            firstName: "Amol",
-                            lastName: "Thopate",
-                            imageLink:
-                                'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg')
-                      ],
+                                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l',
+                          ),
+                          CircularImageIcon(
+                              firstName: "Salman",
+                              lastName: "Thopate",
+                              imageLink:
+                                  'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTOj2HVmgtYgoxxh9hcakq_c_SmfqtFeciy7QJRGA0bfkPeHkAU'),
+                          CircularImageIcon(
+                              firstName: "Akshay",
+                              lastName: "Thopate",
+                              imageLink:
+                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg'),
+                          CircularImageIcon(
+                              firstName: "Amol",
+                              lastName: "Thopate",
+                              imageLink:
+                                  'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg')
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -142,17 +153,104 @@ class _ApprovalState extends State<Approval> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // NewWidget(),
-                      CircularButtonIcon(
-                          firstName: "Child",
-                          lastName: "Approve",
-                          imageLink: 'assets/child.png',
-                          type: "approveChild"),
-                    ],
+                  child: StreamBuilder(
+                    stream: Database().getAllChildApproval(g.society, g.flatNo, g.wing),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData && snapshot.data.docs.length>0)
+                      {
+                    List<dynamic> list=snapshot.data.docs; 
+                   
+                    
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: 
+                              // NewWidget(),
+                              list.map((data)=> CircularImageIcon(
+                                  operation: (){
+                                    final popup = BeautifulPopup(
+                                      context: context,
+                                      template: TemplateAuthentication,
+                                    );
+                                    DateTime approvalDate = DateTime.parse(data['date'].toDate().toString());
+                                    popup.show(
+                                    
+                                      title: data['name'],
+                                      content: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("Date : ",style: Helper().headingStyle,),
+                                              Text(approvalDate.day.toString()+"-"+approvalDate.month.toString()+"-"+approvalDate.year.toString(),style: Helper().headingStyle,)
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Row(
+                                            children: [
+                                              Text("Time : ",style: Helper().headingStyle,),
+                                              Text(approvalDate.hour.toString()+":"+approvalDate.minute.toString()+":"+approvalDate.second.toString(),style: Helper().headingStyle,)
+                                          
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Row(
+                                            children: [
+                                              Text("Status : ",style: Helper().headingStyle,),
+                                              Text(data['status'].toString(),style: Helper().headingStyle,)
+                                          
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: Row(
+                                              children: [
+                                                
+                                                Flexible(child: Text("Note : Kindly Contact the watchman if any discrepancy is found",maxLines: 4,softWrap: true,overflow:TextOverflow.visible,style: Helper().mediumStyle,))
+                                            
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        popup.button(
+                                          label: 'Close',
+                                          onPressed: Navigator.of(context).pop,
+                                        ),
+                                      ],
+                                      // bool barrierDismissible = false,
+                                      // Widget close,
+                                    );
+                                          
+                                  },
+                                  firstName: data['name'],
+                                  lastName: "",
+                                  imageLink:
+                                      'https://cdn.cdnparenting.com/articles/2018/12/19195307/Featured-image1.jpg')).toList(),
+                              
+                            
+                          ),
+                        ),
+                      );
+                      
+                    }
+                    else{
+                      return Row(
+                        children: [
+                          CircularButtonIcon(
+                                    firstName: "Child",
+                                    lastName: "Approve",
+                                    imageLink: 'assets/child.png',
+                                    type: "approveChild"),
+                        ],
+                      );
+                    }
+                    }
                   ),
                 ),
                 SingleChildScrollView(

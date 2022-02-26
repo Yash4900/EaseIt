@@ -97,7 +97,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Flat No: ${ds['flatNo']}',
+                                          'Flat: ${ds['wing']}-${ds['flatNo']}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.grey[500]),

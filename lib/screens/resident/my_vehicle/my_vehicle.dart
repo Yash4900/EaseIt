@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,9 +18,20 @@ class MyVehicle extends StatefulWidget {
 
 class _MyVehicleState extends State<MyVehicle> {
   Globals g = Globals();
+  bool loading = false;
 
-  void showBottomSheeet(String imageUrl, String licensePlateNo, String model,
-      String type, String owner, String parkinSpaceNo) {
+  void showBottomSheeet(
+      String imageUrl,
+      String licensePlateNo,
+      String model,
+      String type,
+      String owner,
+      String parkinSpaceNo,
+      List<dynamic> days,
+      List<dynamic> exitTime,
+      List<dynamic> entryTime,
+      dynamic usage,
+      dynamic inUse) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -27,40 +42,36 @@ class _MyVehicleState extends State<MyVehicle> {
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
         builder: (BuildContext bc) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            padding: EdgeInsets.all(10),
+            height: MediaQuery.of(context).size.height * 0.65,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: 10),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(imageUrl),
-                  radius: 90,
-                ),
                 SizedBox(height: 10),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       flex: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
+                      child: Column(children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(imageUrl),
+                          ),
+                          title: Text(
                             licensePlateNo,
-                            style: GoogleFonts.sourceSansPro(
-                                fontSize: 25, fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            '$owner . Owner',
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
-                            ),
+                                fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                          SizedBox(height: 20),
-                          Usage(23),
-                        ],
-                      ),
+                          subtitle: Text(
+                            'Owner . $owner',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Usage(usage)
+                      ]),
                     ),
                     Expanded(
                       flex: 5,
@@ -86,7 +97,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                 height: 5,
                               ),
                               Text(
-                                'Parked in premises',
+                                inUse ? 'In use' : 'Parked in premises',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
@@ -150,6 +161,104 @@ class _MyVehicleState extends State<MyVehicle> {
                     )
                   ],
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    'Usage pattern',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: 180,
+                              width: 25,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('23:59', style: TextStyle(fontSize: 10)),
+                                  Text('21:00', style: TextStyle(fontSize: 10)),
+                                  Text('18:00', style: TextStyle(fontSize: 10)),
+                                  Text('15:00', style: TextStyle(fontSize: 10)),
+                                  Text('12:00', style: TextStyle(fontSize: 10)),
+                                  Text('09:00', style: TextStyle(fontSize: 10)),
+                                  Text('06:00', style: TextStyle(fontSize: 10)),
+                                  Text('03:00', style: TextStyle(fontSize: 10)),
+                                  Text('00:00', style: TextStyle(fontSize: 10))
+                                ],
+                              ),
+                            ),
+                            for (int i = 0; i < days.length; i++)
+                              Expanded(
+                                child: exitTime[i] == 0
+                                    ? Container(
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 1),
+                                        height: 180,
+                                        color: Colors.red.withOpacity(0.3),
+                                      )
+                                    : Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 1),
+                                            height: ((86400 - entryTime[i]) /
+                                                86400 *
+                                                180),
+                                            color:
+                                                Colors.green.withOpacity(0.2),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 1),
+                                            height:
+                                                ((entryTime[i] - exitTime[i]) /
+                                                    86400 *
+                                                    180),
+                                            color: Colors.green,
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 1),
+                                            height: (exitTime[i] / 86400 * 180),
+                                            color:
+                                                Colors.green.withOpacity(0.2),
+                                          ),
+                                        ],
+                                      ),
+                              )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 25),
+                            for (int i = 0; i < days.length; i++)
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                  child: Center(
+                                    child: Text(
+                                      days[i],
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.grey[600]),
+                                    ),
+                                  ),
+                                ),
+                              )
+                          ],
+                        )
+                      ]),
+                )
               ],
             ),
           );
@@ -175,64 +284,111 @@ class _MyVehicleState extends State<MyVehicle> {
             ),
             Expanded(
               flex: 8,
-              child: FutureBuilder(
-                future: Database().getMyVehicle(g.society, g.wing, g.flatNo),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Loading();
-                  } else {
-                    return snapshot.data.docs.length > 0
-                        ? ListView.builder(
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot ds = snapshot.data.docs[index];
-                              return Card(
-                                child: ListTile(
-                                  onTap: () => showBottomSheeet(
-                                      ds['imageUrl'],
-                                      ds['licensePlateNo'],
-                                      ds['model'],
-                                      ds['vehicleType'],
-                                      ds['wing'] + ' - ' + ds['flatNo'],
-                                      ds['parkingSpaceNo']),
-                                  leading: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(ds['imageUrl']),
-                                    radius: 25,
+              child: loading
+                  ? Loading()
+                  : FutureBuilder(
+                      future:
+                          Database().getMyVehicle(g.society, g.wing, g.flatNo),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Loading();
+                        } else {
+                          return snapshot.data.docs.length > 0
+                              ? ListView.builder(
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    DocumentSnapshot ds =
+                                        snapshot.data.docs[index];
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey[200],
+                                            blurRadius: 3.0,
+                                            spreadRadius: 1.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: ListTile(
+                                        onTap: () async {
+                                          setState(() => loading = true);
+                                          var response = await API().getUsage(
+                                              g.society
+                                                  .replaceAll(" ", "")
+                                                  .toLowerCase(),
+                                              "MH01AE1111");
+                                          setState(() => loading = false);
+
+                                          if (response != null) {
+                                            Map<String, dynamic> map =
+                                                jsonDecode(response);
+                                            List<dynamic> days = map['day'];
+                                            List<dynamic> exitTime =
+                                                map['exit_time'];
+                                            List<dynamic> entryTime =
+                                                map['entry_time'];
+                                            showBottomSheeet(
+                                                ds['imageUrl'],
+                                                ds['licensePlateNo'],
+                                                ds['model'],
+                                                ds['vehicleType'],
+                                                ds['wing'] +
+                                                    ' - ' +
+                                                    ds['flatNo'],
+                                                ds['parkingSpaceNo'],
+                                                days,
+                                                exitTime,
+                                                entryTime,
+                                                map['usage'],
+                                                map['in_use']);
+                                          } else {
+                                            showToast(context, 'error', 'Oops!',
+                                                'Server down! Couldn\'t get data');
+                                          }
+                                        },
+                                        leading: CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage(ds['imageUrl']),
+                                          radius: 25,
+                                        ),
+                                        title: Text(
+                                          ds['model'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        subtitle: Text(ds['licensePlateNo']),
+                                        trailing: ds['vehicleType'] ==
+                                                'Four Wheeler'
+                                            ? Icon(FontAwesomeIcons.car)
+                                            : Icon(FontAwesomeIcons.motorcycle),
+                                      ),
+                                    );
+                                  })
+                              : Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.car,
+                                        size: 50,
+                                        color: Colors.grey[300],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'No vehicles registered',
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
                                   ),
-                                  title: Text(
-                                    ds['model'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  subtitle: Text(ds['licensePlateNo']),
-                                  trailing: ds['vehicleType'] == 'Four Wheeler'
-                                      ? Icon(FontAwesomeIcons.car)
-                                      : Icon(FontAwesomeIcons.motorcycle),
-                                ),
-                              );
-                            })
-                        : Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.car,
-                                  size: 50,
-                                  color: Colors.grey[300],
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'No Events found',
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                          );
-                  }
-                },
-              ),
+                                );
+                        }
+                      },
+                    ),
             )
           ],
         ),
@@ -240,6 +396,8 @@ class _MyVehicleState extends State<MyVehicle> {
     );
   }
 }
+
+// Widget that shows usage of vehicle with animation
 
 class Usage extends StatefulWidget {
   final int usage;

@@ -1,14 +1,17 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'allocate_parking.dart';
 
 class VehicleBottomSheet extends StatefulWidget {
   final String licensePlateNo;
-  VehicleBottomSheet(this.licensePlateNo);
+  final bool isEntry;
+  VehicleBottomSheet(this.licensePlateNo, this.isEntry);
   @override
   _VehicleBottomSheetState createState() => _VehicleBottomSheetState();
 }
@@ -20,12 +23,46 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
   QuerySnapshot qs;
   Globals g = Globals();
 
-  getVehicleDetails() async {
+  void getVehicleDetails() async {
     if (!loading) setState(() => loading = true);
     qs =
         await Database().searchVehicle(g.society, _licensePlateController.text);
     showSearch = false;
     setState(() => loading = false);
+  }
+
+  Future logActivity() async {
+    if (qs.size == 0) {
+      // Visitor
+      // Todo: Log in firebase
+    } else {
+      // Resident
+      if (widget.isEntry) {
+        setState(() => loading = true);
+        var response = await API().vehicleEntry(
+            g.society.replaceAll(" ", "").toLowerCase(), "MH01AE2222");
+        setState(() => loading = false);
+        if (response != null) {
+          showToast(
+              context, "success", "Success!", "Log generated successfully");
+        }
+      } else {
+        setState(() => loading = true);
+        var response;
+        try {
+          response = await API().vehicleExit(
+              g.society.replaceAll(" ", "").toLowerCase(), "MH01AE4444");
+          showToast(context, "success", "Success!", "Log created successfully");
+        } catch (e) {
+          showToast(context, "error", "Oops!", "Something went wrong");
+        }
+        setState(() => loading = false);
+        if (response != null) {
+          showToast(
+              context, "success", "Success!", "Log generated successfully");
+        }
+      }
+    }
   }
 
   @override
@@ -66,7 +103,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                   ? AssetImage('assets/dummy_image.jpg')
                                   : NetworkImage(qs.docs[0]['imageUrl']),
                             ),
-                            title: Flexible(
+                            title: Container(
+                              width: 250,
                               child: TextField(
                                 onChanged: (value) => showSearch = true,
                                 controller: _licensePlateController,
@@ -138,7 +176,10 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                               ),
                               SizedBox(width: 10),
                               TextButton(
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  await logActivity();
+                                  Navigator.pop(context);
+                                },
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(

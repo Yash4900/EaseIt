@@ -10,7 +10,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:ease_it/utility/single_image_Editor.dart';
+import 'package:ease_it/utility/single_image_editor.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'dart:io';
