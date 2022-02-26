@@ -29,7 +29,9 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
     "Delivery",
     "Technician",
     "Nanny",
-    "Salesman"
+    "Salesman",
+    "Electrician",
+    "Water Supplier"
   ];
 
   String dropDownValue = "Maid";

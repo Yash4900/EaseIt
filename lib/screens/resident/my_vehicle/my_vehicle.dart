@@ -41,12 +41,22 @@ class _MyVehicleState extends State<MyVehicle> {
         ),
         builder: (BuildContext bc) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.65,
+            height: 530,
             padding: EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Center(
+                  child: Container(
+                    width: 50,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[400],
+                        borderRadius: BorderRadius.circular(3)),
+                  ),
+                ),
+                SizedBox(height: 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,6 +79,7 @@ class _MyVehicleState extends State<MyVehicle> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
+                          SizedBox(height: 5),
                           Usage(usage),
                         ],
                       ),
@@ -162,10 +173,10 @@ class _MyVehicleState extends State<MyVehicle> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 3),
+                  margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     'Usage Pattern',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                 ),
                 Container(
@@ -174,6 +185,7 @@ class _MyVehicleState extends State<MyVehicle> {
                       Row(
                         children: [
                           Container(
+                            margin: EdgeInsets.only(right: 2),
                             height: 180,
                             width: 25,
                             child: Column(
@@ -241,7 +253,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                 child: Text(
                                   days[i],
                                   style: TextStyle(
-                                      fontSize: 10, color: Colors.grey[600]),
+                                      fontSize: 9, color: Colors.grey[600]),
                                 ),
                               ),
                             ),
@@ -286,14 +298,26 @@ class _MyVehicleState extends State<MyVehicle> {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
-                              return Card(
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey[200],
+                                      blurRadius: 3.0,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 10),
                                 child: ListTile(
                                   onTap: () async {
                                     var response = await API().getUsage(
                                         g.society
                                             .replaceAll(" ", "")
                                             .toLowerCase(),
-                                        "MH01AE1111");
+                                        "MH01AE2222");
                                     Map<String, dynamic> map =
                                         jsonDecode(response);
                                     showBottomSheeet(
@@ -320,7 +344,11 @@ class _MyVehicleState extends State<MyVehicle> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
-                                  subtitle: Text(ds['licensePlateNo']),
+                                  subtitle: Text(ds['licensePlateNo'],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey)),
                                   trailing: ds['vehicleType'] == 'Four Wheeler'
                                       ? Icon(FontAwesomeIcons.car)
                                       : Icon(FontAwesomeIcons.motorcycle),
