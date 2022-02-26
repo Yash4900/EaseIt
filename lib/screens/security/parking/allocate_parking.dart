@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -143,7 +142,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                                 bool confirmation =
                                     await showConfirmationDialog(
                                         context,
-                                        "Älert!",
+                                        "Alert!",
                                         "Are you sure you want to proceed?");
                                 if (confirmation) {
                                   setState(() => loading = true);

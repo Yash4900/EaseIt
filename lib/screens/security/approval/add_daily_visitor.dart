@@ -29,7 +29,9 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
     "Delivery",
     "Technician",
     "Nanny",
-    "Salesman"
+    "Salesman",
+    "Electrician",
+    "Water Supplier"
   ];
 
   Globals g = Globals();

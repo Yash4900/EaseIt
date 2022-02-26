@@ -1,3 +1,5 @@
+// Fetch data from flask API
+
 import 'package:ease_it/utility/ip_address.dart';
 import 'package:http/http.dart' as http;
 
