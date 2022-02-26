@@ -26,7 +26,7 @@ class _ActionListState extends State<ActionList> {
                     PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, _, __) =>
-                            VehicleBottomSheet(text)),
+                            VehicleBottomSheet(text, true)),
                   );
                 }
               }
@@ -58,7 +58,7 @@ class _ActionListState extends State<ActionList> {
                     PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, _, __) =>
-                            VehicleBottomSheet(text)),
+                            VehicleBottomSheet(text, false)),
                   );
                 }
               }
