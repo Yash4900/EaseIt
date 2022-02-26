@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:ease_it/firebase/database2.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/alert.dart';
