@@ -692,7 +692,7 @@ class Database {
     return null;
   }
 
-  // Update preApproval
+  // Update preApproval on given status
   Future<void> updatePendingApproval(String society,String docId,bool status) async
   {
     try{
