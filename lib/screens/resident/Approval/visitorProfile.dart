@@ -4,13 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VisitorProfile extends StatefulWidget {
+  dynamic visitorData;
+  VisitorProfile({this.visitorData});
   @override
   _VisitorProfileState createState() => _VisitorProfileState();
 }
 
 class _VisitorProfileState extends State<VisitorProfile> {
+  List<dynamic> flatList;
+  
   @override
   Widget build(BuildContext context) {
+    flatList=widget.visitorData['worksAt'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,7 +39,7 @@ class _VisitorProfileState extends State<VisitorProfile> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: NetworkImage(
-                                'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTJVo-u1t23uZ8aD32_1LfeA0vVYHUGaBWPoR7nGSM4Z37vej_l'),
+                                widget.visitorData['imageUrl']),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -44,7 +49,7 @@ class _VisitorProfileState extends State<VisitorProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Amol Thopate",
+                            widget.visitorData['name'],
                             style: GoogleFonts.montserrat(
                               textStyle: Helper().mediumStyle,
                             ),
@@ -52,7 +57,7 @@ class _VisitorProfileState extends State<VisitorProfile> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text("9898989890",
+                          Text(widget.visitorData['phoneNum'],
                               style: GoogleFonts.montserrat(
                                   textStyle: Helper().normalStyle)),
                           SizedBox(
@@ -96,9 +101,10 @@ class _VisitorProfileState extends State<VisitorProfile> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: [1, 2, 3, 4, 5, 6]
+                        
+                        children: flatList
                             .map((e) => customOutlinedButton(
-                                "B 605", Icons.call, () => {}))
+                                e, Icons.call, () => {}))
                             .toList(),
                       ),
                     )

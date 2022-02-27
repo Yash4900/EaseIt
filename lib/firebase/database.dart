@@ -572,10 +572,142 @@ class Database {
         'flatNo': flatNo,
         'imageUrl': imageUrl,
         'purpose': purpose,
-        'wing': wing
+        'wing': wing,
+        'status': 'Pending',
+        'postedOn': DateTime.now()
       });
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Get all pending visitor for specific flat
+  Stream<QuerySnapshot> getAllPendingVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get All visitor log for specific flat
+  Stream<QuerySnapshot> getAllVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Update the visitor approval
+  Future<void> updateVisitorApproval(
+      String society, String docId, bool status) {
+    try {
+      if (status) {
+        _firestore
+            .collection(society)
+            .doc('visitorApproval')
+            .collection('Visitor Approval')
+            .doc(docId)
+            .update({'status': 'Approved'});
+      } else {
+        _firestore
+            .collection(society)
+            .doc('visitorApproval')
+            .collection('Visitor Approval')
+            .doc(docId)
+            .update({'status': 'Rejected'});
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Add the preApproval entry
+  Future<void> addPreApprovalEntry(
+      String society,
+      String visName,
+      String visPhoneNo,
+      String vehicleNo,
+      String flatNo,
+      String wing,
+      String code,
+      String purpose) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .add({
+        'name': visName,
+        'phoneNo': visPhoneNo,
+        'vehicleNo': vehicleNo,
+        'flatNo': flatNo,
+        'wing': wing,
+        'generatedToken': code,
+        'purpose': purpose,
+        'postedOn': DateTime.now(),
+        'status': "Pending",
+        'entryTime':"",
+        'exitTime':""
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+// Get All pending preApproval for give flat and wing
+
+  Stream<void> getAllPendingPreApprovalForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('flatNo', isEqualTo: flatNo)
+          .where('wing', isEqualTo: wing)
+          .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Update preApproval
+  Future<void> updatePendingApproval(String society,String docId,bool status) async
+  {
+    try{
+      if(status)
+     { await _firestore.collection(society).doc('PreApprovals').collection('preApproval').doc(docId).update({'status':"Approve"});}
+      else
+      {
+      await _firestore.collection(society).doc('PreApprovals').collection('preApproval').doc(docId).update({'status':"Rejected","entryTime":DateTime.now()});
+
+      }
+    }
+    catch (e)
+    {
+      print(e.toString());
+    }
+    return null;
   }
 }
