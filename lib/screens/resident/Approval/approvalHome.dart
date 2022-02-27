@@ -103,7 +103,6 @@ class _ApprovalState extends State<Approval> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
                           // NewWidget(),
                           CircularButtonIcon(
                               firstName: "Add",
@@ -111,27 +110,34 @@ class _ApprovalState extends State<Approval> {
                               imageLink: 'assets/add-user.png',
                               type: "addHelper"),
                           StreamBuilder(
-                            stream: Database().getAllDailyHelperForGivenFlat(g.society, g.flatNo, g.wing),
-                            builder: (context, snapshot) {
-                              // print(snapshot.data.docs.length);
-                              if(snapshot.hasData && snapshot.data.docs.length>0){
-                              List<dynamic> list=snapshot.data.docs;
-                              return Row(
-                                children: list.map((data) => CircularImageIcon(
-                              firstName: data['name'].split(' ')[0],
-                              lastName: data['name'].split(' ').length>1?data['name'].split(' ')[1]:"",
-                              imageLink:
-                                  data['imageUrl']),).toList(),
-                              );
-                            }
-                            else{
-                              return Container();
-                            }
-                            }
-                          ),
-
-                          
-                            ],
+                              stream: Database().getAllDailyHelperForGivenFlat(
+                                  g.society, g.flatNo, g.wing),
+                              builder: (context, snapshot) {
+                                // print(snapshot.data.docs.length);
+                                if (snapshot.hasData &&
+                                    snapshot.data.docs.length > 0) {
+                                  List<dynamic> list = snapshot.data.docs;
+                                  return Row(
+                                    children: list
+                                        .map(
+                                          (data) => CircularImageIcon(
+                                              firstName:
+                                                  data['name'].split(' ')[0],
+                                              lastName: data['name']
+                                                          .split(' ')
+                                                          .length >
+                                                      1
+                                                  ? data['name'].split(' ')[1]
+                                                  : "",
+                                              imageLink: data['imageUrl']),
+                                        )
+                                        .toList(),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }),
+                        ],
                       ),
                     ),
                   ),
@@ -144,104 +150,160 @@ class _ApprovalState extends State<Approval> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: StreamBuilder(
-                    stream: Database().getAllChildApproval(g.society, g.flatNo, g.wing),
-                    builder: (context, snapshot) {
-                      if(snapshot.hasData && snapshot.data.docs.length>0)
-                      {
-                    List<dynamic> list=snapshot.data.docs; 
-                   
-                    
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            children: 
-                              // NewWidget(),
-                              list.map((data)=> CircularImageIcon(
-                                  operation: (){
-                                    final popup = BeautifulPopup(
-                                      context: context,
-                                      template: TemplateAuthentication,
-                                    );
-                                    DateTime approvalDate = DateTime.parse(data['date'].toDate().toString());
-                                    popup.show(
-                                    
-                                      title: data['name'],
-                                      content: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Date : ",style: Helper().headingStyle,),
-                                              Text(approvalDate.day.toString()+"-"+approvalDate.month.toString()+"-"+approvalDate.year.toString(),style: Helper().headingStyle,)
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Row(
-                                            children: [
-                                              Text("Time : ",style: Helper().headingStyle,),
-                                              Text(approvalDate.hour.toString()+":"+approvalDate.minute.toString()+":"+approvalDate.second.toString(),style: Helper().headingStyle,)
-                                          
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Row(
-                                            children: [
-                                              Text("Status : ",style: Helper().headingStyle,),
-                                              Text(data['status'].toString(),style: Helper().headingStyle,)
-                                          
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: Row(
-                                              children: [
-                                                
-                                                Flexible(child: Text("Note : Kindly Contact the watchman if any discrepancy is found",maxLines: 4,softWrap: true,overflow:TextOverflow.visible,style: Helper().mediumStyle,))
-                                            
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      actions: [
-                                        popup.button(
-                                          label: 'Close',
-                                          onPressed: Navigator.of(context).pop,
-                                        ),
-                                      ],
-                                      // bool barrierDismissible = false,
-                                      // Widget close,
-                                    );
-                                          
-                                  },
-                                  firstName: data['name'],
-                                  lastName: "",
-                                  imageLink:
-                                      'https://cdn.cdnparenting.com/articles/2018/12/19195307/Featured-image1.jpg')).toList(),
-                              
-                            
-                          ),
-                        ),
-                      );
-                      
-                    }
-                    else{
-                      return Row(
-                        children: [
-                          CircularButtonIcon(
-                                    firstName: "Child",
-                                    lastName: "Approve",
-                                    imageLink: 'assets/child.png',
-                                    type: "approveChild"),
-                        ],
-                      );
-                    }
-                    }
-                  ),
+                      stream: Database()
+                          .getAllChildApproval(g.society, g.flatNo, g.wing),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data.docs.length > 0) {
+                          List<dynamic> list = snapshot.data.docs;
+
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children:
+                                    // NewWidget(),
+                                    list
+                                        .map((data) => CircularImageIcon(
+                                            operation: () {
+                                              final popup = BeautifulPopup(
+                                                context: context,
+                                                template:
+                                                    TemplateAuthentication,
+                                              );
+                                              DateTime approvalDate =
+                                                  DateTime.parse(data['date']
+                                                      .toDate()
+                                                      .toString());
+                                              popup.show(
+                                                title: data['name'],
+                                                content: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Date : ",
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        ),
+                                                        Text(
+                                                          approvalDate.day
+                                                                  .toString() +
+                                                              "-" +
+                                                              approvalDate.month
+                                                                  .toString() +
+                                                              "-" +
+                                                              approvalDate.year
+                                                                  .toString(),
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 12,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Time : ",
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        ),
+                                                        Text(
+                                                          approvalDate.hour
+                                                                  .toString() +
+                                                              ":" +
+                                                              approvalDate
+                                                                  .minute
+                                                                  .toString() +
+                                                              ":" +
+                                                              approvalDate
+                                                                  .second
+                                                                  .toString(),
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 12,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Status : ",
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        ),
+                                                        Text(
+                                                          data['status']
+                                                              .toString(),
+                                                          style: Helper()
+                                                              .headingStyle,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 12,
+                                                    ),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      child: Row(
+                                                        children: [
+                                                          Flexible(
+                                                              child: Text(
+                                                            "Note : Kindly Contact the watchman if any discrepancy is found",
+                                                            maxLines: 4,
+                                                            softWrap: true,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .visible,
+                                                            style: Helper()
+                                                                .mediumStyle,
+                                                          ))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  popup.button(
+                                                    label: 'Close',
+                                                    onPressed:
+                                                        Navigator.of(context)
+                                                            .pop,
+                                                  ),
+                                                ],
+                                                // bool barrierDismissible = false,
+                                                // Widget close,
+                                              );
+                                            },
+                                            firstName: data['name'],
+                                            lastName: "",
+                                            imageLink:
+                                                'https://cdn.cdnparenting.com/articles/2018/12/19195307/Featured-image1.jpg'))
+                                        .toList(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Row(
+                            children: [
+                              CircularButtonIcon(
+                                  firstName: "Child",
+                                  lastName: "Approve",
+                                  imageLink: 'assets/child.png',
+                                  type: "approveChild"),
+                            ],
+                          );
+                        }
+                      }),
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
