@@ -558,7 +558,7 @@ class Database {
     }
   }
 
-  // Visitor approval
+  // Visitor approval - Security
   Future<void> sendApproval(String society, String name, String phoneNum,
       String imageUrl, String purpose, String wing, String flatNo) async {
     try {
@@ -579,6 +579,39 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Get recent visitor approval - Security
+  Stream<QuerySnapshot> getRecentVisitorApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('postedOn',
+              isGreaterThanOrEqualTo:
+                  DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get past visitor approval - Security
+  Stream<QuerySnapshot> getPastVisitorApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('postedOn',
+              isLessThan: DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   // Get all pending visitor for specific flat
@@ -666,15 +699,13 @@ class Database {
         'purpose': purpose,
         'postedOn': DateTime.now(),
         'status': "Pending",
-        'entryTime':"",
-        'exitTime':""
       });
     } catch (e) {
       print(e.toString());
     }
   }
-// Get All pending preApproval for give flat and wing
 
+  // Get All pending preApproval for give flat and wing
   Stream<void> getAllPendingPreApprovalForGivenFlat(
       String society, String flatNo, String wing) {
     try {
@@ -693,19 +724,50 @@ class Database {
   }
 
   // Update preApproval on given status
-  Future<void> updatePendingApproval(String society,String docId,bool status) async
-  {
-    try{
-      if(status)
-     { await _firestore.collection(society).doc('PreApprovals').collection('preApproval').doc(docId).update({'status':"Approve"});}
-      else
-      {
-      await _firestore.collection(society).doc('PreApprovals').collection('preApproval').doc(docId).update({'status':"Rejected","entryTime":DateTime.now()});
-
+  Future<void> updatePendingApproval(
+      String society, String docId, bool status) async {
+    try {
+      if (status) {
+        await _firestore
+            .collection(society)
+            .doc('PreApprovals')
+            .collection('preApproval')
+            .doc(docId)
+            .update({'status': "Approve"});
+      } else {
+        await _firestore
+            .collection(society)
+            .doc('PreApprovals')
+            .collection('preApproval')
+            .doc(docId)
+            .update({'status': "Rejected", "entryTime": DateTime.now()});
       }
+    } catch (e) {
+      print(e.toString());
     }
-    catch (e)
-    {
+    return null;
+  }
+
+  Future<QueryDocumentSnapshot> verifyByCode(String society, int code) async {
+    try {
+      QuerySnapshot qs;
+      qs = await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .where('code', isEqualTo: code)
+          .get();
+      if (qs.size > 0) return qs.docs[0];
+      qs = await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('generatedToken', isEqualTo: code)
+          .where('postedOn',
+              isGreaterThan: DateTime.now().subtract(Duration(hours: 2)))
+          .get();
+      if (qs.size > 0) return qs.docs[0];
+    } catch (e) {
       print(e.toString());
     }
     return null;

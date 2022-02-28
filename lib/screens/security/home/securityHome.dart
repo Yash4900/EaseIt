@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/screens/security/approval/code_approval.dart';
+import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +14,7 @@ class SecurityHome extends StatefulWidget {
 class _SecurityHomeState extends State<SecurityHome> {
   Globals g = Globals();
   TextEditingController _codeController = TextEditingController();
+
   void onClick() {
     setState(() {});
   }
@@ -110,8 +115,28 @@ class _SecurityHomeState extends State<SecurityHome> {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      // Todo: Verify visitor by code
+                    onPressed: () async {
+                      QueryDocumentSnapshot qds = await Database().verifyByCode(
+                          g.society, int.parse(_codeController.text));
+                      if (qds == null) {
+                        showMessageDialog(context, 'Invalid Token!',
+                            'The code provided by visitor does not exists or is expired!');
+                      } else {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (context, _, __) => CodeApproval(
+                              qds['name'],
+                              qds['purpose'],
+                              qds['imageUrl'] != null
+                                  ? 'Daily Helper'
+                                  : 'Pre Approved Visitor',
+                              qds['imageUrl'] ?? '',
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -148,8 +173,10 @@ class Button extends StatelessWidget {
       child: InkWell(
         highlightColor: Color(0xff037DD6),
         onTap: () {
-          controller.text = controller.text + value.toString();
-          onClick();
+          if (controller.text.length < 6) {
+            controller.text = controller.text + value.toString();
+            onClick();
+          }
         },
         child: Container(
           margin: EdgeInsets.all(3),
