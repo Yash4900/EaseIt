@@ -1,17 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-
-class Approval {
-  String name;
-  String flatNo;
-  String purpose;
-  DateTime date;
-  Timestamp time;
-  String status;
-
-  Approval(
-      this.name, this.flatNo, this.purpose, this.date, this.time, this.status);
-}
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RecentApproval extends StatefulWidget {
   @override
@@ -19,11 +11,20 @@ class RecentApproval extends StatefulWidget {
 }
 
 class _RecentApprovalState extends State<RecentApproval> {
-  List<Approval> approvals = [
-    Approval(
-        "Pinto", "A-101", "Maid", DateTime.now(), Timestamp.now(), "PENDING"),
-    Approval("Gajanan", "B-101", "Milkman", DateTime.now(), Timestamp.now(),
-        "APPROVED")
+  Globals g = Globals();
+  List<String> days = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
   ];
 
   Color getColor(String status) {
@@ -34,66 +35,124 @@ class _RecentApprovalState extends State<RecentApproval> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: approvals.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[200],
-                  blurRadius: 3.0,
-                  spreadRadius: 1.0,
-                ),
-              ],
-            ),
-            child: ListTile(
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/profile_dummy.png'),
-              ),
-              title: Text(
-                approvals[index].name,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    approvals[index].purpose,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, color: Colors.grey[500]),
+    return StreamBuilder(
+      stream: Database().getRecentVisitorApproval(g.society),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Loading();
+        } else {
+          return snapshot.data.docs.length > 0
+              ? ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    DateTime date = ds['postedOn'].toDate();
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[200],
+                            blurRadius: 3.0,
+                            spreadRadius: 1.0,
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: ds['imageUrl'] == ""
+                              ? AssetImage('assets/dummy_image.jpg')
+                              : NetworkImage(ds['imageUrl']),
+                        ),
+                        title: Text(
+                          ds['name'],
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.home_outlined,
+                                  color: Colors.grey[600],
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  ds['purpose'],
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[500]),
+                                ),
+                                Text(
+                                  ' . ${ds['flatNo']}-${ds['wing']}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[500]),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.login,
+                                  color: Colors.grey[600],
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "${date.hour}:${date.minute}, ${date.day} ${days[date.month]}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[500]),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing: Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: getColor(ds['status'].toUpperCase())
+                                .withOpacity(0.2),
+                          ),
+                          child: Text(
+                            ds['status'].toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: getColor(ds['status'].toUpperCase()),
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    );
+                  })
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.search,
+                        size: 50,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'No Recent Approvals',
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
                   ),
-                  Text(
-                    approvals[index].flatNo,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, color: Colors.grey[500]),
-                  ),
-                  Text(
-                    "22 Jan 2021, 13:45",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, color: Colors.grey[500]),
-                  )
-                ],
-              ),
-              trailing: Container(
-                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: getColor(approvals[index].status).withOpacity(0.2),
-                ),
-                child: Text(
-                  approvals[index].status,
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: getColor(approvals[index].status),
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
-          );
-        });
+                );
+        }
+      },
+    );
   }
 }

@@ -30,9 +30,19 @@ Future<void> showMessageDialog(
         actions: <Widget>[
           Center(
             child: TextButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.grey[200]),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                ),
+              ),
               child: Text(
                 'OK',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, color: Colors.grey[600]),
               ),
               onPressed: () => Navigator.pop(context),
             ),
