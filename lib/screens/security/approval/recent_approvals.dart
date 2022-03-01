@@ -90,7 +90,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                                       color: Colors.grey[500]),
                                 ),
                                 Text(
-                                  ' . ${ds['flatNo']}-${ds['wing']}',
+                                  ' . ${ds['wing']}-${ds['flatNo']}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey[500]),

@@ -504,8 +504,7 @@ class Database {
     return;
   }
 
-// Fetch All Daily Helper in give flat
-
+  // Fetch All Daily Helper in give flat
   Stream<QuerySnapshot> getAllDailyHelperForGivenFlat(
       String society, String flatNo, String wing) {
     try {
@@ -526,18 +525,27 @@ class Database {
   Stream<QuerySnapshot> getAllDailyHelperCategory(
       String society, String category) {
     try {
-      return _firestore
-          .collection(society)
-          .doc('dailyHelpers')
-          .collection('Daily Helper')
-          .where('purpose', isEqualTo: category)
-          .snapshots();
+      if (category == "") {
+        return _firestore
+            .collection(society)
+            .doc('dailyHelpers')
+            .collection('Daily Helper')
+            .snapshots();
+      } else {
+        return _firestore
+            .collection(society)
+            .doc('dailyHelpers')
+            .collection('Daily Helper')
+            .where('purpose', isEqualTo: category)
+            .snapshots();
+      }
     } catch (e) {
       print(e.toString());
     }
     return null;
   }
 
+  // Add a daily helper - Security
   Future<void> addDailyHelper(String society, String name, String phoneNum,
       List<String> worksAt, String imageUrl, String purpose, int code) async {
     try {
@@ -556,6 +564,39 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Log daily helper visit
+  Future<void> logDailyHelperVisit(
+      String society, String docId, String activity) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(docId)
+          .collection('Log')
+          .add({'activity': activity, 'timestamp': DateTime.now()});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Get daily visitor log
+  Stream<QuerySnapshot> getDailyVisitorLog(String society, String docId) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(docId)
+          .collection('Log')
+          .orderBy('timestamp', descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   // Visitor approval - Security
@@ -745,7 +786,21 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
-    return null;
+  }
+
+  // Add entry time and exit time for pre approval
+  Future<void> logPreApproval(
+      String society, String docId, String parameter) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .doc(docId)
+          .update({parameter: DateTime.now()});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<QueryDocumentSnapshot> verifyByCode(String society, int code) async {

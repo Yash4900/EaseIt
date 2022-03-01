@@ -1,4 +1,5 @@
 import 'package:ease_it/firebase/authentication.dart';
+import 'package:ease_it/screens/common/daily_helpers/daily_helpers_list.dart';
 import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile/profile.dart';
 import 'package:ease_it/screens/resident/myVehicle.dart';
@@ -83,18 +84,14 @@ Container showDrawer(BuildContext context, String role, String name) {
             },
           ),
           ListTile(
-            leading: Icon(FontAwesomeIcons.car),
+            leading: Icon(FontAwesomeIcons.userPlus),
             title: Text(
-              role == "Security Guard" ? 'Add Vehicle' : 'My Vehicle',
+              'Daily Visitors',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => role == "Security Guard"
-                          ? AddVehicle()
-                          : MyVehicle()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DailyHelpersList()));
             },
           ),
           ListTile(
