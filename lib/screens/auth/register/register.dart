@@ -1,9 +1,15 @@
 // Register page
 
+// import 'dart:html';
+
+import 'package:ease_it/screens/auth/register/custom_dropdown_widget.dart';
+import 'package:ease_it/screens/auth/register/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:flutter/material.dart';
+import 'package:http/retry.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleScreen;
@@ -28,11 +34,49 @@ class _RegisterPageState extends State<RegisterPage> {
   String selectedSociety;
   bool loading = false;
   final formKey = GlobalKey<FormState>();
+  FlatData flatVar = FlatData();
 
   @override
   void initState() {
     selectedSociety = widget.society;
+    getSocietyStructure(selectedSociety);
     super.initState();
+  }
+
+  void _update() {
+    setState(() {});
+  }
+
+  void getSocietyStructure(String societyValue) async {
+    setState(() => loading = true);
+    //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
+    //Empty all previous data and set new data
+    flatVar.clearFlatWidgetForm();
+    flatVar.clearFlatNum();
+    flatVar.clearFlatValue();
+    flatVar.setCurrentLevel = 1;
+    flatVar.setFlatWidgetForm = [];
+    flatVar.setAllUpdateFunctions = [];
+
+    //get society info
+    Map<dynamic, dynamic> tempSnapData =
+        await Database().getSocietyInfo(societyValue);
+    print(tempSnapData);
+
+    //set structure
+    flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
+    flatVar.setTotalLevels =
+        tempSnapData["Hierarchy"].length; // set total levels
+    flatVar.setFlatValue =
+        List<String>.filled(flatVar.totalLevels, null, growable: true);
+    flatVar.addInFlatWidgetForm(CustomDropDown(
+      options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
+      typeText: flatVar.getTypeText(flatVar.currentLevel),
+      flatVariable: flatVar,
+      update: _update,
+    ));
+    //print(societyStructureWidget);
+    setState(() => loading = false);
   }
 
   @override
@@ -42,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: loading
           ? Loading()
           : Container(
-              margin: EdgeInsets.fromLTRB(30, 20, 30, 0),
+              margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: Form(
                 key: formKey,
                 child: ListView(
@@ -82,7 +126,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             );
                           }).toList(),
                           onChanged: (String value) {
-                            setState(() => selectedSociety = value);
+                            setState(() => loading = true);
+                            setState(() {
+                              selectedSociety = value;
+                              //flatVar.structure.clear();
+                              print("Called on change");
+                              getSocietyStructure(selectedSociety);
+                            });
+                            setState(() => loading = false);
                           },
                         ),
                       ],
@@ -207,6 +258,45 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           )
                         : SizedBox(),
+                    SizedBox(height: 20),
+                    Column(
+                      //physics: ClampingScrollPhysics(),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          List.generate(flatVar.flatWidgetForm.length, (i) {
+                        //return flatVar.flatWidgetForm[i];
+                        if ((i + 1) % 2 == 1) {
+                          if (i + 1 < flatVar.flatWidgetForm.length) {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: flatVar.flatWidgetForm[i],
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: flatVar.flatWidgetForm[i + 1],
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: flatVar.flatWidgetForm[i],
+                                ),
+                              ],
+                            );
+                          }
+                        } else {
+                          return SizedBox();
+                        }
+                      }),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       decoration: InputDecoration(

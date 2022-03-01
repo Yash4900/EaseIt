@@ -2,7 +2,7 @@
 
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/auth/login.dart';
-import 'package:ease_it/screens/auth/register.dart';
+import 'package:ease_it/screens/auth/register/register.dart';
 import 'package:ease_it/utility/splash_screen.dart';
 import 'package:flutter/material.dart';
 

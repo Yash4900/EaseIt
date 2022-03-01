@@ -18,6 +18,17 @@ class Database {
     return societies;
   }
 
+  Future getSocietyInfo(String societyName) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection('Society').doc(societyName).get();
+      return snap.data();
+    } catch (e) {
+      e.toString();
+      return null;
+    }
+  }
+
   Future<bool> checkRegisteredUser(String society, String email) async {
     try {
       QuerySnapshot snapshot = await _firestore
