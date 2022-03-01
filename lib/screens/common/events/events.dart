@@ -66,17 +66,17 @@ class _EventsViewState extends State<EventsView> {
                       fontSize: 16, fontWeight: FontWeight.w600),
                   tabs: [
                     Tab(
-                      text: 'Past',
+                      text: 'Upcoming',
                     ),
                     Tab(
-                      text: 'Upcoming',
+                      text: 'Past',
                     )
                   ]),
               Expanded(
                 flex: 9,
                 child: TabBarView(children: [
-                  PastEvents(),
                   UpcomingEvents(),
+                  PastEvents(),
                 ]),
               ),
               g.role == "Secretary"

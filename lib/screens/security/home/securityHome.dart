@@ -127,6 +127,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                           PageRouteBuilder(
                             opaque: false,
                             pageBuilder: (context, _, __) => CodeApproval(
+                              qds.id,
                               qds['name'],
                               qds['purpose'],
                               qds['imageUrl'] != null
@@ -143,7 +144,6 @@ class _SecurityHomeState extends State<SecurityHome> {
                       child: Text(
                         'Verify Visitor',
                         style: TextStyle(
-                            // letterSpacing: 1.2,
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
