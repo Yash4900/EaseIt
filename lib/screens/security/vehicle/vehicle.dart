@@ -1,23 +1,24 @@
-import 'package:ease_it/screens/security/parking/status.dart';
-import 'package:ease_it/screens/security/parking/actions.dart';
+import 'package:ease_it/screens/security/vehicle/allotments.dart';
+import 'package:ease_it/screens/security/vehicle/actions.dart';
+import 'package:ease_it/screens/security/vehicle/vehicle_log.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Parking extends StatefulWidget {
+class Vehicle extends StatefulWidget {
   @override
-  _ParkingState createState() => _ParkingState();
+  _VehicleState createState() => _VehicleState();
 }
 
-class _ParkingState extends State<Parking> {
+class _VehicleState extends State<Vehicle> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Parking Management',
+            'Vehicle Management',
             style: GoogleFonts.sourceSansPro(
                 fontSize: 25, fontWeight: FontWeight.w900),
           ),
@@ -33,13 +34,17 @@ class _ParkingState extends State<Parking> {
                   text: 'Actions',
                 ),
                 Tab(
-                  text: 'Current Status',
+                  text: 'Log',
+                ),
+                Tab(
+                  text: 'Allotments',
                 ),
               ]),
           Expanded(
             child: TabBarView(children: [
               ActionList(),
-              Status(),
+              VehicleLog(),
+              Allotments(),
             ]),
           ),
         ]),

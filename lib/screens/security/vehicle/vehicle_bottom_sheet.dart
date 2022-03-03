@@ -21,7 +21,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
   PageController _pageController = PageController();
   TextEditingController _wingController = TextEditingController();
   TextEditingController _flatController = TextEditingController();
-  TextEditingController _commentController = TextEditingController();
+  TextEditingController _purposeController = TextEditingController();
 
   bool loading = true;
   bool showSearch = false;
@@ -36,8 +36,34 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
     setState(() => loading = false);
   }
 
-  void logActivity() async {
+  Future logActivity() async {
     if (qs.size == 0) {
+      if (widget.isEntry) {
+        setState(() => loading = true);
+        try {
+          await Database().logVisitorVehicleEntry(
+              g.society,
+              _licensePlateController.text,
+              _flatController.text,
+              _wingController.text,
+              _purposeController.text);
+          showToast(
+              context, 'success', 'Success!', 'Activity logged successfully');
+        } catch (e) {
+          print(e.toString());
+        }
+      } else {
+        try {
+          await Database().logVisitorVehicleExit(
+            g.society,
+            _licensePlateController.text,
+          );
+          showToast(
+              context, 'success', 'Success!', 'Activity logged successfully');
+        } catch (e) {
+          print(e.toString());
+        }
+      }
     } else {
       // Resident
       if (widget.isEntry) {
@@ -106,7 +132,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                       ? AssetImage('assets/dummy_image.jpg')
                                       : NetworkImage(qs.docs[0]['imageUrl']),
                                 ),
-                                title: Flexible(
+                                title: Container(
                                   child: TextField(
                                     onChanged: (value) => showSearch = true,
                                     controller: _licensePlateController,
@@ -184,13 +210,14 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                   SizedBox(width: 10),
                                   TextButton(
                                     onPressed: () async {
-                                      if (qs.size == 0) {
+                                      if (qs.size == 0 && widget.isEntry) {
                                         _pageController.animateToPage(1,
                                             duration:
                                                 Duration(milliseconds: 500),
                                             curve: Curves.decelerate);
                                       } else {
-                                        logActivity();
+                                        await logActivity();
+                                        Navigator.pop(context);
                                       }
                                     },
                                     style: ButtonStyle(
@@ -217,7 +244,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                     ),
                                   ),
                                   SizedBox(width: 10),
-                                  qs.size == 0
+                                  qs.size == 0 && widget.isEntry
                                       ? TextButton(
                                           onPressed: () async {
                                             Navigator.push(
@@ -257,129 +284,125 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                             ],
                           ),
                           Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 30),
-                                Text(
-                                  'Visit Information',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  'FLAT',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                            hintText: 'Enter wing'),
-                                        controller: _wingController,
-                                        validator: (value) => value.length == 0
-                                            ? 'Enter wing'
-                                            : null,
-                                      ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 30),
+                              Text(
+                                'Visit Information',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'FLAT',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                          hintText: 'Enter wing'),
+                                      controller: _wingController,
+                                      validator: (value) => value.length == 0
+                                          ? 'Enter wing'
+                                          : null,
                                     ),
-                                    SizedBox(width: 10),
-                                    Flexible(
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                            hintText: 'Enter flat no'),
-                                        controller: _flatController,
-                                        validator: (value) => value.length == 0
-                                            ? 'Enter flat number'
-                                            : null,
-                                      ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Flexible(
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                          hintText: 'Enter flat no'),
+                                      controller: _flatController,
+                                      validator: (value) => value.length == 0
+                                          ? 'Enter flat number'
+                                          : null,
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  'COMMENT',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                      hintText:
-                                          'Enter purpose or any other information'),
-                                  controller: _commentController,
-                                  validator: (value) => value.length == 0
-                                      ? 'Enter comment'
-                                      : null,
-                                ),
-                                SizedBox(height: 30),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        _pageController.animateToPage(0,
-                                            duration:
-                                                Duration(milliseconds: 500),
-                                            curve: Curves.decelerate);
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.grey[200]),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                          ),
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                              color: Colors.grey[600],
-                                              fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'PURPOSE',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              TextFormField(
+                                decoration:
+                                    InputDecoration(hintText: 'Enter purpose'),
+                                controller: _purposeController,
+                                validator: (value) =>
+                                    value.length == 0 ? 'Enter purpose' : null,
+                              ),
+                              SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      _pageController.animateToPage(0,
+                                          duration: Duration(milliseconds: 500),
+                                          curve: Curves.decelerate);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.grey[200]),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(22),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    TextButton(
-                                      onPressed: () async {
-                                        logActivity();
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Color(0xff037DD6)),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                          ),
-                                        ),
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontWeight: FontWeight.w600),
                                       ),
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        child: Text(
-                                          'Log activity',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await logActivity();
+                                      Navigator.pop(context);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Color(0xff037DD6)),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(22),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                )
-                              ]),
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      child: Text(
+                                        'Log activity',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ],
                       ),
               ),
