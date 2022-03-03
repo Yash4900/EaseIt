@@ -1,10 +1,8 @@
 // Resident Landing page
-
-import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/screens/security/approval/approval.dart';
 import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/security/child_safety/child_safety.dart';
-import 'package:ease_it/screens/security/parking/parking.dart';
+import 'package:ease_it/screens/security/vehicle/vehicle.dart';
 import 'package:ease_it/screens/security/home/securityHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -23,7 +21,7 @@ class _SecurityState extends State<Security> {
   List<Widget> pages = [
     SecurityHome(),
     Approval(),
-    Parking(),
+    Vehicle(),
     ChildSafety(),
     Forum()
   ];
@@ -59,7 +57,7 @@ class _SecurityState extends State<Security> {
           BottomNavigationBarItem(
               icon: Icon(Icons.person_outline), label: 'Approval'),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.car), label: 'Parking'),
+              icon: Icon(FontAwesomeIcons.car), label: 'Vehicle'),
           BottomNavigationBarItem(
               icon: Icon(Icons.child_care_outlined), label: 'Child Safety'),
           BottomNavigationBarItem(

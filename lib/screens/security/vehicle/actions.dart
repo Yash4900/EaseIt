@@ -1,5 +1,5 @@
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
-import 'package:ease_it/screens/security/parking/vehicle_bottom_sheet.dart';
+import 'package:ease_it/screens/security/vehicle/vehicle_bottom_sheet.dart';
 import 'package:ease_it/utility/firebase_ml_api.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:flutter/material.dart';

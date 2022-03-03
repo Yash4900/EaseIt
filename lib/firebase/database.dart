@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Database {
@@ -386,6 +387,154 @@ class Database {
           .doc('vehicles')
           .collection('Vehicle')
           .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Visitor vehicle log
+  Future<void> logVisitorVehicleEntry(String society, String licensePlateNo,
+      String flatNo, String wing, String purpose,
+      [String id]) async {
+    try {
+      if (id != null) {
+        await _firestore
+            .collection(society)
+            .doc('vehicleLog')
+            .collection('Vehicle Log')
+            .doc(id)
+            .set({
+          'licensePlateNo': licensePlateNo,
+          'flatNo': flatNo,
+          'wing': wing,
+          'purpose': purpose,
+          'entryTime': DateTime.now(),
+          'exitTime': null,
+        });
+      } else {
+        await _firestore
+            .collection(society)
+            .doc('vehicleLog')
+            .collection('Vehicle Log')
+            .add({
+          'licensePlateNo': licensePlateNo,
+          'flatNo': flatNo,
+          'wing': wing,
+          'purpose': purpose,
+          'entryTime': DateTime.now(),
+          'exitTime': null,
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> logVisitorVehicleExit(
+      String society, String licensePlateNo) async {
+    try {
+      QuerySnapshot qs = await _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .where('exitTime', isNull: true)
+          .get();
+
+      String uid = qs.docs[0].id;
+      await _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .doc(uid)
+          .update({'exitTime': DateTime.now()});
+
+      // Check if vehicle was assigned parking and if yes delete assignment
+      qs = await _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .get();
+      if (qs.size > 0) {
+        uid = qs.docs[0].id;
+        await _firestore
+            .collection(society)
+            .doc('parkingAssignment')
+            .collection('Parking Assignment')
+            .doc(uid)
+            .delete();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Parking space assignment
+  Future<DocumentReference> saveParkingDetails(
+      String society,
+      String licensePlateNo,
+      String owner,
+      String phoneNum,
+      String parkingSpace) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .add({
+        'licensePlateNo': licensePlateNo,
+        'owner': owner,
+        'phoneNum': phoneNum,
+        'parkingSpace': parkingSpace,
+        'timestamp': DateTime.now()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get all parked vehicles information
+  Stream<QuerySnapshot> getParkingStatus(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get vehicle log
+  Stream<QuerySnapshot> getvehicleLog(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .orderBy('entryTime', descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get single vehicle log
+  Future<DocumentSnapshot> getSingleVehicleLog(
+      String society, String docId) async {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .doc(docId)
           .get();
     } catch (e) {
       print(e.toString());
