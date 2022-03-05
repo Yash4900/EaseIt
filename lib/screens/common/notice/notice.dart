@@ -5,7 +5,6 @@ import 'package:ease_it/screens/common/notice/single_notice.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NoticeView extends StatefulWidget {
@@ -125,10 +124,9 @@ class _NoticeViewState extends State<NoticeView> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                FontAwesomeIcons.search,
-                                size: 50,
-                                color: Colors.grey[300],
+                              Image.asset(
+                                'assets/no_data.png',
+                                width: 300,
                               ),
                               SizedBox(height: 10),
                               Text(

@@ -4,7 +4,6 @@ import 'package:ease_it/screens/common/daily_helpers/daily_helper_log.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DailyHelpersList extends StatefulWidget {
@@ -53,7 +52,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
               ),
             ),
             Expanded(
-              flex: 9,
+              flex: 11,
               child: StreamBuilder(
                 stream: Database().getAllDailyHelperCategory(g.society, ""),
                 builder: (context, snapshot) {
@@ -69,25 +68,15 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                 width: MediaQuery.of(context).size.width * 0.85,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey[300],
-                                      blurRadius: 3.0,
-                                      spreadRadius: 1.0,
-                                    ),
-                                  ],
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.grey[300]),
+                                  ),
                                 ),
                                 margin: EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
                                 child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DailyHelperLog(ds.id)));
-                                  },
                                   leading: CircleAvatar(
+                                    backgroundColor: Colors.grey[300],
                                     radius: 30,
                                     backgroundImage: ds['imageUrl'] == ""
                                         ? AssetImage('assets/dummy_image.jpg')
@@ -96,7 +85,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                   title: Text(
                                     ds['name'],
                                     style: TextStyle(
-                                        fontSize: 17,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
@@ -104,6 +93,21 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.grey[500]),
+                                  ),
+                                  trailing: TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DailyHelperLog(ds.id)));
+                                    },
+                                    child: Text(
+                                      'View log',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blue[800]),
+                                    ),
                                   ),
                                 ),
                               );
@@ -113,10 +117,9 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  FontAwesomeIcons.search,
-                                  size: 50,
-                                  color: Colors.grey[300],
+                                Image.asset(
+                                  'assets/no_data.png',
+                                  width: 300,
                                 ),
                                 SizedBox(height: 10),
                                 Text(

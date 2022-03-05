@@ -41,7 +41,7 @@ class _ResidentState extends State<Resident> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      drawer: showDrawer(context, g.role, g.fname + " " + g.lname),
+      drawer: showDrawer(context),
       backgroundColor: Colors.white,
       body: pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(

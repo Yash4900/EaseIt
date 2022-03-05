@@ -5,7 +5,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'parking_status.dart';
 
 class Allotments extends StatefulWidget {
@@ -109,10 +108,9 @@ class _AllotmentsState extends State<Allotments> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.search,
-                        size: 50,
-                        color: Colors.grey[300],
+                      Image.asset(
+                        'assets/no_data.png',
+                        width: 300,
                       ),
                       SizedBox(height: 10),
                       Text(

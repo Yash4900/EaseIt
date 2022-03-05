@@ -17,7 +17,7 @@ class _ChildSafetyState extends State<ChildSafety> {
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            'Approval Status',
+            'Child Approval',
             style: GoogleFonts.sourceSansPro(
                 fontSize: 25, fontWeight: FontWeight.w900),
           ),
@@ -30,14 +30,17 @@ class _ChildSafetyState extends State<ChildSafety> {
                   fontSize: 16, fontWeight: FontWeight.w600),
               tabs: [
                 Tab(
-                  text: 'Past',
+                  text: 'Today',
                 ),
                 Tab(
-                  text: 'Today',
+                  text: 'Past',
                 )
               ]),
           Expanded(
-            child: TabBarView(children: [PastApproval(), RecentApproval()]),
+            child: TabBarView(children: [
+              RecentApproval(),
+              PastApproval(),
+            ]),
           ),
         ]),
       ),

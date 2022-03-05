@@ -37,32 +37,32 @@ class _ParkingStatusState extends State<ParkingStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              elevation: 0,
-              leadingWidth: MediaQuery.of(context).size.width * 0.3,
-              backgroundColor: Colors.white,
-              leading: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back, color: Colors.black),
-                    SizedBox(width: 5),
-                    Text(
-                      'Back',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        leadingWidth: MediaQuery.of(context).size.width * 0.3,
+        backgroundColor: Colors.white,
+        leading: TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back, color: Colors.black),
+              SizedBox(width: 5),
+              Text(
+                'Back',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
               ),
-            ),
-            body: Padding(
+            ],
+          ),
+        ),
+      ),
+      body: loading
+          ? Loading()
+          : Padding(
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
@@ -115,7 +115,7 @@ class _ParkingStatusState extends State<ParkingStatus> {
                 ],
               ),
             ),
-          );
+    );
   }
 }
 

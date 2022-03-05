@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RecentApproval extends StatefulWidget {
   @override
@@ -33,6 +32,10 @@ class _RecentApprovalState extends State<RecentApproval> {
     return Color(0xffbb121a);
   }
 
+  String formatValue(int num) {
+    return num < 10 ? '0' + num.toString() : num.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -49,6 +52,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                     DateTime date = ds['postedOn'].toDate();
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                      padding: EdgeInsets.only(bottom: 7),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -69,50 +73,24 @@ class _RecentApprovalState extends State<RecentApproval> {
                         title: Text(
                           ds['name'],
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 5),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.home_outlined,
-                                  color: Colors.grey[600],
-                                  size: 20,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  ds['purpose'],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[500]),
-                                ),
-                                Text(
-                                  ' . ${ds['wing']}-${ds['flatNo']}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[500]),
-                                ),
-                              ],
+                            Text(
+                              '${ds['purpose']} . ${ds['wing']}-${ds['flatNo']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
                             ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.login,
-                                  color: Colors.grey[600],
-                                  size: 20,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  "${date.hour}:${date.minute}, ${date.day} ${days[date.month]}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[500]),
-                                )
-                              ],
-                            ),
+                            Text(
+                              "${formatValue(date.hour)}:${formatValue(date.minute)}, ${date.day} ${days[date.month]} ${date.year}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500]),
+                            )
                           ],
                         ),
                         trailing: Container(
@@ -138,10 +116,9 @@ class _RecentApprovalState extends State<RecentApproval> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.search,
-                        size: 50,
-                        color: Colors.grey[300],
+                      Image.asset(
+                        'assets/no_data.png',
+                        width: 300,
                       ),
                       SizedBox(height: 10),
                       Text(

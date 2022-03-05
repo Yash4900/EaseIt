@@ -19,6 +19,8 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay selectedEndTime = TimeOfDay(hour: 11, minute: 0);
   TextEditingController _nameController = TextEditingController();
   TextEditingController _venueController = TextEditingController();
+  bool isFullDayEvent = false;
+
   List<String> days = [
     "Jan",
     "Feb",
@@ -87,6 +89,10 @@ class _AddEventState extends State<AddEvent> {
       str = str + "0";
     }
     return str;
+  }
+
+  String formatValue(int num) {
+    return num < 10 ? '0' + num.toString() : num.toString();
   }
 
   @override
@@ -174,7 +180,7 @@ class _AddEventState extends State<AddEvent> {
                         InkWell(
                           onTap: () => _selectDate(context),
                           child: Container(
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.35,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey[400]),
                               borderRadius: BorderRadius.circular(5),
@@ -196,81 +202,109 @@ class _AddEventState extends State<AddEvent> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        Row(children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'FROM',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                              SizedBox(height: 5),
-                              InkWell(
-                                onTap: () => _selectStartTime(context),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey[400]),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        getTime(selectedStartTime),
+                        Row(
+                          children: [
+                            Checkbox(
+                              activeColor: Color(0xff037DD6),
+                              checkColor: Colors.white,
+                              value: isFullDayEvent,
+                              onChanged: (value) =>
+                                  setState(() => isFullDayEvent = value),
+                            ),
+                            Text(
+                              'Full day event',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        (!isFullDayEvent)
+                            ? Row(children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'FROM',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ),
+                                    SizedBox(height: 5),
+                                    InkWell(
+                                      onTap: () => _selectStartTime(context),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey[400]),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        padding: EdgeInsets.all(10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              getTime(selectedStartTime),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Icon(
+                                              Icons.access_time,
+                                              size: 18,
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(width: 10),
-                                      Icon(
-                                        Icons.access_time,
-                                        size: 18,
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'TO',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                              SizedBox(height: 5),
-                              InkWell(
-                                onTap: () => _selectEndTime(context),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey[400]),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        getTime(selectedEndTime),
+                                SizedBox(width: 20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'TO',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ),
+                                    SizedBox(height: 5),
+                                    InkWell(
+                                      onTap: () => _selectEndTime(context),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey[400]),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        padding: EdgeInsets.all(10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              getTime(selectedEndTime),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Icon(
+                                              Icons.access_time,
+                                              size: 18,
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(width: 10),
-                                      Icon(
-                                        Icons.access_time,
-                                        size: 18,
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ]),
+                              ])
+                            : SizedBox(),
                         SizedBox(height: 40),
                         Center(
                           child: TextButton(
@@ -284,12 +318,14 @@ class _AddEventState extends State<AddEvent> {
                                   setState(() => loading = true);
                                   Database()
                                       .addEvent(
-                                          g.society,
-                                          _nameController.text,
-                                          _venueController.text,
-                                          selectedDate,
-                                          '${selectedStartTime.hour.toString()}:${selectedStartTime.minute.toString()}',
-                                          '${selectedEndTime.hour.toString()}:${selectedEndTime.minute.toString()}')
+                                    g.society,
+                                    _nameController.text,
+                                    _venueController.text,
+                                    selectedDate,
+                                    isFullDayEvent,
+                                    '${formatValue(selectedStartTime.hour)}:${formatValue(selectedStartTime.minute)}',
+                                    '${formatValue(selectedEndTime.hour)}:${formatValue(selectedEndTime.minute)}',
+                                  )
                                       .then((value) {
                                     setState(() => loading = false);
                                     showToast(context, "success", "Success!",
@@ -311,7 +347,8 @@ class _AddEventState extends State<AddEvent> {
                             ),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff037DD6)),
+                                Color(0xff037DD6),
+                              ),
                             ),
                           ),
                         )

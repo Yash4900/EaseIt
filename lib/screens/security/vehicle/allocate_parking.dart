@@ -177,7 +177,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         _phoneController.text,
                                         map['parking_space']);
                                     setState(() => loading = false);
-                                    await showAlertDialog(
+                                    await showMessageDialog(
                                         context,
                                         'Parking Assignment',
                                         'Parking assignment is ${map['parking_space']}');
