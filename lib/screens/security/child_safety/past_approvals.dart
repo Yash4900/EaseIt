@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Approval {
   String name;
@@ -45,6 +44,10 @@ class _PastApprovalState extends State<PastApproval> {
     return Color(0xffbb121a);
   }
 
+  String formatValue(int num) {
+    return num < 10 ? '0' + num.toString() : num.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -75,25 +78,19 @@ class _PastApprovalState extends State<PastApproval> {
                         title: Text(
                           ds['name'],
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Flat: ${ds['wing']}-${ds['flatNo']}',
+                              'Flat: ${ds['wing'].toUpperCase()}-${ds['flatNo']}  Age: ${ds['age']}',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey[500]),
                             ),
                             Text(
-                              'Age: ${ds['age']}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
-                            ),
-                            Text(
-                              "Time: ${date.day} ${days[date.month - 1]} ${date.year}",
+                              "Time: ${formatValue(date.hour)}:${formatValue(date.minute)}, ${date.day} ${days[date.month - 1]} ${date.year}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey[500]),
@@ -124,10 +121,9 @@ class _PastApprovalState extends State<PastApproval> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.search,
-                        size: 50,
-                        color: Colors.grey[300],
+                      Image.asset(
+                        'assets/no_data.png',
+                        width: 300,
                       ),
                       SizedBox(height: 10),
                       Text(

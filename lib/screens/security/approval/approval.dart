@@ -99,14 +99,17 @@ class _ApprovalState extends State<Approval> {
                   fontSize: 16, fontWeight: FontWeight.w600),
               tabs: [
                 Tab(
-                  text: 'Past',
+                  text: 'Today',
                 ),
                 Tab(
-                  text: 'Today',
+                  text: 'Past',
                 )
               ]),
           Expanded(
-            child: TabBarView(children: [PastApproval(), RecentApproval()]),
+            child: TabBarView(children: [
+              RecentApproval(),
+              PastApproval(),
+            ]),
           ),
         ]),
       ),

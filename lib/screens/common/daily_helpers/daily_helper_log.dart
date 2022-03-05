@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DailyHelperLog extends StatefulWidget {
   final String docId;
@@ -72,8 +71,8 @@ class _DailyHelperLogState extends State<DailyHelperLog> {
                           padding: EdgeInsets.all(8),
                           width: MediaQuery.of(context).size.width * 0.85,
                           color: ds['activity'] == 'exit'
-                              ? Colors.grey[300]
-                              : Colors.grey[200],
+                              ? Colors.grey[200]
+                              : Colors.grey[100],
                           margin: EdgeInsets.all(5),
                           child: Row(
                             children: [
@@ -109,10 +108,9 @@ class _DailyHelperLogState extends State<DailyHelperLog> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            FontAwesomeIcons.search,
-                            size: 50,
-                            color: Colors.grey[300],
+                          Image.asset(
+                            'assets/no_data.png',
+                            width: 300,
                           ),
                           SizedBox(height: 10),
                           Text(

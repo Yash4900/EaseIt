@@ -261,19 +261,34 @@ class Database {
   }
 
   Future<void> addEvent(String societyName, String name, String venue,
-      DateTime date, String from, String to) async {
+      DateTime date, bool isFullDayEvent,
+      [String from, String to]) async {
     try {
-      await _firestore
-          .collection(societyName)
-          .doc('events')
-          .collection('Event')
-          .add({
-        'name': name,
-        'venue': venue,
-        'date': date,
-        'from': from,
-        'to': to
-      });
+      if (isFullDayEvent) {
+        await _firestore
+            .collection(societyName)
+            .doc('events')
+            .collection('Event')
+            .add({
+          'isFullDay': true,
+          'name': name,
+          'venue': venue,
+          'date': date,
+        });
+      } else {
+        await _firestore
+            .collection(societyName)
+            .doc('events')
+            .collection('Event')
+            .add({
+          'isFullDay': false,
+          'name': name,
+          'venue': venue,
+          'date': date,
+          'from': from,
+          'to': to
+        });
+      }
     } catch (e) {
       print(e.toString());
     }

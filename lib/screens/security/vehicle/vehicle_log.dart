@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VehicleLog extends StatefulWidget {
   @override
@@ -12,6 +11,14 @@ class VehicleLog extends StatefulWidget {
 
 class _VehicleLogState extends State<VehicleLog> {
   Globals g = Globals();
+
+  String formatValue(int num) {
+    if (num < 10) {
+      return '0' + num.toString();
+    } else
+      return num.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -37,18 +44,15 @@ class _VehicleLogState extends State<VehicleLog> {
                       margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[300],
-                            blurRadius: 3.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ],
+                        border: Border(
+                          bottom: BorderSide(color: Colors.grey[300]),
+                        ),
                       ),
                       child: ListTile(
                         title: Text(
                           ds['licensePlateNo'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         subtitle: Column(
                           children: [
@@ -59,7 +63,10 @@ class _VehicleLogState extends State<VehicleLog> {
                                   color: Colors.grey,
                                   size: 20,
                                 ),
-                                Text('  ${ds['wing']}-${ds['flatNo']}')
+                                Text(
+                                  '  ${ds['wing']}-${ds['flatNo']}',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                )
                               ],
                             ),
                             Row(
@@ -70,11 +77,20 @@ class _VehicleLogState extends State<VehicleLog> {
                                   size: 20,
                                 ),
                                 Text(
-                                    '  ${entryTime.hour}:${entryTime.minute}:${entryTime.second} - '),
+                                  '  ${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)} - ',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
                                 exitTime != null
                                     ? Text(
-                                        '${exitTime.hour}:${exitTime.minute}:${exitTime.second}')
-                                    : Text('present'),
+                                        '${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      )
+                                    : Text(
+                                        'present',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
                               ],
                             )
                           ],
@@ -103,10 +119,9 @@ class _VehicleLogState extends State<VehicleLog> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        FontAwesomeIcons.search,
-                        size: 50,
-                        color: Colors.grey[300],
+                      Image.asset(
+                        'assets/no_data.png',
+                        width: 300,
                       ),
                       SizedBox(height: 10),
                       Text(

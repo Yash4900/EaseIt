@@ -90,7 +90,8 @@ class _SecurityHomeState extends State<SecurityHome> {
                           },
                           child: Container(
                             margin: EdgeInsets.all(3),
-                            child: Center(child: Icon(Icons.backspace)),
+                            child:
+                                Center(child: Icon(Icons.backspace_outlined)),
                           ),
                         ),
                       ),
