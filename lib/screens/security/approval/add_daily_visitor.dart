@@ -375,7 +375,30 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                     showMessageDialog(
                                         context,
                                         'Daily visitor added successfully!',
-                                        'Code is $code');
+                                        '', [
+                                      Center(
+                                        child: Image.asset(
+                                          'assets/success.png',
+                                          width: 230,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          'Approval code for the visitor is',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          code.toString(),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )
+                                    ]);
                                   });
                                 }
                               }
