@@ -114,7 +114,7 @@ class _AllotmentsState extends State<Allotments> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'No parking allocation',
+                        'No parking allotments',
                         style: TextStyle(color: Colors.grey),
                       )
                     ],

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-Future<void> showMessageDialog(
-    BuildContext context, String title, String message) async {
+Future<void> showMessageDialog(BuildContext context, String title,
+    [String message, List<Widget> content]) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -12,19 +12,22 @@ Future<void> showMessageDialog(
         title: Center(
           child: Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
-              Center(
-                child: Text(
-                  message,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 15),
-                ),
-              ),
-            ],
+            children: content != null
+                ? content
+                : <Widget>[
+                    Center(
+                      child: Text(
+                        message,
+                        style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                      ),
+                    ),
+                  ],
           ),
         ),
         actions: <Widget>[
@@ -32,7 +35,7 @@ Future<void> showMessageDialog(
             child: TextButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.grey[200]),
+                    MaterialStateProperty.all<Color>(Color(0xff037DD6)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22),
@@ -41,8 +44,8 @@ Future<void> showMessageDialog(
               ),
               child: Text(
                 'OK',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: Colors.grey[600]),
+                style:
+                    TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -85,7 +88,7 @@ Future<bool> showConfirmationDialog(
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                        MaterialStateProperty.all<Color>(Color(0xff037DD6)),
                   ),
                   child: Text(
                     'YES',
