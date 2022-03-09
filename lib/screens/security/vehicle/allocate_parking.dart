@@ -178,9 +178,30 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         map['parking_space']);
                                     setState(() => loading = false);
                                     await showMessageDialog(
-                                        context,
-                                        'Parking Assignment',
-                                        'Parking assignment is ${map['parking_space']}');
+                                        context, 'Parking Assignment', '', [
+                                      Center(
+                                        child: Image.asset(
+                                          'assets/success.png',
+                                          width: 230,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          'Parking space allotment is',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          map['parking_space'],
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )
+                                    ]);
                                   }
                                   Database().logVisitorVehicleEntry(
                                       g.society,

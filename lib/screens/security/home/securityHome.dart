@@ -120,9 +120,29 @@ class _SecurityHomeState extends State<SecurityHome> {
                       QueryDocumentSnapshot qds = await Database().verifyByCode(
                           g.society, int.parse(_codeController.text));
                       if (qds == null) {
-                        showMessageDialog(context, 'Invalid Token!',
-                            'The code provided by visitor does not exists or is expired!');
+                        showMessageDialog(context, 'Invalid Code!', '', [
+                          Center(
+                            child: Image.asset(
+                              'assets/error.png',
+                              width: 230,
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              'The code provided by visitor does not exists or is expired!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 16),
+                            ),
+                          ),
+                        ]);
                       } else {
+                        String imageUrl = null;
+                        try {
+                          imageUrl = qds['imageUrl'];
+                        } catch (e) {
+                          print(e.toString());
+                        }
                         Navigator.push(
                           context,
                           PageRouteBuilder(
@@ -131,10 +151,10 @@ class _SecurityHomeState extends State<SecurityHome> {
                               qds.id,
                               qds['name'],
                               qds['purpose'],
-                              qds['imageUrl'] != null
+                              imageUrl != null
                                   ? 'Daily Helper'
                                   : 'Pre Approved Visitor',
-                              qds['imageUrl'] ?? '',
+                              imageUrl ?? '',
                             ),
                           ),
                         );

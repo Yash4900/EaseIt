@@ -1,12 +1,13 @@
 // Fetch data from flask API
 
-import 'package:ease_it/utility/ip_address.dart';
 import 'package:http/http.dart' as http;
 
 class API {
+  String _domain = 'https://parking-model.herokuapp.com';
+
   getUsage(String society, String licensePlateNo) async {
     var url = Uri.parse(
-        'http://$ipAddress:5000/usage?society=$society&licensePlateNo=$licensePlateNo');
+        '$_domain/usage?society=$society&licensePlateNo=$licensePlateNo');
     http.Response response;
     try {
       response = await http.get(url);
@@ -22,7 +23,7 @@ class API {
 
   vehicleExit(String society, String licensePlateNo) async {
     var url = Uri.parse(
-        'http://$ipAddress:5000/exit?society=$society&licensePlateNo=$licensePlateNo');
+        '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo');
     http.Response response;
     try {
       response = await http.post(url);
@@ -40,7 +41,7 @@ class API {
 
   vehicleEntry(String society, String licensePlateNo) async {
     var url = Uri.parse(
-        'http://$ipAddress:5000/entry?society=$society&licensePlateNo=$licensePlateNo');
+        '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo');
     http.Response response;
     try {
       response = await http.post(url);
@@ -57,8 +58,7 @@ class API {
   }
 
   allocateParking(String society, String stayTime) async {
-    var url = Uri.parse(
-        'http://$ipAddress:5000/allocate?society=$society&time=$stayTime');
+    var url = Uri.parse('$_domain/allocate?society=$society&time=$stayTime');
     http.Response response;
     try {
       response = await http.get(url);
