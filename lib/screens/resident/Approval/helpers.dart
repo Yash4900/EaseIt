@@ -50,7 +50,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => VisitorProfile(),
+                                    builder: (context) => VisitorProfile(visitorData: e,),
                                   ),
                                 );
                               },

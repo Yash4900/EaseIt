@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 
 class AllocateParking extends StatefulWidget {
@@ -16,8 +19,9 @@ class AllocateParking extends StatefulWidget {
 class _AllocateParkingState extends State<AllocateParking> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-  TextEditingController _modelController = TextEditingController();
+  TextEditingController _purposeController = TextEditingController();
   TextEditingController _flatController = TextEditingController();
+  TextEditingController _wingController = TextEditingController();
   TextEditingController _stayTimeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Globals g = Globals();
@@ -64,6 +68,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                   ),
                   SizedBox(height: 30),
                   Form(
+                    key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -95,16 +100,16 @@ class _AllocateParkingState extends State<AllocateParking> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'MODEL',
+                          'PURPOSE',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                         TextFormField(
                           decoration:
-                              InputDecoration(hintText: 'Enter vehicle model'),
-                          controller: _modelController,
+                              InputDecoration(hintText: 'Enter purpose'),
+                          controller: _purposeController,
                           validator: (value) =>
-                              value.length == 0 ? 'Enter vehicle model' : null,
+                              value.length == 0 ? 'Enter purpose' : null,
                         ),
                         SizedBox(height: 20),
                         Text(
@@ -114,6 +119,16 @@ class _AllocateParkingState extends State<AllocateParking> {
                         ),
                         Row(
                           children: [
+                            Flexible(
+                              child: TextFormField(
+                                decoration:
+                                    InputDecoration(hintText: 'Enter wing'),
+                                controller: _wingController,
+                                validator: (value) =>
+                                    value.length == 0 ? 'Enter wing' : null,
+                              ),
+                            ),
+                            SizedBox(width: 10),
                             Flexible(
                               child: TextFormField(
                                 decoration: InputDecoration(
@@ -147,11 +162,38 @@ class _AllocateParkingState extends State<AllocateParking> {
                                 if (confirmation) {
                                   setState(() => loading = true);
                                   var response = await API().allocateParking(
-                                      g.society, _stayTimeController.text);
+                                      g.society
+                                          .replaceAll(" ", "")
+                                          .toLowerCase(),
+                                      _stayTimeController.text);
                                   Map<String, dynamic> map =
                                       jsonDecode(response);
-                                  print(map['parking_space']);
+                                  DocumentReference dr;
+                                  if (map['parking_space'] != '') {
+                                    dr = await Database().saveParkingDetails(
+                                        g.society,
+                                        widget.licensePlateNo,
+                                        _nameController.text,
+                                        _phoneController.text,
+                                        map['parking_space']);
+                                    setState(() => loading = false);
+                                    await showMessageDialog(
+                                        context,
+                                        'Parking Assignment',
+                                        'Parking assignment is ${map['parking_space']}');
+                                  }
+                                  Database().logVisitorVehicleEntry(
+                                      g.society,
+                                      widget.licensePlateNo,
+                                      _flatController.text,
+                                      _wingController.text,
+                                      _purposeController.text,
+                                      dr.id);
                                 }
+                                int count = 0;
+                                Navigator.popUntil(context, (route) {
+                                  return count++ == 2;
+                                });
                               }
                             },
                             child: Padding(

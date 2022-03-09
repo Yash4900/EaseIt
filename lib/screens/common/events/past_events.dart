@@ -3,7 +3,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PastEvents extends StatefulWidget {
   @override
@@ -26,12 +25,14 @@ class _PastEventsState extends State<PastEvents> {
     "Nov",
     "Dec"
   ];
+
   List<Color> colors = [
     Color(0xff2680eb),
     Color(0xffe34850),
     Color(0xffe68619),
     Color(0xff2d9d78)
   ];
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -47,8 +48,7 @@ class _PastEventsState extends State<PastEvents> {
                       DocumentSnapshot ds = snapshot.data.docs[index];
                       DateTime date = ds['date'].toDate();
                       return Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        margin: EdgeInsets.all(10),
                         child: Row(
                           children: [
                             Expanded(
@@ -102,7 +102,9 @@ class _PastEventsState extends State<PastEvents> {
                                         Icon(Icons.access_time, size: 18),
                                         SizedBox(width: 10),
                                         Text(
-                                          ds['from'] + " - " + ds['to'],
+                                          ds['isFullDay']
+                                              ? 'All day'
+                                              : ds['from'] + " - " + ds['to'],
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600),
                                         ),
@@ -120,10 +122,9 @@ class _PastEventsState extends State<PastEvents> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.search,
-                          size: 50,
-                          color: Colors.grey[300],
+                        Image.asset(
+                          'assets/no_data.png',
+                          width: 300,
                         ),
                         SizedBox(height: 10),
                         Text(

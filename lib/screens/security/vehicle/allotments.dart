@@ -1,57 +1,24 @@
+// Displays list of currently parked visitor vehicles in society
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'parking_status.dart';
 
-class Approval {
-  String name;
-  String flatNo;
-  int age;
-  DateTime date;
-
-  String status;
-
-  Approval(this.name, this.flatNo, this.age, this.date, this.status);
-}
-
-class PastApproval extends StatefulWidget {
+class Allotments extends StatefulWidget {
   @override
-  _PastApprovalState createState() => _PastApprovalState();
+  _AllotmentsState createState() => _AllotmentsState();
 }
 
-class _PastApprovalState extends State<PastApproval> {
-  bool loading = false;
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
+class _AllotmentsState extends State<Allotments> {
   Globals g = Globals();
-
-  Color getColor(String status) {
-    if (status == "PENDING") return Color(0xff037DD6);
-    if (status == "APPROVED") return Color(0xff107154);
-    return Color(0xffbb121a);
-  }
-
-  String formatValue(int num) {
-    return num < 10 ? '0' + num.toString() : num.toString();
-  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Database().getPastChildApproval(g.society),
+      stream: Database().getParkingStatus(g.society),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Loading();
@@ -61,7 +28,7 @@ class _PastApprovalState extends State<PastApproval> {
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
-                    DateTime date = ds['date'].toDate();
+                    print(ds);
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
                       decoration: BoxDecoration(
@@ -75,48 +42,68 @@ class _PastApprovalState extends State<PastApproval> {
                         ],
                       ),
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ParkingStatus(
+                                      ds.id,
+                                      ds['owner'],
+                                      ds['phoneNum'],
+                                      ds['licensePlateNo'],
+                                      ds['parkingSpace'],
+                                      ds['timestamp'].toDate())));
+                        },
                         title: Text(
-                          ds['name'],
+                          ds['licensePlateNo'],
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Flat: ${ds['wing'].toUpperCase()}-${ds['flatNo']}  Age: ${ds['age']}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Owner',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              ],
                             ),
                             Text(
-                              "Time: ${formatValue(date.hour)}:${formatValue(date.minute)}, ${date.day} ${days[date.month - 1]} ${date.year}",
+                              '${ds['owner']}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
-                            )
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black54,
+                                  fontSize: 15),
+                            ),
                           ],
                         ),
                         trailing: Container(
-                          decoration: BoxDecoration(
-                              color: getColor(ds['status'].toUpperCase())
-                                  .withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10)),
                           padding:
                               EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          decoration: BoxDecoration(
+                              color: Color(0xff037DD6).withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10)),
                           child: Text(
-                            ds['status'].toUpperCase(),
+                            ds['parkingSpace'],
                             style: TextStyle(
-                              fontSize: 12,
-                              color: getColor(ds['status'].toUpperCase()),
-                              fontWeight: FontWeight.w600,
-                            ),
+                                color: Color(0xff037DD6),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
                           ),
                         ),
                       ),
                     );
-                  },
-                )
+                  })
               : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +114,7 @@ class _PastApprovalState extends State<PastApproval> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'No Recent Approvals',
+                        'No parking allocation',
                         style: TextStyle(color: Colors.grey),
                       )
                     ],

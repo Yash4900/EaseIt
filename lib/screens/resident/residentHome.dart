@@ -5,6 +5,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 
 class ResidentHome extends StatefulWidget {
   @override
@@ -40,35 +41,136 @@ class _ResidentHomeState extends State<ResidentHome> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    CircularImageIcon(
-                      firstName: "Amol",
-                      lastName: "Thopate",
-                      imageLink:
-                          'https://m.media-amazon.com/images/M/MV5BYzMwMmVlODYtN2M0MS00Y2Q4LWI1N2ItYzljYzNlMTI5YjI4XkEyXkFqcGdeQXVyMTYwNjkzNDc@._V1_UY180_CR45,0,180,180_AL_.jpg',
-                      operation: () {
-                        return showDialog(
-                            barrierColor: Colors.red[50],
-                            context: context,
-                            builder: (context) => ApprovalAlert(
-                                  message: "Approve the Visitor",
-                                  operation: () {},
-                                ));
-                      },
+                    StreamBuilder(
+                      stream: Database().getAllPendingVisitorForGivenFlat(g.society, g.flatNo, g.wing),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData && snapshot.data.docs.length>0)
+                          {
+                            List<dynamic> pendingApproval=snapshot.data.docs;
+                            return Row(
+                              children: pendingApproval.map((data) => 
+                              CircularImageIcon(
+                              firstName: data['name'].split(' ')[0],
+                              lastName: data['name'].split(' ').length>1?data['name'].split(' ')[1]:"",
+                              imageLink:
+                                  data['imageUrl'],
+                              operation: () {
+                                return showDialog(
+                                    barrierColor: Color.fromRGBO(0, 0, 100, 0.5),
+                                    context: context,
+                                    builder: (context) => ApprovalAlert(
+                                          message: "Approve the Visitor",
+                                          operation: Database().updateVisitorApproval,
+                                          data: data,
+                                        ));
+                              },
+                            ),).toList(),
+                            );
+                          }
+                          else{
+                            return CircularButtonIcon(
+                              firstName: "No",
+                              lastName: "Visitor",
+                              imageLink:'assets/guest.png'
+                                
+                             
+                            );
+                          }
+                        
+                      }
                     ),
-                    CircularImageIcon(
-                        operation: () {
-                          return showDialog(
-                              barrierColor: Colors.red[50],
-                              context: context,
-                              builder: (context) => ApprovalAlert(
-                                    message: "Approve the Visitor",
-                                    operation: () {},
-                                  ));
-                        },
-                        firstName: "Ramu",
-                        lastName: "Thopate",
-                        imageLink:
-                            'https://lh3.googleusercontent.com/mT4DqgvnPFpzmHQrPV66ud9kUrdBd4wSjR90HyPxn2F5qYn2QuChVy1m_yKU_Awd5_tyqifHElUBh4YkbTZ1HsmT'),
+                    StreamBuilder(
+                      stream: Database().getAllPendingPreApprovalForGivenFlat(g.society, g.flatNo, g.wing),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData && snapshot.data.docs.length>0)
+                          {
+                            List<dynamic> pendingApproval=snapshot.data.docs;
+                            Map<String,String> purposeToImage={};
+                            purposeToImage["VisitingHelp"]="https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Ftechnical-support.png?alt=media&token=c4112d24-bb2e-4d4c-8906-c32804845794";
+                            purposeToImage["Guest"]="https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351";
+                            purposeToImage["Cab"]="https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Ftaxi.png?alt=media&token=1c15e15e-9c02-48a9-bf96-cfdaf71b043f";
+                            purposeToImage["Delivery"]="https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fdelivery-man.png?alt=media&token=f0678091-2a3e-4958-a289-3c44e5b39880";
+
+                            return Row(
+                              children: pendingApproval.map((data) => 
+                              CircularImageIcon(
+                              operation: () {
+                                final popup = BeautifulPopup(
+                                      context: context,
+                                      template: TemplateAuthentication,
+                                    );
+                                    DateTime approvalDate = DateTime.parse(data['postedOn'].toDate().toString());
+                                    popup.show(
+                                    
+                                      title: data['name'],
+                                      content: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("Date : ",style: Helper().headingStyle,),
+                                              Text(approvalDate.day.toString()+"-"+approvalDate.month.toString()+"-"+approvalDate.year.toString(),style: Helper().headingStyle,)
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Row(
+                                            children: [
+                                              Text("Time : ",style: Helper().headingStyle,),
+                                              Text(approvalDate.hour.toString()+":"+approvalDate.minute.toString()+":"+approvalDate.second.toString(),style: Helper().headingStyle,)
+                                          
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Row(
+                                            children: [
+                                              Text("Status : ",style: Helper().headingStyle,),
+                                              Text(data['status'].toString(),style: Helper().headingStyle,)
+                                          
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                           Row(
+                                            children: [
+                                              Text("Code : ",style: Helper().headingStyle,),
+                                              Text(data['generatedToken'].toString(),style: Helper().headingStyle,)
+                                          
+                                            ],
+                                          ),
+                                          SizedBox(height: 12,),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: Row(
+                                              children: [
+                                                
+                                                Flexible(child: Text("Note : Kindly Contact the watchman if any discrepancy is found",maxLines: 4,softWrap: true,overflow:TextOverflow.visible,style: Helper().mediumStyle,))
+                                            
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        popup.button(
+                                          label: 'Cancel PreApproval ',
+                                          onPressed: ()=>{Database().updatePendingApproval(g.society, data.id, false),
+                                          Navigator.of(context).pop}
+                                        ),
+                                      ],
+                                      // bool barrierDismissible = false,
+                                      // Widget close,
+                                    );
+                              },
+                              firstName: data['name'].split(' ')[0],
+                              lastName: data['name'].split(' ').length>1?data['name'].split(' ')[1]:"",
+                              imageLink:purposeToImage[data['purpose']],
+                            ),).toList(),
+                            );
+                          }
+                          else{
+                            return Container();
+                          }
+                        
+                      }
+                    ),
                   ],
                 ),
               ),

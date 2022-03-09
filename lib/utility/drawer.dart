@@ -1,14 +1,15 @@
 import 'package:ease_it/firebase/authentication.dart';
+import 'package:ease_it/screens/common/daily_helpers/daily_helpers_list.dart';
 import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile/profile.dart';
-import 'package:ease_it/screens/resident/myVehicle.dart';
 import 'package:ease_it/screens/common/info/all_residents_info.dart';
-import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
+import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/info/all_security_guards_info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Container showDrawer(BuildContext context, String role, String name) {
+Container showDrawer(BuildContext context) {
+  Globals g = Globals();
   return Container(
     width: MediaQuery.of(context).size.width * 0.6,
     child: Drawer(
@@ -24,29 +25,36 @@ Container showDrawer(BuildContext context, String role, String name) {
                     Colors.black.withOpacity(0.5), BlendMode.srcATop),
               ),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      g.society,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    role,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
+                ]),
+          ),
+          ListTile(
+            title: Text(
+              g.fname + ' ' + g.lname,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              g.role,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Divider(
+              color: Colors.grey,
             ),
           ),
           ListTile(
@@ -56,6 +64,7 @@ Container showDrawer(BuildContext context, String role, String name) {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ProfilePage()));
             },
@@ -67,6 +76,8 @@ Container showDrawer(BuildContext context, String role, String name) {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => EventsView()));
             },
@@ -78,23 +89,23 @@ Container showDrawer(BuildContext context, String role, String name) {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ResidentInfoPage()));
             },
           ),
           ListTile(
-            leading: Icon(FontAwesomeIcons.car),
+            leading: Icon(FontAwesomeIcons.userPlus, size: 20),
             title: Text(
-              role == "Security Guard" ? 'Add Vehicle' : 'My Vehicle',
+              'Daily Visitors',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => role == "Security Guard"
-                          ? AddVehicle()
-                          : MyVehicle()));
+              Navigator.pop(context);
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DailyHelpersList()));
             },
           ),
           ListTile(
@@ -104,6 +115,8 @@ Container showDrawer(BuildContext context, String role, String name) {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SecurityGuardInfo()));
             },

@@ -1,5 +1,12 @@
+import 'dart:math';
+
+import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
+import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
+import 'package:ease_it/screens/security/approval/approval.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 
 class PreApproval extends StatefulWidget {
   @override
@@ -68,6 +75,15 @@ class _PreApprovalState extends State<PreApproval> {
 class CircularButtonIcon2 extends StatelessWidget {
   final String firstName, lastName, type, imageLink;
 
+  int generateCode() {
+    var random = Random();
+    int code = 0;
+    for (int i = 0; i < 6; i++) {
+      code = (code * 10 + random.nextInt(9) + 1);
+    }
+    return code;
+  }
+
   CircularButtonIcon2(
       {this.firstName, this.lastName, this.imageLink, this.type});
 
@@ -81,6 +97,9 @@ class CircularButtonIcon2 extends StatelessWidget {
             {
               TextEditingController nameController = TextEditingController();
               TextEditingController phoneController = TextEditingController();
+              TextEditingController vehicleNo = TextEditingController();
+              TextEditingController wing = TextEditingController();
+
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -93,61 +112,102 @@ class CircularButtonIcon2 extends StatelessWidget {
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(32.0)),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter email',
-                                  hintStyle: TextStyle(fontSize: 14),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter name',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  controller: nameController,
                                 ),
-                                controller: nameController,
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter email',
-                                  hintStyle: TextStyle(fontSize: 14),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter phoneNo',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: phoneController,
                                 ),
-                                keyboardType: TextInputType.number,
-                                controller: phoneController,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  print(phoneController.text);
-                                  print(nameController.text);
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter VehicleNo',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  // keyboardType: TextInputType.number,
+                                  controller: vehicleNo,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                
+                                TextButton(
+                                  onPressed: () async { 
+                                    int code=generateCode();
+                                    await Database().addPreApprovalEntry(g.society, nameController.text, phoneController.text,vehicleNo.text ,g.flatNo, g.wing,code.toString(),"Guest");
+                                    
+                                     final popup = BeautifulPopup(
+                                      context: context,
+                                      template: TemplateNotification,
+                                    );
+                                    
+                                    popup.show(
+                                      title:"TOKEN",
+                                      content: Column(
+                                        children: [
+                                          Text(code.toString(),style:Helper().headingStyle ,)
+                                        ],
+                                      ),
+                                      actions: [
+                                        popup.close,
+                                        popup.button(
+                                          label: 'Close',
+                                          onPressed:(){
+                                            int count=2;
+                                            Navigator.of(context).popUntil((_) => count-- <= 0);
 
-                                  Navigator.of(context).pop();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8)),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                                  child: Text(
-                                    'Generate Token',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
+                                          },
+                                        ),
+                                      ]
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xff1a73e8)),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                                    child: Text(
+                                      'Generate Token',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ));
+                      
             }
+            
             break;
           case "taxi":
             {
-              TextEditingController hourController = TextEditingController();
+              TextEditingController nameController = TextEditingController();
+              TextEditingController phoneController = TextEditingController();
               TextEditingController carController = TextEditingController();
               return showDialog(
                   context: context,
@@ -161,50 +221,87 @@ class CircularButtonIcon2 extends StatelessWidget {
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(32.0)),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter the hour',
-                                  hintStyle: TextStyle(fontSize: 14),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the name',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  controller: nameController,
                                 ),
-                                controller: hourController,
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter car Number',
-                                  hintStyle: TextStyle(fontSize: 14),
+                                 SizedBox(height: 10),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter phone Number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: phoneController,
                                 ),
-                                keyboardType: TextInputType.text,
-                                controller: carController,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8)),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter car Number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  controller: carController,
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                                  child: Text(
-                                    'Generate Token',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    int code=generateCode();
+                                      Database().addPreApprovalEntry(g.society, nameController.text, phoneController.text,carController.text, g.flatNo, g.wing,code.toString(),"Cab");
+                                        final popup = BeautifulPopup(
+                                        context: context,
+                                        template: TemplateNotification,
+                                      );
+                                      
+                                      popup.show(
+                                        title:"TOKEN",
+                                        content: Column(
+                                          children: [
+                                            Text(code.toString(),style:Helper().headingStyle ,)
+                                          ],
+                                        ),
+                                        actions: [
+                                          popup.close,
+                                          popup.button(
+                                            label: 'Close',
+                                            onPressed:(){
+                                              int count=2;
+                                              Navigator.of(context).popUntil((_) => count-- <= 0);
+                          
+                                            },
+                                          ),
+                                        ]
+                                      );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xff1a73e8)),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                                    child: Text(
+                                      'Generate Token',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ));
@@ -212,8 +309,9 @@ class CircularButtonIcon2 extends StatelessWidget {
             break;
           case "delivery":
             {
-              TextEditingController companyController = TextEditingController();
-              TextEditingController hourController = TextEditingController();
+              TextEditingController vehicleController = TextEditingController();
+              TextEditingController nameController = TextEditingController();
+              TextEditingController phoneController = TextEditingController();
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -227,50 +325,94 @@ class CircularButtonIcon2 extends StatelessWidget {
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(32.0)),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter the hour',
-                                  hintStyle: TextStyle(fontSize: 14),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the Name',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  controller: nameController,
                                 ),
-                                controller: hourController,
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Company Name',
-                                  hintStyle: TextStyle(fontSize: 14),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                keyboardType: TextInputType.text,
-                                controller: companyController,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8)),
+                                 TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Phone Number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: phoneController,
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                                  child: Text(
-                                    'Generate Token',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                 TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Vehicle Number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  controller: vehicleController,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    int code=generateCode();
+                                      Database().addPreApprovalEntry(g.society, nameController.text,phoneController.text ,vehicleController.text, g.flatNo, g.wing,code.toString(),"Delivery");
+                                      
+                                       final popup = BeautifulPopup(
+                                        context: context,
+                                        template: TemplateNotification,
+                                      );
+                                      
+                                      popup.show(
+                                        title:"TOKEN",
+                                        content: Column(
+                                          children: [
+                                            Text(code.toString(),style:Helper().headingStyle ,)
+                                          ],
+                                        ),
+                                        actions: [
+                                          popup.close,
+                                          popup.button(
+                                            label: 'Close',
+                                            onPressed:(){
+                                              int count=2;
+                                              Navigator.of(context).popUntil((_) => count-- <= 0);
+                          
+                                            },
+                                          ),
+                                        ]
+                                      );
+                                    //   Navigator.of(context).pop();
+                                    // Navigator.of(context).pop();
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xff1a73e8)),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                                    child: Text(
+                                      'Generate Token',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ));
@@ -278,12 +420,13 @@ class CircularButtonIcon2 extends StatelessWidget {
             break;
           case "visitingHelp":
             {
-              TextEditingController hourController = TextEditingController();
-              TextEditingController companyController = TextEditingController();
+              TextEditingController nameController = TextEditingController();
+              TextEditingController vehicleController = TextEditingController();
+              TextEditingController phoneController = TextEditingController();
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text("Allow my cab to enter today in next ",
+                        title: Text("Allow my technical helper ",
                             style: Helper().headingStyle),
                         content: Container(
                           decoration: new BoxDecoration(
@@ -292,55 +435,94 @@ class CircularButtonIcon2 extends StatelessWidget {
                             borderRadius:
                                 new BorderRadius.all(new Radius.circular(32.0)),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter the hour',
-                                  hintStyle: TextStyle(fontSize: 14),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the name',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  controller: nameController,
                                 ),
-                                controller: hourController,
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Enter company',
-                                  hintStyle: TextStyle(fontSize: 14),
+                                SizedBox(height: 20),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the phone Number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: phoneController,
                                 ),
-                                keyboardType: TextInputType.text,
-                                controller: companyController,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color(0xff1a73e8)),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter vehicle number',
+                                    hintStyle: TextStyle(fontSize: 14),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  controller: vehicleController,
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                                  child: Text(
-                                    'Generate Token',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    int code=generateCode();
+                                      Database().addPreApprovalEntry(g.society, nameController.text, phoneController.text,vehicleController.text, g.flatNo, g.wing,code.toString(),"VisitingHelp");
+                                      
+                                       final popup = BeautifulPopup(
+                                        context: context,
+                                        template: TemplateNotification,
+                                      );
+                                      
+                                      popup.show(
+                                        title:"TOKEN",
+                                        content: Column(
+                                          children: [
+                                            Text(code.toString(),style:Helper().headingStyle ,)
+                                          ],
+                                        ),
+                                        actions: [
+                                          popup.close,
+                                          popup.button(
+                                            label: 'Close',
+                                            onPressed:(){
+                                              int count=2;
+                                              Navigator.of(context).popUntil((_) => count-- <= 0);
+                          
+                                            },
+                                          ),
+                                        ]
+                                      );
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Color(0xff1a73e8)),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                                    child: Text(
+                                      'Generate Token',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ));
             }
         }
+        
       },
       child: Container(
         // width: 45,

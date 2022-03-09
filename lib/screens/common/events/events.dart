@@ -46,7 +46,7 @@ class _EventsViewState extends State<EventsView> {
       body: DefaultTabController(
         length: 2,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -66,17 +66,17 @@ class _EventsViewState extends State<EventsView> {
                       fontSize: 16, fontWeight: FontWeight.w600),
                   tabs: [
                     Tab(
-                      text: 'Past',
+                      text: 'Upcoming',
                     ),
                     Tab(
-                      text: 'Upcoming',
+                      text: 'Past',
                     )
                   ]),
               Expanded(
-                flex: 9,
+                flex: 10,
                 child: TabBarView(children: [
-                  PastEvents(),
                   UpcomingEvents(),
+                  PastEvents(),
                 ]),
               ),
               g.role == "Secretary"

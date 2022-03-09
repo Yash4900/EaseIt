@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Database {
@@ -271,19 +272,34 @@ class Database {
   }
 
   Future<void> addEvent(String societyName, String name, String venue,
-      DateTime date, String from, String to) async {
+      DateTime date, bool isFullDayEvent,
+      [String from, String to]) async {
     try {
-      await _firestore
-          .collection(societyName)
-          .doc('events')
-          .collection('Event')
-          .add({
-        'name': name,
-        'venue': venue,
-        'date': date,
-        'from': from,
-        'to': to
-      });
+      if (isFullDayEvent) {
+        await _firestore
+            .collection(societyName)
+            .doc('events')
+            .collection('Event')
+            .add({
+          'isFullDay': true,
+          'name': name,
+          'venue': venue,
+          'date': date,
+        });
+      } else {
+        await _firestore
+            .collection(societyName)
+            .doc('events')
+            .collection('Event')
+            .add({
+          'isFullDay': false,
+          'name': name,
+          'venue': venue,
+          'date': date,
+          'from': from,
+          'to': to
+        });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -404,6 +420,154 @@ class Database {
     return null;
   }
 
+  // Visitor vehicle log
+  Future<void> logVisitorVehicleEntry(String society, String licensePlateNo,
+      String flatNo, String wing, String purpose,
+      [String id]) async {
+    try {
+      if (id != null) {
+        await _firestore
+            .collection(society)
+            .doc('vehicleLog')
+            .collection('Vehicle Log')
+            .doc(id)
+            .set({
+          'licensePlateNo': licensePlateNo,
+          'flatNo': flatNo,
+          'wing': wing,
+          'purpose': purpose,
+          'entryTime': DateTime.now(),
+          'exitTime': null,
+        });
+      } else {
+        await _firestore
+            .collection(society)
+            .doc('vehicleLog')
+            .collection('Vehicle Log')
+            .add({
+          'licensePlateNo': licensePlateNo,
+          'flatNo': flatNo,
+          'wing': wing,
+          'purpose': purpose,
+          'entryTime': DateTime.now(),
+          'exitTime': null,
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> logVisitorVehicleExit(
+      String society, String licensePlateNo) async {
+    try {
+      QuerySnapshot qs = await _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .where('exitTime', isNull: true)
+          .get();
+
+      String uid = qs.docs[0].id;
+      await _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .doc(uid)
+          .update({'exitTime': DateTime.now()});
+
+      // Check if vehicle was assigned parking and if yes delete assignment
+      qs = await _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .where('licensePlateNo', isEqualTo: licensePlateNo)
+          .get();
+      if (qs.size > 0) {
+        uid = qs.docs[0].id;
+        await _firestore
+            .collection(society)
+            .doc('parkingAssignment')
+            .collection('Parking Assignment')
+            .doc(uid)
+            .delete();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Parking space assignment
+  Future<DocumentReference> saveParkingDetails(
+      String society,
+      String licensePlateNo,
+      String owner,
+      String phoneNum,
+      String parkingSpace) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .add({
+        'licensePlateNo': licensePlateNo,
+        'owner': owner,
+        'phoneNum': phoneNum,
+        'parkingSpace': parkingSpace,
+        'timestamp': DateTime.now()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get all parked vehicles information
+  Stream<QuerySnapshot> getParkingStatus(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get vehicle log
+  Stream<QuerySnapshot> getvehicleLog(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .orderBy('entryTime', descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get single vehicle log
+  Future<DocumentSnapshot> getSingleVehicleLog(
+      String society, String docId) async {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('vehicleLog')
+          .collection('Vehicle Log')
+          .doc(docId)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   // Child approval
   Stream<QuerySnapshot> getPastChildApproval(String society) {
     try {
@@ -515,8 +679,7 @@ class Database {
     return;
   }
 
-// Fetch All Daily Helper in give flat
-
+  // Fetch All Daily Helper in give flat
   Stream<QuerySnapshot> getAllDailyHelperForGivenFlat(
       String society, String flatNo, String wing) {
     try {
@@ -537,18 +700,27 @@ class Database {
   Stream<QuerySnapshot> getAllDailyHelperCategory(
       String society, String category) {
     try {
-      return _firestore
-          .collection(society)
-          .doc('dailyHelpers')
-          .collection('Daily Helper')
-          .where('purpose', isEqualTo: category)
-          .snapshots();
+      if (category == "") {
+        return _firestore
+            .collection(society)
+            .doc('dailyHelpers')
+            .collection('Daily Helper')
+            .snapshots();
+      } else {
+        return _firestore
+            .collection(society)
+            .doc('dailyHelpers')
+            .collection('Daily Helper')
+            .where('purpose', isEqualTo: category)
+            .snapshots();
+      }
     } catch (e) {
       print(e.toString());
     }
     return null;
   }
 
+  // Add a daily helper - Security
   Future<void> addDailyHelper(String society, String name, String phoneNum,
       List<String> worksAt, String imageUrl, String purpose, int code) async {
     try {
@@ -569,7 +741,40 @@ class Database {
     }
   }
 
-  // Visitor approval
+  // Log daily helper visit
+  Future<void> logDailyHelperVisit(
+      String society, String docId, String activity) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(docId)
+          .collection('Log')
+          .add({'activity': activity, 'timestamp': DateTime.now()});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Get daily visitor log
+  Stream<QuerySnapshot> getDailyVisitorLog(String society, String docId) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(docId)
+          .collection('Log')
+          .orderBy('timestamp', descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Visitor approval - Security
   Future<void> sendApproval(String society, String name, String phoneNum,
       String imageUrl, String purpose, String wing, String flatNo) async {
     try {
@@ -583,10 +788,218 @@ class Database {
         'flatNo': flatNo,
         'imageUrl': imageUrl,
         'purpose': purpose,
-        'wing': wing
+        'wing': wing,
+        'status': 'Pending',
+        'postedOn': DateTime.now()
       });
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Get recent visitor approval - Security
+  Stream<QuerySnapshot> getRecentVisitorApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('postedOn',
+              isGreaterThanOrEqualTo:
+                  DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get past visitor approval - Security
+  Stream<QuerySnapshot> getPastVisitorApproval(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('postedOn',
+              isLessThan: DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get all pending visitor for specific flat
+  Stream<QuerySnapshot> getAllPendingVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get All visitor log for specific flat
+  Stream<QuerySnapshot> getAllVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Update the visitor approval
+  Future<void> updateVisitorApproval(
+      String society, String docId, bool status) {
+    try {
+      if (status) {
+        _firestore
+            .collection(society)
+            .doc('visitorApproval')
+            .collection('Visitor Approval')
+            .doc(docId)
+            .update({'status': 'Approved'});
+      } else {
+        _firestore
+            .collection(society)
+            .doc('visitorApproval')
+            .collection('Visitor Approval')
+            .doc(docId)
+            .update({'status': 'Rejected'});
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Add the preApproval entry
+  Future<void> addPreApprovalEntry(
+      String society,
+      String visName,
+      String visPhoneNo,
+      String vehicleNo,
+      String flatNo,
+      String wing,
+      String code,
+      String purpose) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .add({
+        'name': visName,
+        'phoneNo': visPhoneNo,
+        'vehicleNo': vehicleNo,
+        'flatNo': flatNo,
+        'wing': wing,
+        'generatedToken': code,
+        'purpose': purpose,
+        'postedOn': DateTime.now(),
+        'status': "Pending",
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Get All pending preApproval for give flat and wing
+  Stream<void> getAllPendingPreApprovalForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('flatNo', isEqualTo: flatNo)
+          .where('wing', isEqualTo: wing)
+          .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Update preApproval on given status
+  Future<void> updatePendingApproval(
+      String society, String docId, bool status) async {
+    try {
+      if (status) {
+        await _firestore
+            .collection(society)
+            .doc('PreApprovals')
+            .collection('preApproval')
+            .doc(docId)
+            .update({'status': "Approve"});
+      } else {
+        await _firestore
+            .collection(society)
+            .doc('PreApprovals')
+            .collection('preApproval')
+            .doc(docId)
+            .update({'status': "Rejected", "entryTime": DateTime.now()});
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Add entry time and exit time for pre approval
+  Future<void> logPreApproval(
+      String society, String docId, String parameter) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .doc(docId)
+          .update({parameter: DateTime.now()});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<QueryDocumentSnapshot> verifyByCode(String society, int code) async {
+    try {
+      QuerySnapshot qs;
+      qs = await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .where('code', isEqualTo: code)
+          .get();
+      if (qs.size > 0) return qs.docs[0];
+      qs = await _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('generatedToken', isEqualTo: code)
+          .where('postedOn',
+              isGreaterThan: DateTime.now().subtract(Duration(hours: 2)))
+          .get();
+      if (qs.size > 0) return qs.docs[0];
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 }
