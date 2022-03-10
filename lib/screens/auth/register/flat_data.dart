@@ -6,8 +6,8 @@ class FlatData {
   List<Widget> _flatWidgetForm; //Stores the widget to be displayed in the form
   Map<String, String> _flatNum; //Stores the flatNumof the user
   List<String>
-      _flatValue; //Another List just to store the flat nuber of the user
-  List<Function> _allUpdateFunctions; //To update all thw widgets simultaneously
+      _flatValue; //Another List just to store the flat number of the user
+  List<Function> _allUpdateFunctions; //To update all the widgets simultaneously
   int _totalLevels; //To store total levels of hierarchy in the society
   int _currentLevel; //To store the current level of hierarchy we are dealing with
 

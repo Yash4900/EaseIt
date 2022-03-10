@@ -32,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   List<String> dropDownItems = ["Resident", "Tenant", "Security Guard"];
   String dropDownValue = "Resident";
   String selectedSociety;
+  String errorText = "";
   bool loading = false;
   final formKey = GlobalKey<FormState>();
   FlatData flatVar = FlatData();
@@ -51,7 +52,11 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => loading = true);
     //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
     //Empty all previous data and set new data
+    print("Set error text to null");
+    errorText = "";
+    print("Clearing the Widget List that I have created");
     flatVar.clearFlatWidgetForm();
+    print("Cl ");
     flatVar.clearFlatNum();
     flatVar.clearFlatValue();
     flatVar.setCurrentLevel = 1;
@@ -297,6 +302,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                       }),
                     ),
+                    Text(
+                      errorText,
+                      style: TextStyle(color: Colors.red),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       decoration: InputDecoration(
@@ -325,21 +334,28 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextButton(
                       onPressed: () async {
                         if (formKey.currentState.validate()) {
-                          setState(() => loading = true);
-                          dynamic result = await Auth().register(
-                              selectedSociety,
-                              fnameController.text,
-                              lnameController.text,
-                              emailController.text,
-                              phoneController.text,
-                              passwordController.text,
-                              dropDownValue,
-                              wingController.text,
-                              flatController.text);
-                          if (result == null) {
-                            setState(() => loading = false);
-                            showMessageDialog(context, "Oops!",
-                                "Something went wrong please try again!");
+                          if (!flatVar.flatValue.contains(null)) {
+                            setState(() => errorText = "");
+                            setState(() => loading = true);
+                            dynamic result = await Auth().register(
+                                selectedSociety,
+                                fnameController.text,
+                                lnameController.text,
+                                emailController.text,
+                                phoneController.text,
+                                passwordController.text,
+                                dropDownValue,
+                                wingController.text,
+                                flatController.text);
+                            if (result == null) {
+                              setState(() => loading = false);
+                              showMessageDialog(context, "Oops!",
+                                  "Something went wrong please try again!");
+                            }
+                          } else {
+                            setState(() {
+                              errorText = "Please fill all the flat fields";
+                            });
                           }
                         }
                       },

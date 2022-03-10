@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ease_it/screens/auth/register/flat_data.dart';
 
 class CustomDropDown extends StatefulWidget {
-  final List<String> options;
+  List<String> options;
   final String typeText;
   FlatData flatVariable;
   final Function update;
@@ -25,8 +25,13 @@ class _CustomDropDownState extends State<CustomDropDown> {
   int storeCurrentWidgetLevel;
 
   void update() {
+    print("In update first");
     setState(() {
       temp = widget.flatVariable.flatValue[storeCurrentWidgetLevel - 1];
+      print("Valeur is ${storeCurrentWidgetLevel - 1}");
+      widget.options =
+          widget.flatVariable.getILevelInHierarchy(storeCurrentWidgetLevel + 1);
+      print(widget.options);
       print(
           "In update for $storeCurrentWidgetLevel actual index value  ${storeCurrentWidgetLevel - 1}");
     });
@@ -35,8 +40,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   void initState() {
     super.initState();
+    print("In initState()");
     storeCurrentWidgetLevel = widget.flatVariable.currentLevel;
     print("Store value: $storeCurrentWidgetLevel");
+    print("Options ${widget.options}");
   }
 
   @override
