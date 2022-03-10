@@ -992,9 +992,7 @@ class Database {
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('generatedToken', isEqualTo: code)
-          .where('postedOn',
-              isGreaterThan: DateTime.now().subtract(Duration(hours: 2)))
+          .where('generatedToken', isEqualTo: code.toString())
           .get();
       if (qs.size > 0) return qs.docs[0];
     } catch (e) {
