@@ -25,6 +25,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
   int storeCurrentWidgetLevel;
 
   void update() {
+    print(
+        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     print("In update first");
     setState(() {
       temp = widget.flatVariable.flatValue[storeCurrentWidgetLevel - 1];
@@ -35,15 +37,21 @@ class _CustomDropDownState extends State<CustomDropDown> {
       print(
           "In update for $storeCurrentWidgetLevel actual index value  ${storeCurrentWidgetLevel - 1}");
     });
+    print(
+        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   }
 
   @override
   void initState() {
+    print(
+        "&&&&&&&&&&&&&&&&&&&&&& initState() CustomDropDown Widget &&&&&&&&&&&&&&&&&&&&&&");
     super.initState();
     print("In initState()");
     storeCurrentWidgetLevel = widget.flatVariable.currentLevel;
     print("Store value: $storeCurrentWidgetLevel");
     print("Options ${widget.options}");
+    print(
+        "&&&&&&&&&&&&&&&&&&&&&& initState() CustomDropDown Widget &&&&&&&&&&&&&&&&&&&&&&");
   }
 
   @override
@@ -63,6 +71,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
         );
       }).toList(),
       onChanged: (String value) {
+        print(
+            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! In onchanged CustomDropdDownWidget !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         widget.flatVariable.clearFlatValueArray(storeCurrentWidgetLevel);
         widget.flatVariable.flatValue.removeAt(storeCurrentWidgetLevel - 1);
         widget.flatVariable.flatValue
@@ -99,6 +109,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
         setState(() => temp = value);
         widget.flatVariable.runAllUpdate();
         widget.update();
+        print(
+            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! In onchanged CustomDropdDownWidget !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       },
     );
   }

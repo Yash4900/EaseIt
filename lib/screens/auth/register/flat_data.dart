@@ -67,6 +67,8 @@ class FlatData {
   }
 
   List<String> getILevelInHierarchy(int i) {
+    print(
+        "############################# Get level in hierarchy flat data #############################");
     dynamic temp = _structure["structure"];
     print("-" * 50);
     print("Flat Data widget");
@@ -88,10 +90,14 @@ class FlatData {
       }
     }
     print("-" * 50);
+    print(
+        "############################# Get level in hierarchy flat data #############################");
     return optionList;
   }
 
   void clearFlatValueArray(int i) {
+    print(
+        "############################# Clear flat value flat data #############################");
     int k;
     print("-" * 50);
     print("Inside Clear Flat Value Array");
@@ -101,6 +107,8 @@ class FlatData {
       _flatValue[k] = null;
     }
     print("-" * 50);
+    print(
+        "############################# Clear flat value flat data #############################");
   }
 
   void setFlatNumValue() {
@@ -109,6 +117,8 @@ class FlatData {
   }
 
   void runAllUpdate() {
+    print(
+        "############################# run all update flat data #############################");
     print("In update");
     if (_allUpdateFunctions != null) {
       for (Function i in _allUpdateFunctions) {
@@ -117,5 +127,7 @@ class FlatData {
         }
       }
     }
+    print(
+        "############################# run all update flat data #############################");
   }
 }
