@@ -1,3 +1,5 @@
+// Form to send approval request for a new visitor
+
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/alert.dart';
@@ -56,14 +58,18 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.keyboard_backspace, color: Colors.black),
+              Icon(
+                Icons.keyboard_backspace,
+                color: Colors.black,
+              ),
               SizedBox(width: 5),
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -77,7 +83,10 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                 children: [
                   Text(
                     'Visitor Approval',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -87,7 +96,10 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                   SizedBox(height: 30),
                   Text(
                     'IMAGE',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -253,8 +265,9 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                               child: Text(
                                 'Send Request',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),

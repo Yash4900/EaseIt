@@ -1,3 +1,5 @@
+// Shows all recent approvals
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
@@ -73,7 +75,9 @@ class _RecentApprovalState extends State<RecentApproval> {
                         title: Text(
                           ds['name'],
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,14 +86,16 @@ class _RecentApprovalState extends State<RecentApproval> {
                             Text(
                               '${ds['purpose']} . ${ds['wing']}-${ds['flatNo']}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                              ),
                             ),
                             Text(
                               "${formatValue(date.hour)}:${formatValue(date.minute)}, ${date.day} ${days[date.month]} ${date.year}",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                              ),
                             )
                           ],
                         ),
@@ -104,9 +110,10 @@ class _RecentApprovalState extends State<RecentApproval> {
                           child: Text(
                             ds['status'].toUpperCase(),
                             style: TextStyle(
-                                fontSize: 12,
-                                color: getColor(ds['status'].toUpperCase()),
-                                fontWeight: FontWeight.w600),
+                              fontSize: 12,
+                              color: getColor(ds['status'].toUpperCase()),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

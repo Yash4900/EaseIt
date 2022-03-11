@@ -1,6 +1,7 @@
 // Cloud Firestore functions
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -474,13 +475,16 @@ class Database {
           .where('licensePlateNo', isEqualTo: licensePlateNo)
           .get();
       if (qs.size > 0) {
-        uid = qs.docs[0].id;
-        await _firestore
-            .collection(society)
-            .doc('parkingAssignment')
-            .collection('Parking Assignment')
-            .doc(uid)
-            .delete();
+        qs.docs.forEach((doc) async {
+          await API().disAllocateParking(
+              society.replaceAll(" ", "").toLowerCase(), doc['parkingSpace']);
+          await _firestore
+              .collection(society)
+              .doc('parkingAssignment')
+              .collection('Parking Assignment')
+              .doc(doc.id)
+              .delete();
+        });
       }
     } catch (e) {
       print(e.toString());

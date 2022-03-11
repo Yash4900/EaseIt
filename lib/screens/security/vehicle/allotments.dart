@@ -44,20 +44,25 @@ class _AllotmentsState extends State<Allotments> {
                       child: ListTile(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ParkingStatus(
-                                      ds.id,
-                                      ds['owner'],
-                                      ds['phoneNum'],
-                                      ds['licensePlateNo'],
-                                      ds['parkingSpace'],
-                                      ds['timestamp'].toDate())));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ParkingStatus(
+                                ds.id,
+                                ds['owner'],
+                                ds['phoneNum'],
+                                ds['licensePlateNo'],
+                                ds['parkingSpace'],
+                                ds['timestamp'].toDate(),
+                              ),
+                            ),
+                          );
                         },
                         title: Text(
                           ds['licensePlateNo'],
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,9 +86,10 @@ class _AllotmentsState extends State<Allotments> {
                             Text(
                               '${ds['owner']}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black54,
-                                  fontSize: 15),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black54,
+                                fontSize: 15,
+                              ),
                             ),
                           ],
                         ),
@@ -91,14 +97,16 @@ class _AllotmentsState extends State<Allotments> {
                           padding:
                               EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                           decoration: BoxDecoration(
-                              color: Color(0xff037DD6).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10)),
+                            color: Color(0xff037DD6).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Text(
                             ds['parkingSpace'],
                             style: TextStyle(
-                                color: Color(0xff037DD6),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
+                              color: Color(0xff037DD6),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),

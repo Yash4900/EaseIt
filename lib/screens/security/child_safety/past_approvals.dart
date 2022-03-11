@@ -1,19 +1,10 @@
+// Past child approvals list
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
-
-class Approval {
-  String name;
-  String flatNo;
-  int age;
-  DateTime date;
-
-  String status;
-
-  Approval(this.name, this.flatNo, this.age, this.date, this.status);
-}
 
 class PastApproval extends StatefulWidget {
   @override
@@ -86,22 +77,25 @@ class _PastApprovalState extends State<PastApproval> {
                             Text(
                               'Flat: ${ds['wing'].toUpperCase()}-${ds['flatNo']}  Age: ${ds['age']}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                              ),
                             ),
                             Text(
                               "Time: ${formatValue(date.hour)}:${formatValue(date.minute)}, ${date.day} ${days[date.month - 1]} ${date.year}",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey[500]),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                              ),
                             )
                           ],
                         ),
                         trailing: Container(
                           decoration: BoxDecoration(
-                              color: getColor(ds['status'].toUpperCase())
-                                  .withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10)),
+                            color: getColor(ds['status'].toUpperCase())
+                                .withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           padding:
                               EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                           child: Text(

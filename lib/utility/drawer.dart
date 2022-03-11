@@ -6,7 +6,6 @@ import 'package:ease_it/screens/common/info/all_residents_info.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/info/all_security_guards_info.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Container showDrawer(BuildContext context) {
   Globals g = Globals();
@@ -44,11 +43,16 @@ Container showDrawer(BuildContext context) {
           ListTile(
             title: Text(
               g.fname + ' ' + g.lname,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             subtitle: Text(
               g.role,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Container(
@@ -58,10 +62,16 @@ Container showDrawer(BuildContext context) {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.person_outline_sharp),
+            leading: Icon(
+              Icons.person_outline_sharp,
+              color: Colors.black87,
+            ),
             title: Text(
               'Profile',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -70,10 +80,16 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(Icons.calendar_today_rounded),
+            leading: Icon(
+              Icons.calendar_today_rounded,
+              color: Colors.black87,
+            ),
             title: Text(
               'Events',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -83,10 +99,16 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(Icons.group_outlined),
+            leading: Icon(
+              Icons.group_outlined,
+              color: Colors.black87,
+            ),
             title: Text(
               'All Members',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -96,10 +118,16 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(FontAwesomeIcons.userPlus, size: 20),
+            leading: Icon(
+              Icons.person_add_alt,
+              color: Colors.black87,
+            ),
             title: Text(
               'Daily Visitors',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -109,10 +137,16 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(Icons.security_outlined),
+            leading: Icon(
+              Icons.security_outlined,
+              color: Colors.black87,
+            ),
             title: Text(
               'Security Guards',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -122,10 +156,16 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: Icon(
+              Icons.logout,
+              color: Colors.black87,
+            ),
             title: Text(
               'Logout',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () async {
               await Auth().logout();

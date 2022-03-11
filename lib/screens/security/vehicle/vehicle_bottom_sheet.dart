@@ -38,6 +38,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
 
   Future logActivity() async {
     if (qs.size == 0) {
+      // Visitor
       if (widget.isEntry) {
         setState(() => loading = true);
         try {
@@ -69,7 +70,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
       if (widget.isEntry) {
         setState(() => loading = true);
         try {
-          await API().vehicleEntry(g.society.replaceAll(" ", ""), "MH01AE2222");
+          await API().vehicleEntry(
+              g.society.replaceAll(" ", ""), _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
         } catch (e) {
@@ -79,7 +81,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
       } else {
         setState(() => loading = true);
         try {
-          await API().vehicleExit(g.society.replaceAll(" ", ""), "MH01AE2222");
+          await API().vehicleExit(
+              g.society.replaceAll(" ", ""), _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
         } catch (e) {
