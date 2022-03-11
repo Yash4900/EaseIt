@@ -1,3 +1,5 @@
+// Add Daily Helper
+
 import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';

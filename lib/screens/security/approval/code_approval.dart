@@ -1,3 +1,5 @@
+// Pop-up which shows visitor's info when correct code is entered
+
 import 'dart:ui';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/alert.dart';
@@ -89,13 +91,17 @@ class _CodeApprovalState extends State<CodeApproval> {
                           Text(
                             '${widget.name} . ${widget.purpose}',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 10),
                           Text(
                             '${widget.type}',
                             style: GoogleFonts.sourceSansPro(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Row(
@@ -125,8 +131,9 @@ class _CodeApprovalState extends State<CodeApproval> {
                                       Text(
                                         'Entry',
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
                                     ],
                                   ),
@@ -162,8 +169,9 @@ class _CodeApprovalState extends State<CodeApproval> {
                                       Text(
                                         'Exit',
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
                                     ],
                                   ),
@@ -191,8 +199,9 @@ class _CodeApprovalState extends State<CodeApproval> {
                                       Text(
                                         'Cancel',
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
                                     ],
                                   ),

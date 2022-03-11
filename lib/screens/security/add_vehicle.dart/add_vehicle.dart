@@ -1,5 +1,6 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
+import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
@@ -235,6 +236,12 @@ class _AddVehicleState extends State<AddVehicle> {
                                         ? ""
                                         : await Storage().storeImage(
                                             'vehicles', id, _profilePicture);
+                                    await API().addVehicle(
+                                        g.society
+                                            .replaceAll(" ", "")
+                                            .toLowerCase(),
+                                        _licensePlateController.text,
+                                        _parkingNumberController.text);
                                     Database()
                                         .addVehicle(
                                             g.society,
@@ -247,6 +254,7 @@ class _AddVehicleState extends State<AddVehicle> {
                                             _flatNoController.text)
                                         .then((value) {
                                       setState(() => loading = false);
+                                      Navigator.pop(context);
                                       showToast(context, "success", "Success!",
                                           "Vehicle added successfully in the database.");
                                     }).catchError(() {
