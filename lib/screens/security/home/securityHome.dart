@@ -132,7 +132,9 @@ class _SecurityHomeState extends State<SecurityHome> {
                               'The code provided by visitor does not exists or is expired!',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 16),
+                                color: Colors.black45,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ]);
@@ -165,9 +167,10 @@ class _SecurityHomeState extends State<SecurityHome> {
                       child: Text(
                         'Verify Visitor',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -205,7 +208,9 @@ class Button extends StatelessWidget {
             child: Text(
               value.toString(),
               style: GoogleFonts.urbanist(
-                  fontSize: 30, fontWeight: FontWeight.w400),
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

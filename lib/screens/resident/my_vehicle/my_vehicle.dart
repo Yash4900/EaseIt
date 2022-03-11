@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/flask/api.dart';
@@ -37,7 +36,9 @@ class _MyVehicleState extends State<MyVehicle> {
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
         ),
         builder: (BuildContext bc) {
           return Container(
@@ -218,17 +219,24 @@ class _MyVehicleState extends State<MyVehicle> {
                                         Container(
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 1),
-                                          height: (86400 - entryTime[i]) *
-                                              180 /
-                                              86400,
+                                          height:
+                                              ((entryTime[i] - exitTime[i]) >= 0
+                                                      ? 86400 - entryTime[i]
+                                                      : 0) *
+                                                  180 /
+                                                  86400,
                                           color: Colors.green.withOpacity(0.2),
                                         ),
                                         Container(
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 1),
-                                          height: (entryTime[i] - exitTime[i]) *
-                                              180 /
-                                              86400,
+                                          height:
+                                              ((entryTime[i] - exitTime[i]) >= 0
+                                                      ? (entryTime[i] -
+                                                          exitTime[i])
+                                                      : (86400 - exitTime[i])) *
+                                                  180 /
+                                                  86400,
                                           color: Colors.green,
                                         ),
                                         Container(
@@ -317,7 +325,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                         g.society
                                             .replaceAll(" ", "")
                                             .toLowerCase(),
-                                        "MH01AE1111");
+                                        ds['licensePlateNo']);
                                     Map<String, dynamic> map =
                                         jsonDecode(response);
                                     showBottomSheeet(
@@ -336,19 +344,24 @@ class _MyVehicleState extends State<MyVehicle> {
                                   leading: CircleAvatar(
                                     backgroundImage:
                                         NetworkImage(ds['imageUrl']),
+                                    backgroundColor: Colors.grey[300],
                                     radius: 25,
                                   ),
                                   title: Text(
                                     ds['model'],
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                  subtitle: Text(ds['licensePlateNo'],
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey)),
+                                  subtitle: Text(
+                                    ds['licensePlateNo'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                   trailing: ds['vehicleType'] == 'Four Wheeler'
                                       ? Icon(FontAwesomeIcons.car)
                                       : Icon(FontAwesomeIcons.motorcycle),
@@ -366,7 +379,7 @@ class _MyVehicleState extends State<MyVehicle> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'No Events found',
+                                  'No vehicles found',
                                   style: TextStyle(color: Colors.grey),
                                 )
                               ],

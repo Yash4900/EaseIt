@@ -7,18 +7,20 @@ class PickImage {
 
   Future<XFile> _imageFromCamera() async {
     return await _picker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 50,
-        maxHeight: 640,
-        maxWidth: 480);
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxHeight: 640,
+      maxWidth: 480,
+    );
   }
 
   Future<XFile> _imageFromGallery() async {
     return await _picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 50,
-        maxHeight: 640,
-        maxWidth: 480);
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxHeight: 640,
+      maxWidth: 480,
+    );
   }
 
   Future<List<XFile>> _multipleImagesFromGallery() async {
@@ -31,18 +33,26 @@ class PickImage {
       builder: (BuildContext bc) {
         return SafeArea(
           child: Container(
-            child: new Wrap(
+            child: Wrap(
               children: <Widget>[
-                new ListTile(
-                    leading: new Icon(Icons.photo_library),
-                    title: new Text('Photo Library'),
+                ListTile(
+                    leading: Icon(Icons.photo_library, color: Colors.black87),
+                    title: Text(
+                      'Photo Library',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
                     onTap: () async {
                       XFile file = await _imageFromGallery();
                       Navigator.of(context).pop(File(file.path));
                     }),
-                new ListTile(
-                  leading: new Icon(Icons.photo_camera),
-                  title: new Text('Camera'),
+                ListTile(
+                  leading: Icon(Icons.photo_camera, color: Colors.black87),
+                  title: Text(
+                    'Camera',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black87),
+                  ),
                   onTap: () async {
                     XFile file = await _imageFromCamera();
                     Navigator.of(context).pop(File(file.path));

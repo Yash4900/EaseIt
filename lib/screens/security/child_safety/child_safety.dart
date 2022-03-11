@@ -1,3 +1,5 @@
+// Child Safety Screen
+
 import 'package:ease_it/screens/security/child_safety/past_approvals.dart';
 import 'package:ease_it/screens/security/child_safety/recent_approvals.dart';
 import 'package:flutter/material.dart';

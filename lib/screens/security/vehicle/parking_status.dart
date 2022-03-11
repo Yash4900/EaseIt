@@ -47,14 +47,18 @@ class _ParkingStatusState extends State<ParkingStatus> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.arrow_back, color: Colors.black),
+              Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
               SizedBox(width: 5),
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -69,49 +73,75 @@ class _ParkingStatusState extends State<ParkingStatus> {
                   Text(
                     "Visitor Parking Status",
                     style: GoogleFonts.sourceSansPro(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    "VEHICLE INFO",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  Container(
+                    color: Colors.grey[200],
+                    width: double.infinity,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      "VEHICLE INFO",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Info("Vehicle Number", widget.vehicleNo),
                   Info("Purpose", ds['purpose']),
                   Info("Parked At", widget.parkedAt),
                   Info("Entry Time", widget.inTime.toString()),
                   SizedBox(height: 20),
-                  Text(
-                    "OWNER INFO",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  Container(
+                    color: Colors.grey[200],
+                    width: double.infinity,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      "OWNER INFO",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Info("Owner Name", widget.owner),
                   Info("Phone Number", widget.phoneNum),
                   Info("Guest At", '${ds['wing']}-${ds['flatNo']}'),
                   SizedBox(height: 30),
+                  Divider(
+                    color: Colors.grey,
+                  ),
                   TextButton(
                     onPressed: () {},
                     child: Text(
                       "Allocate new parking space",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
                   TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.call),
-                          SizedBox(width: 10),
-                          Text(
-                            "Call Owner",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ))
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.call),
+                        SizedBox(width: 10),
+                        Text(
+                          "Call Owner",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
