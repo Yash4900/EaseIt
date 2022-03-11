@@ -67,48 +67,51 @@ class FlatData {
   }
 
   List<String> getILevelInHierarchy(int i) {
-    print(
-        "############################# Get level in hierarchy flat data #############################");
+    //print(
+    //    "############################# Get level in hierarchy flat data #############################");
     dynamic temp = _structure["structure"];
-    print("-" * 50);
-    print("Flat Data widget");
-    print("To find hierarchy of $i");
+    //print("-" * 50);
+    // print("+++++++++++++++++++++++++++++++");
+    // print("Flat Data widget");
+    // print("To find hierarchy of $i");
+    // print("+++++++++++++++++++++++++++++++");
     int k;
     List<String> optionList;
     for (k = 1; k <= i; ++k) {
-      if (k - 1 >= 0 && _flatValue[k - 1] != null) {
-        temp = temp[_flatValue[k - 1]];
-        print("For next Iteration $temp");
-      }
+      //print("Iteration K Value $k");
+      //print("Temp is $temp");
       if (temp is Map) {
-        print("Flat value array: $_flatValue");
+        //print("Flat value array: $_flatValue");
         optionList = List<String>.from(temp.keys.toList());
-        print("$optionList for value $k");
-        print("New temp formed: $temp");
       } else {
         optionList = List<String>.from(temp.toList());
       }
+      //print("$optionList for value $k");
+      if (k - 1 >= 0 && _flatValue[k - 1] != null) {
+        temp = temp is List ? temp : temp[_flatValue[k - 1]];
+        //print("For next Iteration $temp");
+      }
+      //print("New temp formed: $temp");
     }
-    print("-" * 50);
-    print(
-        "############################# Get level in hierarchy flat data #############################");
+    //print("-" * 50);
+    //print(
+    //    "############################# Get level in hierarchy flat data #############################");
     return optionList;
   }
 
   void clearFlatValueArray(int i) {
-    print(
-        "############################# Clear flat value flat data #############################");
+    //print(
+    //    "############################# Clear flat value flat data #############################");
     int k;
-    print("-" * 50);
-    print("Inside Clear Flat Value Array");
-    print("K $k");
-    print("Total levels: $_totalLevels");
+    //print("-" * 50);
+    //print("Inside Clear Flat Value Array");
+    //print("Total levels: $_totalLevels");
     for (k = i; k < _totalLevels; ++k) {
       _flatValue[k] = null;
     }
-    print("-" * 50);
-    print(
-        "############################# Clear flat value flat data #############################");
+    //print("-" * 50);
+    //print(
+    //    "############################# Clear flat value flat data #############################");
   }
 
   void setFlatNumValue() {
@@ -117,9 +120,9 @@ class FlatData {
   }
 
   void runAllUpdate() {
-    print(
-        "############################# run all update flat data #############################");
-    print("In update");
+    //print(
+    //    "############################# run all update flat data #############################");
+    //print("In update");
     if (_allUpdateFunctions != null) {
       for (Function i in _allUpdateFunctions) {
         if (i != null) {
@@ -127,7 +130,7 @@ class FlatData {
         }
       }
     }
-    print(
-        "############################# run all update flat data #############################");
+    //print(
+    //    "############################# run all update flat data #############################");
   }
 }

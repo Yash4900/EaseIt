@@ -52,46 +52,46 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => loading = true);
     //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
     //Empty all previous data and set new data
-    print(
-        "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
-    print("Set error text to null");
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print("Set error text to null");
     errorText = "";
-    print("Clearing the Widget form that I have created");
+    //print("Clearing the Widget form that I have created");
     flatVar.clearFlatWidgetForm();
-    print("Clearing the flat values map");
+    //print("Clearing the flat values map");
     flatVar.clearFlatNum();
-    print("Clearing the flat value list");
+    //print("Clearing the flat value list");
     flatVar.clearFlatValue();
-    print("Setting current level");
+    //print("Setting current level");
     flatVar.setCurrentLevel = 1;
-    print("Setting widget flat form to empty");
+    //print("Setting widget flat form to empty");
     flatVar.setFlatWidgetForm = [];
-    print("Setting all update functions to null");
+    //print("Setting all update functions to null");
     flatVar.setAllUpdateFunctions = [];
 
     //get society info
     Map<dynamic, dynamic> tempSnapData =
         await Database().getSocietyInfo(societyValue);
-    print("The data: $tempSnapData");
+    //print("The data: $tempSnapData");
 
     //set structure
-    print("Setting the structure to incoming data");
+    //print("Setting the structure to incoming data");
     flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
-    print("Setting the total levels of hierarchy");
+    //print("Setting the total levels of hierarchy");
     flatVar.setTotalLevels =
         tempSnapData["Hierarchy"].length; // set total levels
-    print("Flat value list to null");
+    //print("Flat value list to null");
     flatVar.setFlatValue =
         List<String>.filled(flatVar.totalLevels, null, growable: true);
-    print("Adding initial dropdown to the flatWidgetForm that is the list");
+    //print("Adding initial dropdown to the flatWidgetForm that is the list");
     flatVar.addInFlatWidgetForm(CustomDropDown(
       options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
       typeText: flatVar.getTypeText(flatVar.currentLevel),
       flatVariable: flatVar,
       update: _update,
     ));
-    print(
-        "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
     //print(societyStructureWidget);
     setState(() => loading = false);
   }
@@ -147,7 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             setState(() {
                               selectedSociety = value;
                               //flatVar.structure.clear();
-                              print("Called on change");
+                              //print("Called on change");
                               getSocietyStructure(selectedSociety);
                             });
                             setState(() => loading = false);
