@@ -235,90 +235,129 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 10),
                     dropDownValue == 'Resident'
-                        ? Row(
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Wing',
-                                    hintStyle: TextStyle(fontSize: 15),
-                                  ),
-                                  controller: wingController,
-                                  validator: (value) =>
-                                      dropDownValue == 'Security Guard' &&
-                                              value.length > 0
-                                          ? 'Enter valid wing'
-                                          : null,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Flexible(
-                                flex: 1,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Flat No',
-                                    hintStyle: TextStyle(fontSize: 15),
-                                  ),
-                                  controller: flatController,
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) => (dropDownValue ==
-                                                  'Resident' &&
-                                              value.length != 4 &&
-                                              value.length != 3) ||
-                                          (dropDownValue == 'Security Guard' &&
-                                              value.length > 0)
-                                      ? 'Enter valid flat number'
-                                      : null,
-                                ),
-                              ),
-                            ],
+                        ?
+                        //  Row(
+                        //     children: [
+                        //       Flexible(
+                        //         flex: 1,
+                        //         child: TextFormField(
+                        //           decoration: InputDecoration(
+                        //             hintText: 'Wing',
+                        //             hintStyle: TextStyle(fontSize: 15),
+                        //           ),
+                        //           controller: wingController,
+                        //           validator: (value) =>
+                        //               dropDownValue == 'Security Guard' &&
+                        //                       value.length > 0
+                        //                   ? 'Enter valid wing'
+                        //                   : null,
+                        //         ),
+                        //       ),
+                        //       SizedBox(width: 10),
+                        //       Flexible(
+                        //         flex: 1,
+                        //         child: TextFormField(
+                        //           decoration: InputDecoration(
+                        //             hintText: 'Flat No',
+                        //             hintStyle: TextStyle(fontSize: 15),
+                        //           ),
+                        //           controller: flatController,
+                        //           keyboardType: TextInputType.number,
+                        //           validator: (value) => (dropDownValue ==
+                        //                           'Resident' &&
+                        //                       value.length != 4 &&
+                        //                       value.length != 3) ||
+                        //                   (dropDownValue == 'Security Guard' &&
+                        //                       value.length > 0)
+                        //               ? 'Enter valid flat number'
+                        //               : null,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   )
+                        Column(
+                            //physics: ClampingScrollPhysics(),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                flatVar.flatWidgetForm.length, (i) {
+                              //return flatVar.flatWidgetForm[i];
+                              if ((i + 1) % 2 == 1) {
+                                if (i + 1 < flatVar.flatWidgetForm.length) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i],
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i + 1],
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i],
+                                      ),
+                                    ],
+                                  );
+                                }
+                              } else {
+                                return SizedBox();
+                              }
+                            }),
                           )
                         : SizedBox(),
-                    SizedBox(height: 20),
-                    Column(
-                      //physics: ClampingScrollPhysics(),
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:
-                          List.generate(flatVar.flatWidgetForm.length, (i) {
-                        //return flatVar.flatWidgetForm[i];
-                        if ((i + 1) % 2 == 1) {
-                          if (i + 1 < flatVar.flatWidgetForm.length) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: flatVar.flatWidgetForm[i],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: flatVar.flatWidgetForm[i + 1],
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: flatVar.flatWidgetForm[i],
-                                ),
-                              ],
-                            );
-                          }
-                        } else {
-                          return SizedBox();
-                        }
-                      }),
-                    ),
+                    //SizedBox(height: 20),
+                    // Column(
+                    //   //physics: ClampingScrollPhysics(),
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children:
+                    //       List.generate(flatVar.flatWidgetForm.length, (i) {
+                    //     //return flatVar.flatWidgetForm[i];
+                    //     if ((i + 1) % 2 == 1) {
+                    //       if (i + 1 < flatVar.flatWidgetForm.length) {
+                    //         return Row(
+                    //           children: [
+                    //             Expanded(
+                    //               flex: 1,
+                    //               child: flatVar.flatWidgetForm[i],
+                    //             ),
+                    //             SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Expanded(
+                    //               flex: 1,
+                    //               child: flatVar.flatWidgetForm[i + 1],
+                    //             ),
+                    //           ],
+                    //         );
+                    //       } else {
+                    //         return Row(
+                    //           children: [
+                    //             Expanded(
+                    //               flex: 1,
+                    //               child: flatVar.flatWidgetForm[i],
+                    //             ),
+                    //           ],
+                    //         );
+                    //       }
+                    //     } else {
+                    //       return SizedBox();
+                    //     }
+                    //   }),
+                    // ),
                     Text(
                       errorText,
                       style: TextStyle(color: Colors.red),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 1),
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Password',
@@ -348,6 +387,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (formKey.currentState.validate()) {
                           if (!flatVar.flatValue.contains(null)) {
                             setState(() => errorText = "");
+                            flatVar.createMapFromListForFlat();
+                            //print(flatVar.flatNum);
                             setState(() => loading = true);
                             dynamic result = await Auth().register(
                                 selectedSociety,
@@ -357,6 +398,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 phoneController.text,
                                 passwordController.text,
                                 dropDownValue,
+                                flatVar.flatNum,
                                 wingController.text,
                                 flatController.text);
                             if (result == null) {

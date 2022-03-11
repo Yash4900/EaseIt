@@ -51,7 +51,7 @@ class Database {
 
   Future createUser(String society, String uid, String fname, String lname,
       String email, String phoneNum, String role,
-      [String wing, String flatNo]) async {
+      [Map<dynamic, dynamic> flat, String wing, String flatNo]) async {
     try {
       if (role == 'Resident' || role == 'Tenant') {
         await _firestore
@@ -66,6 +66,7 @@ class Database {
           'email': email,
           'phoneNum': phoneNum,
           'role': role,
+          'flat': flat,
           'wing': wing,
           'flatNo': flatNo
         });

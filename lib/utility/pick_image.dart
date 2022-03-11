@@ -21,6 +21,10 @@ class PickImage {
         maxWidth: 480);
   }
 
+  Future<List<XFile>> _multipleImagesFromGallery() async {
+    return await _picker.pickMultiImage();
+  }
+
   Future<File> showPicker(context) {
     return showModalBottomSheet(
       context: context,

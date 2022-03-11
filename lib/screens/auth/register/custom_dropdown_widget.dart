@@ -26,8 +26,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
   List<String> disabledItem = ["Select values for previous fields first"];
 
   void update() {
-    //print(
-    //    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    // print(
+    //     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     //print("In update first");
     setState(() {
       temp = widget.flatVariable.flatValue[storeCurrentWidgetLevel - 1];
@@ -44,8 +44,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
       //print(
       //    "In update for $storeCurrentWidgetLevel actual index value  ${storeCurrentWidgetLevel - 1}");
     });
-    //print(
-    //    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    // print(
+    //     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ In update DropDownWidget ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   }
 
   @override
@@ -53,6 +53,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
     //print(
     //    "&&&&&&&&&&&&&&&&&&&&&& initState() CustomDropDown Widget &&&&&&&&&&&&&&&&&&&&&&");
     super.initState();
+    widget.flatVariable.addInAllUpdateFunction(update);
     //print("In initState()");
     storeCurrentWidgetLevel = widget.flatVariable.currentLevel;
     //print("Store value: $storeCurrentWidgetLevel");
@@ -95,17 +96,14 @@ class _CustomDropDownState extends State<CustomDropDown> {
           //print("$storeCurrentWidgetLevel in the current dropdown widget");
           //print(
           //    "Current Level $storeCurrentWidgetLevel and total levels ${widget.flatVariable.totalLevels}");
-          if (widget.flatVariable.currentLevel ==
-              widget.flatVariable.totalLevels) {
-            widget.flatVariable.addInAllUpdateFunction(update);
-          }
+
           if (widget.flatVariable.currentLevel <
                   widget.flatVariable.totalLevels &&
               widget.flatVariable.flatWidgetForm.length <
                   storeCurrentWidgetLevel + 1) {
             //print(
             //    "Inside if condition for: $storeCurrentWidgetLevel and current Level: ${widget.flatVariable.currentLevel}");
-            widget.flatVariable.addInAllUpdateFunction(update);
+            //widget.flatVariable.addInAllUpdateFunction(update);
             widget.flatVariable.incrementCurrentLevel();
             widget.flatVariable.addInFlatWidgetForm(CustomDropDown(
               options: widget.flatVariable

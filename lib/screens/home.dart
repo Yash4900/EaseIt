@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
 
     role = snapshot.get('role');
     if (role != 'Security Guard') {
+      g.setFlat = snapshot.get('flat');
       g.setFlatNo = snapshot.get('flatNo');
       g.setWing = snapshot.get('wing');
     }

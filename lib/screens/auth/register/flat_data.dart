@@ -4,7 +4,7 @@ import 'package:ease_it/screens/auth/register/custom_dropdown_widget.dart';
 class FlatData {
   Map<String, dynamic> _structure; //Stores the structure of the society
   List<Widget> _flatWidgetForm; //Stores the widget to be displayed in the form
-  Map<String, String> _flatNum; //Stores the flatNumof the user
+  final Map<String, String> _flatNum = {}; //Stores the flatNumof the user
   List<String>
       _flatValue; //Another List just to store the flat number of the user
   List<Function> _allUpdateFunctions; //To update all the widgets simultaneously
@@ -22,7 +22,7 @@ class FlatData {
   set setStructure(Map<String, dynamic> structure) => _structure = structure;
   set setFlatWidgetForm(List<Widget> flatWidgetForm) =>
       _flatWidgetForm = flatWidgetForm;
-  set setFlatNum(Map<dynamic, dynamic> flatNum) => _flatNum = flatNum;
+  //set setFlatNum(Map<dynamic, dynamic> flatNum) => _flatNum = flatNum;
   set setFlatValue(List<String> flatValue) => _flatValue = flatValue;
   set setAllUpdateFunctions(List<Function> allUpdateFunctions) =>
       _allUpdateFunctions = allUpdateFunctions;
@@ -67,6 +67,9 @@ class FlatData {
   }
 
   List<String> getILevelInHierarchy(int i) {
+    if (_structure["structure"] is List) {
+      return _structure["structure"];
+    }
     //print(
     //    "############################# Get level in hierarchy flat data #############################");
     dynamic temp = _structure["structure"];
@@ -132,5 +135,17 @@ class FlatData {
     }
     //print(
     //    "############################# run all update flat data #############################");
+  }
+
+  void createMapFromListForFlat() {
+    if (!_flatValue.contains(null)) {
+      //print(_flatNum);
+      //print(_flatValue);
+      List<String> listOfHierarchy = List<String>.from(_structure["Hierarchy"]);
+      for (int i = 0; i < listOfHierarchy.length; i++) {
+        _flatNum[listOfHierarchy[i]] = _flatValue[i];
+      }
+      //print("Flat Num $_flatNum");
+    }
   }
 }
