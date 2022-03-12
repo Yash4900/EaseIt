@@ -149,6 +149,21 @@ class Database {
     }
   }
 
+  Future<void> updateLikes(
+      String id, String society, Map<String, dynamic> likes) async {
+    print(likes);
+    try {
+      await _firestore
+          .collection(society)
+          .doc('complaints')
+          .collection('Complaint')
+          .doc(id)
+          .update({'likes': likes});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> markResolved(String id, String societyName) async {
     try {
       await _firestore

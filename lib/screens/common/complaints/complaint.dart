@@ -4,6 +4,7 @@ import 'package:ease_it/screens/common/complaints/add_complaint.dart';
 import 'package:ease_it/screens/common/complaints/single_complaint.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,6 +31,21 @@ class _ComplaintViewState extends State<ComplaintView> {
     "Dec"
   ];
 
+  String getInitials(String name) {
+    List<String> words = name.split(" ");
+    return words[0][0] + words[1][0];
+  }
+
+  List<Color> colors = [
+    Color(0XFFD5573B),
+    Color(0XFF274C77),
+    Color(0XFF777DA7),
+    Color(0XFFDC6BAD),
+    Color(0XFF4C956C),
+    Color(0XFFEF233C),
+    Color(0XFFC1666B),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,6 +65,9 @@ class _ComplaintViewState extends State<ComplaintView> {
                         itemBuilder: (context, index) {
                           DocumentSnapshot ds = snapshot.data.docs[index];
                           DateTime date = ds['postedOn'].toDate();
+                          Map<String, dynamic> likes = ds['likes'];
+                          int likedBy = likes.length;
+                          List<String> ids = likes.keys.toList();
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -103,7 +122,8 @@ class _ComplaintViewState extends State<ComplaintView> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
                                     child: Text(
                                       ds['description'].length > 100
                                           ? ds['description']
@@ -138,21 +158,163 @@ class _ComplaintViewState extends State<ComplaintView> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 10),
-                                      color: (ds['status'] == "Resolved")
-                                          ? Color(0xff107154).withOpacity(0.2)
-                                          : Colors.grey.withOpacity(0.2),
-                                      child: Text(
-                                        ds['status'],
-                                        style: TextStyle(
-                                            fontSize: 12,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 8,
+                                          child: Row(
+                                            children: [
+                                              ds['likes'].containsKey(
+                                                      FirebaseAuth.instance
+                                                          .currentUser.uid)
+                                                  ? InkWell(
+                                                      onTap: () {
+                                                        likes.remove(
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser
+                                                                .uid);
+                                                        Database().updateLikes(
+                                                            ds.id,
+                                                            g.society,
+                                                            likes);
+                                                      },
+                                                      child: Icon(
+                                                        Icons.thumb_up,
+                                                        color: Colors.blue[600],
+                                                      ),
+                                                    )
+                                                  : InkWell(
+                                                      onTap: () async {
+                                                        likes[FirebaseAuth
+                                                                .instance
+                                                                .currentUser
+                                                                .uid] =
+                                                            g.fname +
+                                                                ' ' +
+                                                                g.lname;
+                                                        await Database()
+                                                            .updateLikes(
+                                                                ds.id,
+                                                                g.society,
+                                                                likes);
+                                                      },
+                                                      child: Icon(Icons
+                                                          .thumb_up_alt_outlined),
+                                                    ),
+                                              likedBy > 0
+                                                  ? Container(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(width: 10),
+                                                          Text(
+                                                            'liked by ',
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .black54,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            width: 120,
+                                                            height: 30,
+                                                            child: Stack(
+                                                              children: [
+                                                                for (int i = 0;
+                                                                    i < 3 &&
+                                                                        i < likedBy;
+                                                                    i++)
+                                                                  Positioned(
+                                                                    left: i *
+                                                                        20.0,
+                                                                    child:
+                                                                        CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      radius:
+                                                                          15,
+                                                                      child:
+                                                                          CircleAvatar(
+                                                                        backgroundColor:
+                                                                            colors[i],
+                                                                        radius:
+                                                                            13,
+                                                                        child:
+                                                                            Text(
+                                                                          getInitials(
+                                                                              likes[ids[i]]),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize:
+                                                                                12,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                likedBy > 3
+                                                                    ? Positioned(
+                                                                        left:
+                                                                            60.0,
+                                                                        child:
+                                                                            CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                          radius:
+                                                                              15,
+                                                                          child:
+                                                                              CircleAvatar(
+                                                                            backgroundColor:
+                                                                                Colors.grey[200],
+                                                                            radius:
+                                                                                13,
+                                                                            child:
+                                                                                Text(
+                                                                              '+${likedBy - 3}',
+                                                                              style: TextStyle(color: Colors.grey[600], fontSize: 12, fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    : SizedBox()
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 2, horizontal: 10),
                                             color: (ds['status'] == "Resolved")
                                                 ? Color(0xff107154)
-                                                : Colors.grey,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                                    .withOpacity(0.2)
+                                                : Colors.grey.withOpacity(0.2),
+                                            child: Text(
+                                              ds['status'],
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: (ds['status'] ==
+                                                          "Resolved")
+                                                      ? Color(0xff107154)
+                                                      : Colors.grey,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   )
                                 ],
