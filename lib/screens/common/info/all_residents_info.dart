@@ -1,5 +1,7 @@
+import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:ease_it/utility/flat_data.dart';
 
 class ResidentInfoPage extends StatefulWidget {
   const ResidentInfoPage({Key key}) : super(key: key);
@@ -11,6 +13,9 @@ class ResidentInfoPage extends StatefulWidget {
 class _ResidentInfoPageState extends State<ResidentInfoPage> {
   @override
   Widget build(BuildContext context) {
+    Globals g = Globals();
+    FlatData f = FlatData(hierarchy: g.hierarchy, structure: g.structure);
+    f.findingCombinations();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -428,5 +433,43 @@ class UserCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CustomTabViewPage extends StatefulWidget {
+  List<String> optionUntilNow;
+  CustomTabViewPage({Key key, @required this.optionUntilNow}) : super(key: key);
+
+  @override
+  State<CustomTabViewPage> createState() => _CustomTabViewPageState();
+}
+
+class _CustomTabViewPageState extends State<CustomTabViewPage> {
+  List<String> nextOptions;
+  Globals g = Globals();
+
+  @override
+  void initState() {
+    dynamic temp = g.structure is List
+        ? [...g.structure]
+        : <String, dynamic>{...g.structure};
+    dynamic tempIterationMap = temp;
+    for (int i = 0; i < widget.optionUntilNow.length; i++) {
+      if (tempIterationMap is Map) {
+        nextOptions = tempIterationMap.keys.toList();
+        tempIterationMap = tempIterationMap[widget.optionUntilNow[i]];
+      } else if (tempIterationMap is List) {
+        nextOptions = tempIterationMap.toList();
+      } else {}
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.optionUntilNow.length == g.hierarchy.length) {
+      return SizedBox();
+    } else {
+      return SizedBox();
+    }
   }
 }

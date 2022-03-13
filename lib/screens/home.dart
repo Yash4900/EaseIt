@@ -27,6 +27,12 @@ class _HomeState extends State<Home> {
     // Defining user properties globally
     Globals g = Globals();
     g.setSociety = prefs.getString("society");
+    Map<String, dynamic> societySnapshot =
+        await Database().getSocietyInfo(g.society);
+    g.setHierarchy = List<String>.from(societySnapshot["Hierarchy"]);
+    //print(societySnapshot["Hierarchy"]);
+    //print(g.hierarchy);
+    g.setStructure = societySnapshot["structure"];
     g.setUid = uid;
     g.setRole = snapshot.get('role');
     g.setEmail = snapshot.get('email');
