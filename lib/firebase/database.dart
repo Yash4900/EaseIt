@@ -1020,4 +1020,20 @@ class Database {
     }
     return null;
   }
+
+  Future getUserDetailsBasedOnFlatNumber(
+      String society, Map<String, String> flatNumber) async {
+    try {
+      QuerySnapshot a = await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .get();
+      print(a.docs[0].data());
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 }
