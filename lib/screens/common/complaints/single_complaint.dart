@@ -15,8 +15,11 @@ class SingleComplaint extends StatefulWidget {
   final Timestamp postedOn;
   final String postedBy;
   final String status;
+  final int likedBy;
+  final Map<String, dynamic> likes;
+  final List<String> ids;
   SingleComplaint(this.id, this.title, this.desc, this.image, this.postedOn,
-      this.postedBy, this.status);
+      this.postedBy, this.status, this.likedBy, this.likes, this.ids);
   @override
   _SingleComplaintState createState() => _SingleComplaintState();
 }
@@ -37,6 +40,21 @@ class _SingleComplaintState extends State<SingleComplaint> {
     "Oct",
     "Nov",
     "Dec"
+  ];
+
+  String getInitials(String name) {
+    List<String> words = name.split(" ");
+    return words[0][0] + words[1][0];
+  }
+
+  List<Color> colors = [
+    Color(0XFFD5573B),
+    Color(0XFF274C77),
+    Color(0XFF777DA7),
+    Color(0XFFDC6BAD),
+    Color(0XFF4C956C),
+    Color(0XFFEF233C),
+    Color(0XFFC1666B),
   ];
 
   bool loading = false;
@@ -64,9 +82,10 @@ class _SingleComplaintState extends State<SingleComplaint> {
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -74,7 +93,8 @@ class _SingleComplaintState extends State<SingleComplaint> {
       ),
       body: loading
           ? Loading()
-          : ListView(
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.3,
@@ -91,7 +111,9 @@ class _SingleComplaintState extends State<SingleComplaint> {
                   child: Text(
                     widget.title,
                     style: GoogleFonts.sourceSansPro(
-                        fontSize: 22, fontWeight: FontWeight.bold),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Padding(
@@ -112,14 +134,17 @@ class _SingleComplaintState extends State<SingleComplaint> {
                       Text(
                         widget.postedBy,
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         "${date.day} ${days[date.month - 1]}, ${date.year}",
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
                       )
                     ],
                   ),
@@ -171,31 +196,90 @@ class _SingleComplaintState extends State<SingleComplaint> {
                                 ),
                               ),
                               child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.check, color: Color(0xff037DD6)),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'Mark as Resolved',
-                                      style: TextStyle(
-                                          color: Color(0xff037DD6),
-                                          fontWeight: FontWeight.w600),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.check,
+                                    color: Color(0xff037DD6),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Mark as Resolved',
+                                    style: TextStyle(
+                                      color: Color(0xff037DD6),
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ]),
+                                  ),
+                                ],
+                              ),
                             )
                           : Row(
                               children: [
-                                Icon(Icons.cancel_outlined,
-                                    color: Color(0xffbb121a)),
+                                Icon(
+                                  Icons.cancel_outlined,
+                                  color: Color(0xffbb121a),
+                                ),
                                 SizedBox(width: 10),
                                 Text(
                                   'Unresolved',
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 )
                               ],
                             ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'Liked by',
+                    style: GoogleFonts.sourceSansPro(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for (int i = 0; i < widget.likedBy; i++)
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          // decoration: BoxDecoration(
+                          //   border: Border(
+                          //     bottom: BorderSide(color: Colors.grey[200]),
+                          //   ),
+                          // ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 15,
+                                backgroundColor: colors[i],
+                                child: Text(
+                                  getInitials(widget.likes[widget.ids[i]]),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                              Text(
+                                widget.likes[widget.ids[i]],
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        )
+                    ],
+                  ),
                 )
               ],
             ),
