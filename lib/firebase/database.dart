@@ -1021,7 +1021,7 @@ class Database {
     return null;
   }
 
-  Future getUserDetailsBasedOnFlatNumber(
+  Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
       String society, Map<String, String> flatNumber) async {
     try {
       QuerySnapshot a = await _firestore
@@ -1030,7 +1030,7 @@ class Database {
           .collection('User')
           .where('flat', isEqualTo: flatNumber)
           .get();
-      print(a.docs[0].data());
+      return a;
     } catch (e) {
       print(e.toString());
     }

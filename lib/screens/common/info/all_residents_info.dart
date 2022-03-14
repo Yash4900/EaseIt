@@ -5,6 +5,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
+//import 'package:flutter_beautiful_popup/main.dart';
 
 class ResidentInfoPage extends StatefulWidget {
   const ResidentInfoPage({Key key}) : super(key: key);
@@ -472,10 +473,12 @@ class CustomTabViewPage extends StatefulWidget {
 class _CustomTabViewPageState extends State<CustomTabViewPage> {
   List<String> nextOptions;
   bool isLoading = false;
+  int level;
   Globals g = Globals();
   final Widget dividerWidget = Divider(
     color: Color(0xffc7c3c3),
   );
+  List<Widget> userCardWidget;
   Map<int, String> respectiveEndingTag = {
     1: "st",
     2: "nd",
@@ -492,52 +495,71 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
   @override
   void initState() {
     super.initState();
-    print("InitState");
-    print(widget.index);
+    print("------------------------ InitState S ------------------------");
+    level = widget.index;
+    print(
+        "Widget index: ${widget.index}, Widget optionUntilNow: ${widget.optionUntilNow}");
     dynamic temp = g.structure is List
         ? [...g.structure]
         : <String, dynamic>{...g.structure};
     dynamic tempIterationMap = temp;
     print("TempIterationMap: $tempIterationMap");
     if (widget.optionUntilNow.isEmpty) {
+      print("In if");
       if (tempIterationMap is Map) {
-        print("Wtf");
+        //print("Wtf");
         nextOptions = tempIterationMap.keys.toList();
       } else if (tempIterationMap is List) {
         nextOptions = tempIterationMap.toList();
       } else {}
     } else {
+      print("In else");
       tempIterationMap = tempIterationMap[widget.optionUntilNow[0]];
+      print("tempIterationMap $tempIterationMap");
       for (int i = 0; i < widget.optionUntilNow.length; i++) {
+        print("Iteration i: $i");
+        print("TempIterationValue before: $tempIterationMap");
         if (tempIterationMap is Map) {
-          nextOptions = tempIterationMap.keys.toList();
           tempIterationMap = tempIterationMap[widget.optionUntilNow[i]];
+          nextOptions = tempIterationMap.keys.toList();
         } else if (tempIterationMap is List) {
           nextOptions = tempIterationMap.toList();
         } else {}
+        //print("TempIterationValue after: $tempIterationMap");
+      }
+      if (widget.optionUntilNow.length > level) {
+        widget.optionUntilNow.removeAt(level);
+        widget.optionUntilNow.insert(level, nextOptions[0]);
+      } else {
+        widget.optionUntilNow.add(nextOptions[0]);
       }
     }
-    print(nextOptions);
-    widget.optionUntilNow.add(nextOptions[0]);
-    print("Out of InitState()");
+    //print("Next option is $nextOptions");
+    //print("Length of optionUntilNow: ${widget.optionUntilNow.length}");
+    //print("Level: $level");
+
+    print("Widget optionsUnitlNow in initState(): ${widget.optionUntilNow}");
+    print("------------------------ InitState E ------------------------");
   }
 
   String updatedString(value) {
-    print("updateString");
+    //print("updateString");
     if (int.tryParse(value) != null) {
       int Num = int.parse(value);
       String expectedEnding = respectiveEndingTag[Num];
       value = value + expectedEnding;
-      print("Updated String");
+      //print("Updated String");
       return value;
     }
-    print("UpdatedString");
+    //print("UpdatedString");
     return value;
   }
 
-  List<Widget> listOfTabWidgets(nextOptions, int level) {
+  List<Widget> listOfTabWidgets(List<String> nextOptions, int level) {
     List<Widget> tabWidget = [];
-    print("List of Tab Widgets");
+    print("!!!!!!!!!!!!!!!!!!!!!! ListOfTabWidgets S !!!!!!!!!!!!!!!!!!!!!!");
+    print("Next options received in listOfTabWidgets is: $nextOptions");
+    //print("List of Tab Widgets");
     for (int i = 0; i < nextOptions.length; i++) {
       Widget tempTab = Tab(
         icon: Icon(Icons.apartment),
@@ -545,35 +567,83 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       );
       tabWidget.add(tempTab);
     }
-    print("List of Tab widgets");
+    //print("List of Tab widgets");
+    print("!!!!!!!!!!!!!!!!!!!!!! ListOfTabWidgets S !!!!!!!!!!!!!!!!!!!!!!");
     return tabWidget;
   }
 
-  List<Widget> listOfCustomTabBarView(nextOptions) {
-    print("List of Custom Tab Bar View");
+  List<Widget> listOfCustomTabBarView(List<String> nextOptions) {
+    //print("List of Custom Tab Bar View");
+    print(
+        "######################### ListOfCustomTabBarView S #########################");
     List<Widget> tabWidget = [];
     for (int i = 0; i < nextOptions.length; i++) {
       Widget tempTab = CustomTabViewPage(
         optionUntilNow: widget.optionUntilNow,
-        index: widget.index + 1,
+        index: level + 1,
       );
       tabWidget.add(tempTab);
     }
-    print("List of Custom Tab Bar View");
+    print("Length of tabs created: ${tabWidget.length}");
+    //print("List of Custom Tab Bar View");
+    print(
+        "######################### ListOfCustomTabBarView E #########################");
     return tabWidget;
   }
 
-  List<Widget> listOfUserCards(nextOptions) {
+  void listOfUserCards(List<String> nextOptions, int index) async {
+    setState(() => isLoading = true);
+    userCardWidget = [];
+    print("In List of user cards");
     Map<String, String> temp = {};
+    dynamic tempNew = g.structure is List
+        ? [...g.structure]
+        : <String, dynamic>{...g.structure};
+    dynamic tempIterationMap = tempNew;
+    print("Length of optionuntilnow: ${widget.optionUntilNow.length}");
+    for (int i = 0; i <= widget.optionUntilNow.length; i++) {
+      //print("Temp iteration Map: $tempIterationMap\n");
+      if (tempIterationMap is Map) {
+        nextOptions = tempIterationMap.keys.toList();
+        tempIterationMap = tempIterationMap[widget.optionUntilNow[i]];
+      } else if (tempIterationMap is List) {
+        nextOptions = List<String>.from(tempIterationMap.toList());
+      } else {
+        print("In else");
+      }
+    }
+    print("Intermediate next Options: $nextOptions");
     for (int i = 0; i < g.hierarchy.length - 1; i++) {
       temp[g.hierarchy[i]] = widget.optionUntilNow[i];
     }
+    print("Intermediate Temp: $temp");
     for (int i = 0; i < nextOptions.length; i++) {
+      List<Widget> tempWidgets = [];
       temp[g.hierarchy[g.hierarchy.length - 1]] = nextOptions[i];
+      print("Temp is: $temp");
+      QuerySnapshot usersBelongingToSameFlat =
+          await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
+      List<Widget> tempMoreWidgets =
+          generateListViewWidget(usersBelongingToSameFlat, temp);
+      for (Widget k in tempMoreWidgets) {
+        tempWidgets.add(k);
+      }
+      userCardWidget.add(
+        ListView(
+          children: tempWidgets,
+        ),
+      );
     }
+    print("List of user cards ended");
+    setState(() => isLoading = false);
+    setState(() {});
+    widget.index = widget.index + 1;
+    //return userCardWidget;
   }
 
-  List<Widget> generateSizedBoxes(nextOptions) {
+  List<Widget> generateSizedBoxes(List<String> nextOptions, int index) {
+    //listOfUserCards(nextOptions, index);
+    print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
     List<Widget> listOfSizedBox = [];
     for (int i = 0; i < nextOptions.length; i++) {
       Widget temp = SizedBox(
@@ -581,13 +651,49 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       );
       listOfSizedBox.add(temp);
     }
+    print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
     return listOfSizedBox;
+  }
+
+  List<Widget> generateListViewWidget(
+      QuerySnapshot snapshots, Map<String, String> temp) {
+    List<Widget> childrenWidgets = [];
+    String textValue = g.hierarchy[g.hierarchy.length - 1] +
+        " " +
+        temp[g.hierarchy[g.hierarchy.length - 1]];
+    childrenWidgets.add(
+      Text(
+        textValue,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Color(0xff707070),
+          fontSize: 17,
+        ),
+      ),
+    );
+    childrenWidgets.add(dividerWidget);
+    for (int i = 0; i < snapshots.docs.length; i++) {
+      childrenWidgets.add(
+        UserCard(
+          userName:
+              snapshots.docs[i]["fname"] + " " + snapshots.docs[i]["lname"],
+          societyDesignation: snapshots.docs[i]["role"],
+          homeDesignation: "Resident",
+          email: snapshots.docs[i]["email"],
+        ),
+      );
+    }
+    return childrenWidgets;
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Next options: $nextOptions");
+    //print("Next options: $nextOptions");
     if (widget.index == g.hierarchy.length - 2) {
+      //listOfUserCards(nextOptions, widget.index + 1);
+      print("*****************************");
+      print("In if index: ${widget.index}");
+      print("In if level: $level");
       return isLoading
           ? Loading()
           : DefaultTabController(
@@ -597,13 +703,9 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                   ButtonsTabBar(
                     onTap: (index) {
                       print("In onTap");
-                      if (widget.optionUntilNow.length > widget.index) {
-                        widget.optionUntilNow.removeAt(widget.index);
-                        widget.optionUntilNow.insert(index, nextOptions[index]);
-                      } else {
-                        widget.optionUntilNow.add(nextOptions[index]);
-                      }
-                      print(widget.optionUntilNow);
+                      widget.optionUntilNow.removeAt(level);
+                      widget.optionUntilNow.insert(level, nextOptions[index]);
+                      print("Option until now ${widget.optionUntilNow}");
                     },
                     radius: 50,
                     labelStyle: const TextStyle(
@@ -614,7 +716,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                     unselectedBackgroundColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     //buttonMargin: EdgeInsets.symmetric(horizontal: 10),
-                    tabs: listOfTabWidgets(nextOptions, widget.index),
+                    tabs: listOfTabWidgets(nextOptions, level),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -622,13 +724,17 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                   ),
                   Expanded(
                     child: TabBarView(
-                      children: generateSizedBoxes(nextOptions),
+                      children:
+                          generateSizedBoxes(nextOptions, widget.index + 1),
                     ),
                   ),
                 ],
               ),
             );
-    } else {
+    } else if (widget.index < g.hierarchy.length - 2) {
+      print("++++++++++++++++++++++++++++");
+      print("In else if ${widget.index}");
+      print("In else if level: $level");
       return isLoading
           ? Loading()
           : DefaultTabController(
@@ -637,12 +743,10 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                 children: [
                   ButtonsTabBar(
                     onTap: (index) {
-                      if (widget.optionUntilNow.length > widget.index) {
-                        widget.optionUntilNow.removeAt(widget.index);
-                        widget.optionUntilNow.insert(index, nextOptions[index]);
-                      } else {
-                        widget.optionUntilNow.add(nextOptions[index]);
-                      }
+                      print("In onTap");
+                      widget.optionUntilNow.removeAt(level);
+                      widget.optionUntilNow.insert(level, nextOptions[index]);
+                      print("Option until now ${widget.optionUntilNow}");
                     },
                     radius: 50,
                     labelStyle: const TextStyle(
@@ -653,7 +757,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                     unselectedBackgroundColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     //buttonMargin: EdgeInsets.symmetric(horizontal: 10),
-                    tabs: listOfTabWidgets(nextOptions, widget.index),
+                    tabs: listOfTabWidgets(nextOptions, level),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -667,6 +771,9 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                 ],
               ),
             );
+    } else {
+      print("_____________________________");
+      return SizedBox();
     }
   }
 }
