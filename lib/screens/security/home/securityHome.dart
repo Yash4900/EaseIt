@@ -139,9 +139,9 @@ class _SecurityHomeState extends State<SecurityHome> {
                           ),
                         ]);
                       } else {
-                        String imageUrl = null;
+                        int code;
                         try {
-                          imageUrl = qds['imageUrl'];
+                          code = qds['code'];
                         } catch (e) {
                           print(e.toString());
                         }
@@ -153,14 +153,15 @@ class _SecurityHomeState extends State<SecurityHome> {
                               qds.id,
                               qds['name'],
                               qds['purpose'],
-                              imageUrl != null
+                              code != null
                                   ? 'Daily Helper'
                                   : 'Pre Approved Visitor',
-                              imageUrl ?? '',
+                              qds['imageUrl'] ?? '',
                             ),
                           ),
                         );
                       }
+                      setState(() => _codeController.clear());
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.0),

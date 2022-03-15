@@ -29,15 +29,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logDailyHelperVisit(g.society, widget.id, 'exit');
-      } catch (e) {
-        print(e.toString());
-      }
-      setState(() => loading = false);
-    } else {
-      try {
-        setState(() => loading = true);
-        await Database().logPreApproval(g.society, widget.id, 'exitTime');
-        showToast(context, 'success', 'Success!', 'Log created successfully');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -50,6 +42,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logDailyHelperVisit(g.society, widget.id, 'entry');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -58,7 +51,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logPreApproval(g.society, widget.id, 'entryTime');
-        showToast(context, 'success', 'Success!', 'Log created successfully');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -144,39 +137,42 @@ class _CodeApprovalState extends State<CodeApproval> {
                                 width: 1,
                                 height: 25,
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: TextButton(
-                                  onPressed: () async {
-                                    bool confirmation =
-                                        await showConfirmationDialog(
-                                            context,
-                                            'Alert!',
-                                            'Are you sure you want to make this entry?');
-                                    if (confirmation) {
-                                      await handleExit();
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.logout,
-                                        color: Colors.grey,
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Exit',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold,
+                              widget.type == "Daily Helper"
+                                  ? Expanded(
+                                      flex: 1,
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          bool confirmation =
+                                              await showConfirmationDialog(
+                                                  context,
+                                                  'Alert!',
+                                                  'Are you sure you want to make this entry?');
+                                          if (confirmation) {
+                                            await handleExit();
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.logout,
+                                              color: Colors.grey,
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Exit',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                      ),
+                                    )
+                                  : SizedBox(),
                               Container(
                                 color: Colors.grey[400],
                                 width: 1,
