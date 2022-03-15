@@ -907,7 +907,7 @@ class Database {
       String flatNo,
       String wing,
       String code,
-      String purpose) async {
+      String purpose,String imageUrl) async {
     try {
       await _firestore
           .collection(society)
@@ -915,7 +915,7 @@ class Database {
           .collection('preApproval')
           .add({
         'name': visName,
-        'phoneNo': visPhoneNo,
+        'phoneNum': visPhoneNo,
         'vehicleNo': vehicleNo,
         'flatNo': flatNo,
         'wing': wing,
@@ -923,6 +923,9 @@ class Database {
         'purpose': purpose,
         'postedOn': DateTime.now(),
         'status': "Pending",
+        'entryTime':null,
+        'exitTime':null,
+        'imageUrl':imageUrl
       });
     } catch (e) {
       print(e.toString());
@@ -940,6 +943,24 @@ class Database {
           .where('flatNo', isEqualTo: flatNo)
           .where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get all approved preapproval for given flat
+  Stream<void> getAllApprovedPreApprovalForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('flatNo', isEqualTo: flatNo)
+          .where('wing', isEqualTo: wing)
+          .where('status', isEqualTo: "Approved")
           .snapshots();
     } catch (e) {
       print(e.toString());
