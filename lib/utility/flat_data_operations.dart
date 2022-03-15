@@ -1,10 +1,29 @@
 import 'package:flutter/cupertino.dart';
 
-class FlatData {
+class FlatDataOperations {
   List<String> hierarchy;
   dynamic structure;
 
-  FlatData({@required this.hierarchy, @required this.structure});
+  FlatDataOperations({@required this.hierarchy, @required this.structure});
+
+  List<String> getInitialCombination() {
+    List<String> initialCombination = [];
+    if (structure is List) {
+      return initialCombination;
+    } else if (structure is Map) {
+      dynamic temp = structure;
+      for (int i = 0; i < hierarchy.length; i++) {
+        if (temp is Map) {
+          initialCombination.add(temp.keys.toList()[0]);
+          temp = temp[temp.keys.toList()[0]];
+        } else {}
+      }
+      print(initialCombination);
+      return initialCombination;
+    } else {
+      return null;
+    }
+  }
 
   void findingCombinations() {
     RecursiveFindValues r = RecursiveFindValues();

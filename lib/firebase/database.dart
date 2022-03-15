@@ -1024,13 +1024,12 @@ class Database {
   Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
       String society, Map<String, String> flatNumber) async {
     try {
-      QuerySnapshot a = await _firestore
+      return await _firestore
           .collection(society)
           .doc('users')
           .collection('User')
           .where('flat', isEqualTo: flatNumber)
           .get();
-      return a;
     } catch (e) {
       print(e.toString());
     }
