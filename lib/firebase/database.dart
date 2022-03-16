@@ -1024,6 +1024,7 @@ class Database {
   Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
       String society, Map<String, String> flatNumber) async {
     try {
+      print(flatNumber);
       return await _firestore
           .collection(society)
           .doc('users')

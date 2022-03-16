@@ -478,6 +478,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
   bool isLoading = false;
   int level;
   Globals g = Globals();
+  //List<Widget> userCardWidget;
   final Widget dividerWidget = Divider(
     color: Color(0xffc7c3c3),
   );
@@ -519,8 +520,8 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     //tempIterationMap = tempIterationMap[widget.optionUntilNow[0]];
     //print("tempIterationMap $tempIterationMap");
     for (int i = 0; i < level + 1; i++) {
-      print("Iteration i: $i");
-      print("TempIterationValue: $tempIterationMap");
+      //print("Iteration i: $i");
+      //print("TempIterationValue: $tempIterationMap");
       if (tempIterationMap is Map) {
         nextOptions = List<String>.from(tempIterationMap.keys.toList());
       } else if (tempIterationMap is List) {
@@ -540,6 +541,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       print("In 2 else");
       widget.optionUntilNow.add(nextOptions[0]);
     }
+    print("FINNNNNNNNNNNNNNNNNNNNNNNAL Value ${nextOptions[0]}");
     //print("Next option is $nextOptions");
     //print("Length of optionUntilNow: ${widget.optionUntilNow.length}");
     //print("Level: $level");
@@ -568,7 +570,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     // print("!!!!!!!!!!!!!!!!!!!!!! ListOfTabWidgets S !!!!!!!!!!!!!!!!!!!!!!");
     // print("Next options received in listOfTabWidgets is: $nextOptions");
     //print("List of Tab Widgets");
-    //print("Level is: level");
+    print("Level is: $level");
     for (int i = 0; i < nextOptions.length; i++) {
       Widget tempTab = Tab(
         icon: Icon(Icons.apartment),
@@ -585,14 +587,12 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     //print("List of Custom Tab Bar View");
     // print(
     //     "######################### ListOfCustomTabBarView S #########################");
+    print("In custom tab bar view $level");
     List<Widget> tabWidget = [];
     for (int i = 0; i < nextOptions.length; i++) {
-      Widget tempTab = Expanded(
-        flex: 1,
-        child: CustomTabViewPage(
-          optionUntilNow: widget.optionUntilNow,
-          index: level + 1,
-        ),
+      Widget tempTab = CustomTabViewPage(
+        optionUntilNow: widget.optionUntilNow,
+        index: level + 1,
       );
       tabWidget.add(tempTab);
     }
@@ -603,10 +603,11 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     return tabWidget;
   }
 
-  Future<List> listOfUserCards(List<String> nextOptions, int index) async {
+  Future<List<Widget>> listOfUserCards(
+      List<String> nextOptions, int index) async {
     //setState(() => isLoading = true);
-    List<Widget> userCardWidget;
-    userCardWidget = [];
+    //List<Widget> userCardWidget;
+    List<Widget> userCardWidget = [];
     print("In List of user cards");
     Map<String, String> temp = {};
     dynamic tempNew = g.structure is List
@@ -647,11 +648,12 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
         ),
       );
     }
+    //print(userCardWidget);
     print("List of user cards ended");
     //setState(() => isLoading = false);
     //setState(() {});
-    widget.index = widget.index + 1;
-    //return userCardWidget;
+    //widget.index = widget.index + 1;
+    return userCardWidget;
   }
 
   List<Widget> generateSizedBoxes(List<String> nextOptions, int index) {
@@ -685,16 +687,40 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       ),
     );
     childrenWidgets.add(dividerWidget);
-    for (int i = 0; i < snapshots.docs.length; i++) {
+    if (snapshots.docs.length == 0) {
       childrenWidgets.add(
-        UserCard(
-          userName:
-              snapshots.docs[i]["fname"] + " " + snapshots.docs[i]["lname"],
-          societyDesignation: snapshots.docs[i]["role"],
-          homeDesignation: "Resident",
-          email: snapshots.docs[i]["email"],
+        Center(
+          child: Row(
+            children: [
+              Icon(
+                Icons.search_outlined,
+                size: 25,
+                color: Color(0xffa0a0a0),
+              ),
+              Text(
+                "No residents found for this flat",
+                style: TextStyle(
+                  color: Color(0xffa0a0a0),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       );
+    } else {
+      for (int i = 0; i < snapshots.docs.length; i++) {
+        childrenWidgets.add(
+          UserCard(
+            userName:
+                snapshots.docs[i]["fname"] + " " + snapshots.docs[i]["lname"],
+            societyDesignation: snapshots.docs[i]["role"],
+            homeDesignation: "Resident",
+            email: snapshots.docs[i]["email"],
+          ),
+        );
+      }
     }
     return childrenWidgets;
   }
@@ -702,8 +728,8 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
   @override
   Widget build(BuildContext context) {
     //print("Next options: $nextOptions");
-    if (widget.index == g.hierarchy.length - 2) {
-      listOfUserCards(nextOptions, widget.index + 1);
+    if (level == g.hierarchy.length - 2) {
+      //listOfUserCards(nextOptions, widget.index + 1);
       print("*****************************");
       print("In if index: ${widget.index}");
       print("In if level: $level");
@@ -714,8 +740,11 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             ButtonsTabBar(
               onTap: (index) {
                 print("In onTap");
+                print("Level: $level");
+                print(nextOptions[index]);
                 widget.optionUntilNow.removeAt(level);
                 widget.optionUntilNow.insert(level, nextOptions[index]);
+                setState(() {});
                 print("Option until now ${widget.optionUntilNow}");
               },
               radius: 50,
@@ -734,14 +763,30 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
               child: dividerWidget,
             ),
             Expanded(
-              child: TabBarView(
-                children: generateSizedBoxes(nextOptions, widget.index + 1),
+              child: FutureBuilder(
+                future: listOfUserCards(nextOptions, widget.index),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return TabBarView(
+                      children: snapshot.data,
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "Could not load Data",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                      ),
+                    );
+                  } else {
+                    return Loading();
+                  }
+                },
               ),
             ),
           ],
         ),
       );
-    } else if (widget.index < g.hierarchy.length - 2) {
+    } else if (level < g.hierarchy.length - 2) {
       print("++++++++++++++++++++++++++++");
       print("In else if ${widget.index}");
       print("In else if level: $level");
@@ -752,8 +797,11 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             ButtonsTabBar(
               onTap: (index) {
                 print("In onTap");
+                print("Level: $level");
+                print(nextOptions[index]);
                 widget.optionUntilNow.removeAt(level);
                 widget.optionUntilNow.insert(level, nextOptions[index]);
+                setState(() {});
                 print("Option until now ${widget.optionUntilNow}");
               },
               radius: 50,
