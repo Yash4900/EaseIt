@@ -5,7 +5,6 @@ import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 
 class AllocateParking extends StatefulWidget {

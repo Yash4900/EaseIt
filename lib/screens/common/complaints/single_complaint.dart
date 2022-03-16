@@ -252,11 +252,6 @@ class _SingleComplaintState extends State<SingleComplaint> {
                       for (int i = 0; i < widget.likedBy; i++)
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
-                          // decoration: BoxDecoration(
-                          //   border: Border(
-                          //     bottom: BorderSide(color: Colors.grey[200]),
-                          //   ),
-                          // ),
                           child: Row(
                             children: [
                               CircleAvatar(
@@ -273,7 +268,8 @@ class _SingleComplaintState extends State<SingleComplaint> {
                               SizedBox(width: 20),
                               Text(
                                 widget.likes[widget.ids[i]],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
                               )
                             ],
                           ),
