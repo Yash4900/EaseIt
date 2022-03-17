@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
@@ -477,6 +479,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
   List<String> nextOptions;
   bool isLoading = false;
   int level;
+  List<Widget> userCardWidgetsToDisplay;
   Globals g = Globals();
   //List<Widget> userCardWidget;
   final Widget dividerWidget = Divider(
@@ -603,76 +606,175 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     return tabWidget;
   }
 
-  Future<List<Widget>> listOfUserCards(
-      List<String> nextOptions, int index) async {
-    //setState(() => isLoading = true);
-    //List<Widget> userCardWidget;
-    List<Widget> userCardWidget = [];
-    print("In List of user cards");
-    Map<String, String> temp = {};
-    dynamic tempNew = g.structure is List
+  List<String> listOfUpcomingOptions(List<String> optionsUntilNow) {
+    dynamic mapToExamine = g.structure is List
         ? [...g.structure]
         : <String, dynamic>{...g.structure};
-    dynamic tempIterationMap = tempNew;
-    print("Length of optionuntilnow: ${widget.optionUntilNow.length}");
-    for (int i = 0; i <= widget.optionUntilNow.length; i++) {
-      //print("Temp iteration Map: $tempIterationMap\n");
-      if (tempIterationMap is Map) {
-        nextOptions = tempIterationMap.keys.toList();
-        tempIterationMap = tempIterationMap[widget.optionUntilNow[i]];
-      } else if (tempIterationMap is List) {
-        nextOptions = List<String>.from(tempIterationMap.toList());
-      } else {
-        print("In else");
-      }
+    List<String> toReturn;
+    for (int i = 0; i < optionsUntilNow.length + 1; i++) {
+      if (mapToExamine is Map) {
+        toReturn = mapToExamine.keys.toList();
+        mapToExamine = mapToExamine[optionsUntilNow[i]];
+      } else if (mapToExamine is List) {
+        toReturn = List<String>.from(mapToExamine.toList());
+      } else {}
     }
-    print("Intermediate next Options: $nextOptions");
+    return toReturn;
+  }
+
+  List<String> getList(Map<String, String> val) {
+    List<String> toReturn = [];
     for (int i = 0; i < g.hierarchy.length - 1; i++) {
-      temp[g.hierarchy[i]] = widget.optionUntilNow[i];
+      toReturn.add(val[g.hierarchy[i]]);
     }
-    print("Intermediate Temp: $temp");
-    for (int i = 0; i < nextOptions.length; i++) {
-      List<Widget> tempWidgets = [];
-      temp[g.hierarchy[g.hierarchy.length - 1]] = nextOptions[i];
-      print("Temp is: $temp");
-      QuerySnapshot usersBelongingToSameFlat =
-          await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
-      List<Widget> tempMoreWidgets =
-          generateListViewWidget(usersBelongingToSameFlat, temp);
-      for (Widget k in tempMoreWidgets) {
-        tempWidgets.add(k);
+    return toReturn;
+  }
+
+  Future<dynamic> improvedFunction(
+      List<String> nextOptions, List<String> optionsUntilNow) async {
+    dynamic mapToExamine = g.structure is List
+        ? [...g.structure]
+        : <String, dynamic>{...g.structure};
+    List<Widget> toDisplay = [];
+    if (mapToExamine is List) {
+      Map<String, String> temp;
+      temp[g.structure[0]] = null;
+      for (int i = 0; i < nextOptions.length; i++) {
+        temp[g.structure[0]] = nextOptions[i];
+        QuerySnapshot userBelongingToSameFlat =
+            await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
+        List<Widget> tempWidgetList =
+            generateListOfFlats(userBelongingToSameFlat, temp);
+        for (Widget i in tempWidgetList) {
+          toDisplay.add(i);
+        }
       }
-      userCardWidget.add(
-        ListView(
-          children: tempWidgets,
-        ),
-      );
-    }
-    //print(userCardWidget);
-    print("List of user cards ended");
-    //setState(() => isLoading = false);
-    //setState(() {});
-    //widget.index = widget.index + 1;
-    return userCardWidget;
+    } else if (mapToExamine is Map) {
+      print("Map to Examine: $mapToExamine");
+      print("Options until now: $optionsUntilNow");
+      print("))))((((");
+      print("In else if");
+      Map<String, String> temp = {};
+      List<String> options;
+      dynamic tempStruct = mapToExamine;
+      for (int i = 0; i < optionsUntilNow.length - 1; i++) {
+        temp[g.hierarchy[i]] = optionsUntilNow[i];
+      }
+      print("Temp after first for loop $temp");
+      for (int i = 0; i < optionsUntilNow.length; i++) {
+        if (tempStruct is Map) {
+          options = tempStruct.keys.toList();
+          tempStruct = tempStruct[optionsUntilNow[i]];
+        } else if (tempStruct is List) {
+          options = tempStruct.toList();
+        } else {}
+      }
+      print("Options to be explored after second for loop: $options");
+      for (int i = 0; i < options.length; i++) {
+        List<String> getTheFlatOptions;
+        temp[g.hierarchy[g.hierarchy.length - 2]] = options[i];
+        List<String> optionsUntilNowTemp = getList(temp);
+        List<Widget> tempWidgetCombined = [];
+        getTheFlatOptions = listOfUpcomingOptions(optionsUntilNowTemp);
+        for (int i = 0; i < getTheFlatOptions.length; i++) {
+          temp[g.hierarchy[g.hierarchy.length - 1]] = getTheFlatOptions[i];
+          print("Flat value: $temp");
+          QuerySnapshot tempSnapshot =
+              await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
+          List<Widget> tempWidget = generateListOfFlats(tempSnapshot, temp);
+          for (Widget i in tempWidget) {
+            tempWidgetCombined.add(i);
+          }
+        }
+        toDisplay.add(Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 10,
+          ),
+          child: RefreshIndicator(
+            onRefresh: refreshPage,
+            child: ListView(
+              children: tempWidgetCombined,
+            ),
+          ),
+        ));
+      }
+      print(toDisplay.length);
+    } else {}
+    return toDisplay;
   }
 
-  List<Widget> generateSizedBoxes(List<String> nextOptions, int index) {
-    //listOfUserCards(nextOptions, index);
-    print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
-    List<Widget> listOfSizedBox = [];
-    for (int i = 0; i < nextOptions.length; i++) {
-      Widget temp = SizedBox(
-        child: Text("It works bc"),
-      );
-      listOfSizedBox.add(temp);
-    }
-    print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
-    return listOfSizedBox;
-  }
+  // Future<List<Widget>> listOfUserCards(
+  //     List<String> nextOptions, int index) async {
+  //   //setState(() => isLoading = true);
+  //   //List<Widget> userCardWidget;
+  //   List<Widget> userCardWidget = [];
+  //   print("In List of user cards");
+  //   Map<String, String> temp = {};
+  //   dynamic tempNew = g.structure is List
+  //       ? [...g.structure]
+  //       : <String, dynamic>{...g.structure};
+  //   dynamic tempIterationMap = tempNew;
+  //   print("Length of optionuntilnow: ${widget.optionUntilNow.length}");
+  //   for (int i = 0; i <= widget.optionUntilNow.length; i++) {
+  //     //print("Temp iteration Map: $tempIterationMap\n");
+  //     if (tempIterationMap is Map) {
+  //       nextOptions = tempIterationMap.keys.toList();
+  //       tempIterationMap = tempIterationMap[widget.optionUntilNow[i]];
+  //     } else if (tempIterationMap is List) {
+  //       nextOptions = List<String>.from(tempIterationMap.toList());
+  //     } else {
+  //       print("In else");
+  //     }
+  //   }
+  //   print("Intermediate next Options: $nextOptions");
+  //   for (int i = 0; i < g.hierarchy.length - 1; i++) {
+  //     temp[g.hierarchy[i]] = widget.optionUntilNow[i];
+  //   }
+  //   print("Intermediate Temp: $temp");
+  //   for (int i = 0; i < nextOptions.length; i++) {
+  //     List<Widget> tempWidgets = [];
+  //     temp[g.hierarchy[g.hierarchy.length - 1]] = nextOptions[i];
+  //     print("Temp is: $temp");
+  //     QuerySnapshot usersBelongingToSameFlat =
+  //         await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
+  //     List<Widget> tempMoreWidgets =
+  //         generateListOfFlats(usersBelongingToSameFlat, temp);
+  //     for (Widget k in tempMoreWidgets) {
+  //       tempWidgets.add(k);
+  //     }
+  //     userCardWidget.add(
+  //       ListView(
+  //         children: tempWidgets,
+  //       ),
+  //     );
+  //   }
+  //   //print(userCardWidget);
+  //   print("List of user cards ended");
+  //   //setState(() => isLoading = false);
+  //   //setState(() {});
+  //   //widget.index = widget.index + 1;
+  //   return userCardWidget;
+  // }
 
-  List<Widget> generateListViewWidget(
+  // List<Widget> generateSizedBoxes(List<String> nextOptions, int index) {
+  //   //listOfUserCards(nextOptions, index);
+  //   print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
+  //   List<Widget> listOfSizedBox = [];
+  //   for (int i = 0; i < nextOptions.length; i++) {
+  //     Widget temp = SizedBox(
+  //       child: Text("It works bc"),
+  //     );
+  //     listOfSizedBox.add(temp);
+  //   }
+  //   print("^^^^^^^^^^^^^^ generateSizedBoxes S ^^^^^^^^^^^^^^");
+  //   return listOfSizedBox;
+  // }
+
+  List<Widget> generateListOfFlats(
       QuerySnapshot snapshots, Map<String, String> temp) {
     List<Widget> childrenWidgets = [];
+    //print(snapshots.docs.length);
     String textValue = g.hierarchy[g.hierarchy.length - 1] +
         " " +
         temp[g.hierarchy[g.hierarchy.length - 1]];
@@ -689,40 +791,52 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     childrenWidgets.add(dividerWidget);
     if (snapshots.docs.length == 0) {
       childrenWidgets.add(
-        Center(
-          child: Row(
-            children: [
-              Icon(
-                Icons.search_outlined,
-                size: 25,
-                color: Color(0xffa0a0a0),
-              ),
-              Text(
-                "No residents found for this flat",
-                style: TextStyle(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.search_outlined,
+                  size: 25,
                   color: Color(0xffa0a0a0),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
-            ],
+                Text(
+                  "No residents found for this flat",
+                  style: TextStyle(
+                    color: Color(0xffa0a0a0),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
     } else {
       for (int i = 0; i < snapshots.docs.length; i++) {
         childrenWidgets.add(
-          UserCard(
-            userName:
-                snapshots.docs[i]["fname"] + " " + snapshots.docs[i]["lname"],
-            societyDesignation: snapshots.docs[i]["role"],
-            homeDesignation: "Resident",
-            email: snapshots.docs[i]["email"],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: UserCard(
+              userName:
+                  snapshots.docs[i]["fname"] + " " + snapshots.docs[i]["lname"],
+              societyDesignation: snapshots.docs[i]["role"],
+              homeDesignation: "Resident",
+              email: snapshots.docs[i]["email"],
+            ),
           ),
         );
       }
     }
     return childrenWidgets;
+  }
+
+  Future<void> refreshPage() async {
+    Future.delayed(Duration(seconds: 2));
+    setState(() {});
   }
 
   @override
@@ -733,6 +847,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       print("*****************************");
       print("In if index: ${widget.index}");
       print("In if level: $level");
+      //improvedFunction(nextOptions, widget.optionUntilNow);
       return DefaultTabController(
         length: nextOptions.length,
         child: Column(
@@ -764,9 +879,10 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: listOfUserCards(nextOptions, widget.index),
+                future: improvedFunction(nextOptions, widget.optionUntilNow),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    //print(snapshot.data);
                     return TabBarView(
                       children: snapshot.data,
                     );
@@ -778,6 +894,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                       ),
                     );
                   } else {
+                    print("Y am I loading");
                     return Loading();
                   }
                 },

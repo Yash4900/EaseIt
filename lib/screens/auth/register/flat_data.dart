@@ -68,7 +68,7 @@ class FlatData {
 
   List<String> getILevelInHierarchy(int i) {
     if (_structure["structure"] is List) {
-      return _structure["structure"];
+      return List<String>.from(_structure["structure"]);
     }
     //print(
     //    "############################# Get level in hierarchy flat data #############################");
