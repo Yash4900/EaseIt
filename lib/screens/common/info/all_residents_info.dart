@@ -370,10 +370,11 @@ class UserCard extends StatelessWidget {
       @required this.userName,
       @required this.societyDesignation,
       @required this.homeDesignation,
-      @required this.email})
+      @required this.email,
+      @required this.imageUrl})
       : super(key: key);
 
-  final String userName, societyDesignation, homeDesignation, email;
+  final String userName, societyDesignation, homeDesignation, email, imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -398,19 +399,31 @@ class UserCard extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffd3d3d3),
-              ),
-              child: const Icon(
-                Icons.person,
-                color: Colors.black,
-                size: 35,
-              ),
-            ),
+            child: imageUrl == ""
+                ? Container(
+                    height: 70,
+                    width: 70,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xffd3d3d3),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 35,
+                    ),
+                  )
+                : Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      color: Color(0xffd3d3d3),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(imageUrl),
+                      ),
+                    ),
+                  ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -476,7 +489,7 @@ class CustomTabViewPage extends StatefulWidget {
 }
 
 class _CustomTabViewPageState extends State<CustomTabViewPage> {
-  List<String> nextOptions;
+  List<String> nextOptions = [];
   bool isLoading = false;
   int level;
   List<Widget> userCardWidgetsToDisplay;
@@ -509,6 +522,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
         ? [...g.structure]
         : <String, dynamic>{...g.structure};
     dynamic tempIterationMap = temp;
+    if (temp is List) return;
     //print("TempIterationMap: $tempIterationMap");
     // if (level == 0 && widget.optionUntilNow.length == 0) {
     //   print("In if");
@@ -630,25 +644,49 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
     return toReturn;
   }
 
-  Future<dynamic> improvedFunction(
+  Future<dynamic> listOfUserCards(
       List<String> nextOptions, List<String> optionsUntilNow) async {
     dynamic mapToExamine = g.structure is List
         ? [...g.structure]
         : <String, dynamic>{...g.structure};
     List<Widget> toDisplay = [];
+    print(mapToExamine);
     if (mapToExamine is List) {
-      Map<String, String> temp;
-      temp[g.structure[0]] = null;
-      for (int i = 0; i < nextOptions.length; i++) {
-        temp[g.structure[0]] = nextOptions[i];
+      print("Am I in");
+      Map<String, String> temp = {};
+      temp[g.hierarchy[0]] = null;
+      List<Widget> tempWidgetCombined = [];
+      print("For start");
+      print(mapToExamine.length);
+      for (int i = 0; i < mapToExamine.length; i++) {
+        print("Am I in for loop");
+        temp[g.hierarchy[0]] = mapToExamine[i];
+        print(temp);
         QuerySnapshot userBelongingToSameFlat =
             await Database().getUserDetailsBasedOnFlatNumber(g.society, temp);
+        print(userBelongingToSameFlat.docs);
         List<Widget> tempWidgetList =
             generateListOfFlats(userBelongingToSameFlat, temp);
+        print("Here I am");
+        print(tempWidgetList);
         for (Widget i in tempWidgetList) {
-          toDisplay.add(i);
+          tempWidgetCombined.add(i);
         }
       }
+      print("In Between");
+      toDisplay.add(Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 10,
+        ),
+        child: RefreshIndicator(
+          onRefresh: refreshPage,
+          child: ListView(
+            children: tempWidgetCombined,
+          ),
+        ),
+      ));
+      print(toDisplay);
     } else if (mapToExamine is Map) {
       print("Map to Examine: $mapToExamine");
       print("Options until now: $optionsUntilNow");
@@ -701,6 +739,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       }
       print(toDisplay.length);
     } else {}
+    print(toDisplay);
     return toDisplay;
   }
 
@@ -826,6 +865,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
               societyDesignation: snapshots.docs[i]["role"],
               homeDesignation: "Resident",
               email: snapshots.docs[i]["email"],
+              imageUrl: snapshots.docs[i]["imageUrl"],
             ),
           ),
         );
@@ -879,7 +919,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: improvedFunction(nextOptions, widget.optionUntilNow),
+                future: listOfUserCards(nextOptions, widget.optionUntilNow),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     //print(snapshot.data);
@@ -946,7 +986,23 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       );
     } else {
       print("_____________________________");
-      return SizedBox();
+      return FutureBuilder(
+        future: listOfUserCards(nextOptions, widget.optionUntilNow),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data[0];
+          } else if (snapshot.hasError) {
+            return Text(
+              "Could not load Data",
+              style: TextStyle(
+                color: Colors.redAccent,
+              ),
+            );
+          } else {
+            return Loading();
+          }
+        },
+      );
     }
   }
 }

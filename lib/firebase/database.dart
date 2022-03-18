@@ -1024,12 +1024,26 @@ class Database {
   Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
       String society, Map<String, String> flatNumber) async {
     try {
-      print(flatNumber);
+      //print(flatNumber);
       return await _firestore
           .collection(society)
           .doc('users')
           .collection('User')
           .where('flat', isEqualTo: flatNumber)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<QuerySnapshot> getSecurityGuardsOfSociety(String society) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('role', isEqualTo: "Security Guard")
           .get();
     } catch (e) {
       print(e.toString());
