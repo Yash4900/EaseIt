@@ -41,6 +41,10 @@ class _ApprovalState extends State<Approval> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -88,16 +92,9 @@ class _ApprovalState extends State<Approval> {
                                                                 .headingStyle,
                                                           ),
                                                           Text(
-                                                            approvalDate.day
-                                                                    .toString() +
-                                                                "-" +
-                                                                approvalDate
-                                                                    .month
-                                                                    .toString() +
-                                                                "-" +
-                                                                approvalDate
-                                                                    .year
-                                                                    .toString(),
+                                                            Helper().convertToDate(
+                                                                data[
+                                                                    'postedOn']),
                                                             style: Helper()
                                                                 .headingStyle,
                                                           )
@@ -114,16 +111,9 @@ class _ApprovalState extends State<Approval> {
                                                                 .headingStyle,
                                                           ),
                                                           Text(
-                                                            approvalDate.hour
-                                                                    .toString() +
-                                                                ":" +
-                                                                approvalDate
-                                                                    .minute
-                                                                    .toString() +
-                                                                ":" +
-                                                                approvalDate
-                                                                    .second
-                                                                    .toString(),
+                                                            Helper().convertToTime(
+                                                                data[
+                                                                    'postedOn']),
                                                             style: Helper()
                                                                 .headingStyle,
                                                           )
@@ -217,6 +207,10 @@ class _ApprovalState extends State<Approval> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

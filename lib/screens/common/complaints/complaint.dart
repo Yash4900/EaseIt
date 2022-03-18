@@ -80,7 +80,10 @@ class _ComplaintViewState extends State<ComplaintView> {
                                       ds['imageUrl'],
                                       ds['postedOn'],
                                       ds['postedBy'],
-                                      ds['status']),
+                                      ds['status'],
+                                      likedBy,
+                                      likes,
+                                      ids),
                                 ),
                               );
                             },
@@ -145,13 +148,15 @@ class _ComplaintViewState extends State<ComplaintView> {
                                         Text(
                                           ds['postedBy'],
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                         Text(
                                           "${date.day} ${days[date.month - 1]}, ${date.year}",
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
+                                          ),
                                         )
                                       ],
                                     ),
@@ -199,9 +204,10 @@ class _ComplaintViewState extends State<ComplaintView> {
                                                                 g.society,
                                                                 likes);
                                                       },
-                                                      child: Icon(Icons
-                                                          .thumb_up_alt_outlined),
-                                                    ),
+                                                      child: Icon(
+                                                        Icons.thumb_up,
+                                                        color: Colors.grey[400],
+                                                      )),
                                               likedBy > 0
                                                   ? Container(
                                                       child: Row(

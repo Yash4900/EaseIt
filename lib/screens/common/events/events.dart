@@ -30,14 +30,18 @@ class _EventsViewState extends State<EventsView> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.keyboard_backspace, color: Colors.black),
+              Icon(
+                Icons.keyboard_backspace,
+                color: Colors.black,
+              ),
               SizedBox(width: 5),
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -55,15 +59,20 @@ class _EventsViewState extends State<EventsView> {
                 child: Text(
                   'Events',
                   style: GoogleFonts.sourceSansPro(
-                      fontSize: 25, fontWeight: FontWeight.w900),
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
               TabBar(
                   indicatorColor: Color(0xff037DD6),
                   labelColor: Colors.black,
+                  unselectedLabelColor: Colors.black38,
                   indicatorWeight: 2.5,
                   labelStyle: GoogleFonts.sourceSansPro(
-                      fontSize: 16, fontWeight: FontWeight.w600),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                   tabs: [
                     Tab(
                       text: 'Upcoming',
@@ -73,7 +82,7 @@ class _EventsViewState extends State<EventsView> {
                     )
                   ]),
               Expanded(
-                flex: 10,
+                flex: 12,
                 child: TabBarView(children: [
                   UpcomingEvents(),
                   PastEvents(),
@@ -113,8 +122,9 @@ class _EventsViewState extends State<EventsView> {
                               Text(
                                 'Add Event',
                                 style: TextStyle(
-                                    color: Color(0xff037DD6),
-                                    fontWeight: FontWeight.w600),
+                                  color: Color(0xff037DD6),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),

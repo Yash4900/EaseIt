@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Database {
@@ -810,8 +809,22 @@ class Database {
         'purpose': purpose,
         'wing': wing,
         'status': 'Pending',
-        'postedOn': DateTime.now()
+        'entryTime': DateTime.now(),
+        'exitTime': null
       });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> markVisitorExit(String society, String docId) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .doc(docId)
+          .update({'exitTime': DateTime.now()});
     } catch (e) {
       print(e.toString());
     }
@@ -824,7 +837,7 @@ class Database {
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('postedOn',
+          .where('entryTime',
               isGreaterThanOrEqualTo:
                   DateTime.now().subtract(Duration(days: 1)))
           .snapshots();
@@ -841,8 +854,7 @@ class Database {
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('postedOn',
-              isLessThan: DateTime.now().subtract(Duration(days: 1)))
+          .orderBy('entryTime', descending: true)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -919,7 +931,8 @@ class Database {
       String flatNo,
       String wing,
       String code,
-      String purpose) async {
+      String purpose,
+      String imageUrl) async {
     try {
       await _firestore
           .collection(society)
@@ -927,7 +940,7 @@ class Database {
           .collection('preApproval')
           .add({
         'name': visName,
-        'phoneNo': visPhoneNo,
+        'phoneNum': visPhoneNo,
         'vehicleNo': vehicleNo,
         'flatNo': flatNo,
         'wing': wing,
@@ -935,10 +948,28 @@ class Database {
         'purpose': purpose,
         'postedOn': DateTime.now(),
         'status': "Pending",
+        'entryTime': null,
+        'exitTime': null,
+        'imageUrl': imageUrl
       });
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // Get all preApprovals - Security
+  Stream<void> getAllPreApprovals(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .orderBy('postedOn', descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   // Get All pending preApproval for give flat and wing
@@ -952,6 +983,24 @@ class Database {
           .where('flatNo', isEqualTo: flatNo)
           .where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Pending")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get all approved preapproval for given flat
+  Stream<void> getAllApprovedPreApprovalForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('PreApprovals')
+          .collection('preApproval')
+          .where('flatNo', isEqualTo: flatNo)
+          .where('wing', isEqualTo: wing)
+          .where('status', isEqualTo: "Approved")
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -992,7 +1041,7 @@ class Database {
           .doc('PreApprovals')
           .collection('preApproval')
           .doc(docId)
-          .update({parameter: DateTime.now()});
+          .update({parameter: DateTime.now(), 'status': 'Approved'});
     } catch (e) {
       print(e.toString());
     }
