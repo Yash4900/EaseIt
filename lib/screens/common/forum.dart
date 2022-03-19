@@ -21,13 +21,14 @@ class _ForumState extends State<Forum> {
             style: GoogleFonts.sourceSansPro(
                 fontSize: 25, fontWeight: FontWeight.w900),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 5),
           TabBar(
               indicatorColor: Color(0xff1a73e8),
+              unselectedLabelColor: Colors.black38,
               labelColor: Colors.black,
               indicatorWeight: 2.5,
               labelStyle: GoogleFonts.sourceSansPro(
-                  fontSize: 16, fontWeight: FontWeight.w600),
+                  fontSize: 16, fontWeight: FontWeight.w700),
               tabs: [
                 Tab(
                   text: 'Notice',
