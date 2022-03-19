@@ -172,7 +172,7 @@ class _ProfileFormState extends State<ProfileForm> {
                               onTap: () async {
                                 if (_profilePicture == null) {
                                   _profilePicture =
-                                      await PickImage().showPicker(context);
+                                      await PickImage().showPicker(context, 50);
                                   setState(() {});
                                   if (_profilePicture != null) {
                                     _profilePicture = await Navigator.push(

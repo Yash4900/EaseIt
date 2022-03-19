@@ -20,7 +20,7 @@ class _ActionListState extends State<ActionList> {
         Card(
           child: ListTile(
             onTap: () async {
-              File file = await PickImage().showPicker(context);
+              File file = await PickImage().showPicker(context, 50);
               if (file != null) {
                 String text = await FirebaseMLApi().recognizeText(file);
                 if (text != "") {
@@ -52,7 +52,7 @@ class _ActionListState extends State<ActionList> {
         Card(
           child: ListTile(
             onTap: () async {
-              File file = await PickImage().showPicker(context);
+              File file = await PickImage().showPicker(context, 50);
               if (file != null) {
                 String text = await FirebaseMLApi().recognizeText(file);
                 if (text != "") {

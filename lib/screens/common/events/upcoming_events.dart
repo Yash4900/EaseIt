@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
@@ -94,44 +93,34 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                             ),
                                             InkWell(
                                               onTap: () async {
-                                                bool confirmation =
-                                                    await showConfirmationDialog(
-                                                        context,
-                                                        'Alert!',
-                                                        'Are you sure you want to add this event to your Calendar?');
-                                                if (confirmation) {
-                                                  final Event event = Event(
-                                                    title: ds['name'],
-                                                    description:
-                                                        'Society event',
-                                                    location: ds['venue'],
-                                                    allDay: ds['isFullDay'],
-                                                    startDate: ds['isFullDay']
-                                                        ? date
-                                                        : DateTime(
-                                                            date.year,
-                                                            date.month,
-                                                            date.day,
-                                                            int.parse(ds['from']
-                                                                .split(':')[0]),
-                                                            int.parse(ds['from']
-                                                                .split(
-                                                                    ':')[1])),
-                                                    endDate: ds['isFullDay']
-                                                        ? date
-                                                        : DateTime(
-                                                            date.year,
-                                                            date.month,
-                                                            date.day,
-                                                            int.parse(ds['to']
-                                                                .split(':')[0]),
-                                                            int.parse(ds['to']
-                                                                .split(
-                                                                    ':')[1])),
-                                                  );
-                                                  Add2Calendar.addEvent2Cal(
-                                                      event);
-                                                }
+                                                final Event event = Event(
+                                                  title: ds['name'],
+                                                  description: 'Society event',
+                                                  location: ds['venue'],
+                                                  allDay: ds['isFullDay'],
+                                                  startDate: ds['isFullDay']
+                                                      ? date
+                                                      : DateTime(
+                                                          date.year,
+                                                          date.month,
+                                                          date.day,
+                                                          int.parse(ds['from']
+                                                              .split(':')[0]),
+                                                          int.parse(ds['from']
+                                                              .split(':')[1])),
+                                                  endDate: ds['isFullDay']
+                                                      ? date
+                                                      : DateTime(
+                                                          date.year,
+                                                          date.month,
+                                                          date.day,
+                                                          int.parse(ds['to']
+                                                              .split(':')[0]),
+                                                          int.parse(ds['to']
+                                                              .split(':')[1])),
+                                                );
+                                                Add2Calendar.addEvent2Cal(
+                                                    event);
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.symmetric(
