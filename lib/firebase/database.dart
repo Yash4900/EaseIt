@@ -68,7 +68,8 @@ class Database {
           'role': role,
           'flat': flat,
           'wing': wing,
-          'flatNo': flatNo
+          'flatNo': flatNo,
+          'status': 'pending'
         });
       } else {
         await _firestore
@@ -82,7 +83,8 @@ class Database {
           'lname': lname,
           'email': email,
           'phoneNum': phoneNum,
-          'role': role
+          'role': role,
+          'status': 'accepted'
         });
       }
     } catch (e) {

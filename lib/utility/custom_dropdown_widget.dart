@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ease_it/screens/auth/register/flat_data.dart';
+import 'package:ease_it/utility/flat_data.dart';
 
 class CustomDropDown extends StatefulWidget {
   List<String> options;

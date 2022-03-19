@@ -14,6 +14,7 @@ class Globals {
   Map<dynamic, dynamic> _flat;
   List<String> _hierarchy;
   dynamic _structure;
+  String _status;
 
   static final Globals _instance = Globals._internal();
 
@@ -35,6 +36,7 @@ class Globals {
   Map<dynamic, dynamic> get flat => _flat;
   List<String> get hierarchy => _hierarchy;
   dynamic get structure => _structure;
+  String get status => _status;
 
   //   Setters
   set setSociety(String society) => _society = society;
@@ -50,4 +52,5 @@ class Globals {
   set setFlat(Map<dynamic, dynamic> flat) => _flat = flat;
   set setHierarchy(List<String> hierarchy) => _hierarchy = hierarchy;
   set setStructure(dynamic structure) => _structure = structure;
+  set setStatus(String status) => _status = status;
 }
