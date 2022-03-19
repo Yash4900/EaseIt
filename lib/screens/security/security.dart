@@ -47,21 +47,24 @@ class _SecurityState extends State<Security> {
         currentIndex: _pageIndex,
         onTap: (value) => setState(() => _pageIndex = value),
         selectedItemColor: Color(0xff037DD6),
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.black54,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        showUnselectedLabels: true,
+        showUnselectedLabels: false,
         selectedFontSize: 15,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: 'Home'),
+              icon: Icon(Icons.home_outlined, size: 25), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: 'Approval'),
+              icon: Icon(Icons.how_to_reg_outlined, size: 25),
+              label: 'Approval'),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.car), label: 'Vehicle'),
+              icon: Icon(Icons.directions_car_outlined, size: 25),
+              label: 'Vehicle'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.child_care_outlined), label: 'Child Safety'),
+              icon: Icon(Icons.child_care_outlined, size: 25),
+              label: 'Child Safety'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people_alt_outlined), label: 'Forum')
+              icon: Icon(Icons.people_alt_outlined, size: 25), label: 'Forum')
         ],
       ),
     );
