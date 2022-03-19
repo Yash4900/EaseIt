@@ -63,6 +63,22 @@ class _ActivityLogState extends State<ActivityLog> {
               {
                 visitorLog.add(visitorLog2[i]);
               }
+              visitorLog.sort(
+                (a,b){
+                  if(a['entryTime'].millisecondsSinceEpoch<b['entryTime'].millisecondsSinceEpoch)
+                  {
+                    return 1;
+                  }
+                  else if(a['entryTime'].millisecondsSinceEpoch>b['entryTime'].millisecondsSinceEpoch)
+                  {
+                    return -1;
+                  }
+                  else{
+                    return 0;
+                  }
+                  // return .compare(b['entryTime'].millisecondsSinceEpoch);
+                }
+              );
             
               return Padding(
                 padding: const EdgeInsets.fromLTRB(10, 8, 10,8),
