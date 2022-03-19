@@ -5,25 +5,25 @@ import 'package:flutter/material.dart';
 class PickImage {
   final ImagePicker _picker = ImagePicker();
 
-  Future<XFile> _imageFromCamera() async {
+  Future<XFile> _imageFromCamera(int quality) async {
     return await _picker.pickImage(
       source: ImageSource.camera,
-      imageQuality: 50,
-      maxHeight: 640,
-      maxWidth: 480,
+      imageQuality: quality,
+      // maxHeight: 640,
+      // maxWidth: 480,
     );
   }
 
-  Future<XFile> _imageFromGallery() async {
+  Future<XFile> _imageFromGallery(int quality) async {
     return await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 50,
-      maxHeight: 640,
-      maxWidth: 480,
+      imageQuality: quality,
+      // maxHeight: 640,
+      // maxWidth: 480,
     );
   }
 
-  Future<File> showPicker(context) {
+  Future<File> showPicker(context, int quality) {
     return showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
@@ -39,7 +39,7 @@ class PickImage {
                           fontWeight: FontWeight.bold, color: Colors.black87),
                     ),
                     onTap: () async {
-                      XFile file = await _imageFromGallery();
+                      XFile file = await _imageFromGallery(quality);
                       Navigator.of(context).pop(File(file.path));
                     }),
                 ListTile(
@@ -50,7 +50,7 @@ class PickImage {
                         fontWeight: FontWeight.bold, color: Colors.black87),
                   ),
                   onTap: () async {
-                    XFile file = await _imageFromCamera();
+                    XFile file = await _imageFromCamera(quality);
                     Navigator.of(context).pop(File(file.path));
                   },
                 ),

@@ -103,7 +103,8 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      _profilePicture = await PickImage().showPicker(context);
+                      _profilePicture =
+                          await PickImage().showPicker(context, 50);
                       setState(() {});
                     },
                     child: Container(

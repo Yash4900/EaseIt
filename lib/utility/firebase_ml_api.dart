@@ -12,11 +12,13 @@ class FirebaseMLApi {
   }
 
   String extractText(VisionText visionText) {
-    RegExp regExp = new RegExp(
-      r"[A-Z]{2}[0-9]{2}[A-Z]+[0-9]{4}$",
-      caseSensitive: false,
+    RegExp regExp = RegExp(
+      r"(0D|[A-Z]{2})[0-9]{1,2}[A-Z]{0,3}[0-9]{4}",
+      caseSensitive: true,
       multiLine: false,
     );
+
+    // Extract all the text from image
     String text = "";
     for (TextBlock block in visionText.blocks) {
       for (TextLine line in block.lines) {
@@ -25,15 +27,25 @@ class FirebaseMLApi {
         }
       }
     }
-    text = text.replaceAll(".", "");
-    text = text.replaceAll("-", "");
+
+    print(text);
+    // Remove all white spaces
     text = text.replaceAll(" ", "");
+    print(text);
+    // Remove all characters other than capital alphabets and digits
+    text = text.replaceAll(RegExp(r"[^A-Z0-9]"), "");
+    print(text);
+    // Convert all O's to 0
     text = text.replaceAll("O", "0");
 
     print(text);
+    // Extract license plate number from text
     if (regExp.hasMatch(text)) {
       text = regExp.stringMatch(text);
     }
+
+    // Convert 0 at index 0 to O for Odisha - Special case
+    if (text[0] == '0') text = text.replaceRange(0, 1, 'O');
     return text;
   }
 }
