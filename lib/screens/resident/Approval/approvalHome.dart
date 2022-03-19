@@ -59,7 +59,7 @@ class _ApprovalState extends State<Approval> {
                               type: 'preApprove'),
                             
                           StreamBuilder(
-                              stream: Database().getAllVisitorForGivenFlat(g.society, g.flatNo, g.wing),
+                              stream: Database().getTodaysVisitorForGivenFlat(g.society, g.flatNo, g.wing),
                               builder: (context, snapshot) {
                                 // print(snapshot.data.docs.length);
                                 if(snapshot.hasData && snapshot.data.docs.length>0){
@@ -71,46 +71,63 @@ class _ApprovalState extends State<Approval> {
                                       context: context,
                                       template: TemplateAuthentication,
                                     );
-                                    DateTime approvalDate = DateTime.parse(data['exitTime'].toDate().toString());
+                                    // DateTime approvalDate = DateTime.parse(data['exitTime'].toDate().toString());
                                     popup.show(
                                     
                                       title: data['name'],
-                                      content: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Date : ",style: Helper().headingStyle,),
-                                              Text(Helper().convertToDate(data['exitTime']),style: Helper().headingStyle,)
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Row(
-                                            children: [
-                                              Text("Time : ",style: Helper().headingStyle,),
-                                              Text(Helper().convertToTime(data['exitTime']),style: Helper().headingStyle,)
-                                          
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Row(
-                                            children: [
-                                              Text("Status : ",style: Helper().headingStyle,),
-                                              Text(data['status'].toString(),style: Helper().headingStyle,)
-                                          
-                                            ],
-                                          ),
-                                          SizedBox(height: 12,),
-                                          Container(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: Row(
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            Row(
                                               children: [
-                                                
-                                                Flexible(child: Text("Note : Kindly Contact the watchman if any discrepancy is found",maxLines: 4,softWrap: true,overflow:TextOverflow.visible,style: Helper().mediumStyle,))
+                                                Text("EntryDate : ",style: Helper().mediumBoldStyle,),
+                                                Text(data['entryTime']!=null?Helper().convertToDate(data['entryTime']):"Empty",style: Helper().mediumStyle,)
+                                              ],
+                                            ),
+                                            SizedBox(height: 12,),
+                                            Row(
+                                              children: [
+                                                Text("EntryTime : ",style: Helper().mediumBoldStyle,),
+                                                Text(data['entryTime']!=null?Helper().convertToTime(data['entryTime']):"Empty",style: Helper().mediumStyle,)
                                             
                                               ],
                                             ),
-                                          ),
-                                        ],
+                                            SizedBox(height: 12,),
+                                            Row(
+                                              children: [
+                                                Text("ExitDate : ",style: Helper().mediumBoldStyle,),
+                                                Text(data['exitTime']!=null?Helper().convertToDate(data['exitTime']):"Empty",style: Helper().mediumStyle,)
+                                              ],
+                                            ),
+                                            SizedBox(height: 12,),
+                                            Row(
+                                              children: [
+                                                Text("ExitTime : ",style: Helper().mediumBoldStyle,),
+                                                Text(data['exitTime']!=null?Helper().convertToTime(data['exitTime']):"Empty",style: Helper().mediumStyle,)
+                                            
+                                              ],
+                                            ),
+                                            SizedBox(height: 12,),
+                                            Row(
+                                              children: [
+                                                Text("Status : ",style: Helper().mediumBoldStyle,),
+                                                Text(data['status'].toString(),style: Helper().mediumStyle,)
+                                            
+                                              ],
+                                            ),
+                                            SizedBox(height: 12,),
+                                            Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              child: Row(
+                                                children: [
+                                                  
+                                                  Flexible(child: Text("Note : Kindly Contact the watchman if any discrepancy is found",maxLines: 4,softWrap: true,overflow:TextOverflow.visible,style: Helper().mediumStyle,))
+                                              
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       actions: [
                                         popup.button(

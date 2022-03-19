@@ -885,6 +885,24 @@ class Database {
     return null;
   }
 
+  // Get today's visitor for specific flat
+   Stream<QuerySnapshot> getTodaysVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .where('entryTime',isGreaterThanOrEqualTo: DateTime.now().subtract(Duration(days: 1)))
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   // Update the visitor approval
   Future<void> updateVisitorApproval(
       String society, String docId, bool status) {
