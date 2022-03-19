@@ -71,7 +71,7 @@ class _ApprovalState extends State<Approval> {
                                       context: context,
                                       template: TemplateAuthentication,
                                     );
-                                    DateTime approvalDate = DateTime.parse(data['postedOn'].toDate().toString());
+                                    DateTime approvalDate = DateTime.parse(data['exitTime'].toDate().toString());
                                     popup.show(
                                     
                                       title: data['name'],
@@ -80,14 +80,14 @@ class _ApprovalState extends State<Approval> {
                                           Row(
                                             children: [
                                               Text("Date : ",style: Helper().headingStyle,),
-                                              Text(Helper().convertToDate(data['postedOn']),style: Helper().headingStyle,)
+                                              Text(Helper().convertToDate(data['exitTime']),style: Helper().headingStyle,)
                                             ],
                                           ),
                                           SizedBox(height: 12,),
                                           Row(
                                             children: [
                                               Text("Time : ",style: Helper().headingStyle,),
-                                              Text(Helper().convertToTime(data['postedOn']),style: Helper().headingStyle,)
+                                              Text(Helper().convertToTime(data['exitTime']),style: Helper().headingStyle,)
                                           
                                             ],
                                           ),
