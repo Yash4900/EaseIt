@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/ResidentApproval.dart';
+import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
@@ -63,10 +64,71 @@ class _HomeState extends State<Home> {
     Globals g = Globals();
     return role == 'Security Guard'
         ? Security()
-        : StreamProvider.value(
-            value: Database().userStream(g.society, g.uid),
-            initialData: null,
-            child: ResidentApproval(),
+        : StreamBuilder(
+            stream: Database().userStream(g.society, g.uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              } else if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  print(snapshot.data);
+                  if (snapshot.data["status"] == "accepted") {
+                    //print("Am I returning Resident Home");
+                    return Resident();
+                  } else if (snapshot.data["status"] == "pending") {
+                    return Pending();
+                  } else {
+                    return ReApproval();
+                  }
+                } else {
+                  print("In else");
+                  return Scaffold(
+                    body: SafeArea(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error_outline,
+                                size: 50, color: Colors.redAccent),
+                            Text(
+                              "Error loading your profile",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                //print(snapshot.hasData);
+                return Scaffold(
+                  body: SafeArea(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline,
+                              size: 50, color: Colors.redAccent),
+                          Text(
+                            "Error loading your profile",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
           );
   }
 

@@ -7,27 +7,27 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 
-class ResidentApproval extends StatefulWidget {
-  ResidentApproval({Key key}) : super(key: key);
+// class ResidentApproval extends StatefulWidget {
+//   ResidentApproval({Key key}) : super(key: key);
 
-  @override
-  State<ResidentApproval> createState() => _ResidentApprovalState();
-}
+//   @override
+//   State<ResidentApproval> createState() => _ResidentApprovalState();
+// }
 
-class _ResidentApprovalState extends State<ResidentApproval> {
-  Globals g = Globals();
-  bool isLoading = false;
+// class _ResidentApprovalState extends State<ResidentApproval> {
+//   Globals g = Globals();
+//   bool isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
-    DocumentSnapshot a = Provider.of<DocumentSnapshot>(context);
-    return isLoading
-        ? Loading()
-        : a["status"] == "pending"
-            ? Pending()
-            : SizedBox();
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     //DocumentSnapshot a = Provider.of<DocumentSnapshot>(context);
+//     return isLoading
+//         ? Loading()
+//         : a["status"] == "pending"
+//             ? Pending()
+//             : SizedBox();
+//   }
+// }
 
 class Pending extends StatefulWidget {
   Pending({Key key}) : super(key: key);
@@ -49,37 +49,42 @@ class _PendingState extends State<Pending> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
-        ),
-        child: ListView(
-          children: [
-            Text(
-              'Hello, ${g.fname}',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            Center(
-              child: Column(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 20,
+          ),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Hello, ${g.fname}',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.pending_actions,
-                    color: Color(0xffa0a0a0),
-                    size: 30,
+                    color: Color(0xffffb30f),
+                    size: 45,
                   ),
                   Text(
-                    "Your residence joining request is pending, Please ask the secretary to accept your request",
+                    "Your residence joining request is pending",
                     style: TextStyle(
-                      color: Color(0xffa0a0a0),
-                      fontSize: 35,
+                      color: Color(0xffffb30f),
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -110,56 +115,75 @@ class _ReApprovalState extends State<ReApproval> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: ListView(
-          children: [
-            Text(
-              'Hello, ${g.fname}',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            Center(
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.cancel_outlined,
-                    color: Color(0xffa0a0a0),
-                    size: 30,
-                  ),
-                  Text(
-                    "Your residence joining request has been cancelled by secretary",
-                    style: TextStyle(
-                      color: Color(0xffa0a0a0),
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                ReApply();
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xff037DD6)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
                 child: Text(
-                  'ReApply',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+                  'Hello, ${g.fname}',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-          ],
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cancel_outlined,
+                      color: Colors.redAccent,
+                      size: 45,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Your residence joining request has been cancelled by secretary",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReApply(),
+                          ),
+                        );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                        child: Text(
+                          'ReApply',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -177,12 +201,28 @@ class _ReApplyState extends State<ReApply> {
   String selectedSociety;
   List<String> societies;
   String society;
+  Globals g = Globals();
   bool loading;
   String errorText = "";
   FlatData flatVar = FlatData();
 
   void _update() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      loading = true;
+    });
+    societies = [g.society];
+    society = g.society;
+    selectedSociety = society;
+    getSocietyStructure(g.society);
+    setState(() {
+      loading = false;
+    });
   }
 
   void getSocietyStructure(String societyValue) async {
@@ -242,10 +282,23 @@ class _ReApplyState extends State<ReApply> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        title: Text(
+          "ReApply",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
         ),
       ),
       body: Padding(
@@ -286,6 +339,81 @@ class _ReApplyState extends State<ReApply> {
                   },
                 ),
               ],
+            ),
+            Column(
+              //physics: ClampingScrollPhysics(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(flatVar.flatWidgetForm.length, (i) {
+                //return flatVar.flatWidgetForm[i];
+                if ((i + 1) % 2 == 1) {
+                  if (i + 1 < flatVar.flatWidgetForm.length) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: flatVar.flatWidgetForm[i],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: flatVar.flatWidgetForm[i + 1],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: flatVar.flatWidgetForm[i],
+                        ),
+                      ],
+                    );
+                  }
+                } else {
+                  return SizedBox();
+                }
+              }),
+            ),
+            errorText == ""
+                ? SizedBox(height: 0)
+                : Text(
+                    errorText,
+                    style: TextStyle(color: Colors.red),
+                  ),
+            SizedBox(
+              height: 10,
+            ),
+            TextButton(
+              onPressed: () async {
+                if (!flatVar.flatValue.contains(null)) {
+                  setState(() => errorText = "");
+                  flatVar.createMapFromListForFlat();
+                } else {
+                  setState(() {
+                    errorText = "Please fill all the flat fields";
+                  });
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                child: Text(
+                  'ReApply',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
+              ),
             ),
           ],
         ),
