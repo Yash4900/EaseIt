@@ -222,8 +222,9 @@ class _AllocateParkingState extends State<AllocateParking> {
                               child: Text(
                                 'Allocate',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             style: ButtonStyle(

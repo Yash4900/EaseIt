@@ -1,7 +1,12 @@
 // In this screen details of the parked vehicle of a visitor is displayed
 
+import 'dart:convert';
+import 'package:ease_it/utility/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/flask/api.dart';
+import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +27,10 @@ class ParkingStatus extends StatefulWidget {
 
 class _ParkingStatusState extends State<ParkingStatus> {
   bool loading = true;
+  bool visible = false;
+  String btnText = "Allocate new parking space";
   DocumentSnapshot ds;
+  TextEditingController _stayTimeController = TextEditingController();
   Globals g = Globals();
   fetchData() async {
     ds = await Database().getSingleVehicleLog(g.society, widget.docId);
@@ -115,18 +123,113 @@ class _ParkingStatusState extends State<ParkingStatus> {
                     color: Colors.grey,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (btnText == "Allocate new parking space") {
+                        btnText = "Cancel";
+                      } else {
+                        btnText = "Allocate new parking space";
+                      }
+                      visible = !visible;
+                      setState(() {});
+                    },
                     child: Text(
-                      "Allocate new parking space",
+                      btnText,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  visible
+                      ? Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'Enter stay time'),
+                                controller: _stayTimeController,
+                              ),
+                            ),
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () async {
+                                  await API().disAllocateParking(
+                                      g.society.replaceAll(" ", ""),
+                                      widget.parkedAt);
+                                  setState(() => loading = true);
+                                  var response = await API().allocateParking(
+                                      g.society
+                                          .replaceAll(" ", "")
+                                          .toLowerCase(),
+                                      _stayTimeController.text);
+                                  Map<String, dynamic> map =
+                                      jsonDecode(response);
+                                  if (map['parking_space'] != '') {
+                                    setState(() => loading = false);
+                                    await Database().updateParkingSpace(
+                                        g.society,
+                                        widget.docId,
+                                        map['parking_space']);
+                                    await showMessageDialog(
+                                        context, 'Parking Assignment', '', [
+                                      Center(
+                                        child: Image.asset(
+                                          'assets/success.png',
+                                          width: 230,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          'Parking space allotment is',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          map['parking_space'],
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )
+                                    ]);
+                                  }
+                                },
+                                child: Text(
+                                  'Allocate',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color(0xff037DD6)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(22),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : SizedBox(),
                   SizedBox(height: 20),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        await launch('tel:${widget.phoneNum}');
+                      } catch (e) {
+                        showToast(
+                            context, 'error', 'Oops!', 'Something went wrong!');
+                      }
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
