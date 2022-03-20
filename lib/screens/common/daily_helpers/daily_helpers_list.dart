@@ -3,8 +3,10 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/daily_helpers/daily_helper_log.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DailyHelpersList extends StatefulWidget {
   @override
@@ -73,7 +75,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                   ),
                                 ),
                                 margin: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
+                                    horizontal: 5, vertical: 3),
                                 child: ListTile(
                                   leading: CircleAvatar(
                                     backgroundColor: Colors.grey[300],
@@ -88,26 +90,50 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  subtitle: Text(
-                                    ds['purpose'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey[500]),
-                                  ),
-                                  trailing: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DailyHelperLog(ds.id)));
-                                    },
-                                    child: Text(
-                                      'View log',
+                                  subtitle: Row(children: [
+                                    Text(
+                                      '${ds['purpose']} . ',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.blue[800]),
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                        fontSize: 16,
+                                      ),
                                     ),
+                                    InkWell(
+                                      onTap: () async {
+                                        try {
+                                          await launch('tel:${ds['phoneNum']}');
+                                        } catch (e) {
+                                          showToast(context, 'error', 'Oops!',
+                                              'Something went wrong!');
+                                        }
+                                      },
+                                      child: Text(
+                                        ds['phoneNum'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                                  trailing: CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors.black12,
+                                    child: IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DailyHelperLog(ds.id),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.menu_book_rounded,
+                                          color: Colors.black45,
+                                        )),
                                   ),
                                 ),
                               );

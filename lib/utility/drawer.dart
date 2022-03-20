@@ -171,6 +171,47 @@ Container showDrawer(BuildContext context) {
               await Auth().logout();
             },
           ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Divider(
+                  color: Colors.grey,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Ease',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'It',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w100,
+                      ),
+                    ),
+                    Text(
+                      ' .',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff037DD6)),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      'v 1.0.0',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     ),

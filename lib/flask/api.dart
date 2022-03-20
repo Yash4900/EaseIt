@@ -3,9 +3,10 @@
 import 'package:http/http.dart' as http;
 
 class API {
-  // String _domain = 'https://parking-model.herokuapp.com'; 
+  // String _domain = 'https://parking-model.herokuapp.com';
   String _domain = 'http://192.168.0.113:5000';
 
+  // Get usage of vehicle
   Future getUsage(String society, String licensePlateNo) async {
     var url = Uri.parse(
         '$_domain/usage?society=$society&licensePlateNo=$licensePlateNo');
@@ -22,6 +23,7 @@ class API {
     }
   }
 
+  // To log resident's vehicle exit in database
   Future vehicleExit(String society, String licensePlateNo) async {
     var url = Uri.parse(
         '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo');
@@ -40,6 +42,7 @@ class API {
     }
   }
 
+  // To log resident's vehicle entry in database
   Future vehicleEntry(String society, String licensePlateNo) async {
     var url = Uri.parse(
         '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo');
@@ -58,6 +61,7 @@ class API {
     }
   }
 
+  // Get a parking space for the visitor
   Future allocateParking(String society, String stayTime) async {
     var url = Uri.parse('$_domain/allocate?society=$society&time=$stayTime');
     http.Response response;
@@ -75,6 +79,7 @@ class API {
     }
   }
 
+  // To mark the parking space as unoccupied when visitor leaves
   Future disAllocateParking(String society, String parkingSpaceNumber) async {
     var url = Uri.parse(
         '$_domain/dis-allocate?society=$society&parking=$parkingSpaceNumber');
@@ -93,6 +98,7 @@ class API {
     }
   }
 
+  // Add vehicle in flask database
   Future addVehicle(
       String society, String licensePlateNo, String parking) async {
     var url = Uri.parse('$_domain/add-vehicle?society=$society');

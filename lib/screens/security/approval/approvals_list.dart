@@ -1,5 +1,6 @@
 // Shows all past approvals
 
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/alert.dart';
@@ -107,11 +108,21 @@ class _ApprovalsListState extends State<ApprovalsList> {
                               ),
                               title: Container(
                                 child: Row(children: [
-                                  Text(
-                                    ds['name'],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                  InkWell(
+                                    onTap: () async {
+                                      try {
+                                        await launch('tel:${ds['phoneNum']}');
+                                      } catch (e) {
+                                        showToast(context, 'error', 'Oops!',
+                                            'Something went wrong!');
+                                      }
+                                    },
+                                    child: Text(
+                                      ds['name'],
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(width: 10),

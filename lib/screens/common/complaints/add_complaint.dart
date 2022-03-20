@@ -70,7 +70,8 @@ class _AddComplaintState extends State<AddComplaint> {
                   SizedBox(height: 5),
                   GestureDetector(
                     onTap: () async {
-                      _profilePicture = await PickImage().showPicker(context);
+                      _profilePicture =
+                          await PickImage().showPicker(context, 50);
                       setState(() {});
                     },
                     child: _complaintImages.isEmpty

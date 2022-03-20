@@ -34,7 +34,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () async {
-              File temp = await PickImage().showPicker(context);
+              File temp = await PickImage().showPicker(context, 50);
               if (temp != null) {
                 setState(() {
                   widget.imageFile = temp;

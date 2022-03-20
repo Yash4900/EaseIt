@@ -544,6 +544,20 @@ class Database {
     return null;
   }
 
+  Future<void> updateParkingSpace(
+      String society, String docId, String parkingSpace) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('parkingAssignment')
+          .collection('Parking Assignment')
+          .doc(docId)
+          .update({'parkingSpace': parkingSpace});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   // Get all parked vehicles information
   Stream<QuerySnapshot> getParkingStatus(String society) {
     try {
@@ -892,6 +906,26 @@ class Database {
           .collection('Visitor Approval')
           .where('wing', isEqualTo: wing.toUpperCase())
           .where('flatNo', isEqualTo: flatNo)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Get today's visitor for specific flat
+  Stream<QuerySnapshot> getTodaysVisitorForGivenFlat(
+      String society, String flatNo, String wing) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('visitorApproval')
+          .collection('Visitor Approval')
+          .where('wing', isEqualTo: wing.toUpperCase())
+          .where('flatNo', isEqualTo: flatNo)
+          .where('entryTime',
+              isGreaterThanOrEqualTo:
+                  DateTime.now().subtract(Duration(days: 1)))
           .snapshots();
     } catch (e) {
       print(e.toString());
