@@ -23,7 +23,6 @@ class _ResidentState extends State<Resident> {
   String role;
   int _pageIndex = 0;
   bool loading = false;
-  Globals g = Globals();
   int numOfPendingRequests;
   List<Widget> pages = [
     ResidentHome(),
@@ -33,7 +32,7 @@ class _ResidentState extends State<Resident> {
     Maintenance()
   ];
 
-  void getTotalPendingRequests
+  void getTotalPendingRequests() async {}
 
   @override
   void initState() {
