@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 class Database {
   Globals g = Globals();
@@ -1134,5 +1135,35 @@ class Database {
       print(e.toString());
     }
     return null;
+  }
+
+  Future<bool> reApplication(
+    String society,
+    String uid,
+    Map<String, String> newSocietyValue,
+  ) async {
+    Globals g = Globals();
+    try {
+      if (DeepCollectionEquality().equals(g.flat, newSocietyValue)) {
+        await _firestore
+            .collection(g.society)
+            .doc('users')
+            .collection('User')
+            .doc(g.uid)
+            .update({"status": "pending"});
+        return true;
+      } else {
+        await _firestore
+            .collection(g.society)
+            .doc('users')
+            .collection('User')
+            .doc(g.uid)
+            .update({"status": "pending", "flat": newSocietyValue});
+        return true;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
   }
 }

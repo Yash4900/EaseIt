@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
+import 'package:ease_it/utility/drawer.dart';
 
 // class ResidentApproval extends StatefulWidget {
 //   ResidentApproval({Key key}) : super(key: key);
@@ -49,6 +51,13 @@ class _PendingState extends State<Pending> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      drawer: showCustomDrawer(context),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -115,6 +124,13 @@ class _ReApprovalState extends State<ReApproval> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      backgroundColor: Colors.white,
+      drawer: showCustomDrawer(context),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -391,6 +407,22 @@ class _ReApplyState extends State<ReApply> {
                 if (!flatVar.flatValue.contains(null)) {
                   setState(() => errorText = "");
                   flatVar.createMapFromListForFlat();
+                  setState(() {
+                    loading = true;
+                  });
+                  bool result = await Database()
+                      .reApplication(g.society, g.uid, flatVar.flatNum);
+                  setState(() {
+                    loading = false;
+                  });
+                  if (result == true) {
+                    Navigator.pop(context);
+                    showToast(context, "success", "Success",
+                        "ReApplication was successful");
+                  } else {
+                    Navigator.pop(context);
+                    showToast(context, "error", "Error", "Unable to ReApply");
+                  }
                 } else {
                   setState(() {
                     errorText = "Please fill all the flat fields";
