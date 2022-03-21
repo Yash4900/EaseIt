@@ -1,9 +1,10 @@
 // Fetch data from flask API
 
+import 'package:ease_it/secret/secret.dart';
 import 'package:http/http.dart' as http;
 
 class API {
-  // String _domain = 'https://parking-model.herokuapp.com';
+  // String _domain = FLASK_API_URL;
   String _domain = 'http://192.168.0.113:5000';
 
   // Get usage of vehicle

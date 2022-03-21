@@ -3,7 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/notification.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Database {
   Globals g = Globals();
@@ -41,6 +43,10 @@ class Database {
   Future createUser(String society, String uid, String fname, String lname,
       String email, String phoneNum, String role,
       [String wing, String flatNo]) async {
+    // Generate unique token for device to send notification
+    String token = await FirebaseMessaging.instance.getToken();
+
+    FirebaseMessaging.instance.subscribeToTopic('general');
     try {
       if (role == 'Resident' || role == 'Tenant') {
         await _firestore
@@ -56,7 +62,8 @@ class Database {
           'phoneNum': phoneNum,
           'role': role,
           'wing': wing,
-          'flatNo': flatNo
+          'flatNo': flatNo,
+          'token': token
         });
       } else {
         await _firestore
@@ -70,7 +77,8 @@ class Database {
           'lname': lname,
           'email': email,
           'phoneNum': phoneNum,
-          'role': role
+          'role': role,
+          'token': token
         });
       }
     } catch (e) {
@@ -635,6 +643,21 @@ class Database {
         'date': DateTime.now(),
         'status': 'Pending'
       });
+
+      // Send notification to every person of that flat
+      _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('wing', isEqualTo: wing)
+          .where('flatNo', isEqualTo: flatNo)
+          .get()
+          .then((qs) {
+        qs.docs.forEach((doc) {
+          sendNotification(doc['token'], 'New Child Approval',
+              'You have a new approval for your child $name');
+        });
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -813,6 +836,21 @@ class Database {
         'status': 'Pending',
         'entryTime': DateTime.now(),
         'exitTime': null
+      });
+
+      // Send notification to every person of that flat
+      _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('wing', isEqualTo: wing)
+          .where('flatNo', isEqualTo: flatNo)
+          .get()
+          .then((qs) {
+        qs.docs.forEach((doc) {
+          sendNotification(doc['token'], 'New Visitor Approval',
+              'You have a new approval for visitor: $name');
+        });
       });
     } catch (e) {
       print(e.toString());
