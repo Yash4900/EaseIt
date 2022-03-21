@@ -232,13 +232,15 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                                   String imageUrl = _profilePicture == null
                                       ? ""
                                       : await Storage().storeImage(
-                                          'dailyHelpers', id, _profilePicture);
+                                          'visitorApproval',
+                                          id,
+                                          _profilePicture);
                                   Database()
                                       .sendApproval(
                                           g.society,
                                           _nameController.text,
                                           _phoneController.text,
-                                          imageUrl,
+                                          "",
                                           dropDownValue,
                                           _wingController.text,
                                           _flatController.text)
