@@ -10,6 +10,8 @@ import 'package:ease_it/utility/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:image_cropper/image_cropper.dart';
+
 class AddDailyVisitor extends StatefulWidget {
   @override
   _AddDailyVisitorState createState() => _AddDailyVisitorState();
@@ -194,6 +196,20 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                     onTap: () async {
                       _profilePicture =
                           await PickImage().showPicker(context, 50);
+                      if (_profilePicture != null) {
+                        _profilePicture = await ImageCropper.cropImage(
+                          sourcePath: _profilePicture.path,
+                          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+                          androidUiSettings: AndroidUiSettings(
+                            toolbarTitle: 'Crop Image',
+                            toolbarColor: Colors.black,
+                            activeControlsWidgetColor: Color(0xff037DD6),
+                            toolbarWidgetColor: Colors.white,
+                            initAspectRatio: CropAspectRatioPreset.original,
+                            lockAspectRatio: true,
+                          ),
+                        );
+                      }
                       setState(() {});
                     },
                     child: Container(
