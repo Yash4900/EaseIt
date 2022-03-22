@@ -8,6 +8,8 @@ import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:image_cropper/image_cropper.dart';
+
 class AddComplaint extends StatefulWidget {
   @override
   _AddComplaintState createState() => _AddComplaintState();
@@ -72,6 +74,20 @@ class _AddComplaintState extends State<AddComplaint> {
                     onTap: () async {
                       _profilePicture =
                           await PickImage().showPicker(context, 50);
+                      if (_profilePicture != null) {
+                        _profilePicture = await ImageCropper.cropImage(
+                          sourcePath: _profilePicture.path,
+                          aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+                          androidUiSettings: AndroidUiSettings(
+                            toolbarTitle: 'Crop Image',
+                            toolbarColor: Colors.black,
+                            activeControlsWidgetColor: Color(0xff037DD6),
+                            toolbarWidgetColor: Colors.white,
+                            initAspectRatio: CropAspectRatioPreset.original,
+                            lockAspectRatio: true,
+                          ),
+                        );
+                      }
                       setState(() {});
                     },
                     child: _complaintImages.isEmpty

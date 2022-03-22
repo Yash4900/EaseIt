@@ -174,6 +174,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                           context: context,
                           backgroundColor: Colors.white,
                           elevation: 1,
+                          isScrollControlled: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10.0),
