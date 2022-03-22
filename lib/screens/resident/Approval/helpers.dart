@@ -12,7 +12,6 @@ class DailyHelpers extends StatefulWidget {
 }
 
 class _DailyHelpersState extends State<DailyHelpers> {
-  
   // Map<String,String> totalHelper={};
 
   @override
@@ -28,90 +27,115 @@ class _DailyHelpersState extends State<DailyHelpers> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: StreamBuilder(
-            stream: Database().getAllDailyHelperCategory(g.society,widget.dailyHelperType),
-            builder: (context, snapshot) {
-              if(snapshot.hasData && snapshot.data.docs.length>0)
-              {
-                List<dynamic> list=snapshot.data.docs;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: list
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            // width: 45,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VisitorProfile(visitorData: e,),
+              stream: Database()
+                  .getAllDailyHelperCategory(g.society, widget.dailyHelperType),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data.docs.length > 0) {
+                  List<dynamic> list = snapshot.data.docs;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: list
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                // width: 45,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
                                   ),
-                                );
-                              },
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: NetworkImage(e["imageUrl"]),
-                                            fit: BoxFit.fill),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => VisitorProfile(
+                                          visitorData: e,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    );
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(e["name"],
-                                              style: Helper().mediumStyle)
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image:
+                                                    NetworkImage(e["imageUrl"]),
+                                                fit: BoxFit.fill),
+                                          ),
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text("Rating ",
-                                              style: Helper().mediumStyle),
-                                          Text("5",
-                                              style: Helper().mediumStyle),
-                                          Image(
-                                            image: AssetImage('assets/star.png'),
-                                            width: 20,
-                                            height: 20,
-                                          )
+                                          Row(
+                                            children: [
+                                              Text(e["name"],
+                                                  style: Helper().mediumStyle)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text("Rating ",
+                                                  style: Helper().mediumStyle),
+                                              Text("5",
+                                                  style: Helper().mediumStyle),
+                                              Image(
+                                                image: AssetImage(
+                                                    'assets/star.png'),
+                                                width: 20,
+                                                height: 20,
+                                              )
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ))
+                        .toList(),
+                  );
+                } else {
+                  return Container(
+                    // width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/no_data.png',
+                            width: 300,
                           ),
-                        ))
-                    .toList(),
-              );
-            }
-            else{
-              return Container();
-            }
-            }
-          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'No daily helpers found',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      ),
+                    )
+                  );
+                }
+              }),
         ),
       ),
     );
