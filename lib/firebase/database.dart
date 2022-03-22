@@ -1166,4 +1166,61 @@ class Database {
     }
     return false;
   }
+
+  Stream<QuerySnapshot> getNumberOfPendingUsersForSociety(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('status', isEqualTo: 'pending')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<bool> isOwnerPresent(
+      String society, Map<String, String> flatNumber) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .where('status', isEqualTo: "accepted")
+          .get();
+      if (snapshot.docs.length == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> updateStatus(String society, String email, String status,
+      String homeResidentType) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((val) {
+        val.docs.forEach((doc) {
+          doc.reference
+              .update({"status": status, "homeRole": homeResidentType});
+        });
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
 }

@@ -385,7 +385,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextButton(
                       onPressed: () async {
                         if (formKey.currentState.validate()) {
-                          if (!flatVar.flatValue.contains(null)) {
+                          if (!flatVar.flatValue.contains(null) ||
+                              dropDownValue == "Security Guard") {
                             setState(() => errorText = "");
                             flatVar.createMapFromListForFlat();
                             //print(flatVar.flatNum);

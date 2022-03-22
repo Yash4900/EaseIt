@@ -2,12 +2,15 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'dart:math';
+import 'package:ease_it/utility/custom_tags.dart';
+import 'package:url_launcher/url_launcher.dart';
+//import 'dart:math';
 //import 'package:flutter_beautiful_popup/main.dart';
 
 class ResidentInfoPage extends StatefulWidget {
@@ -365,23 +368,39 @@ class _ResidentInfoPageState extends State<ResidentInfoPage> {
 }
 
 class UserCard extends StatelessWidget {
-  const UserCard(
-      {Key key,
-      @required this.userName,
-      @required this.societyDesignation,
-      @required this.homeDesignation,
-      @required this.email,
-      @required this.imageUrl})
-      : super(key: key);
+  const UserCard({
+    Key key,
+    @required this.userName,
+    @required this.societyDesignation,
+    @required this.homeDesignation,
+    @required this.email,
+    @required this.imageUrl,
+    @required this.phoneNumber,
+    @required this.role,
+    @required this.homeRole,
+    @required this.status,
+  }) : super(key: key);
 
-  final String userName, societyDesignation, homeDesignation, email, imageUrl;
+  final String userName,
+      societyDesignation,
+      homeDesignation,
+      email,
+      imageUrl,
+      phoneNumber,
+      role,
+      homeRole,
+      status;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
+      ),
       margin: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * 92.5 / 100,
-      height: MediaQuery.of(context).size.height * 12 / 100,
+      //height: MediaQuery.of(context).size.height * 15 / 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(33)),
@@ -395,7 +414,7 @@ class UserCard extends StatelessWidget {
         ],
       ),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -442,22 +461,44 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    societyDesignation,
-                    style: const TextStyle(
-                      color: Color(0xff17a3e8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                homeDesignation,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xffa0a0a0),
-                ),
+              Column(
+                children: [
+                  status == "pending"
+                      ? CustomTag(
+                          backgroundColor: Colors.red[100],
+                          textColor: Colors.red,
+                          text: "Pending")
+                      : SizedBox(),
+                  homeRole == null || status == "pending"
+                      ? SizedBox()
+                      : homeRole == "Owner"
+                          ? CustomTag(
+                              backgroundColor: Colors.green[100],
+                              textColor: Colors.green,
+                              text: "Owner")
+                          : homeRole == "Tenant"
+                              ? CustomTag(
+                                  backgroundColor: Colors.purple[100],
+                                  textColor: Colors.purple,
+                                  text: "Tenant")
+                              : CustomTag(
+                                  backgroundColor: Colors.brown[100],
+                                  textColor: Colors.brown,
+                                  text: "Resident"),
+                  status == "pending"
+                      ? SizedBox()
+                      : role == "Secretary"
+                          ? CustomTag(
+                              backgroundColor: Colors.amber[100],
+                              textColor: Colors.amber,
+                              text: "Secretary")
+                          : CustomTag(
+                              backgroundColor: Colors.pink[100],
+                              textColor: Colors.pink,
+                              text: "Resident"),
+                ],
               ),
               const SizedBox(
                 height: 1,
@@ -470,6 +511,24 @@ class UserCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          InkWell(
+            splashColor: Color(0xffd0d0d0),
+            child: GestureDetector(
+              child: Icon(
+                Icons.phone_outlined,
+                size: 27.5,
+              ),
+              onTap: () async {
+                try {
+                  await launch('tel:$phoneNumber');
+                } catch (e) {
+                  print(e.toString());
+                  showToast(
+                      context, "error", "Error", "OOps! Something went wrong");
+                }
+              },
+            ),
           ),
         ],
       ),
@@ -724,6 +783,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             tempWidgetCombined.add(i);
           }
         }
+        print("Where Am I");
         toDisplay.add(Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 10,
@@ -736,6 +796,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
             ),
           ),
         ));
+        print("Completed");
       }
       print(toDisplay.length);
     } else {}
@@ -856,6 +917,10 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
       );
     } else {
       for (int i = 0; i < snapshots.docs.length; i++) {
+        Map<String, dynamic> temp =
+            Map<String, dynamic>.from(snapshots.docs[i].data());
+        //print("Bool: ${temp.containsKey("homeRole")}");
+        //print("USer card generation: ${snapshots.docs[i]["homeRole"]}");
         childrenWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -866,6 +931,12 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
               homeDesignation: "Resident",
               email: snapshots.docs[i]["email"],
               imageUrl: snapshots.docs[i]["imageUrl"],
+              phoneNumber: snapshots.docs[i]["phoneNum"],
+              role: snapshots.docs[i]["role"],
+              homeRole: temp.containsKey("homeRole")
+                  ? snapshots.docs[i]["homeRole"]
+                  : null,
+              status: snapshots.docs[i]["status"],
             ),
           ),
         );
@@ -927,6 +998,7 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
                       children: snapshot.data,
                     );
                   } else if (snapshot.hasError) {
+                    print(snapshot);
                     return Text(
                       "Could not load Data",
                       style: TextStyle(

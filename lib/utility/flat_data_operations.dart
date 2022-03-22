@@ -3,8 +3,56 @@ import 'package:flutter/cupertino.dart';
 class FlatDataOperations {
   List<String> hierarchy;
   dynamic structure;
+  Map<String, String> flatNum;
+  Map<int, String> respectiveEndingTag = {
+    1: "st",
+    2: "nd",
+    3: "rd",
+    4: "th",
+    5: "th",
+    6: "th",
+    7: "th",
+    8: "th",
+    9: "th",
+    0: "th",
+  };
 
-  FlatDataOperations({@required this.hierarchy, @required this.structure});
+  FlatDataOperations({@required this.hierarchy, this.structure, this.flatNum});
+
+  String updatedString(value) {
+    //print("updateString");
+    if (int.tryParse(value) != null) {
+      int Num = int.parse(value);
+      Num = Num % 10;
+      String expectedEnding = respectiveEndingTag[Num];
+      //print("Value $value , expectedEnding: $expectedEnding");
+      value = value + expectedEnding;
+      //print("Updated String");
+      return value;
+    }
+    //print("UpdatedString");
+    return value;
+  }
+
+  String returnStringFormOfFlatMap() {
+    String finalStringToReturn = "";
+    for (int i = hierarchy.length - 1; i >= 0; i--) {
+      if (i != 0) {
+        if (hierarchy[i] == "Flat") {
+          finalStringToReturn += flatNum[hierarchy[i]] + ", ";
+        } else if (hierarchy[i] == "Floor") {
+          finalStringToReturn +=
+              updatedString(flatNum[hierarchy[i]]) + " " + hierarchy[i] + ", ";
+        } else {
+          finalStringToReturn +=
+              flatNum[hierarchy[i]] + " " + hierarchy[i] + ", ";
+        }
+      } else {
+        finalStringToReturn += flatNum[hierarchy[i]] + " " + hierarchy[i];
+      }
+    }
+    return finalStringToReturn;
+  }
 
   List<String> getInitialCombination() {
     List<String> initialCombination = [];

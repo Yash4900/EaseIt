@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/custom_tags.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SecurityGuardInfo extends StatefulWidget {
   const SecurityGuardInfo({Key key}) : super(key: key);
@@ -152,9 +155,13 @@ class SecurityGuardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
+      ),
       margin: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width * 92.5 / 100,
-      height: MediaQuery.of(context).size.height * 12 / 100,
+      //width: MediaQuery.of(context).size.width * 92.5 / 100,
+      //height: MediaQuery.of(context).size.height * 12 / 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(33)),
@@ -215,22 +222,13 @@ class SecurityGuardCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    societyDesignation,
-                    style: const TextStyle(
-                      color: Color(0xff17a3e8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                phoneNumber,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xffa0a0a0),
-                ),
+              CustomTag(
+                text: "Security",
+                backgroundColor: Colors.cyan[100],
+                textColor: Colors.cyan,
               ),
               const SizedBox(
                 height: 1,
@@ -243,6 +241,23 @@ class SecurityGuardCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          InkWell(
+            splashColor: Color(0xffd0d0d0),
+            child: GestureDetector(
+                child: Icon(
+                  Icons.phone,
+                  size: 25,
+                ),
+                onTap: () async {
+                  try {
+                    await launch('tel:$phoneNumber');
+                  } catch (e) {
+                    print(e.toString());
+                    showToast(context, "error", "Error",
+                        "Oops! Something went wrong");
+                  }
+                }),
           ),
         ],
       ),

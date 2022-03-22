@@ -1,16 +1,20 @@
 // Resident Landing page
 
+//import 'dart:html';
+
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
 import 'package:ease_it/screens/resident/my_vehicle/my_vehicle.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
+import 'package:ease_it/screens/resident/secretary_approval.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:badges/badges.dart';
 
 class Resident extends StatefulWidget {
   @override
@@ -59,25 +63,115 @@ class _ResidentState extends State<Resident> {
                 elevation: 0,
                 actions: [
                   role == "Secretary"
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0,
-                            vertical: 10.0,
-                          ),
-                          child: Badge(
-                            badgeColor: Color(0xff1a73e8),
-                            badgeContent: Text(
-                              "3",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.people),
-                              iconSize: 25,
-                              onPressed: () {},
-                            ),
-                          ),
+                      ? StreamBuilder(
+                          stream: Database()
+                              .getNumberOfPendingUsersForSociety(g.society),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              if (snapshot.data.docs.length == 0) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 5,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          showToast(
+                                              context,
+                                              "general",
+                                              "All Requests info",
+                                              "No pending requests found");
+                                        },
+                                        icon: Icon(
+                                          Icons.people,
+                                          size: 25,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 7,
+                                    vertical: 7,
+                                  ),
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SecretaryApproval(),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.people,
+                                          size: 25,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: -2,
+                                        right: -2,
+                                        child: Container(
+                                          height: 20,
+                                          width: 20,
+                                          child: Center(
+                                            child: Text(
+                                              snapshot.data.docs.length > 9
+                                                  ? "9+"
+                                                  : snapshot.data.docs.length
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1a73e8),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            } else {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 5,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        showToast(
+                                            context,
+                                            "general",
+                                            "All Requests info",
+                                            "Waiting for requests data to load");
+                                      },
+                                      icon: Icon(
+                                        Icons.people,
+                                        size: 25,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         )
                       : SizedBox(),
                 ]),
