@@ -17,7 +17,6 @@ class AddComplaint extends StatefulWidget {
 
 class _AddComplaintState extends State<AddComplaint> {
   File _profilePicture;
-  List<File> _complaintImages;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -90,26 +89,24 @@ class _AddComplaintState extends State<AddComplaint> {
                       }
                       setState(() {});
                     },
-                    child: _complaintImages.isEmpty
-                        ? Container(
-                            child: Center(
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: _profilePicture == null
-                                    ? AssetImage('assets/dummy_image.jpg')
-                                    : FileImage(_profilePicture),
-                              ),
-                            ),
-                          )
-                        : SizedBox(),
+                    child: Container(
+                      child: Center(
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: _profilePicture == null
+                              ? AssetImage('assets/dummy_image.jpg')
+                              : FileImage(_profilePicture),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 25),
                   Form(

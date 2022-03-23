@@ -389,14 +389,16 @@ class Database {
 
   // Vehicle management queries
   Future<void> addVehicle(
-      String societyName,
-      String imageUrl,
-      String licensePlateNo,
-      String model,
-      String parkingSpaceNo,
-      String vehicleType,
-      String wing,
-      String flatNo) async {
+    String societyName,
+    String imageUrl,
+    String licensePlateNo,
+    String model,
+    String parkingSpaceNo,
+    String vehicleType,
+    Map<String, String> flat,
+    //String wing,
+    //String flatNo,
+  ) async {
     try {
       await _firestore
           .collection(societyName)
@@ -408,8 +410,9 @@ class Database {
         'model': model,
         'parkingSpaceNo': parkingSpaceNo,
         'vehicleType': vehicleType,
-        'wing': wing,
-        'flatNo': flatNo
+        'flat': flat,
+        //'wing': wing,
+        //'flatNo': flatNo
       });
     } catch (e) {
       print(e.toString());
@@ -448,8 +451,12 @@ class Database {
   }
 
   // Visitor vehicle log
-  Future<void> logVisitorVehicleEntry(String society, String licensePlateNo,
-      String flatNo, String wing, String purpose,
+  Future<void> logVisitorVehicleEntry(
+      String society,
+      String licensePlateNo,
+      //String flatNo, String wing,
+      Map<String, String> flat,
+      String purpose,
       [String id]) async {
     try {
       if (id != null) {
@@ -460,8 +467,9 @@ class Database {
             .doc(id)
             .set({
           'licensePlateNo': licensePlateNo,
-          'flatNo': flatNo,
-          'wing': wing,
+          //'flatNo': flatNo,
+          //'wing': wing,
+          'flat': flat,
           'purpose': purpose,
           'entryTime': DateTime.now(),
           'exitTime': null,
@@ -473,8 +481,9 @@ class Database {
             .collection('Vehicle Log')
             .add({
           'licensePlateNo': licensePlateNo,
-          'flatNo': flatNo,
-          'wing': wing,
+          'flat': flat,
+          //'flatNo': flatNo,
+          //'wing': wing,
           'purpose': purpose,
           'entryTime': DateTime.now(),
           'exitTime': null,
@@ -643,8 +652,10 @@ class Database {
     return null;
   }
 
-  Future<void> sendChildApprovalRequest(String society, String name, String age,
-      String wing, String flatNo) async {
+  Future<void> sendChildApprovalRequest(
+      String society, String name, String age, Map<String, String> flat
+      //String wing, String flatNo,
+      ) async {
     try {
       await _firestore
           .collection(society)
@@ -653,8 +664,9 @@ class Database {
           .add({
         'name': name,
         'age': age,
-        'wing': wing,
-        'flatNo': flatNo,
+        'flat': flat,
+        //'wing': wing,
+        //'flatNo': flatNo,
         'date': DateTime.now(),
         'status': 'Pending'
       });
@@ -664,8 +676,9 @@ class Database {
           .collection(society)
           .doc('users')
           .collection('User')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get()
           .then((qs) {
         qs.docs.forEach((doc) {
@@ -780,8 +793,14 @@ class Database {
   }
 
   // Add a daily helper - Security
-  Future<void> addDailyHelper(String society, String name, String phoneNum,
-      List<String> worksAt, String imageUrl, String purpose, int code) async {
+  Future<void> addDailyHelper(
+      String society,
+      String name,
+      String phoneNum,
+      List<Map<String, String>> worksAt,
+      String imageUrl,
+      String purpose,
+      int code) async {
     try {
       await _firestore
           .collection(society)
@@ -834,8 +853,15 @@ class Database {
   }
 
   // Visitor approval - Security
-  Future<void> sendApproval(String society, String name, String phoneNum,
-      String imageUrl, String purpose, String wing, String flatNo) async {
+  Future<void> sendApproval(
+    String society,
+    String name,
+    String phoneNum,
+    String imageUrl,
+    String purpose,
+    Map<String, String> flat,
+    //String wing, String flatNo,
+  ) async {
     try {
       await _firestore
           .collection(society)
@@ -844,10 +870,11 @@ class Database {
           .add({
         'name': name,
         'phoneNum': phoneNum,
-        'flatNo': flatNo,
+        'flat': flat,
+        //'flatNo': flatNo,
         'imageUrl': imageUrl,
         'purpose': purpose,
-        'wing': wing,
+        //'wing': wing,
         'status': 'Pending',
         'entryTime': DateTime.now(),
         'exitTime': null
@@ -858,8 +885,9 @@ class Database {
           .collection(society)
           .doc('users')
           .collection('User')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get()
           .then((qs) {
         qs.docs.forEach((doc) {
