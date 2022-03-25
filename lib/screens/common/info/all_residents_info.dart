@@ -463,7 +463,7 @@ class UserCard extends StatelessWidget {
                   const SizedBox(width: 10),
                 ],
               ),
-              Column(
+              Wrap(
                 children: [
                   status == "pending"
                       ? CustomTag(

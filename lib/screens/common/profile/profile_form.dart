@@ -250,6 +250,10 @@ class _ProfileFormState extends State<ProfileForm> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
+                      enabled: false,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                      ),
                       decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(

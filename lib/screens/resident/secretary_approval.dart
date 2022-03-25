@@ -5,6 +5,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SecretaryApproval extends StatefulWidget {
@@ -259,7 +260,7 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                           ).returnStringFormOfFlatMap(),
                           style: TextStyle(
                             color: Color(0xff707070),
-                            fontSize: 15,
+                            fontSize: 10,
                           ),
                         ),
                       ),
