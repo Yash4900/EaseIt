@@ -183,7 +183,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         int.parse(_stayTimeController.text));
                                     setState(() => loading = false);
                                     await showMessageDialog(
-                                        context, 'Parking Assignment', '', [
+                                        context, 'Parking Assignment', [
                                       Center(
                                         child: Image.asset(
                                           'assets/success.png',

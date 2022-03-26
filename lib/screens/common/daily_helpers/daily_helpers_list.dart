@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/screens/common/daily_helpers/daily_helper_log.dart';
 import 'package:ease_it/screens/common/daily_helpers/daily_helper_profile.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DailyHelpersList extends StatefulWidget {
   @override
@@ -95,15 +95,37 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                         ? AssetImage('assets/dummy_image.jpg')
                                         : NetworkImage(ds['imageUrl']),
                                   ),
-                                  title: Text(
-                                    ds['name'],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                  title: Row(children: [
+                                    Text(
+                                      ds['name'],
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(width: 10),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color:
+                                            Color(0xffcb6f10).withOpacity(0.2),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 1, horizontal: 7),
+                                        child: Text(
+                                          ds['purpose'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xffcb6f10),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ]),
                                   subtitle: Text(
-                                    ds['purpose'],
+                                    '+91-${ds['phoneNum']}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black87,
@@ -114,19 +136,18 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                     radius: 25,
                                     backgroundColor: Colors.black12,
                                     child: IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DailyHelperLog(ds.id),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.menu_book_rounded,
-                                          color: Colors.black45,
-                                        )),
+                                      onPressed: () async {
+                                        try {
+                                          await launch('tel:${ds['phoneNum']}');
+                                        } catch (e) {
+                                          print(e.toString());
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.phone,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );

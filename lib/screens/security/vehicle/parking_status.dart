@@ -179,7 +179,7 @@ class _ParkingStatusState extends State<ParkingStatus> {
                                         widget.docId,
                                         map['parking_space']);
                                     await showMessageDialog(
-                                        context, 'Parking Assignment', '', [
+                                        context, 'Parking Assignment', [
                                       Center(
                                         child: Image.asset(
                                           'assets/success.png',

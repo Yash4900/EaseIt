@@ -16,6 +16,28 @@ class _DailyHelperState extends State<DailyHelper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        leadingWidth: MediaQuery.of(context).size.width * 0.3,
+        backgroundColor: Colors.white,
+        leading: TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Row(
+            children: [
+              Icon(Icons.keyboard_backspace, color: Colors.black),
+              SizedBox(width: 5),
+              Text(
+                'Back',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,7 +72,7 @@ class _DailyHelperState extends State<DailyHelper> {
                     child: Text(
                       widget.ds['purpose'],
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 14,
                         color: Color(0xffcb6f10),
                         fontWeight: FontWeight.w600,
                       ),
@@ -100,7 +122,7 @@ class _DailyHelperState extends State<DailyHelper> {
                 'View Logs',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Color(0xff095aba),
                 ),
               ),
             ),
