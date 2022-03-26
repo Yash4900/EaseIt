@@ -76,7 +76,7 @@ class _ParkingStatusState extends State<ParkingStatus> {
           ? Loading()
           : Padding(
               padding: EdgeInsets.all(20),
-              child: Column(
+              child: ListView(
                 children: [
                   Text(
                     "Visitor Parking Status",
@@ -146,10 +146,18 @@ class _ParkingStatusState extends State<ParkingStatus> {
                             Expanded(
                               child: TextFormField(
                                 decoration: InputDecoration(
-                                    hintText: 'Enter stay time'),
+                                  hintText: 'Enter stay time',
+                                ),
+                                textAlign: TextAlign.center,
                                 controller: _stayTimeController,
+                                validator: (value) =>
+                                    int.tryParse(_stayTimeController.text) ==
+                                            null
+                                        ? 'Enter numeric value'
+                                        : null,
                               ),
                             ),
+                            SizedBox(width: 30),
                             Expanded(
                               child: TextButton(
                                 onPressed: () async {

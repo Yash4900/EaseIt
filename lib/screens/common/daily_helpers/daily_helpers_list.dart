@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/daily_helpers/daily_helper_log.dart';
+import 'package:ease_it/screens/common/daily_helpers/daily_helper_profile.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DailyHelpersList extends StatefulWidget {
   @override
@@ -50,7 +49,9 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
               child: Text(
                 'Daily Helpers',
                 style: GoogleFonts.sourceSansPro(
-                    fontSize: 25, fontWeight: FontWeight.w900),
+                  fontSize: 25,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
             Expanded(
@@ -75,8 +76,18 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                   ),
                                 ),
                                 margin: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 3),
+                                  horizontal: 5,
+                                  vertical: 3,
+                                ),
                                 child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DailyHelper(ds),
+                                      ),
+                                    );
+                                  },
                                   leading: CircleAvatar(
                                     backgroundColor: Colors.grey[300],
                                     radius: 30,
@@ -87,36 +98,18 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                   title: Text(
                                     ds['name'],
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Row(children: [
-                                    Text(
-                                      '${ds['purpose']} . ',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black87,
-                                        fontSize: 16,
-                                      ),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        try {
-                                          await launch('tel:${ds['phoneNum']}');
-                                        } catch (e) {
-                                          showToast(context, 'error', 'Oops!',
-                                              'Something went wrong!');
-                                        }
-                                      },
-                                      child: Text(
-                                        ds['phoneNum'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    )
-                                  ]),
+                                  ),
+                                  subtitle: Text(
+                                    ds['purpose'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                   trailing: CircleAvatar(
                                     radius: 25,
                                     backgroundColor: Colors.black12,

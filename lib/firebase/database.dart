@@ -519,7 +519,8 @@ class Database {
       String licensePlateNo,
       String owner,
       String phoneNum,
-      String parkingSpace) async {
+      String parkingSpace,
+      int stayTime) async {
     try {
       return await _firestore
           .collection(society)
@@ -530,7 +531,8 @@ class Database {
         'owner': owner,
         'phoneNum': phoneNum,
         'parkingSpace': parkingSpace,
-        'timestamp': DateTime.now()
+        'timestamp': DateTime.now(),
+        'stayTime': stayTime
       });
     } catch (e) {
       print(e.toString());
