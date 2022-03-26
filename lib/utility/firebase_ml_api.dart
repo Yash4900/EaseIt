@@ -42,10 +42,11 @@ class FirebaseMLApi {
     // Extract license plate number from text
     if (regExp.hasMatch(text)) {
       text = regExp.stringMatch(text);
+      // Convert 0 at index 0 to O for Odisha - Special case
+      if (text[0] == '0') text = text.replaceRange(0, 1, 'O');
+      return text;
+    } else {
+      return "";
     }
-
-    // Convert 0 at index 0 to O for Odisha - Special case
-    if (text[0] == '0') text = text.replaceRange(0, 1, 'O');
-    return text;
   }
 }

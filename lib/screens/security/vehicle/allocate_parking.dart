@@ -144,6 +144,11 @@ class _AllocateParkingState extends State<AllocateParking> {
                                 decoration: InputDecoration(
                                     hintText: 'Enter expected stay time'),
                                 controller: _stayTimeController,
+                                validator: (value) =>
+                                    int.tryParse(_stayTimeController.text) ==
+                                            null
+                                        ? 'Enter numeric value'
+                                        : null,
                               ),
                             )
                           ],
@@ -174,10 +179,11 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         widget.licensePlateNo,
                                         _nameController.text,
                                         _phoneController.text,
-                                        map['parking_space']);
+                                        map['parking_space'],
+                                        int.parse(_stayTimeController.text));
                                     setState(() => loading = false);
                                     await showMessageDialog(
-                                        context, 'Parking Assignment', '', [
+                                        context, 'Parking Assignment', [
                                       Center(
                                         child: Image.asset(
                                           'assets/success.png',
@@ -203,12 +209,13 @@ class _AllocateParkingState extends State<AllocateParking> {
                                     ]);
                                   }
                                   Database().logVisitorVehicleEntry(
-                                      g.society,
-                                      widget.licensePlateNo,
-                                      _flatController.text,
-                                      _wingController.text,
-                                      _purposeController.text,
-                                      dr.id);
+                                    g.society,
+                                    widget.licensePlateNo,
+                                    _flatController.text,
+                                    _wingController.text,
+                                    _purposeController.text,
+                                    dr.id,
+                                  );
                                 }
                                 int count = 0;
                                 Navigator.popUntil(context, (route) {

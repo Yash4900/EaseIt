@@ -248,8 +248,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               flatController.text);
                           if (result == null) {
                             setState(() => loading = false);
-                            showMessageDialog(context, "Oops!",
-                                "Something went wrong please try again!");
+                            showMessageDialog(context, "Oops!", [
+                              Text("Something went wrong please try again!")
+                            ]);
                           }
                         }
                       },

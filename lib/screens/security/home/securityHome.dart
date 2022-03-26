@@ -120,7 +120,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                       QueryDocumentSnapshot qds = await Database().verifyByCode(
                           g.society, int.parse(_codeController.text));
                       if (qds == null) {
-                        showMessageDialog(context, 'Invalid Code!', '', [
+                        showMessageDialog(context, 'Invalid Code!', [
                           Center(
                             child: Image.asset(
                               'assets/error.png',
