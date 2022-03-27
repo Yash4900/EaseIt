@@ -1,5 +1,7 @@
+import 'package:ease_it/utility/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/multiple_image_editor.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
@@ -134,21 +136,72 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                         value.length == 0 ? 'Please enter a title' : null,
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 imageFiles.isEmpty
                     ? Material(
                         child: InkWell(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () async {
+                              imageFiles = await PickImage()
+                                  .showMultiPicker(context, 50);
+                              if (imageFiles.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MultipleImageEditor(
+                                      imageFiles: imageFiles,
+                                    ),
+                                  ),
+                                );
+                              } else {}
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: Container(
-                                height: 50,
+                                color: Colors.grey[300],
+                                child: Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  color: Colors.grey[800],
+                                  size: 50,
+                                ),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
                               ),
                             ),
                           ),
                         ),
                       )
                     : SizedBox(),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 15,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "NOTE : ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 12.5,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "You can select upto 7 images",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 12.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

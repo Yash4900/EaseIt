@@ -23,6 +23,12 @@ class PickImage {
     );
   }
 
+  Future<List<XFile>> _multipleImageFromGallery(int quality) async {
+    return await _picker.pickMultiImage(
+      imageQuality: quality,
+    );
+  }
+
   Future<File> showPicker(context, int quality) {
     return showModalBottomSheet(
       context: context,
@@ -52,6 +58,50 @@ class PickImage {
                   onTap: () async {
                     XFile file = await _imageFromCamera(quality);
                     Navigator.of(context).pop(File(file.path));
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<File>> showMultiPicker(context, int quality) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.photo_library, color: Colors.black87),
+                    title: Text(
+                      'Photo Library',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                    onTap: () async {
+                      List<File> filesToSend = [];
+                      List<XFile> files =
+                          await _multipleImageFromGallery(quality);
+                      for (XFile file in files) {
+                        filesToSend.add(File(file.path));
+                      }
+                      Navigator.of(context).pop(filesToSend);
+                    }),
+                ListTile(
+                  leading: Icon(Icons.photo_camera, color: Colors.black87),
+                  title: Text(
+                    'Camera',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black87),
+                  ),
+                  onTap: () async {
+                    XFile file = await _imageFromCamera(quality);
+                    Navigator.of(context).pop([File(file.path)]);
                   },
                 ),
               ],
