@@ -59,7 +59,10 @@ class _ApprovalState extends State<Approval> {
 
                           StreamBuilder(
                               stream: Database().getTodaysVisitorForGivenFlat(
-                                  g.society, g.flatNo, g.wing),
+                                g.society,
+                                Map<String, String>.from(g.flat),
+                                //g.wing,
+                              ),
                               builder: (context, snapshot) {
                                 // print(snapshot.data.docs.length);
                                 if (snapshot.hasData &&
@@ -280,7 +283,10 @@ class _ApprovalState extends State<Approval> {
                               type: "addHelper"),
                           StreamBuilder(
                               stream: Database().getAllDailyHelperForGivenFlat(
-                                  g.society, g.flatNo, g.wing),
+                                g.society,
+                                Map<String, String>.from(g.flat),
+                                //g.wing,
+                              ),
                               builder: (context, snapshot) {
                                 // print(snapshot.data.docs.length);
                                 if (snapshot.hasData &&
@@ -330,8 +336,11 @@ class _ApprovalState extends State<Approval> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: StreamBuilder(
-                      stream: Database()
-                          .getAllChildApproval(g.society, g.flatNo, g.wing),
+                      stream: Database().getAllChildApproval(
+                        g.society,
+                        Map<String, String>.from(g.flat),
+                        //g.wing,
+                      ),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data.docs.length > 0) {
                           List<dynamic> list = snapshot.data.docs;

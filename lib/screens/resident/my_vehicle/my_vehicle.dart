@@ -296,7 +296,11 @@ class _MyVehicleState extends State<MyVehicle> {
             Expanded(
               flex: 8,
               child: FutureBuilder(
-                future: Database().getMyVehicle(g.society, g.wing, g.flatNo),
+                future: Database().getMyVehicle(
+                  g.society,
+                  //g.wing,
+                  Map<String, String>.from(g.flat),
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Loading();
@@ -333,7 +337,8 @@ class _MyVehicleState extends State<MyVehicle> {
                                         ds['licensePlateNo'],
                                         ds['model'],
                                         ds['vehicleType'],
-                                        ds['wing'] + ' - ' + ds['flatNo'],
+                                        ds['flat'],
+                                        //ds['wing'] + ' - ' + ds['flatNo'],
                                         ds['parkingSpaceNo'],
                                         map['exit_time'],
                                         map['entry_time'],

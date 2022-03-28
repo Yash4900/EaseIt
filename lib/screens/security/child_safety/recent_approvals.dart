@@ -8,6 +8,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:flutter/material.dart';
 
 class RecentApproval extends StatefulWidget {
@@ -89,7 +90,7 @@ class _RecentApprovalState extends State<RecentApproval> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Flat: ${ds['wing'].toUpperCase()}-${ds['flatNo']}  Age: ${ds['age']}',
+                                          'Flat: ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}  Age: ${ds['age']}',
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             color: Colors.grey[500],
@@ -218,8 +219,8 @@ class _ApprovalAcceptanceState extends State<ApprovalAcceptance> {
   Globals g = Globals();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
-  TextEditingController _wingController = TextEditingController();
-  TextEditingController _flatNoController = TextEditingController();
+  //TextEditingController _wingController = TextEditingController();
+  //TextEditingController _flatNoController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   FlatData flatVar = FlatData();

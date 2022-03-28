@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/flat_data.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
@@ -222,7 +223,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                       subtitle: Text(
                                         qs.size == 0
                                             ? 'Visitor'
-                                            : 'Owner . ${qs.docs[0]["wing"]}-${qs.docs[0]["flatNo"]}',
+                                            : 'Owner . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: qs.docs[0]['flat']).returnStringFormOfFlatMap()}', //${qs.docs[0]["wing"]}-${qs.docs[0]["flatNo"]}',
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),

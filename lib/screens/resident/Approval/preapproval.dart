@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:ease_it/firebase/database.dart';
@@ -282,8 +281,9 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           nameController.text,
                                           phoneController.text,
                                           vehicleNo.text,
-                                          g.flatNo,
-                                          g.wing,
+                                          g.flat,
+                                          //g.flatNo,
+                                          //g.wing,
                                           code.toString(),
                                           "Guest",
                                           "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351");
@@ -402,8 +402,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           nameController.text,
                                           phoneController.text,
                                           carController.text,
-                                          g.flatNo,
-                                          g.wing,
+                                          g.flat,
+                                          //g.wing,
                                           code.toString(),
                                           "Cab",
                                           "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Ftaxi.png?alt=media&token=1c15e15e-9c02-48a9-bf96-cfdaf71b043f");
@@ -525,8 +525,9 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           nameController.text,
                                           phoneController.text,
                                           vehicleController.text,
-                                          g.flatNo,
-                                          g.wing,
+                                          g.flat,
+                                          //g.flatNo,
+                                          //g.wing,
                                           code.toString(),
                                           "Delivery",
                                           "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fdelivery-man.png?alt=media&token=f0678091-2a3e-4958-a289-3c44e5b39880");
@@ -646,8 +647,9 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           nameController.text,
                                           phoneController.text,
                                           vehicleController.text,
-                                          g.flatNo,
-                                          g.wing,
+                                          g.flat,
+                                          //g.flatNo,
+                                          //g.wing,
                                           code.toString(),
                                           "VisitingHelp",
                                           "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Ftechnical-support.png?alt=media&token=c4112d24-bb2e-4d4c-8906-c32804845794");

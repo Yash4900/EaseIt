@@ -11,6 +11,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 
 class ParkingStatus extends StatefulWidget {
   final String docId;
@@ -117,7 +118,8 @@ class _ParkingStatusState extends State<ParkingStatus> {
                   ),
                   Info("Owner Name", widget.owner),
                   Info("Phone Number", widget.phoneNum),
-                  Info("Guest At", '${ds['wing']}-${ds['flatNo']}'),
+                  Info("Guest At",
+                      '${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}'),
                   SizedBox(height: 30),
                   Divider(
                     color: Colors.grey,

@@ -6,6 +6,7 @@ import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'dart:io';
 
 import 'package:image_cropper/image_cropper.dart';
@@ -167,7 +168,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                           _titleController.text,
                                           _descController.text,
                                           imageUrl ?? "",
-                                          "${g.fname} ${g.lname} (${g.wing}-${g.flatNo})")
+                                          g.uid)
                                       .then((value) {
                                     setState(() => loading = false);
                                     showToast(context, "success", "Success!",

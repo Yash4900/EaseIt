@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class MyVehicle extends StatefulWidget {
   const MyVehicle({Key key}) : super(key: key);
@@ -58,8 +59,10 @@ class _MyVehicleState extends State<MyVehicle> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        if (doc["flatNo"] == Globals().flatNo &&
-            doc["wing"] == Globals().wing) {
+        if (DeepCollectionEquality().equals(
+          Map<String, String>.from(doc['flat']),
+          Globals().flat,
+        )) {
           foundVehicle = true;
           document = doc;
           vehicleNoController.text = doc["vehicleNo"];
@@ -87,8 +90,9 @@ class _MyVehicleState extends State<MyVehicle> {
             document != null
                 ? CardDetailPage(
                     vehicleNo: vehicleNoController.text,
-                    wing: g.wing,
-                    flatNo: g.flatNo,
+                    flat: Map<String, String>.from(g.flat),
+                    //wing: g.wing,
+                    //flatNo: g.flatNo,
                     model: vehicleModelController.text,
                     color: vehicleColorController.text,
                     type: vehicleTypeController.text,
@@ -233,22 +237,25 @@ class _MyVehicleState extends State<MyVehicle> {
       "model": model,
       "color": color,
       "type": type,
-      "flatNo": g.flatNo,
-      "wing": g.wing
+      "flat": g.flat,
+      //"flatNo": g.flatNo,
+      //"wing": g.wing
     });
   }
 }
 
 class CardDetailPage extends StatefulWidget {
-  final String vehicleNo, type, model, color, wing, flatNo;
+  final String vehicleNo, type, model, color;
+  final Map<String, String> flat; //wing, flatNo;
   const CardDetailPage({
     Key key,
     this.vehicleNo,
     this.type,
     this.model,
     this.color,
-    this.wing,
-    this.flatNo,
+    this.flat,
+    //this.wing,
+    //this.flatNo,
   }) : super(key: key);
 
   @override

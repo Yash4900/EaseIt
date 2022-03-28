@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/multiple_image_editor.dart';
 import 'package:flutter/services.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:io';
 
 class SupportFeedback extends StatefulWidget {
@@ -17,7 +18,71 @@ class _SupportFeedbackState extends State<SupportFeedback> {
   TextEditingController _descriptionController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<File> imageFiles = [];
+  List<Widget> imageSliderWidget = [];
   Globals g = Globals();
+
+  Widget returnCarouselWidget(List<File> imgList) {
+    List<Widget> imageSliders = createImageSlidingWidget(imgList);
+    return Container(
+      child: CarouselSlider(
+        options: CarouselOptions(
+          aspectRatio: 2.0,
+          enlargeCenterPage: true,
+          enableInfiniteScroll: false,
+          initialPage: 2,
+          autoPlay: true,
+        ),
+        items: imageSliders,
+      ),
+    );
+  }
+
+  List<Widget> createImageSlidingWidget(List<File> imgList) {
+    List<Widget> temp = imgList
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.file(item,
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 0.9),
+                        Positioned(
+                          bottom: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(200, 0, 0, 0),
+                                  Color.fromARGB(0, 0, 0, 0)
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20.0),
+                            child: Text(
+                              'Image No. ${imgList.indexOf(item) + 1}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ))
+        .toList();
+    return temp;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,15 +204,16 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                 SizedBox(
                   height: 10,
                 ),
-                imageFiles.isEmpty
+                imageFiles == null || imageFiles.isEmpty
                     ? Material(
                         child: InkWell(
                           child: GestureDetector(
                             onTap: () async {
                               imageFiles = await PickImage()
                                   .showMultiPicker(context, 50);
+                              setState(() {});
                               if (imageFiles.isNotEmpty) {
-                                Navigator.push(
+                                imageFiles = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MultipleImageEditor(
@@ -155,6 +221,7 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                                     ),
                                   ),
                                 );
+                                setState(() {});
                               } else {}
                             },
                             child: Padding(
@@ -173,7 +240,7 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                           ),
                         ),
                       )
-                    : SizedBox(),
+                    : returnCarouselWidget(imageFiles),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 15,
@@ -191,7 +258,7 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                       ),
                       Expanded(
                         child: Text(
-                          "You can select upto 7 images",
+                          "You can select upto 5 images",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -200,6 +267,28 @@ class _SupportFeedbackState extends State<SupportFeedback> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {}
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ],

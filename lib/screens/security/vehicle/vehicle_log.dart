@@ -3,6 +3,7 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 
 class VehicleLog extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _VehicleLogState extends State<VehicleLog> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
                     DateTime entryTime = ds['entryTime'].toDate();
-
+                    print("Flat Value: ${ds['flat']}");
                     DateTime exitTime;
                     try {
                       exitTime = ds['exitTime'].toDate();
@@ -64,7 +65,7 @@ class _VehicleLogState extends State<VehicleLog> {
                                   size: 20,
                                 ),
                                 Text(
-                                  '  ${ds['wing']}-${ds['flatNo']}',
+                                  '  ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}',
                                   style: TextStyle(fontWeight: FontWeight.w600),
                                 )
                               ],

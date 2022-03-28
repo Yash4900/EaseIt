@@ -43,7 +43,10 @@ class _ResidentHomeState extends State<ResidentHome> {
                   children: [
                     StreamBuilder(
                         stream: Database().getAllPendingVisitorForGivenFlat(
-                            g.society, g.flatNo, g.wing),
+                          g.society,
+                          Map<String, String>.from(g.flat),
+                          //g.wing,
+                        ),
                         builder: (context, snapshot) {
                           if (snapshot.hasData &&
                               snapshot.data.docs.length > 0) {
@@ -84,7 +87,10 @@ class _ResidentHomeState extends State<ResidentHome> {
                         }),
                     StreamBuilder(
                         stream: Database().getAllPendingPreApprovalForGivenFlat(
-                            g.society, g.flatNo, g.wing),
+                          g.society,
+                          Map<String, String>.from(g.flat),
+                          //g.wing,
+                        ),
                         builder: (context, snapshot) {
                           if (snapshot.hasData &&
                               snapshot.data.docs.length > 0) {
@@ -261,8 +267,11 @@ class _ResidentHomeState extends State<ResidentHome> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: StreamBuilder(
-                  stream: Database()
-                      .getPendingChildApproval(g.society, g.flatNo, g.wing),
+                  stream: Database().getPendingChildApproval(
+                    g.society,
+                    Map<String, String>.from(g.flat),
+                    //g.wing,
+                  ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Loading();

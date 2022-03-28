@@ -420,14 +420,18 @@ class Database {
   }
 
   Future<QuerySnapshot> getMyVehicle(
-      String societyName, String wing, String flatNo) async {
+    String societyName,
+    //String wing,
+    Map<String, String> flat,
+  ) async {
     try {
       return await _firestore
           .collection(societyName)
           .doc('vehicles')
           .collection('Vehicle')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get();
     } catch (e) {
       print(e.toString());
@@ -693,14 +697,18 @@ class Database {
 
   // Fetching all child Approval
   Stream<QuerySnapshot> getAllChildApproval(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('childApprovals')
           .collection('ChildApproval')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -710,15 +718,19 @@ class Database {
 
   // Fetching pending child approval
   Stream<QuerySnapshot> getPendingChildApproval(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('childApprovals')
           .collection('ChildApproval')
           .where('status', isEqualTo: "Pending")
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -753,14 +765,16 @@ class Database {
 
   // Fetch All Daily Helper in give flat
   Stream<QuerySnapshot> getAllDailyHelperForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('dailyHelpers')
           .collection('Daily Helper')
-          .where('worksAt',
-              arrayContains: wing.toUpperCase().toString() + "-" + flatNo)
+          .where('worksAt', arrayContains: flat)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -947,14 +961,18 @@ class Database {
 
   // Get all pending visitor for specific flat
   Stream<QuerySnapshot> getAllPendingVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .where('status', isEqualTo: "Pending")
           .snapshots();
     } catch (e) {
@@ -965,14 +983,18 @@ class Database {
 
   // Get All visitor log for specific flat
   Stream<QuerySnapshot> getAllVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -982,14 +1004,18 @@ class Database {
 
   // Get today's visitor for specific flat
   Stream<QuerySnapshot> getTodaysVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .where('entryTime',
               isGreaterThanOrEqualTo:
                   DateTime.now().subtract(Duration(days: 1)))
@@ -1031,8 +1057,9 @@ class Database {
       String visName,
       String visPhoneNo,
       String vehicleNo,
-      String flatNo,
-      String wing,
+      Map<String, String> flat,
+      //String flatNo,
+      //String wing,
       String code,
       String purpose,
       String imageUrl) async {
@@ -1045,8 +1072,9 @@ class Database {
         'name': visName,
         'phoneNum': visPhoneNo,
         'vehicleNo': vehicleNo,
-        'flatNo': flatNo,
-        'wing': wing,
+        'flat': flat,
+        //'flatNo': flatNo,
+        //'wing': wing,
         'generatedToken': code,
         'purpose': purpose,
         'postedOn': DateTime.now(),
@@ -1077,14 +1105,18 @@ class Database {
 
   // Get All pending preApproval for give flat and wing
   Stream<void> getAllPendingPreApprovalForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('flatNo', isEqualTo: flatNo)
-          .where('wing', isEqualTo: wing)
+          .where('flat', isEqualTo: flat)
+          //.where('flatNo', isEqualTo: flatNo)
+          //.where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Pending")
           .snapshots();
     } catch (e) {
@@ -1095,14 +1127,18 @@ class Database {
 
   // Get all approved preapproval for given flat
   Stream<void> getAllApprovedPreApprovalForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('flatNo', isEqualTo: flatNo)
-          .where('wing', isEqualTo: wing)
+          .where('flat', isEqualTo: flat)
+          //.where('flatNo', isEqualTo: flatNo)
+          //.where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Approved")
           .snapshots();
     } catch (e) {
