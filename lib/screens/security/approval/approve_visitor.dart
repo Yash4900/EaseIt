@@ -255,7 +255,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                                           g.society,
                                           _nameController.text,
                                           _phoneController.text,
-                                          "",
+                                          imageUrl,
                                           dropDownValue,
                                           _wingController.text,
                                           _flatController.text)
