@@ -151,6 +151,8 @@ class Database {
         'postedBy': postedBy,
         'postedOn': DateTime.now()
       });
+      sendNotification(
+          '/topics/general', 'New complaint posted by $postedBy', title);
     } catch (e) {
       print(e.toString());
     }
@@ -249,6 +251,7 @@ class Database {
           .doc('notices')
           .collection('Notice')
           .add({'title': title, 'body': body, 'postedOn': DateTime.now()});
+      sendNotification('/topics/general', 'New notice', title);
     } catch (e) {
       print(e.toString());
     }
@@ -298,6 +301,7 @@ class Database {
           'venue': venue,
           'date': date,
         });
+        sendNotification('/topics/general', 'New event', name);
       } else {
         await _firestore
             .collection(societyName)
