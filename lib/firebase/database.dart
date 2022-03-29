@@ -151,7 +151,7 @@ class Database {
   }
 
   Future<void> addComplaint(String id, String societyName, String title,
-      String description, String imageUrl, String postedBy) async {
+      String description, List<String> imageUrl, String postedBy) async {
     try {
       await _firestore
           .collection(societyName)

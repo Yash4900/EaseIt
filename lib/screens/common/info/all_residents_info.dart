@@ -26,8 +26,8 @@ class _ResidentInfoPageState extends State<ResidentInfoPage> {
     Globals g = Globals();
     FlatDataOperations f =
         FlatDataOperations(hierarchy: g.hierarchy, structure: g.structure);
-    f.findingCombinations();
-    f.getInitialCombination();
+    //f.findingCombinations();
+    //f.getInitialCombination();
     // Map<String, String> flatNumber = {
     //   "Building": "C",
     //   "Wing": "A",

@@ -86,7 +86,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                             ds.id,
                                             ds['title'],
                                             ds['description'],
-                                            ds['imageUrl'],
+                                            List<String>.from(ds['imageUrl']),
                                             ds['postedOn'],
                                             userSnapshot['fname'] +
                                                 " " +
@@ -132,11 +132,14 @@ class _ComplaintViewState extends State<ComplaintView> {
                                               0.2,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                  image: ds['imageUrl'] == ""
+                                                  image: List<String>.from(ds[
+                                                                  'imageUrl']) ==
+                                                              null ||
+                                                          ds['imageUrl'].isEmpty
                                                       ? AssetImage(
                                                           'assets/dummy_image.jpg')
                                                       : NetworkImage(
-                                                          ds['imageUrl']),
+                                                          ds['imageUrl'][0]),
                                                   fit: BoxFit.cover)),
                                         ),
                                         Padding(
@@ -182,6 +185,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                                       ),
                                                     ).returnStringFormOfFlatMap(),
                                                 style: TextStyle(
+                                                  fontSize: 10,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),

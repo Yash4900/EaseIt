@@ -40,13 +40,13 @@ class FlatDataOperations {
     for (int i = hierarchy.length - 1; i >= 0; i--) {
       if (i != 0) {
         if (hierarchy[i] == "Flat") {
-          finalStringToReturn += flatNum[hierarchy[i]] + ", ";
+          finalStringToReturn += "Flat No. " + flatNum[hierarchy[i]] + ", ";
         } else if (hierarchy[i] == "Floor") {
           finalStringToReturn +=
               updatedString(flatNum[hierarchy[i]]) + " " + hierarchy[i] + ", ";
         } else {
           finalStringToReturn +=
-              flatNum[hierarchy[i]] + " " + hierarchy[i] + ", ";
+              updatedString(flatNum[hierarchy[i]]) + " " + hierarchy[i] + ", ";
         }
       } else {
         finalStringToReturn += flatNum[hierarchy[i]] + " " + hierarchy[i];
@@ -74,10 +74,11 @@ class FlatDataOperations {
     }
   }
 
-  void findingCombinations() {
+  List<Map<String, String>> findingCombinations() {
     RecursiveFindValues r = RecursiveFindValues();
     //print("hierarchy: $hierarchy \n structure: $structure");
     r.findAllFormations(hierarchy, structure, 0, {});
+    return r.allCombinations;
     //for (int i = 0; i < r.allCombinations.length; i++) {
     //  print(r.allCombinations[i]);
     //}
