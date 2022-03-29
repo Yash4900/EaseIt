@@ -77,21 +77,24 @@ class PickImage {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(Icons.photo_library, color: Colors.black87),
-                    title: Text(
-                      'Photo Library',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black87),
-                    ),
-                    onTap: () async {
-                      List<File> filesToSend = [];
-                      List<XFile> files =
-                          await _multipleImageFromGallery(quality);
+                  leading: Icon(Icons.photo_library, color: Colors.black87),
+                  title: Text(
+                    'Photo Library',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black87),
+                  ),
+                  onTap: () async {
+                    List<File> filesToSend = [];
+                    List<XFile> files =
+                        await _multipleImageFromGallery(quality);
+                    if (files != null && files.isNotEmpty) {
                       for (XFile file in files) {
                         filesToSend.add(File(file.path));
                       }
-                      Navigator.of(context).pop(filesToSend);
-                    }),
+                    } else {}
+                    Navigator.of(context).pop(filesToSend);
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.photo_camera, color: Colors.black87),
                   title: Text(
@@ -101,7 +104,10 @@ class PickImage {
                   ),
                   onTap: () async {
                     XFile file = await _imageFromCamera(quality);
-                    Navigator.of(context).pop([File(file.path)]);
+                    if (file != null)
+                      Navigator.of(context).pop([File(file.path)]);
+                    else
+                      Navigator.of(context).pop([]);
                   },
                 ),
               ],

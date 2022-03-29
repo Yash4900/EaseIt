@@ -1325,4 +1325,27 @@ class Database {
     }
     return false;
   }
+
+  Future<bool> uploadSupportComplaintQuey(
+    String title,
+    String description,
+    List<String> images,
+    String time,
+    String uid,
+    String society,
+  ) async {
+    try {
+      await _firestore.collection("Support and Feedbac").doc(time).set({
+        'title': title,
+        'description': description,
+        'images': images,
+        'userId': uid,
+        'society': society,
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
 }

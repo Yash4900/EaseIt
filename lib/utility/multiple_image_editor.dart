@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:ease_it/utility/pick_image.dart';
-import 'package:ease_it/utility/alert.dart';
 import 'dart:io';
 import 'dart:math';
 
@@ -120,10 +119,61 @@ class _MultipleImageEditorState extends State<MultipleImageEditor>
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () async {},
-          ),
+          widget.imageFiles.length == 5
+              ? IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () async {
+                    List<File> temp =
+                        await PickImage().showMultiPicker(context, 50);
+                    if (temp != null && temp.isNotEmpty) {
+                      if (temp.length > 5) {
+                        widget.imageFiles = [];
+                        for (int i = 0; i < 5; i++) {
+                          widget.imageFiles.add(temp[i]);
+                        }
+                        showToast(context, "general", "Info",
+                            "Only 5 images were selected");
+                      } else {
+                        for (int i = 0; i < temp.length; i++) {
+                          widget.imageFiles.add(temp[i]);
+                        }
+                      }
+                      setState(() {
+                        didUpdateWidget(
+                          MultipleImageEditor(imageFiles: widget.imageFiles),
+                        );
+                      });
+                    } else {
+                      setState(() {});
+                    }
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    List<File> temp =
+                        await PickImage().showMultiPicker(context, 50);
+                    if (temp != null && temp.isNotEmpty) {
+                      int prevLength = widget.imageFiles.length;
+                      for (int i = 0;
+                          i < temp.length && widget.imageFiles.length < 5;
+                          i++) {
+                        widget.imageFiles.add(temp[i]);
+                      }
+                      setState(() {
+                        didUpdateWidget(
+                          MultipleImageEditor(imageFiles: widget.imageFiles),
+                        );
+                      });
+                      if (temp.length + prevLength > 5) {
+                        showToast(context, "general", "Info",
+                            "Only 5 images were selected");
+                      }
+                    } else {
+                      setState(() {});
+                    }
+                  },
+                ),
           IconButton(
             onPressed: () {
               int currentIndex = _tabController.index;
@@ -151,7 +201,21 @@ class _MultipleImageEditorState extends State<MultipleImageEditor>
               color: Colors.white,
               size: 25,
             ),
-            onPressed: () async {},
+            onPressed: () async {
+              int currentIndex = _tabController.index;
+              File tempCroppedImage = await ImageCropper.cropImage(
+                sourcePath: widget.imageFiles[currentIndex].path,
+                androidUiSettings: AndroidUiSettings(
+                  toolbarTitle: 'Crop Image',
+                  toolbarColor: Color(0xff1a73e8),
+                  toolbarWidgetColor: Colors.white,
+                  lockAspectRatio: true,
+                ),
+              );
+              if (tempCroppedImage != null)
+                setState(
+                    () => widget.imageFiles[currentIndex] = tempCroppedImage);
+            },
           ),
         ],
       ),
