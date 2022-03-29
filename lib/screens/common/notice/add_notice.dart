@@ -3,6 +3,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/alert.dart';
 
 class AddNotice extends StatefulWidget {
   @override
@@ -25,7 +26,14 @@ class _AddNoticeState extends State<AddNotice> {
         leadingWidth: MediaQuery.of(context).size.width * 0.3,
         backgroundColor: Colors.white,
         leading: TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () async {
+            bool confirmation = await showAlertDialog(context, 'Alert',
+                'Are you sure you want to leave? Your changes will be discarded');
+            if (confirmation) {
+              FocusScope.of(context).requestFocus(FocusNode());
+              Navigator.pop(context);
+            }
+          },
           child: Row(
             children: [
               Icon(Icons.keyboard_backspace, color: Colors.black),
@@ -91,18 +99,31 @@ class _AddNoticeState extends State<AddNotice> {
                         SizedBox(height: 50),
                         Center(
                           child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                setState(() => loading = true);
-                                Database()
-                                    .addNotice(g.society, _titleController.text,
-                                        _bodyController.text)
-                                    .then((value) {
-                                  setState(() => loading = false);
-                                  showToast(context, "success", "Success!",
-                                      "Notice has been posted successfully!");
-                                  Navigator.pop(context);
-                                });
+                                bool confirmation = await showConfirmationDialog(
+                                    context,
+                                    "Alert!",
+                                    "Are you sure you want to publish the notice?");
+                                if (confirmation) {
+                                  setState(() => loading = true);
+                                  bool status = await Database().addNotice(
+                                    g.society,
+                                    _titleController.text,
+                                    _bodyController.text,
+                                  );
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  if (status) {
+                                    Navigator.pop(context);
+                                    showToast(context, "success", "Success",
+                                        "Notice published successfully");
+                                  } else {
+                                    showToast(context, "error", "Error",
+                                        "There was an error publishing the notice");
+                                  }
+                                }
                               }
                             },
                             child: Padding(

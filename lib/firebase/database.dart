@@ -164,7 +164,8 @@ class Database {
         'imageUrl': imageUrl,
         'status': 'Unresolved',
         'postedBy': postedBy,
-        'postedOn': DateTime.now()
+        'postedOn': DateTime.now(),
+        'likes': Map<String, dynamic>(),
       });
       sendNotification(
           '/topics/general', 'New complaint posted by $postedBy', title);
@@ -259,7 +260,7 @@ class Database {
     return null;
   }
 
-  Future<void> addNotice(String societyName, String title, String body) async {
+  Future<bool> addNotice(String societyName, String title, String body) async {
     try {
       await _firestore
           .collection(societyName)
@@ -267,9 +268,11 @@ class Database {
           .collection('Notice')
           .add({'title': title, 'body': body, 'postedOn': DateTime.now()});
       sendNotification('/topics/general', 'New notice', title);
+      return true;
     } catch (e) {
       print(e.toString());
     }
+    return false;
   }
 
   // Events queries
