@@ -7,7 +7,6 @@ import 'package:ease_it/screens/security/home/securityHome.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Security extends StatefulWidget {
   @override

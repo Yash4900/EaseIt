@@ -166,6 +166,8 @@ class Database {
         'postedBy': postedBy,
         'postedOn': DateTime.now()
       });
+      sendNotification(
+          '/topics/general', 'New complaint posted by $postedBy', title);
     } catch (e) {
       print(e.toString());
     }
@@ -264,6 +266,7 @@ class Database {
           .doc('notices')
           .collection('Notice')
           .add({'title': title, 'body': body, 'postedOn': DateTime.now()});
+      sendNotification('/topics/general', 'New notice', title);
     } catch (e) {
       print(e.toString());
     }
@@ -313,6 +316,7 @@ class Database {
           'venue': venue,
           'date': date,
         });
+        sendNotification('/topics/general', 'New event', name);
       } else {
         await _firestore
             .collection(societyName)
@@ -547,7 +551,8 @@ class Database {
       String licensePlateNo,
       String owner,
       String phoneNum,
-      String parkingSpace) async {
+      String parkingSpace,
+      int stayTime) async {
     try {
       return await _firestore
           .collection(society)
@@ -558,7 +563,8 @@ class Database {
         'owner': owner,
         'phoneNum': phoneNum,
         'parkingSpace': parkingSpace,
-        'timestamp': DateTime.now()
+        'timestamp': DateTime.now(),
+        'stayTime': stayTime
       });
     } catch (e) {
       print(e.toString());

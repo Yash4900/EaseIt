@@ -446,10 +446,8 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                             code)
                                         .then((value) {
                                       setState(() => loading = false);
-                                      showMessageDialog(
-                                          context,
-                                          'Daily visitor added successfully!',
-                                          '', [
+                                      showMessageDialog(context,
+                                          'Daily visitor added successfully!', [
                                         Center(
                                           child: Image.asset(
                                             'assets/success.png',

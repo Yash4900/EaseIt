@@ -16,6 +16,7 @@ class MyVehicle extends StatefulWidget {
 
 class _MyVehicleState extends State<MyVehicle> {
   Globals g = Globals();
+  bool loading = false;
 
   void showBottomSheeet(
       String imageUrl,
@@ -280,123 +281,236 @@ class _MyVehicleState extends State<MyVehicle> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                'My Vehicles',
-                style: GoogleFonts.sourceSansPro(
-                    fontSize: 25, fontWeight: FontWeight.w900),
+      body: loading
+          ? Loading()
+          : Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      'My Vehicles',
+                      style: GoogleFonts.sourceSansPro(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  //       Expanded(
+                  //         flex: 8,
+                  //         child: FutureBuilder(
+                  //           future:
+                  //               Database().getMyVehicle(g.society, g.wing, g.flatNo),
+                  //           builder: (context, snapshot) {
+                  //             if (snapshot.connectionState ==
+                  //                 ConnectionState.waiting) {
+                  //               return Loading();
+                  //             } else {
+                  //               return snapshot.data.docs.length > 0
+                  //                   ? ListView.builder(
+                  //                       itemCount: snapshot.data.docs.length,
+                  //                       itemBuilder: (context, index) {
+                  //                         DocumentSnapshot ds =
+                  //                             snapshot.data.docs[index];
+                  //                         return Container(
+                  //                           decoration: BoxDecoration(
+                  //                             color: Colors.white,
+                  //                             boxShadow: [
+                  //                               BoxShadow(
+                  //                                 color: Colors.grey[200],
+                  //                                 blurRadius: 3.0,
+                  //                                 spreadRadius: 1.0,
+                  //                               ),
+                  //                             ],
+                  //                           ),
+                  //                           margin: EdgeInsets.symmetric(
+                  //                               horizontal: 5, vertical: 10),
+                  //                           child: ListTile(
+                  //                             onTap: () async {
+                  //                               setState(() => loading = true);
+                  //                               var response = await API().getUsage(
+                  //                                   g.society
+                  //                                       .replaceAll(" ", "")
+                  //                                       .toLowerCase(),
+                  //                                   ds['licensePlateNo']);
+                  //                               setState(() => loading = false);
+
+                  //                               Map<String, dynamic> map =
+                  //                                   jsonDecode(response);
+                  //                               showBottomSheeet(
+                  //                                   ds['imageUrl'],
+                  //                                   ds['licensePlateNo'],
+                  //                                   ds['model'],
+                  //                                   ds['vehicleType'],
+                  //                                   ds['wing'] + ' - ' + ds['flatNo'],
+                  //                                   ds['parkingSpaceNo'],
+                  //                                   map['exit_time'],
+                  //                                   map['entry_time'],
+                  //                                   map['day'],
+                  //                                   map['usage'],
+                  //                                   map['in_use']);
+                  //                             },
+                  //                             leading: CircleAvatar(
+                  //                               backgroundImage:
+                  //                                   NetworkImage(ds['imageUrl']),
+                  //                               backgroundColor: Colors.grey[300],
+                  //                               radius: 25,
+                  //                             ),
+                  //                             title: Text(
+                  //                               ds['model'],
+                  //                               style: TextStyle(
+                  //                                 fontWeight: FontWeight.bold,
+                  //                                 fontSize: 18,
+                  //                               ),
+                  //                             ),
+                  //                             subtitle: Text(
+                  //                               ds['licensePlateNo'],
+                  //                               style: TextStyle(
+                  //                                 fontSize: 16,
+                  //                                 fontWeight: FontWeight.bold,
+                  //                                 color: Colors.grey,
+                  //                               ),
+                  //                             ),
+                  //                             trailing: ds['vehicleType'] ==
+                  //                                     'Four Wheeler'
+                  //                                 ? Icon(FontAwesomeIcons.car)
+                  //                                 : Icon(FontAwesomeIcons.motorcycle),
+                  //                           ),
+                  //                         );
+                  //                       })
+                  //                   : Center(
+                  //                       child: Column(
+                  //                         mainAxisAlignment: MainAxisAlignment.center,
+                  //                         children: [
+                  //                           Icon(
+                  //                             FontAwesomeIcons.car,
+                  //                             size: 50,
+                  //                             color: Colors.grey[300],
+                  //                           ),
+                  //                           SizedBox(height: 10),
+                  //                           Text(
+                  //                             'No vehicles found',
+                  //                             style: TextStyle(color: Colors.grey),
+                  //                           )
+                  //                         ],
+                  //                       ),
+                  //                     );
+                  //             }
+                  //           },
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  Expanded(
+                    flex: 8,
+                    child: FutureBuilder(
+                      future: Database().getMyVehicle(
+                        g.society,
+                        //g.wing,
+                        Map<String, String>.from(g.flat),
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Loading();
+                        } else {
+                          return snapshot.data.docs.length > 0
+                              ? ListView.builder(
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    DocumentSnapshot ds =
+                                        snapshot.data.docs[index];
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey[200],
+                                            blurRadius: 3.0,
+                                            spreadRadius: 1.0,
+                                          ),
+                                        ],
+                                      ),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 10),
+                                      child: ListTile(
+                                        onTap: () async {
+                                          var response = await API().getUsage(
+                                              g.society
+                                                  .replaceAll(" ", "")
+                                                  .toLowerCase(),
+                                              ds['licensePlateNo']);
+                                          Map<String, dynamic> map =
+                                              jsonDecode(response);
+                                          showBottomSheeet(
+                                              ds['imageUrl'],
+                                              ds['licensePlateNo'],
+                                              ds['model'],
+                                              ds['vehicleType'],
+                                              ds['flat'],
+                                              //ds['wing'] + ' - ' + ds['flatNo'],
+                                              ds['parkingSpaceNo'],
+                                              map['exit_time'],
+                                              map['entry_time'],
+                                              map['day'],
+                                              map['usage'],
+                                              map['in_use']);
+                                        },
+                                        leading: CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage(ds['imageUrl']),
+                                          backgroundColor: Colors.grey[300],
+                                          radius: 25,
+                                        ),
+                                        title: Text(
+                                          ds['model'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          ds['licensePlateNo'],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        trailing: ds['vehicleType'] ==
+                                                'Four Wheeler'
+                                            ? Icon(FontAwesomeIcons.car)
+                                            : Icon(FontAwesomeIcons.motorcycle),
+                                      ),
+                                    );
+                                  })
+                              : Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.car,
+                                        size: 50,
+                                        color: Colors.grey[300],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'No vehicles found',
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
+                                  ),
+                                );
+                        }
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
-            Expanded(
-              flex: 8,
-              child: FutureBuilder(
-                future: Database().getMyVehicle(
-                  g.society,
-                  //g.wing,
-                  Map<String, String>.from(g.flat),
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Loading();
-                  } else {
-                    return snapshot.data.docs.length > 0
-                        ? ListView.builder(
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot ds = snapshot.data.docs[index];
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey[200],
-                                      blurRadius: 3.0,
-                                      spreadRadius: 1.0,
-                                    ),
-                                  ],
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 10),
-                                child: ListTile(
-                                  onTap: () async {
-                                    var response = await API().getUsage(
-                                        g.society
-                                            .replaceAll(" ", "")
-                                            .toLowerCase(),
-                                        ds['licensePlateNo']);
-                                    Map<String, dynamic> map =
-                                        jsonDecode(response);
-                                    showBottomSheeet(
-                                        ds['imageUrl'],
-                                        ds['licensePlateNo'],
-                                        ds['model'],
-                                        ds['vehicleType'],
-                                        ds['flat'],
-                                        //ds['wing'] + ' - ' + ds['flatNo'],
-                                        ds['parkingSpaceNo'],
-                                        map['exit_time'],
-                                        map['entry_time'],
-                                        map['day'],
-                                        map['usage'],
-                                        map['in_use']);
-                                  },
-                                  leading: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(ds['imageUrl']),
-                                    backgroundColor: Colors.grey[300],
-                                    radius: 25,
-                                  ),
-                                  title: Text(
-                                    ds['model'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    ds['licensePlateNo'],
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  trailing: ds['vehicleType'] == 'Four Wheeler'
-                                      ? Icon(FontAwesomeIcons.car)
-                                      : Icon(FontAwesomeIcons.motorcycle),
-                                ),
-                              );
-                            })
-                        : Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.car,
-                                  size: 50,
-                                  color: Colors.grey[300],
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'No vehicles found',
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                          );
-                  }
-                },
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

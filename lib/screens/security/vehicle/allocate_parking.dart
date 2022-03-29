@@ -277,14 +277,16 @@ class _AllocateParkingState extends State<AllocateParking> {
                                     DocumentReference dr;
                                     if (map['parking_space'] != '') {
                                       dr = await Database().saveParkingDetails(
-                                          g.society,
-                                          widget.licensePlateNo,
-                                          _nameController.text,
-                                          _phoneController.text,
-                                          map['parking_space']);
+                                        g.society,
+                                        widget.licensePlateNo,
+                                        _nameController.text,
+                                        _phoneController.text,
+                                        map['parking_space'],
+                                        int.parse(_stayTimeController.text),
+                                      );
                                       setState(() => loading = false);
                                       await showMessageDialog(
-                                          context, 'Parking Assignment', '', [
+                                          context, 'Parking Assignment', [
                                         Center(
                                           child: Image.asset(
                                             'assets/success.png',
