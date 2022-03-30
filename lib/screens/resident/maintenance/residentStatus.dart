@@ -20,11 +20,13 @@ class _ResidentStatusState extends State<ResidentStatus> {
   
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Column(
       // child: SingleChildScrollView(        
       //         physics: ClampingScrollPhysics(),
       //         scrollDirection: Axis.vertical,
-      child: ListView(
+      children: [
+        Expanded(flex: 4, 
+        child: ListView(
         physics: ClampingScrollPhysics(),
         shrinkWrap: true, 
         children: [
@@ -130,6 +132,8 @@ class _ResidentStatusState extends State<ResidentStatus> {
               ],
             
             ),
+        )
+      ]
     );
   }
 }

@@ -19,7 +19,10 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Column(
+      children: [ 
+        Expanded(
+          flex: 4,
       // child: SingleChildScrollView(        
       //         physics: ClampingScrollPhysics(),
       //         scrollDirection: Axis.vertical,
@@ -115,6 +118,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
         }):Container(),
       ],
     ),
+    )
+    ]
     );
   }
 }
