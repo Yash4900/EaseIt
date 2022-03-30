@@ -88,8 +88,9 @@ class CircularButtonIcon2 extends StatelessWidget {
     return code;
   }
 
-  Future<void> share(String code) async{
-    await FlutterShare.share(title: "EaseIt PreapprovalCode",text: "PreApproval Code : "+code);
+  Future<void> share(String code) async {
+    await FlutterShare.share(
+        title: "EaseIt PreapprovalCode", text: "PreApproval Code : " + code);
   }
 
   CircularButtonIcon2(
