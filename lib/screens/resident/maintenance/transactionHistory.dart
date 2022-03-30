@@ -19,7 +19,10 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Column(
+      children: [ 
+        Expanded(
+          flex: 4,
       // child: SingleChildScrollView(        
       //         physics: ClampingScrollPhysics(),
       //         scrollDirection: Axis.vertical,
@@ -49,11 +52,12 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                 // scrollDirection: Axis.vertical,
                 // shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  if(doc["status"] == "Pending" && doc["flatNo"] == Globals().flatNo && doc["wing"] == Globals().wing){                  
+                  final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
+                  if(doc["status"] == "Pending" && flatNoMap["Flat"].toString() == Globals().flatNo && flatNoMap["Wing"].toString() == Globals().wing){                  
                     return TransactionBill(
                       name: doc["name"],
-                      wing: doc["wing"],
-                      flatNo: doc["flatNo"],
+                      wing: flatNoMap["Wing"].toString(),
+                      flatNo: flatNoMap["Flat"].toString(),
                       transactionAmount: doc["billAmount"],
                       transactionDate: "",
                       month: doc["month"],
@@ -93,13 +97,14 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                 // scrollDirection: Axis.vertical,
                 // shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  if(doc["status"] == "Paid"  && doc["flatNo"] == Globals().flatNo && doc["wing"] == Globals().wing){                  
+                  final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
+                  if(doc["status"] == "Paid" && flatNoMap["Flat"].toString() == Globals().flatNo && flatNoMap["Wing"].toString() == Globals().wing){                  
                     return TransactionBill(
                       name: doc["name"],
-                      wing: doc["wing"],
-                      flatNo: doc["flatNo"],
+                      wing: flatNoMap["Wing"].toString(),
+                      flatNo: flatNoMap["Flat"].toString(),
                       transactionAmount: doc["billAmount"],
-                      transactionDate: doc["datePaid"],
+                      transactionDate: "",
                       month: doc["month"],
                       status: doc["status"],
                       payable: false
@@ -115,6 +120,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
         }):Container(),
       ],
     ),
+    )
+    ]
     );
   }
 }

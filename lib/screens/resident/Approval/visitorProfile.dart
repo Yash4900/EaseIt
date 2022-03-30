@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VisitorProfile extends StatefulWidget {
-  dynamic visitorData;
+  final dynamic visitorData;
   VisitorProfile({this.visitorData});
   @override
   _VisitorProfileState createState() => _VisitorProfileState();
@@ -12,10 +12,10 @@ class VisitorProfile extends StatefulWidget {
 
 class _VisitorProfileState extends State<VisitorProfile> {
   List<dynamic> flatList;
-  
+
   @override
   Widget build(BuildContext context) {
-    flatList=widget.visitorData['worksAt'];
+    flatList = widget.visitorData['worksAt'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,8 +38,7 @@ class _VisitorProfileState extends State<VisitorProfile> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(
-                                widget.visitorData['imageUrl']),
+                            image: NetworkImage(widget.visitorData['imageUrl']),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -101,10 +100,9 @@ class _VisitorProfileState extends State<VisitorProfile> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        
                         children: flatList
-                            .map((e) => customOutlinedButton(
-                                e, Icons.call, () => {}))
+                            .map((e) =>
+                                customOutlinedButton(e, Icons.call, () => {}))
                             .toList(),
                       ),
                     )

@@ -22,9 +22,9 @@ class FlatDataOperations {
   String updatedString(value) {
     //print("updateString");
     if (int.tryParse(value) != null) {
-      int Num = int.parse(value);
-      Num = Num % 10;
-      String expectedEnding = respectiveEndingTag[Num];
+      int num = int.parse(value);
+      num = num % 10;
+      String expectedEnding = respectiveEndingTag[num];
       //print("Value $value , expectedEnding: $expectedEnding");
       value = value + expectedEnding;
       //print("Updated String");
@@ -37,19 +37,17 @@ class FlatDataOperations {
   String returnStringFormOfFlatMap() {
     String finalStringToReturn = "";
     print("FlatNum: $flatNum");
-    for (int i = hierarchy.length - 1; i >= 0; i--) {
+    for (int i = 0; i < hierarchy.length; i++) {
       if (i != 0) {
         if (hierarchy[i] == "Flat") {
-          finalStringToReturn += "Flat No. " + flatNum[hierarchy[i]] + ", ";
+          finalStringToReturn += flatNum[hierarchy[i]];
         } else if (hierarchy[i] == "Floor") {
-          finalStringToReturn +=
-              updatedString(flatNum[hierarchy[i]]) + " " + hierarchy[i] + ", ";
+          finalStringToReturn += updatedString(flatNum[hierarchy[i]]) + ", ";
         } else {
-          finalStringToReturn +=
-              updatedString(flatNum[hierarchy[i]]) + " " + hierarchy[i] + ", ";
+          finalStringToReturn += updatedString(flatNum[hierarchy[i]]) + ", ";
         }
       } else {
-        finalStringToReturn += flatNum[hierarchy[i]] + " " + hierarchy[i];
+        finalStringToReturn += flatNum[hierarchy[i]] + ", ";
       }
     }
     return finalStringToReturn;

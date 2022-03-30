@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/screens/security/approval/approval.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
@@ -78,7 +77,7 @@ class _PreApprovalState extends State<PreApproval> {
 class CircularButtonIcon2 extends StatelessWidget {
   final String firstName, lastName, type, imageLink;
 
-  String guestImageLink =
+  final String guestImageLink =
       "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351";
   int generateCode() {
     var random = Random();
@@ -119,7 +118,7 @@ class CircularButtonIcon2 extends StatelessWidget {
               TextEditingController nameController = TextEditingController();
               TextEditingController phoneController = TextEditingController();
               TextEditingController vehicleNo = TextEditingController();
-              TextEditingController wing = TextEditingController();
+              // TextEditingController wing = TextEditingController();
 
               return showDialog(
                   context: context,

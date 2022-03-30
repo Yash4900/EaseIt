@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+
 import 'package:ease_it/screens/resident/residentApproval.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
+
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {

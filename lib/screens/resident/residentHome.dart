@@ -367,7 +367,7 @@ class _ResidentHomeState extends State<ResidentHome> {
 class ApprovalAlert extends StatelessWidget {
   final String message;
   final Function operation;
-  dynamic data;
+  final dynamic data;
   ApprovalAlert({this.message, this.operation, this.data});
 
   @override

@@ -512,7 +512,7 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
 }
 
 class DailyVisitorFlatAcceptance extends StatefulWidget {
-  MapCallback callback;
+  final MapCallback callback;
 
   DailyVisitorFlatAcceptance({Key key, @required this.callback})
       : super(key: key);

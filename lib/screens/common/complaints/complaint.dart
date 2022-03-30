@@ -185,7 +185,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                                       ),
                                                     ).returnStringFormOfFlatMap(),
                                                 style: TextStyle(
-                                                  fontSize: 10,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -398,43 +398,48 @@ class _ComplaintViewState extends State<ComplaintView> {
             },
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddComplaint()),
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(23),
-                    side: BorderSide(
-                      color: Color(0xff037DD6),
-                      width: 2,
+        g.role != 'Security Guard'
+            ? Expanded(
+                flex: 1,
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddComplaint()),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(23),
+                          side: BorderSide(
+                            color: Color(0xff037DD6),
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add, color: Color(0xff037DD6)),
+                        SizedBox(width: 10),
+                        Text(
+                          'Add Complaint/Suggestion',
+                          style: TextStyle(
+                            color: Color(0xff037DD6),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, color: Color(0xff037DD6)),
-                  SizedBox(width: 10),
-                  Text(
-                    'Add Complaint/Suggestion',
-                    style: TextStyle(
-                        color: Color(0xff037DD6), fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        )
+              )
+            : SizedBox()
       ],
     );
   }

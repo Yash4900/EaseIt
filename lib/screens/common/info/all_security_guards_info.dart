@@ -18,11 +18,13 @@ class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
   Future<Widget> _securityGuardInfoWidget;
   Globals g = Globals();
 
+  @override
   void initState() {
+    super.initState();
     _securityGuardInfoWidget = getListOfSecurityGuards();
   }
 
-  Future<void> refreshPage() {
+  void refreshPage() {
     setState(() {
       _securityGuardInfoWidget = getListOfSecurityGuards();
     });

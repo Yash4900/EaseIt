@@ -6,12 +6,9 @@ import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/multiple_image_editor.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:io';
-
-import 'package:image_cropper/image_cropper.dart';
 
 class AddComplaint extends StatefulWidget {
   @override
@@ -19,7 +16,7 @@ class AddComplaint extends StatefulWidget {
 }
 
 class _AddComplaintState extends State<AddComplaint> {
-  File _profilePicture;
+  // File _profilePicture;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -76,7 +73,7 @@ class _AddComplaintState extends State<AddComplaint> {
                               'Image No. ${imgList.indexOf(item) + 1}',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20.0,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

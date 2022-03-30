@@ -21,8 +21,8 @@ class _AllocateParkingState extends State<AllocateParking> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _purposeController = TextEditingController();
-  TextEditingController _flatController = TextEditingController();
-  TextEditingController _wingController = TextEditingController();
+  // TextEditingController _flatController = TextEditingController();
+  // TextEditingController _wingController = TextEditingController();
   TextEditingController _stayTimeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Globals g = Globals();

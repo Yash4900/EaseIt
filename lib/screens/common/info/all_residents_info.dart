@@ -537,8 +537,8 @@ class UserCard extends StatelessWidget {
 }
 
 class CustomTabViewPage extends StatefulWidget {
-  List<String> optionUntilNow;
-  int index;
+  final List<String> optionUntilNow;
+  final int index;
   CustomTabViewPage(
       {Key key, @required this.optionUntilNow, @required this.index})
       : super(key: key);
@@ -629,9 +629,9 @@ class _CustomTabViewPageState extends State<CustomTabViewPage> {
   String updatedString(value) {
     //print("updateString");
     if (int.tryParse(value) != null) {
-      int Num = int.parse(value);
-      Num = Num % 10;
-      String expectedEnding = respectiveEndingTag[Num];
+      int num = int.parse(value);
+      num = num % 10;
+      String expectedEnding = respectiveEndingTag[num];
       //print("Value $value , expectedEnding: $expectedEnding");
       value = value + expectedEnding;
       //print("Updated String");

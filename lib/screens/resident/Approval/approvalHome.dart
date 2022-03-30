@@ -13,8 +13,6 @@ import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class Approval extends StatefulWidget {
   @override
