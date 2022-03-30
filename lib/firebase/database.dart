@@ -1234,6 +1234,22 @@ class Database {
     return null;
   }
 
+  Stream<QuerySnapshot> streamOfUserBasedOnFlatNumber(
+      String society, Map<String, String> flatNumber) {
+    try {
+      //print(flatNumber);
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future<QuerySnapshot> getSecurityGuardsOfSociety(String society) async {
     try {
       return await _firestore

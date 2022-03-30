@@ -126,8 +126,8 @@ class _MultipleImageEditorState extends State<MultipleImageEditor>
                     List<File> temp =
                         await PickImage().showMultiPicker(context, 50);
                     if (temp != null && temp.isNotEmpty) {
+                      widget.imageFiles = [];
                       if (temp.length > 5) {
-                        widget.imageFiles = [];
                         for (int i = 0; i < 5; i++) {
                           widget.imageFiles.add(temp[i]);
                         }

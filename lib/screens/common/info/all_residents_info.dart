@@ -399,7 +399,7 @@ class UserCard extends StatelessWidget {
         horizontal: 10,
       ),
       margin: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width * 92.5 / 100,
+      //width: MediaQuery.of(context).size.width * 92.5 / 100,
       //height: MediaQuery.of(context).size.height * 15 / 100,
       decoration: BoxDecoration(
         color: Colors.white,

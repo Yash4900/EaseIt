@@ -211,7 +211,8 @@ class _AddComplaintState extends State<AddComplaint> {
                                 imageFiles = await PickImage()
                                     .showMultiPicker(context, 50);
                                 setState(() {});
-                                if (imageFiles.isNotEmpty) {
+                                if (imageFiles != null &&
+                                    imageFiles.isNotEmpty) {
                                   imageFiles = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -242,6 +243,14 @@ class _AddComplaintState extends State<AddComplaint> {
                           ),
                         )
                       : returnCarouselWidget(imageFiles),
+                  Text(
+                    "You can select upto 5 images",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 12.5,
+                    ),
+                  ),
                   // GestureDetector(
                   //   onTap: () async {
                   //     _profilePicture =

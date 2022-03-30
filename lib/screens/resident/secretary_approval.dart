@@ -5,7 +5,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:http/retry.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SecretaryApproval extends StatefulWidget {
@@ -59,9 +59,31 @@ class _SecretaryApprovalState extends State<SecretaryApproval> {
                   return ListView.builder(
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
-                      return PendingRequestCard(
-                        singleUserData: snapshot.data.docs[index],
-                      );
+                      return StreamBuilder(
+                          stream: Database().streamOfUserBasedOnFlatNumber(
+                              g.society,
+                              Map<String, String>.from(
+                                  snapshot.data.docs[index]["flat"])),
+                          builder: (context, usersSnapshot) {
+                            if (usersSnapshot.connectionState ==
+                                ConnectionState.active) {
+                              return PendingRequestCard(
+                                singleUserData: snapshot.data.docs[index],
+                              );
+                            } else if (usersSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Loading();
+                            } else {
+                              return Text(
+                                "Error loading the data",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }
+                          });
                     },
                   );
                 } else {
@@ -142,7 +164,7 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
       });
     } else {
       setState(() {
-        dropDownItemsRoles = ["Owner", "Tenant"];
+        dropDownItemsRoles = ["Owner"];
         selectedRole = dropDownItemsRoles[0];
       });
     }
@@ -202,7 +224,11 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                           ),
                         )
                       : Container(
+                          width: 70,
+                          height: 70,
                           decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xffd0d0d0),
                             image: DecorationImage(
                               image: NetworkImage(
                                 widget.singleUserData["imageUrl"],
@@ -256,7 +282,8 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                         child: Text(
                           FlatDataOperations(
                             hierarchy: g.hierarchy,
-                            flatNum: Map<String, String>.from(g.flat),
+                            flatNum: Map<String, String>.from(
+                                widget.singleUserData["flat"]),
                           ).returnStringFormOfFlatMap(),
                           style: TextStyle(
                             color: Color(0xff707070),
