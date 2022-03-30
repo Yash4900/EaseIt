@@ -1066,7 +1066,7 @@ class Database {
       String visName,
       String visPhoneNo,
       String vehicleNo,
-      Map<String, String> flat,
+      Map<dynamic, dynamic> flat,
       //String flatNo,
       //String wing,
       String code,

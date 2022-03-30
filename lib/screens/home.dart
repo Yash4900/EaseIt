@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/screens/resident/ResidentApproval.dart';
+import 'package:ease_it/screens/resident/residentApproval.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';

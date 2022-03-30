@@ -8,6 +8,7 @@ import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PreApproval extends StatefulWidget {
@@ -86,6 +87,10 @@ class CircularButtonIcon2 extends StatelessWidget {
       code = (code * 10 + random.nextInt(9) + 1);
     }
     return code;
+  }
+
+  Future<void> share(String code) async{
+    await FlutterShare.share(title: "EaseIt PreapprovalCode",text: "PreApproval Code : "+code);
   }
 
   CircularButtonIcon2(
@@ -311,6 +316,12 @@ class CircularButtonIcon2 extends StatelessWidget {
                                                 int count = 2;
                                                 Navigator.of(context).popUntil(
                                                     (_) => count-- <= 0);
+                                              },
+                                            ),
+                                            popup.button(
+                                              label: 'Share Code',
+                                              onPressed: () {
+                                                share(code.toString());
                                               },
                                             ),
                                           ]);
