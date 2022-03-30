@@ -18,7 +18,10 @@ class _RecentPaymentsState extends State<RecentPayments> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Column(
+      children: [ 
+        Expanded(
+          flex: 4,
       child: ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true, children: [
@@ -53,6 +56,8 @@ class _RecentPaymentsState extends State<RecentPayments> {
           }),
         ],
       ),
+    )
+      ]
     );
   }
 }
