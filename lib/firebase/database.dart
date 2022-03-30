@@ -5,6 +5,7 @@ import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/notification.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Database {
@@ -19,6 +20,17 @@ class Database {
       });
     });
     return societies;
+  }
+
+  Future getSocietyInfo(String societyName) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection('Society').doc(societyName).get();
+      return snap.data();
+    } catch (e) {
+      e.toString();
+      return null;
+    }
   }
 
   Future<bool> checkRegisteredUser(String society, String email) async {
@@ -42,7 +54,7 @@ class Database {
 
   Future createUser(String society, String uid, String fname, String lname,
       String email, String phoneNum, String role,
-      [String wing, String flatNo]) async {
+      [Map<dynamic, dynamic> flat, String wing, String flatNo]) async {
     // Generate unique token for device to send notification
     String token = await FirebaseMessaging.instance.getToken();
 
@@ -61,9 +73,11 @@ class Database {
           'email': email,
           'phoneNum': phoneNum,
           'role': role,
+          'flat': flat,
           'wing': wing,
           'flatNo': flatNo,
-          'token': token
+          'status': 'pending',
+          'token': token,
         });
       } else {
         await _firestore
@@ -78,7 +92,8 @@ class Database {
           'email': email,
           'phoneNum': phoneNum,
           'role': role,
-          'token': token
+          'status': 'accepted',
+          'token': token,
         });
       }
     } catch (e) {
@@ -136,7 +151,7 @@ class Database {
   }
 
   Future<void> addComplaint(String id, String societyName, String title,
-      String description, String imageUrl, String postedBy) async {
+      String description, List<String> imageUrl, String postedBy) async {
     try {
       await _firestore
           .collection(societyName)
@@ -149,7 +164,8 @@ class Database {
         'imageUrl': imageUrl,
         'status': 'Unresolved',
         'postedBy': postedBy,
-        'postedOn': DateTime.now()
+        'postedOn': DateTime.now(),
+        'likes': Map<String, dynamic>(),
       });
       sendNotification(
           '/topics/general', 'New complaint posted by $postedBy', title);
@@ -244,7 +260,7 @@ class Database {
     return null;
   }
 
-  Future<void> addNotice(String societyName, String title, String body) async {
+  Future<bool> addNotice(String societyName, String title, String body) async {
     try {
       await _firestore
           .collection(societyName)
@@ -252,9 +268,11 @@ class Database {
           .collection('Notice')
           .add({'title': title, 'body': body, 'postedOn': DateTime.now()});
       sendNotification('/topics/general', 'New notice', title);
+      return true;
     } catch (e) {
       print(e.toString());
     }
+    return false;
   }
 
   // Events queries
@@ -378,14 +396,16 @@ class Database {
 
   // Vehicle management queries
   Future<void> addVehicle(
-      String societyName,
-      String imageUrl,
-      String licensePlateNo,
-      String model,
-      String parkingSpaceNo,
-      String vehicleType,
-      String wing,
-      String flatNo) async {
+    String societyName,
+    String imageUrl,
+    String licensePlateNo,
+    String model,
+    String parkingSpaceNo,
+    String vehicleType,
+    Map<String, String> flat,
+    //String wing,
+    //String flatNo,
+  ) async {
     try {
       await _firestore
           .collection(societyName)
@@ -397,8 +417,9 @@ class Database {
         'model': model,
         'parkingSpaceNo': parkingSpaceNo,
         'vehicleType': vehicleType,
-        'wing': wing,
-        'flatNo': flatNo
+        'flat': flat,
+        //'wing': wing,
+        //'flatNo': flatNo
       });
     } catch (e) {
       print(e.toString());
@@ -406,14 +427,18 @@ class Database {
   }
 
   Future<QuerySnapshot> getMyVehicle(
-      String societyName, String wing, String flatNo) async {
+    String societyName,
+    //String wing,
+    Map<String, String> flat,
+  ) async {
     try {
       return await _firestore
           .collection(societyName)
           .doc('vehicles')
           .collection('Vehicle')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get();
     } catch (e) {
       print(e.toString());
@@ -437,8 +462,12 @@ class Database {
   }
 
   // Visitor vehicle log
-  Future<void> logVisitorVehicleEntry(String society, String licensePlateNo,
-      String flatNo, String wing, String purpose,
+  Future<void> logVisitorVehicleEntry(
+      String society,
+      String licensePlateNo,
+      //String flatNo, String wing,
+      Map<String, String> flat,
+      String purpose,
       [String id]) async {
     try {
       if (id != null) {
@@ -449,8 +478,9 @@ class Database {
             .doc(id)
             .set({
           'licensePlateNo': licensePlateNo,
-          'flatNo': flatNo,
-          'wing': wing,
+          //'flatNo': flatNo,
+          //'wing': wing,
+          'flat': flat,
           'purpose': purpose,
           'entryTime': DateTime.now(),
           'exitTime': null,
@@ -462,8 +492,9 @@ class Database {
             .collection('Vehicle Log')
             .add({
           'licensePlateNo': licensePlateNo,
-          'flatNo': flatNo,
-          'wing': wing,
+          'flat': flat,
+          //'flatNo': flatNo,
+          //'wing': wing,
           'purpose': purpose,
           'entryTime': DateTime.now(),
           'exitTime': null,
@@ -634,8 +665,10 @@ class Database {
     return null;
   }
 
-  Future<void> sendChildApprovalRequest(String society, String name, String age,
-      String wing, String flatNo) async {
+  Future<void> sendChildApprovalRequest(
+      String society, String name, String age, Map<String, String> flat
+      //String wing, String flatNo,
+      ) async {
     try {
       await _firestore
           .collection(society)
@@ -644,8 +677,9 @@ class Database {
           .add({
         'name': name,
         'age': age,
-        'wing': wing,
-        'flatNo': flatNo,
+        'flat': flat,
+        //'wing': wing,
+        //'flatNo': flatNo,
         'date': DateTime.now(),
         'status': 'Pending'
       });
@@ -655,8 +689,9 @@ class Database {
           .collection(society)
           .doc('users')
           .collection('User')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get()
           .then((qs) {
         qs.docs.forEach((doc) {
@@ -671,14 +706,18 @@ class Database {
 
   // Fetching all child Approval
   Stream<QuerySnapshot> getAllChildApproval(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('childApprovals')
           .collection('ChildApproval')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -688,15 +727,19 @@ class Database {
 
   // Fetching pending child approval
   Stream<QuerySnapshot> getPendingChildApproval(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('childApprovals')
           .collection('ChildApproval')
           .where('status', isEqualTo: "Pending")
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -731,14 +774,16 @@ class Database {
 
   // Fetch All Daily Helper in give flat
   Stream<QuerySnapshot> getAllDailyHelperForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('dailyHelpers')
           .collection('Daily Helper')
-          .where('worksAt',
-              arrayContains: wing.toUpperCase().toString() + "-" + flatNo)
+          .where('worksAt', arrayContains: flat)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -771,8 +816,14 @@ class Database {
   }
 
   // Add a daily helper - Security
-  Future<void> addDailyHelper(String society, String name, String phoneNum,
-      List<String> worksAt, String imageUrl, String purpose, int code) async {
+  Future<void> addDailyHelper(
+      String society,
+      String name,
+      String phoneNum,
+      List<Map<String, String>> worksAt,
+      String imageUrl,
+      String purpose,
+      int code) async {
     try {
       await _firestore
           .collection(society)
@@ -825,8 +876,15 @@ class Database {
   }
 
   // Visitor approval - Security
-  Future<void> sendApproval(String society, String name, String phoneNum,
-      String imageUrl, String purpose, String wing, String flatNo) async {
+  Future<void> sendApproval(
+    String society,
+    String name,
+    String phoneNum,
+    String imageUrl,
+    String purpose,
+    Map<String, String> flat,
+    //String wing, String flatNo,
+  ) async {
     try {
       await _firestore
           .collection(society)
@@ -835,10 +893,11 @@ class Database {
           .add({
         'name': name,
         'phoneNum': phoneNum,
-        'flatNo': flatNo,
+        'flat': flat,
+        //'flatNo': flatNo,
         'imageUrl': imageUrl,
         'purpose': purpose,
-        'wing': wing,
+        //'wing': wing,
         'status': 'Pending',
         'entryTime': DateTime.now(),
         'exitTime': null
@@ -849,8 +908,9 @@ class Database {
           .collection(society)
           .doc('users')
           .collection('User')
-          .where('wing', isEqualTo: wing)
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing)
+          //.where('flatNo', isEqualTo: flatNo)
           .get()
           .then((qs) {
         qs.docs.forEach((doc) {
@@ -910,14 +970,18 @@ class Database {
 
   // Get all pending visitor for specific flat
   Stream<QuerySnapshot> getAllPendingVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .where('status', isEqualTo: "Pending")
           .snapshots();
     } catch (e) {
@@ -928,14 +992,18 @@ class Database {
 
   // Get All visitor log for specific flat
   Stream<QuerySnapshot> getAllVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -945,14 +1013,18 @@ class Database {
 
   // Get today's visitor for specific flat
   Stream<QuerySnapshot> getTodaysVisitorForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('visitorApproval')
           .collection('Visitor Approval')
-          .where('wing', isEqualTo: wing.toUpperCase())
-          .where('flatNo', isEqualTo: flatNo)
+          .where('flat', isEqualTo: flat)
+          //.where('wing', isEqualTo: wing.toUpperCase())
+          //.where('flatNo', isEqualTo: flatNo)
           .where('entryTime',
               isGreaterThanOrEqualTo:
                   DateTime.now().subtract(Duration(days: 1)))
@@ -994,8 +1066,9 @@ class Database {
       String visName,
       String visPhoneNo,
       String vehicleNo,
-      String flatNo,
-      String wing,
+      Map<String, String> flat,
+      //String flatNo,
+      //String wing,
       String code,
       String purpose,
       String imageUrl) async {
@@ -1008,8 +1081,9 @@ class Database {
         'name': visName,
         'phoneNum': visPhoneNo,
         'vehicleNo': vehicleNo,
-        'flatNo': flatNo,
-        'wing': wing,
+        'flat': flat,
+        //'flatNo': flatNo,
+        //'wing': wing,
         'generatedToken': code,
         'purpose': purpose,
         'postedOn': DateTime.now(),
@@ -1040,14 +1114,18 @@ class Database {
 
   // Get All pending preApproval for give flat and wing
   Stream<void> getAllPendingPreApprovalForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('flatNo', isEqualTo: flatNo)
-          .where('wing', isEqualTo: wing)
+          .where('flat', isEqualTo: flat)
+          //.where('flatNo', isEqualTo: flatNo)
+          //.where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Pending")
           .snapshots();
     } catch (e) {
@@ -1058,14 +1136,18 @@ class Database {
 
   // Get all approved preapproval for given flat
   Stream<void> getAllApprovedPreApprovalForGivenFlat(
-      String society, String flatNo, String wing) {
+    String society,
+    Map<String, String> flat,
+    //String wing,
+  ) {
     try {
       return _firestore
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('flatNo', isEqualTo: flatNo)
-          .where('wing', isEqualTo: wing)
+          .where('flat', isEqualTo: flat)
+          //.where('flatNo', isEqualTo: flatNo)
+          //.where('wing', isEqualTo: wing)
           .where('status', isEqualTo: "Approved")
           .snapshots();
     } catch (e) {
@@ -1134,5 +1216,161 @@ class Database {
       print(e.toString());
     }
     return null;
+  }
+
+  Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
+      String society, Map<String, String> flatNumber) async {
+    try {
+      //print(flatNumber);
+      return await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot> streamOfUserBasedOnFlatNumber(
+      String society, Map<String, String> flatNumber) {
+    try {
+      //print(flatNumber);
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<QuerySnapshot> getSecurityGuardsOfSociety(String society) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('role', isEqualTo: "Security Guard")
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<bool> reApplication(
+    String society,
+    String uid,
+    Map<String, String> newSocietyValue,
+  ) async {
+    Globals g = Globals();
+    try {
+      if (DeepCollectionEquality().equals(g.flat, newSocietyValue)) {
+        await _firestore
+            .collection(g.society)
+            .doc('users')
+            .collection('User')
+            .doc(g.uid)
+            .update({"status": "pending"});
+        return true;
+      } else {
+        await _firestore
+            .collection(g.society)
+            .doc('users')
+            .collection('User')
+            .doc(g.uid)
+            .update({"status": "pending", "flat": newSocietyValue});
+        return true;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Stream<QuerySnapshot> getNumberOfPendingUsersForSociety(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('status', isEqualTo: 'pending')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<bool> isOwnerPresent(
+      String society, Map<String, String> flatNumber) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flatNumber)
+          .where('status', isEqualTo: "accepted")
+          .get();
+      if (snapshot.docs.length == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> updateStatus(String society, String email, String status,
+      String homeResidentType) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('email', isEqualTo: email)
+          .get()
+          .then((val) {
+        val.docs.forEach((doc) {
+          doc.reference
+              .update({"status": status, "homeRole": homeResidentType});
+        });
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> uploadSupportComplaintQuey(
+    String title,
+    String description,
+    List<String> images,
+    String time,
+    String uid,
+    String society,
+  ) async {
+    try {
+      await _firestore.collection("Support and Feedbac").doc(time).set({
+        'title': title,
+        'description': description,
+        'images': images,
+        'userId': uid,
+        'society': society,
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
   }
 }

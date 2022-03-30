@@ -3,6 +3,7 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 
 class VehicleLog extends StatefulWidget {
   @override

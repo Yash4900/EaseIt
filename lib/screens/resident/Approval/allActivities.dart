@@ -11,30 +11,29 @@ class ActivityLog extends StatefulWidget {
 }
 
 class _ActivityLogState extends State<ActivityLog> {
-
-
-
-
-  void fetch() async{
+  void fetch() async {
     print(g.society);
-    dynamic visitorLog=Database().getAllVisitorForGivenFlat(g.society, g.flatNo, g.wing);
+    dynamic visitorLog = Database().getAllVisitorForGivenFlat(
+      g.society,
+      Map<String, String>.from(g.flat),
+      //g.wing,
+    );
     // visitorLog=visitorLog.value();
     // for(int i=0;i<visitorLog.length();i++)
     // {
-      print(visitorLog);
-      
+    print(visitorLog);
+
     // }
   }
 
   @override
-  void initState() 
-  {
+  void initState() {
     // fetch();
   }
 
   // Two stream builder
   // 1-> Fetch data from visitor
-  // 2-> Fetch data from preAPproval 
+  // 2-> Fetch data from preAPproval
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,62 +46,59 @@ class _ActivityLogState extends State<ActivityLog> {
           shadowColor: Colors.white24,
           iconTheme: IconThemeData(color: Colors.black)),
       body: StreamBuilder(
-        stream: Database().getAllVisitorForGivenFlat(g.society, g.flatNo, g.wing),
-        builder: (context, snapshot) {
-          if(snapshot.hasData)
-          {
-            
-          return StreamBuilder(
-            stream: Database().getAllApprovedPreApprovalForGivenFlat(g.society, g.flatNo, g.wing),
-            builder: (context, snapshot2) {
-              if(snapshot2.hasData)
-              {
-              List<dynamic> visitorLog = snapshot2.data.docs;
-              List<dynamic> visitorLog2=snapshot.data.docs;
-              for(int i=0;i<visitorLog2.length;i++)
-              {
-                visitorLog.add(visitorLog2[i]);
-              }
-              visitorLog.sort(
-                (a,b){
-                  if(a['entryTime'].millisecondsSinceEpoch<b['entryTime'].millisecondsSinceEpoch)
-                  {
-                    return 1;
-                  }
-                  else if(a['entryTime'].millisecondsSinceEpoch>b['entryTime'].millisecondsSinceEpoch)
-                  {
-                    return -1;
-                  }
-                  else{
-                    return 0;
-                  }
-                  // return .compare(b['entryTime'].millisecondsSinceEpoch);
-                }
-              );
-            
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10,8),
-                child: ListView(
-                  children: visitorLog
-                      .map(
-                        (e) => ResidentialLogCard(e: e,),
-                      )
-                      .toList(),
-                ),
-              );
-              }
-              else{
-                return Loading();
-              }
+          stream: Database().getAllVisitorForGivenFlat(
+            g.society,
+            Map<String, String>.from(g.flat),
+            //g.wing,
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return StreamBuilder(
+                  stream: Database().getAllApprovedPreApprovalForGivenFlat(
+                    g.society,
+                    Map<String, String>.from(g.flat),
+                    //g.wing,
+                  ),
+                  builder: (context, snapshot2) {
+                    if (snapshot2.hasData) {
+                      List<dynamic> visitorLog = snapshot2.data.docs;
+                      List<dynamic> visitorLog2 = snapshot.data.docs;
+                      for (int i = 0; i < visitorLog2.length; i++) {
+                        visitorLog.add(visitorLog2[i]);
+                      }
+                      visitorLog.sort((a, b) {
+                        if (a['entryTime'].millisecondsSinceEpoch <
+                            b['entryTime'].millisecondsSinceEpoch) {
+                          return 1;
+                        } else if (a['entryTime'].millisecondsSinceEpoch >
+                            b['entryTime'].millisecondsSinceEpoch) {
+                          return -1;
+                        } else {
+                          return 0;
+                        }
+                        // return .compare(b['entryTime'].millisecondsSinceEpoch);
+                      });
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        child: ListView(
+                          children: visitorLog
+                              .map(
+                                (e) => ResidentialLogCard(
+                                  e: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      );
+                    } else {
+                      return Loading();
+                    }
+                  });
+            } else {
+              return Loading();
             }
-          );
-          }
-          else
-          {
-            return Loading();
-          }
-        }
-      ),
+          }),
     );
   }
 }
@@ -114,9 +110,9 @@ class ResidentialLogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-     shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30.0),
-  ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
       color: Colors.blue[50],
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -129,11 +125,12 @@ class ResidentialLogCard extends StatelessWidget {
                 shape: BoxShape.circle,
                 // borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: NetworkImage(e["imageUrl"]),
-                    fit: BoxFit.fill),
+                    image: NetworkImage(e["imageUrl"]), fit: BoxFit.fill),
               ),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -161,10 +158,8 @@ class ResidentialLogCard extends StatelessWidget {
                   // ),
                   Row(
                     children: [
-                      Text("Purpose ",
-                          style: Helper().mediumBoldStyle),
-                      Text(e["purpose"],
-                          style: Helper().mediumStyle),
+                      Text("Purpose ", style: Helper().mediumBoldStyle),
+                      Text(e["purpose"], style: Helper().mediumStyle),
                     ],
                   ),
                   SizedBox(
@@ -173,8 +168,7 @@ class ResidentialLogCard extends StatelessWidget {
                   Row(
                     children: [
                       Text("Status ", style: Helper().mediumBoldStyle),
-                      Text(e["status"],
-                          style: Helper().successMediumBoldStyle),
+                      Text(e["status"], style: Helper().successMediumBoldStyle),
                     ],
                   ),
                   SizedBox(
@@ -193,7 +187,10 @@ class ResidentialLogCard extends StatelessWidget {
                   Row(
                     children: [
                       Text("Exit: ", style: Helper().mediumBoldStyle),
-                      Text(e['exitTime']!=null?Helper().convertToDateTime(e['exitTime']):"Empty",
+                      Text(
+                          e['exitTime'] != null
+                              ? Helper().convertToDateTime(e['exitTime'])
+                              : "Empty",
                           style: Helper().mediumBoldStyle),
                     ],
                   ),

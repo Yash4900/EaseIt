@@ -11,6 +11,10 @@ class Globals {
   String _wing;
   String _role;
   String _imageUrl;
+  Map<dynamic, dynamic> _flat;
+  List<String> _hierarchy;
+  dynamic _structure;
+  String _status;
 
   static final Globals _instance = Globals._internal();
 
@@ -29,6 +33,10 @@ class Globals {
   String get wing => _wing;
   String get role => _role;
   String get imageUrl => _imageUrl;
+  Map<dynamic, dynamic> get flat => _flat;
+  List<String> get hierarchy => _hierarchy;
+  dynamic get structure => _structure;
+  String get status => _status;
 
   //   Setters
   set setSociety(String society) => _society = society;
@@ -41,4 +49,8 @@ class Globals {
   set setWing(String wing) => _wing = wing;
   set setRole(String role) => _role = role;
   set setImageUrl(String imageUrl) => _imageUrl = imageUrl;
+  set setFlat(Map<dynamic, dynamic> flat) => _flat = flat;
+  set setHierarchy(List<String> hierarchy) => _hierarchy = hierarchy;
+  set setStructure(dynamic structure) => _structure = structure;
+  set setStatus(String status) => _status = status;
 }

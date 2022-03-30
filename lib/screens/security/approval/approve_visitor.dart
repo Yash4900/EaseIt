@@ -3,12 +3,14 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'dart:io';
 
 class ApproveVisitor extends StatefulWidget {
@@ -46,6 +48,66 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
   TextEditingController _flatController = TextEditingController();
   TextEditingController _wingController = TextEditingController();
   bool loading = false;
+  String errorText = "";
+  FlatData flatVar = FlatData();
+
+  @override
+  void initState() {
+    super.initState();
+    getSocietyStructure(g.society);
+  }
+
+  void _update() {
+    setState(() {});
+  }
+
+  void getSocietyStructure(String societyValue) async {
+    setState(() => loading = true);
+    //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
+    //Empty all previous data and set new data
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print("Set error text to null");
+    errorText = "";
+    //print("Clearing the Widget form that I have created");
+    flatVar.clearFlatWidgetForm();
+    //print("Clearing the flat values map");
+    flatVar.clearFlatNum();
+    //print("Clearing the flat value list");
+    flatVar.clearFlatValue();
+    //print("Setting current level");
+    flatVar.setCurrentLevel = 1;
+    //print("Setting widget flat form to empty");
+    flatVar.setFlatWidgetForm = [];
+    //print("Setting all update functions to null");
+    flatVar.setAllUpdateFunctions = [];
+
+    //get society info
+    Map<dynamic, dynamic> tempSnapData =
+        await Database().getSocietyInfo(societyValue);
+    //print("The data: $tempSnapData");
+
+    //set structure
+    //print("Setting the structure to incoming data");
+    flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
+    //print("Setting the total levels of hierarchy");
+    flatVar.setTotalLevels =
+        tempSnapData["Hierarchy"].length; // set total levels
+    //print("Flat value list to null");
+    flatVar.setFlatValue =
+        List<String>.filled(flatVar.totalLevels, null, growable: true);
+    //print("Adding initial dropdown to the flatWidgetForm that is the list");
+    flatVar.addInFlatWidgetForm(CustomDropDown(
+      options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
+      typeText: flatVar.getTypeText(flatVar.currentLevel),
+      flatVariable: flatVar,
+      update: _update,
+    ));
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print(societyStructureWidget);
+    setState(() => loading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,35 +238,51 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'WING AND FLAT',
+                          'FLAT DETAILS',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 12),
                         ),
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Wing',
-                                  hintStyle: TextStyle(fontSize: 16),
-                                ),
-                                controller: _wingController,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              flex: 1,
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Flat No',
-                                  hintStyle: TextStyle(fontSize: 16),
-                                ),
-                                controller: _flatController,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ],
+                        Column(
+                          //physics: ClampingScrollPhysics(),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                              List.generate(flatVar.flatWidgetForm.length, (i) {
+                            //return flatVar.flatWidgetForm[i];
+                            if ((i + 1) % 2 == 1) {
+                              if (i + 1 < flatVar.flatWidgetForm.length) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i + 1],
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
+                                    ),
+                                  ],
+                                );
+                              }
+                            } else {
+                              return SizedBox();
+                            }
+                          }),
+                        ),
+                        Text(
+                          errorText,
+                          style: TextStyle(color: Colors.red),
                         ),
                         SizedBox(width: 20),
                         Row(children: [
@@ -235,35 +313,48 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                bool confirmation = await showConfirmationDialog(
-                                    context,
-                                    "Alert!",
-                                    "Are you sure you want to send this request?");
-                                if (confirmation) {
-                                  setState(() => loading = true);
-                                  String id = DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString();
-                                  String imageUrl = _profilePicture == null
-                                      ? ""
-                                      : await Storage().storeImage(
-                                          'visitorApproval',
-                                          id,
-                                          _profilePicture);
-                                  Database()
-                                      .sendApproval(
-                                          g.society,
-                                          _nameController.text,
-                                          _phoneController.text,
-                                          imageUrl,
-                                          dropDownValue,
-                                          _wingController.text,
-                                          _flatController.text)
-                                      .then((value) {
-                                    setState(() => loading = false);
-                                    showToast(context, "success", "Success!",
-                                        "Approval request sent successfully");
-                                    Navigator.pop(context);
+                                if (!flatVar.flatValue.contains(null)) {
+                                  setState(() {
+                                    errorText = "";
+                                  });
+                                  bool confirmation = await showConfirmationDialog(
+                                      context,
+                                      "Alert!",
+                                      "Are you sure you want to send this request?");
+                                  if (confirmation) {
+                                    setState(() => loading = true);
+                                    flatVar.createMapFromListForFlat();
+                                    String id = DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString();
+                                    String imageUrl = _profilePicture == null
+                                        ? ""
+                                        : await Storage().storeImage(
+                                            'visitorApproval',
+                                            id,
+                                            _profilePicture);
+                                    Database()
+                                        .sendApproval(
+                                      g.society,
+                                      _nameController.text,
+                                      _phoneController.text,
+                                      "",
+                                      dropDownValue,
+                                      flatVar.flatNum,
+                                      //_wingController.text,
+                                      //_flatController.text,
+                                    )
+                                        .then((value) {
+                                      setState(() => loading = false);
+                                      showToast(context, "success", "Success!",
+                                          "Approval request sent successfully");
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                                } else {
+                                  setState(() {
+                                    errorText =
+                                        "Please fill all the flat fields";
                                   });
                                 }
                               }

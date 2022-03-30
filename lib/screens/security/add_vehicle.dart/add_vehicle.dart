@@ -2,12 +2,14 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -21,14 +23,74 @@ class _AddVehicleState extends State<AddVehicle> {
   TextEditingController _licensePlateController = TextEditingController();
   TextEditingController _modelController = TextEditingController();
   TextEditingController _parkingNumberController = TextEditingController();
-  TextEditingController _wingController = TextEditingController();
-  TextEditingController _flatNoController = TextEditingController();
+  //TextEditingController _wingController = TextEditingController();
+  //TextEditingController _flatNoController = TextEditingController();
 
   String dropDownValue = "Four Wheeler";
   List<String> dropDownItems = ["Four Wheeler", "Two Wheeler"];
   final _formKey = GlobalKey<FormState>();
   Globals g = Globals();
   bool loading = false;
+  String errorText = "";
+  FlatData flatVar = FlatData();
+
+  @override
+  void initState() {
+    super.initState();
+    getSocietyStructure(g.society);
+  }
+
+  void _update() {
+    setState(() {});
+  }
+
+  void getSocietyStructure(String societyValue) async {
+    setState(() => loading = true);
+    //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
+    //Empty all previous data and set new data
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print("Set error text to null");
+    errorText = "";
+    //print("Clearing the Widget form that I have created");
+    flatVar.clearFlatWidgetForm();
+    //print("Clearing the flat values map");
+    flatVar.clearFlatNum();
+    //print("Clearing the flat value list");
+    flatVar.clearFlatValue();
+    //print("Setting current level");
+    flatVar.setCurrentLevel = 1;
+    //print("Setting widget flat form to empty");
+    flatVar.setFlatWidgetForm = [];
+    //print("Setting all update functions to null");
+    flatVar.setAllUpdateFunctions = [];
+
+    //get society info
+    Map<dynamic, dynamic> tempSnapData =
+        await Database().getSocietyInfo(societyValue);
+    //print("The data: $tempSnapData");
+
+    //set structure
+    //print("Setting the structure to incoming data");
+    flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
+    //print("Setting the total levels of hierarchy");
+    flatVar.setTotalLevels =
+        tempSnapData["Hierarchy"].length; // set total levels
+    //print("Flat value list to null");
+    flatVar.setFlatValue =
+        List<String>.filled(flatVar.totalLevels, null, growable: true);
+    //print("Adding initial dropdown to the flatWidgetForm that is the list");
+    flatVar.addInFlatWidgetForm(CustomDropDown(
+      options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
+      typeText: flatVar.getTypeText(flatVar.currentLevel),
+      flatVariable: flatVar,
+      update: _update,
+    ));
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print(societyStructureWidget);
+    setState(() => loading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,81 +264,141 @@ class _AddVehicleState extends State<AddVehicle> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 12),
                           ),
-                          Row(
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Wing',
-                                    hintStyle: TextStyle(fontSize: 16),
-                                  ),
-                                  controller: _wingController,
-                                  validator: (value) => value.length == 0
-                                      ? 'Please enter wing'
-                                      : null,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Flexible(
-                                flex: 1,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Flat No',
-                                    hintStyle: TextStyle(fontSize: 16),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  controller: _flatNoController,
-                                  validator: (value) => value.length == 0
-                                      ? 'Please enter flat number'
-                                      : null,
-                                ),
-                              ),
-                            ],
+                          Column(
+                            //physics: ClampingScrollPhysics(),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                flatVar.flatWidgetForm.length, (i) {
+                              //return flatVar.flatWidgetForm[i];
+                              if ((i + 1) % 2 == 1) {
+                                if (i + 1 < flatVar.flatWidgetForm.length) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i],
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i + 1],
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: flatVar.flatWidgetForm[i],
+                                      ),
+                                    ],
+                                  );
+                                }
+                              } else {
+                                return SizedBox();
+                              }
+                            }),
                           ),
+                          Text(
+                            errorText,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          // Row(
+                          //   children: [
+                          //     Flexible(
+                          //       flex: 1,
+                          //       child: TextFormField(
+                          //         decoration: InputDecoration(
+                          //           hintText: 'Wing',
+                          //           hintStyle: TextStyle(fontSize: 16),
+                          //         ),
+                          //         controller: _wingController,
+                          //         validator: (value) => value.length == 0
+                          //             ? 'Please enter wing'
+                          //             : null,
+                          //       ),
+                          //     ),
+                          //     SizedBox(width: 10),
+                          //     Flexible(
+                          //       flex: 1,
+                          //       child: TextFormField(
+                          //         decoration: InputDecoration(
+                          //           hintText: 'Flat No',
+                          //           hintStyle: TextStyle(fontSize: 16),
+                          //         ),
+                          //         keyboardType: TextInputType.number,
+                          //         controller: _flatNoController,
+                          //         validator: (value) => value.length == 0
+                          //             ? 'Please enter flat number'
+                          //             : null,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(height: 40),
                           Center(
                             child: TextButton(
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  bool confirmation = await showConfirmationDialog(
-                                      context,
-                                      "Alert!",
-                                      "Are you sure you want to register this vehicle?");
-                                  if (confirmation) {
-                                    setState(() => loading = true);
-                                    String id = DateTime.now()
-                                        .millisecondsSinceEpoch
-                                        .toString();
-                                    String imageUrl = _profilePicture == null
-                                        ? ""
-                                        : await Storage().storeImage(
-                                            'vehicles', id, _profilePicture);
-                                    await API().addVehicle(
-                                        g.society
-                                            .replaceAll(" ", "")
-                                            .toLowerCase(),
+                                  //print(flatVar.flatValue);
+                                  if (!flatVar.flatValue.contains(null)) {
+                                    setState(() {
+                                      errorText = "";
+                                    });
+                                    flatVar.createMapFromListForFlat();
+                                    bool confirmation =
+                                        await showConfirmationDialog(
+                                            context,
+                                            "Alert!",
+                                            "Are you sure you want to register this vehicle?");
+                                    if (confirmation) {
+                                      setState(() => loading = true);
+                                      String id = DateTime.now()
+                                          .millisecondsSinceEpoch
+                                          .toString();
+                                      String imageUrl = _profilePicture == null
+                                          ? ""
+                                          : await Storage().storeImage(
+                                              'vehicles', id, _profilePicture);
+                                      await API().addVehicle(
+                                          g.society
+                                              .replaceAll(" ", "")
+                                              .toLowerCase(),
+                                          _licensePlateController.text,
+                                          _parkingNumberController.text);
+                                      Database()
+                                          .addVehicle(
+                                        g.society,
+                                        imageUrl,
                                         _licensePlateController.text,
-                                        _parkingNumberController.text);
-                                    Database()
-                                        .addVehicle(
-                                            g.society,
-                                            imageUrl,
-                                            _licensePlateController.text,
-                                            _modelController.text,
-                                            _parkingNumberController.text,
-                                            dropDownValue,
-                                            _wingController.text,
-                                            _flatNoController.text)
-                                        .then((value) {
-                                      setState(() => loading = false);
-                                      Navigator.pop(context);
-                                      showToast(context, "success", "Success!",
-                                          "Vehicle added successfully in the database.");
-                                    }).catchError(() {
-                                      setState(() => loading = false);
-                                      showToast(context, "error", "Oops!",
-                                          "Something went wrong");
+                                        _modelController.text,
+                                        _parkingNumberController.text,
+                                        dropDownValue,
+                                        flatVar.flatNum,
+                                      )
+                                          //_wingController.text,
+                                          //_flatNoController.text)
+                                          .then((value) {
+                                        setState(() => loading = false);
+                                        Navigator.pop(context);
+                                        showToast(
+                                            context,
+                                            "success",
+                                            "Success!",
+                                            "Vehicle added successfully in the database.");
+                                      }).catchError(() {
+                                        setState(() => loading = false);
+                                        showToast(context, "error", "Oops!",
+                                            "Something went wrong");
+                                      });
+                                    }
+                                  } else {
+                                    setState(() {
+                                      errorText =
+                                          "Please fill all the flat fields";
                                     });
                                   }
                                 }

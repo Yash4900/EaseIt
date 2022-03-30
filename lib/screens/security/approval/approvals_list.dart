@@ -8,6 +8,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 
 class ApprovalsList extends StatefulWidget {
   @override
@@ -152,11 +153,11 @@ class _ApprovalsListState extends State<ApprovalsList> {
                                 children: [
                                   SizedBox(height: 5),
                                   Text(
-                                    '${ds['purpose']} . ${ds['wing']}-${ds['flatNo']}',
+                                    '${ds['purpose']} . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey[500],
-                                      fontSize: 16,
+                                      fontSize: 10,
                                     ),
                                   ),
                                   Row(children: [

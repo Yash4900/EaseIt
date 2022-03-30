@@ -1,7 +1,96 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/custom_tags.dart';
+import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/firebase/database.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SecurityGuardInfo extends StatelessWidget {
+class SecurityGuardInfo extends StatefulWidget {
   const SecurityGuardInfo({Key key}) : super(key: key);
+
+  @override
+  State<SecurityGuardInfo> createState() => _SecurityGuardInfoState();
+}
+
+class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
+  Future<Widget> _securityGuardInfoWidget;
+  Globals g = Globals();
+
+  void initState() {
+    _securityGuardInfoWidget = getListOfSecurityGuards();
+  }
+
+  Future<void> refreshPage() {
+    setState(() {
+      _securityGuardInfoWidget = getListOfSecurityGuards();
+    });
+  }
+
+  Future<Widget> getListOfSecurityGuards() async {
+    Widget toDisplay;
+    QuerySnapshot listOfSG =
+        await Database().getSecurityGuardsOfSociety(g.society);
+    if (listOfSG.docs.length == 0) {
+      toDisplay = Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
+        child: Center(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search_outlined,
+                size: 25,
+                color: Color(0xffa0a0a0),
+              ),
+              Text(
+                "No security guards found for society",
+                style: TextStyle(
+                  color: Color(0xffa0a0a0),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      List<Widget> temp = [];
+      for (int i = 0; i < listOfSG.docs.length; i++) {
+        temp.add(
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: SecurityGuardCard(
+              email: listOfSG.docs[i]["email"],
+              userName:
+                  listOfSG.docs[i]["fname"] + " " + listOfSG.docs[i]["lname"],
+              phoneNumber: "+91 - " + listOfSG.docs[i]["phoneNum"],
+              societyDesignation: listOfSG.docs[i]["role"],
+              imageUrl: listOfSG.docs[i]["imageUrl"],
+            ),
+          ),
+        );
+      }
+      toDisplay = Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+        child: RefreshIndicator(
+          onRefresh: refreshPage,
+          child: ListView(
+            children: temp,
+          ),
+        ),
+      );
+    }
+    return toDisplay;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,32 +115,24 @@ class SecurityGuardInfo extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: 10,
           ),
-          child: ListView(
-            children: <Widget>[
-              Text(
-                "Guards",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff707070),
-                  fontSize: 17,
-                ),
-              ),
-              Divider(
-                color: Color(0xffc7c3c3),
-              ),
-              SecurityGuardCard(
-                userName: "Himmat Singh",
-                societyDesignation: "Guard",
-                phoneNumber: "+91-1234567890",
-                email: "",
-              ),
-              SecurityGuardCard(
-                userName: "Shewaar",
-                societyDesignation: "Guard",
-                phoneNumber: "+91-4321567890",
-                email: "",
-              ),
-            ],
+          child: FutureBuilder(
+            future: _securityGuardInfoWidget,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data;
+              } else if (snapshot.hasError) {
+                return Text(
+                  "Could not load data",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              } else {
+                return Loading();
+              }
+            },
           ),
         ),
       ),
@@ -65,17 +146,22 @@ class SecurityGuardCard extends StatelessWidget {
       @required this.userName,
       @required this.societyDesignation,
       @required this.phoneNumber,
-      @required this.email})
+      @required this.email,
+      @required this.imageUrl})
       : super(key: key);
 
-  final String userName, societyDesignation, phoneNumber, email;
+  final String userName, societyDesignation, phoneNumber, email, imageUrl;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
+      ),
       margin: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width * 92.5 / 100,
-      height: MediaQuery.of(context).size.height * 12 / 100,
+      //width: MediaQuery.of(context).size.width * 92.5 / 100,
+      //height: MediaQuery.of(context).size.height * 12 / 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(33)),
@@ -93,19 +179,31 @@ class SecurityGuardCard extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffd3d3d3),
-              ),
-              child: const Icon(
-                Icons.person,
-                color: Colors.black,
-                size: 35,
-              ),
-            ),
+            child: imageUrl == ""
+                ? Container(
+                    height: 70,
+                    width: 70,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xffd3d3d3),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 35,
+                    ),
+                  )
+                : Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      color: Color(0xffd3d3d3),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(imageUrl),
+                      ),
+                    ),
+                  ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,22 +222,13 @@ class SecurityGuardCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    societyDesignation,
-                    style: const TextStyle(
-                      color: Color(0xff17a3e8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                phoneNumber,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xffa0a0a0),
-                ),
+              CustomTag(
+                text: "Security",
+                backgroundColor: Colors.cyan[100],
+                textColor: Colors.cyan,
               ),
               const SizedBox(
                 height: 1,
@@ -152,6 +241,23 @@ class SecurityGuardCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          InkWell(
+            splashColor: Color(0xffd0d0d0),
+            child: GestureDetector(
+                child: Icon(
+                  Icons.phone,
+                  size: 25,
+                ),
+                onTap: () async {
+                  try {
+                    await launch('tel:$phoneNumber');
+                  } catch (e) {
+                    print(e.toString());
+                    showToast(context, "error", "Error",
+                        "Oops! Something went wrong");
+                  }
+                }),
           ),
         ],
       ),

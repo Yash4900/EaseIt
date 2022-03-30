@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/screens/resident/ResidentApproval.dart';
+import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -27,6 +30,12 @@ class _HomeState extends State<Home> {
     // Defining user properties globally
     Globals g = Globals();
     g.setSociety = prefs.getString("society");
+    Map<String, dynamic> societySnapshot =
+        await Database().getSocietyInfo(g.society);
+    g.setHierarchy = List<String>.from(societySnapshot["Hierarchy"]);
+    //print(societySnapshot["Hierarchy"]);
+    //print(g.hierarchy);
+    g.setStructure = societySnapshot["structure"];
     g.setUid = uid;
     g.setRole = snapshot.get('role');
     g.setEmail = snapshot.get('email');
@@ -34,9 +43,11 @@ class _HomeState extends State<Home> {
     g.setLname = snapshot.get('lname');
     g.setPhoneNum = snapshot.get('phoneNum');
     g.setImageUrl = snapshot.get('imageUrl');
+    g.setStatus = snapshot.get('status');
 
     role = snapshot.get('role');
     if (role != 'Security Guard') {
+      g.setFlat = snapshot.get('flat');
       g.setFlatNo = snapshot.get('flatNo');
       g.setWing = snapshot.get('wing');
     }
@@ -44,9 +55,81 @@ class _HomeState extends State<Home> {
     setState(() => loading = false);
   }
 
+  // void saveTheApprovalUpdate() {
+  //   setState(() {});
+  // }
+
   // Decide which screen to show
   Widget showScreen() {
-    return role == 'Security Guard' ? Security() : Resident();
+    Globals g = Globals();
+    return role == 'Security Guard'
+        ? Security()
+        : StreamBuilder(
+            stream: Database().userStream(g.society, g.uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              } else if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  print(snapshot.data);
+                  if (snapshot.data["status"] == "accepted") {
+                    //print("Am I returning Resident Home");
+                    return Resident();
+                  } else if (snapshot.data["status"] == "pending") {
+                    return Pending();
+                  } else {
+                    return ReApproval();
+                  }
+                } else {
+                  print("In else");
+                  return Scaffold(
+                    body: SafeArea(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error_outline,
+                                size: 50, color: Colors.redAccent),
+                            Text(
+                              "Error loading your profile",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                //print(snapshot.hasData);
+                return Scaffold(
+                  body: SafeArea(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline,
+                              size: 50, color: Colors.redAccent),
+                          Text(
+                            "Error loading your profile",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          );
   }
 
   @override
