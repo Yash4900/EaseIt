@@ -76,13 +76,33 @@ class _ActivityLogState extends State<ActivityLog> {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: ListView(
-                          children: visitorLog
-                              .map(
+                          children: visitorLog.length>0?
+                              visitorLog.map(
                                 (e) => ResidentialLogCard(
                                   e: e,
                                 ),
                               )
-                              .toList(),
+                              .toList():[Container(
+                    // width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/no_data.png',
+                            width: 300,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'No activities found',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      ),
+                    )
+                  )],
                         ),
                       );
                     } else {
