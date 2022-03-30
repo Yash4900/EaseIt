@@ -280,7 +280,7 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           nameController.text,
                                           phoneController.text,
                                           vehicleNo.text,
-                                          g.flat,
+                                          Map<String, String>.from(g.flat),
                                           //g.flatNo,
                                           //g.wing,
                                           code.toString(),
