@@ -33,12 +33,13 @@ class _RecentPaymentsState extends State<RecentPayments> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  if(doc["status"] == "Paid" && noOfBills < 5){      
+                  if(doc["status"] == "Paid" && noOfBills < 5){  
+                    final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);    
                     noOfBills++;            
                     return TransactionBill(
                       name: doc["name"],
-                      wing: doc["wing"],
-                      flatNo: doc["flatNo"],
+                      wing: flatNoMap["Wing"].toString(),
+                      flatNo: flatNoMap["Flat"].toString(),
                       transactionAmount: doc["billAmount"],
                       transactionDate: doc["datePaid"],
                       month: doc["month"],

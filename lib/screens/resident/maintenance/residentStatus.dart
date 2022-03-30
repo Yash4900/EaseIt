@@ -65,11 +65,12 @@ class _ResidentStatusState extends State<ResidentStatus> {
                   // scrollDirection: Axis.vertical,
                   // shrinkWrap: true,
                   children: snapshot.data.docs.map((doc) {
-                    if(doc["status"] == "Pending"){                  
+                    if(doc["status"] == "Pending"){    
+                      final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);              
                       return TransactionBill(
                         name: doc["name"],
-                        wing: doc["wing"],
-                        flatNo: doc["flatNo"],
+                        wing: flatNoMap["Wing"].toString(),
+                        flatNo: flatNoMap["Flat"].toString(),
                         transactionAmount: doc["billAmount"],
                         transactionDate: "",
                         month: doc["month"],
@@ -109,11 +110,12 @@ class _ResidentStatusState extends State<ResidentStatus> {
                   // scrollDirection: Axis.vertical,
                   // shrinkWrap: true,
                   children: snapshot.data.docs.map((doc) {
-                    if(doc["status"] == "Paid"){                  
+                    if(doc["status"] == "Paid"){   
+                      final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);               
                       return TransactionBill(
                         name: doc["name"],
-                        wing: doc["wing"],
-                        flatNo: doc["flatNo"],
+                        wing: flatNoMap["Wing"].toString(),
+                        flatNo: flatNoMap["Flat"].toString(),
                         transactionAmount: doc["billAmount"],
                         transactionDate: doc["datePaid"],
                         month: doc["month"],

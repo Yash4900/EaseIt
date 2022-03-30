@@ -300,7 +300,7 @@ class Database {
         .collection(societyName)
         .doc('users')
         .collection('User')
-        .where('role', isNotEqualTo: "Security Guard")
+        .where('homeRole', isEqualTo: "Owner")
         .get();
 
     snap.docs.forEach((doc) {
@@ -314,8 +314,7 @@ class Database {
         'month': month,
         'datePaid': "",
         'name': doc["fname"],
-        'flatNo': doc["flatNo"],
-        'wing': doc["wing"]
+        'flat': doc["flat"],
       });
     });
   }
@@ -324,12 +323,12 @@ class Database {
       String flatNo, String month, String billAmount) async {
     // print("12Inside Add Maintenance");
     String docID = "";
+    Map<String, String> flatNoMap = {'Flat':flatNo, 'Wing': wing};
     QuerySnapshot snap = await _firestore
         .collection(societyName)
         .doc('maintenance')
         .collection('Maintenance')
-        .where('wing', isEqualTo: wing)
-        .where('flatNo', isEqualTo: flatNo)
+        .where('flat', isEqualTo: flatNoMap)
         .where('month', isEqualTo: month)
         .get();
 
@@ -345,7 +344,7 @@ class Database {
         .collection(societyName)
         .doc('maintenance')
         .collection('Maintenance')
-        .doc(docID)
+        .doc(docID)        
         .update({'status': "Paid", 'datePaid': formattedDate});
   }
 
