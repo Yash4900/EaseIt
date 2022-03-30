@@ -1,3 +1,5 @@
+// Show home screen or login screen depending on whether user is logged in or not
+
 import 'package:ease_it/screens/auth/authscreen.dart';
 import 'package:ease_it/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';

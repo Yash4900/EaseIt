@@ -120,7 +120,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                       QueryDocumentSnapshot qds = await Database().verifyByCode(
                           g.society, int.parse(_codeController.text));
                       if (qds == null) {
-                        showMessageDialog(context, 'Invalid Code!', '', [
+                        showMessageDialog(context, 'Invalid Code!', [
                           Center(
                             child: Image.asset(
                               'assets/error.png',
@@ -132,14 +132,16 @@ class _SecurityHomeState extends State<SecurityHome> {
                               'The code provided by visitor does not exists or is expired!',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black45, fontSize: 16),
+                                color: Colors.black45,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ]);
                       } else {
-                        String imageUrl = null;
+                        int code;
                         try {
-                          imageUrl = qds['imageUrl'];
+                          code = qds['code'];
                         } catch (e) {
                           print(e.toString());
                         }
@@ -151,23 +153,25 @@ class _SecurityHomeState extends State<SecurityHome> {
                               qds.id,
                               qds['name'],
                               qds['purpose'],
-                              imageUrl != null
+                              code != null
                                   ? 'Daily Helper'
                                   : 'Pre Approved Visitor',
-                              imageUrl ?? '',
+                              qds['imageUrl'] ?? '',
                             ),
                           ),
                         );
                       }
+                      setState(() => _codeController.clear());
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.0),
                       child: Text(
                         'Verify Visitor',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -205,7 +209,9 @@ class Button extends StatelessWidget {
             child: Text(
               value.toString(),
               style: GoogleFonts.urbanist(
-                  fontSize: 30, fontWeight: FontWeight.w400),
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

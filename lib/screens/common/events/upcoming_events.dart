@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 
 class UpcomingEvents extends StatefulWidget {
@@ -31,6 +32,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
     Color(0xff2680eb),
     Color(0xff2d9d78)
   ];
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -46,8 +48,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                       DocumentSnapshot ds = snapshot.data.docs[index];
                       DateTime date = ds['date'].toDate();
                       return Container(
-                        margin:
-                            EdgeInsets.all(10),
+                        margin: EdgeInsets.all(10),
                         child: Row(
                           children: [
                             Expanded(
@@ -55,8 +56,9 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                               child: Text(
                                 '${date.day} ${days[date.month - 1]} ${date.year}',
                                 style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             Expanded(
@@ -78,13 +80,64 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        ds['name'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: colors[index % 4],
-                                            fontSize: 16),
-                                      ),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              ds['name'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: colors[index % 4],
+                                                  fontSize: 16),
+                                            ),
+                                            InkWell(
+                                              onTap: () async {
+                                                final Event event = Event(
+                                                  title: ds['name'],
+                                                  description: 'Society event',
+                                                  location: ds['venue'],
+                                                  allDay: ds['isFullDay'],
+                                                  startDate: ds['isFullDay']
+                                                      ? date
+                                                      : DateTime(
+                                                          date.year,
+                                                          date.month,
+                                                          date.day,
+                                                          int.parse(ds['from']
+                                                              .split(':')[0]),
+                                                          int.parse(ds['from']
+                                                              .split(':')[1])),
+                                                  endDate: ds['isFullDay']
+                                                      ? date
+                                                      : DateTime(
+                                                          date.year,
+                                                          date.month,
+                                                          date.day,
+                                                          int.parse(ds['to']
+                                                              .split(':')[0]),
+                                                          int.parse(ds['to']
+                                                              .split(':')[1])),
+                                                );
+                                                Add2Calendar.addEvent2Cal(
+                                                    event);
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 3, horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  color: colors[index % 4]
+                                                      .withOpacity(0.3),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Icon(
+                                                  Icons.event,
+                                                  color: colors[index % 4],
+                                                ),
+                                              ),
+                                            )
+                                          ]),
                                       SizedBox(height: 15),
                                       Row(children: [
                                         Icon(Icons.location_on_outlined,

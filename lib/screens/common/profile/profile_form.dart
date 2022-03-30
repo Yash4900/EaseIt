@@ -172,7 +172,7 @@ class _ProfileFormState extends State<ProfileForm> {
                               onTap: () async {
                                 if (_profilePicture == null) {
                                   _profilePicture =
-                                      await PickImage().showPicker(context);
+                                      await PickImage().showPicker(context, 50);
                                   setState(() {});
                                   if (_profilePicture != null) {
                                     _profilePicture = await Navigator.push(
@@ -250,6 +250,10 @@ class _ProfileFormState extends State<ProfileForm> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
+                      enabled: false,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                      ),
                       decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(
@@ -314,7 +318,7 @@ class _ProfileFormState extends State<ProfileForm> {
                       height: 15,
                     ),
                     Text(
-                      'Fill in the field if you wish to change your email or password',
+                      'Fill in the below current password field field if you wish to change your password',
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -494,7 +498,13 @@ class _ProfileFormState extends State<ProfileForm> {
                       },
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff1a73e8)),
+                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(50, 8, 50, 8),

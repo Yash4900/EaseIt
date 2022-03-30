@@ -20,15 +20,20 @@ class _VehicleState extends State<Vehicle> {
           Text(
             'Vehicle Management',
             style: GoogleFonts.sourceSansPro(
-                fontSize: 25, fontWeight: FontWeight.w900),
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           SizedBox(height: 15),
           TabBar(
               indicatorColor: Color(0xff037DD6),
               labelColor: Colors.black,
+              unselectedLabelColor: Colors.black38,
               indicatorWeight: 2.5,
               labelStyle: GoogleFonts.sourceSansPro(
-                  fontSize: 16, fontWeight: FontWeight.w600),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
               tabs: [
                 Tab(
                   text: 'Actions',

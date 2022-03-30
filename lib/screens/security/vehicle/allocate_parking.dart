@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/custom_dropdown_widget.dart';
 
 class AllocateParking extends StatefulWidget {
   final String licensePlateNo;
@@ -26,6 +27,67 @@ class _AllocateParkingState extends State<AllocateParking> {
   final _formKey = GlobalKey<FormState>();
   Globals g = Globals();
   bool loading = false;
+  String errorText = "";
+  FlatData flatVar = FlatData();
+
+  @override
+  void initState() {
+    super.initState();
+    getSocietyStructure(g.society);
+  }
+
+  void _update() {
+    setState(() {});
+  }
+
+  void getSocietyStructure(String societyValue) async {
+    setState(() => loading = true);
+    //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
+    //Empty all previous data and set new data
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print("Set error text to null");
+    errorText = "";
+    //print("Clearing the Widget form that I have created");
+    flatVar.clearFlatWidgetForm();
+    //print("Clearing the flat values map");
+    flatVar.clearFlatNum();
+    //print("Clearing the flat value list");
+    flatVar.clearFlatValue();
+    //print("Setting current level");
+    flatVar.setCurrentLevel = 1;
+    //print("Setting widget flat form to empty");
+    flatVar.setFlatWidgetForm = [];
+    //print("Setting all update functions to null");
+    flatVar.setAllUpdateFunctions = [];
+
+    //get society info
+    Map<dynamic, dynamic> tempSnapData =
+        await Database().getSocietyInfo(societyValue);
+    //print("The data: $tempSnapData");
+
+    //set structure
+    //print("Setting the structure to incoming data");
+    flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
+    //print("Setting the total levels of hierarchy");
+    flatVar.setTotalLevels =
+        tempSnapData["Hierarchy"].length; // set total levels
+    //print("Flat value list to null");
+    flatVar.setFlatValue =
+        List<String>.filled(flatVar.totalLevels, null, growable: true);
+    //print("Adding initial dropdown to the flatWidgetForm that is the list");
+    flatVar.addInFlatWidgetForm(CustomDropDown(
+      options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
+      typeText: flatVar.getTypeText(flatVar.currentLevel),
+      flatVariable: flatVar,
+      update: _update,
+    ));
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print(societyStructureWidget);
+    setState(() => loading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,104 +179,157 @@ class _AllocateParkingState extends State<AllocateParking> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 12),
                         ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: TextFormField(
-                                decoration:
-                                    InputDecoration(hintText: 'Enter wing'),
-                                controller: _wingController,
-                                validator: (value) =>
-                                    value.length == 0 ? 'Enter wing' : null,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: 'Enter visiting flat'),
-                                controller: _flatController,
-                                validator: (value) => value.length == 0
-                                    ? 'Enter flat number'
-                                    : null,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: 'Enter expected stay time'),
-                                controller: _stayTimeController,
-                              ),
-                            )
-                          ],
+                        Column(
+                          //physics: ClampingScrollPhysics(),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                              List.generate(flatVar.flatWidgetForm.length, (i) {
+                            //return flatVar.flatWidgetForm[i];
+                            if ((i + 1) % 2 == 1) {
+                              if (i + 1 < flatVar.flatWidgetForm.length) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i + 1],
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
+                                    ),
+                                  ],
+                                );
+                              }
+                            } else {
+                              return SizedBox();
+                            }
+                          }),
                         ),
+                        Text(
+                          errorText,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        // Row(
+                        //   children: [
+                        //     Flexible(
+                        //       child: TextFormField(
+                        //         decoration:
+                        //             InputDecoration(hintText: 'Enter wing'),
+                        //         controller: _wingController,
+                        //         validator: (value) =>
+                        //             value.length == 0 ? 'Enter wing' : null,
+                        //       ),
+                        //     ),
+                        //     SizedBox(width: 10),
+                        //     Flexible(
+                        //       child: TextFormField(
+                        //         decoration: InputDecoration(
+                        //             hintText: 'Enter visiting flat'),
+                        //         controller: _flatController,
+                        //         validator: (value) => value.length == 0
+                        //             ? 'Enter flat number'
+                        //             : null,
+                        //       ),
+                        //     ),
+                        //     SizedBox(width: 10),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              hintText: 'Enter expected stay time'),
+                          controller: _stayTimeController,
+                        ),
+                        //   ],
+                        // ),
                         SizedBox(height: 50),
                         Center(
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                bool confirmation =
-                                    await showConfirmationDialog(
-                                        context,
-                                        "Alert!",
-                                        "Are you sure you want to proceed?");
-                                if (confirmation) {
-                                  setState(() => loading = true);
-                                  var response = await API().allocateParking(
-                                      g.society
-                                          .replaceAll(" ", "")
-                                          .toLowerCase(),
-                                      _stayTimeController.text);
-                                  Map<String, dynamic> map =
-                                      jsonDecode(response);
-                                  DocumentReference dr;
-                                  if (map['parking_space'] != '') {
-                                    dr = await Database().saveParkingDetails(
+                                if (!flatVar.flatValue.contains(null)) {
+                                  setState(() {
+                                    errorText = "";
+                                  });
+                                  bool confirmation =
+                                      await showConfirmationDialog(
+                                          context,
+                                          "Alert!",
+                                          "Are you sure you want to proceed?");
+                                  if (confirmation) {
+                                    setState(() => loading = true);
+                                    var response = await API().allocateParking(
+                                        g.society
+                                            .replaceAll(" ", "")
+                                            .toLowerCase(),
+                                        _stayTimeController.text);
+                                    Map<String, dynamic> map =
+                                        jsonDecode(response);
+                                    DocumentReference dr;
+                                    if (map['parking_space'] != '') {
+                                      dr = await Database().saveParkingDetails(
                                         g.society,
                                         widget.licensePlateNo,
                                         _nameController.text,
                                         _phoneController.text,
-                                        map['parking_space']);
-                                    setState(() => loading = false);
-                                    await showMessageDialog(
-                                        context, 'Parking Assignment', '', [
-                                      Center(
-                                        child: Image.asset(
-                                          'assets/success.png',
-                                          width: 230,
+                                        map['parking_space'],
+                                        int.parse(_stayTimeController.text),
+                                      );
+                                      setState(() => loading = false);
+                                      await showMessageDialog(
+                                          context, 'Parking Assignment', [
+                                        Center(
+                                          child: Image.asset(
+                                            'assets/success.png',
+                                            width: 230,
+                                          ),
                                         ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          'Parking space allotment is',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontSize: 16),
+                                        Center(
+                                          child: Text(
+                                            'Parking space allotment is',
+                                            style: TextStyle(
+                                                color: Colors.black45,
+                                                fontSize: 16),
+                                          ),
                                         ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          map['parking_space'],
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    ]);
+                                        Center(
+                                          child: Text(
+                                            map['parking_space'],
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      ]);
+                                    }
+                                    Database().logVisitorVehicleEntry(
+                                        g.society,
+                                        widget.licensePlateNo,
+                                        flatVar.flatNum,
+                                        //_flatController.text,
+                                        //_wingController.text,
+                                        _purposeController.text,
+                                        dr.id);
                                   }
-                                  Database().logVisitorVehicleEntry(
-                                      g.society,
-                                      widget.licensePlateNo,
-                                      _flatController.text,
-                                      _wingController.text,
-                                      _purposeController.text,
-                                      dr.id);
+                                  int count = 0;
+                                  Navigator.popUntil(context, (route) {
+                                    return count++ == 2;
+                                  });
+                                } else {
+                                  setState(() {
+                                    errorText =
+                                        "Please fill all the flat fields";
+                                  });
                                 }
-                                int count = 0;
-                                Navigator.popUntil(context, (route) {
-                                  return count++ == 2;
-                                });
                               }
                             },
                             child: Padding(
@@ -223,8 +338,9 @@ class _AllocateParkingState extends State<AllocateParking> {
                               child: Text(
                                 'Allocate',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             style: ButtonStyle(
