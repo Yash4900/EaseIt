@@ -22,8 +22,8 @@ class VehicleBottomSheet extends StatefulWidget {
 class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
   TextEditingController _licensePlateController = TextEditingController();
   PageController _pageController = PageController();
-  TextEditingController _wingController = TextEditingController();
-  TextEditingController _flatController = TextEditingController();
+  // TextEditingController _wingController = TextEditingController();
+  // TextEditingController _flatController = TextEditingController();
   TextEditingController _purposeController = TextEditingController();
 
   bool loading = true;

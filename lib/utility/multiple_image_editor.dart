@@ -248,7 +248,6 @@ class _MultipleImageEditorState extends State<MultipleImageEditor>
                   ),
                   indicatorPadding: EdgeInsets.zero,
                   labelPadding: EdgeInsets.zero,
-                  padding: EdgeInsets.zero,
                   isScrollable: true,
                   tabs: listOfTabs,
                 ),

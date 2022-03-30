@@ -5,7 +5,7 @@ import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 
 class DailyHelpers extends StatefulWidget {
-  String dailyHelperType;
+  final String dailyHelperType;
   DailyHelpers({this.dailyHelperType});
   @override
   _DailyHelpersState createState() => _DailyHelpersState();
@@ -114,26 +114,25 @@ class _DailyHelpersState extends State<DailyHelpers> {
                   );
                 } else {
                   return Container(
-                    // width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/no_data.png',
-                            width: 300,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'No daily helpers found',
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    )
-                  );
+                      // width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      color: Colors.white,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/no_data.png',
+                              width: 300,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'No daily helpers found',
+                              style: TextStyle(color: Colors.grey),
+                            )
+                          ],
+                        ),
+                      ));
                 }
               }),
         ),

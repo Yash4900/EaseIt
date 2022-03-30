@@ -1,7 +1,5 @@
 // Register page
 
-// import 'dart:html';
-
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
@@ -9,7 +7,6 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/alert.dart';
 import 'package:flutter/material.dart';
-import 'package:http/retry.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleScreen;

@@ -45,8 +45,8 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-  TextEditingController _flatController = TextEditingController();
-  TextEditingController _wingController = TextEditingController();
+  // TextEditingController _flatController = TextEditingController();
+  // TextEditingController _wingController = TextEditingController();
   bool loading = false;
   String errorText = "";
   FlatData flatVar = FlatData();
@@ -338,7 +338,7 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                                       g.society,
                                       _nameController.text,
                                       _phoneController.text,
-                                      "",
+                                      imageUrl,
                                       dropDownValue,
                                       flatVar.flatNum,
                                       //_wingController.text,

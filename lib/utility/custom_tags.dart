@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomTag extends StatelessWidget {
-  Color backgroundColor, textColor;
-  String text;
+  final Color backgroundColor, textColor;
+  final String text;
 
   CustomTag({
     Key key,

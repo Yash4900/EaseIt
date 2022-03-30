@@ -1,6 +1,5 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +23,6 @@ class _ActivityLogState extends State<ActivityLog> {
     print(visitorLog);
 
     // }
-  }
-
-  @override
-  void initState() {
-    // fetch();
   }
 
   // Two stream builder

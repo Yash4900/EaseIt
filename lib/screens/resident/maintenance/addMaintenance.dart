@@ -1,5 +1,4 @@
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/alert.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
@@ -13,8 +12,20 @@ class AddMaintenance extends StatefulWidget {
 class _AddMaintenanceState extends State<AddMaintenance> {
   Globals g = Globals();
   TextEditingController _billAmountController = TextEditingController();
-  List<String> months = ["January", "February", "March", "April", "May", "June", "July", "August",
-    "September", "October", "November", "December"];
+  List<String> months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
   String monthValue = "January";
   List<String> years = ["2022", "2023", "2024", "2025"];
   String yearValue = "2022";
@@ -130,7 +141,8 @@ class _AddMaintenanceState extends State<AddMaintenance> {
                               fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Enter Bill Amount'),
+                          decoration:
+                              InputDecoration(hintText: 'Enter Bill Amount'),
                           keyboardType: TextInputType.number,
                           maxLines: null,
                           controller: _billAmountController,
@@ -142,10 +154,14 @@ class _AddMaintenanceState extends State<AddMaintenance> {
                           child: TextButton(
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
-                                String monthOfMaintenance = monthValue + " " + yearValue;
+                                String monthOfMaintenance =
+                                    monthValue + " " + yearValue;
                                 setState(() => loading = true);
                                 Database()
-                                    .addMaintenance(g.society, _billAmountController.text, monthOfMaintenance)
+                                    .addMaintenance(
+                                        g.society,
+                                        _billAmountController.text,
+                                        monthOfMaintenance)
                                     .then((value) {
                                   setState(() => loading = false);
                                   showToast(context, "success", "Success!",

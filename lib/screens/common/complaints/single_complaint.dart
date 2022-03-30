@@ -8,7 +8,6 @@ import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'dart:io';
 
 class SingleComplaint extends StatefulWidget {
   final String id;
@@ -272,7 +271,7 @@ class _SingleComplaintState extends State<SingleComplaint> {
                       Text(
                         widget.postedBy,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

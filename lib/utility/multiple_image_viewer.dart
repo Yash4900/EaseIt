@@ -103,7 +103,6 @@ class _MultipleImageViewerState extends State<MultipleImageViewer> {
                     ),
                     indicatorPadding: EdgeInsets.zero,
                     labelPadding: EdgeInsets.zero,
-                    padding: EdgeInsets.zero,
                     isScrollable: true,
                     tabs: listOfTabs,
                   ),

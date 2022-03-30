@@ -5,7 +5,6 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:http/retry.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SecretaryApproval extends StatefulWidget {
@@ -140,7 +139,7 @@ class _SecretaryApprovalState extends State<SecretaryApproval> {
 }
 
 class PendingRequestCard extends StatefulWidget {
-  QueryDocumentSnapshot singleUserData;
+  final QueryDocumentSnapshot singleUserData;
   PendingRequestCard({Key key, @required this.singleUserData})
       : super(key: key);
 
