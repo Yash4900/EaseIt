@@ -45,9 +45,10 @@ class _DailyHelperLogState extends State<DailyHelperLog> {
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -70,34 +71,40 @@ class _DailyHelperLogState extends State<DailyHelperLog> {
                         return Container(
                           padding: EdgeInsets.all(8),
                           width: MediaQuery.of(context).size.width * 0.85,
-                          color: ds['activity'] == 'exit'
-                              ? Colors.grey[200]
-                              : Colors.grey[100],
                           margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Colors.grey[300]),
+                            ),
+                          ),
                           child: Row(
                             children: [
-                              Icon(
-                                ds['activity'] == 'exit'
-                                    ? Icons.logout
-                                    : Icons.login,
-                                color: ds['activity'] == 'entry'
-                                    ? Color(0xff107154)
-                                    : Color(0xffbb121a),
-                              ),
-                              Text(
-                                ds['activity'].toUpperCase(),
-                                style: TextStyle(
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 7),
+                                decoration: BoxDecoration(
+                                  color: ds['activity'] == 'exit'
+                                      ? Color(0xffbb121a).withOpacity(0.2)
+                                      : Color(0xff107154).withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  ds['activity'].toUpperCase(),
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: ds['activity'] == 'entry'
-                                        ? Color(0xff107154)
-                                        : Color(0xffbb121a)),
+                                    color: ds['activity'] == 'exit'
+                                        ? Color(0xffbb121a)
+                                        : Color(0xff107154),
+                                  ),
+                                ),
                               ),
                               SizedBox(width: 15),
                               Text(
                                 '${date.day} ${days[date.month]}, ${date.year}   ${date.hour}:${date.minute}:${date.second}',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 17),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               )
                             ],
                           ),

@@ -1,3 +1,5 @@
+// Pop-up which shows visitor's info when correct code is entered
+
 import 'dart:ui';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/alert.dart';
@@ -27,15 +29,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logDailyHelperVisit(g.society, widget.id, 'exit');
-      } catch (e) {
-        print(e.toString());
-      }
-      setState(() => loading = false);
-    } else {
-      try {
-        setState(() => loading = true);
-        await Database().logPreApproval(g.society, widget.id, 'exitTime');
-        showToast(context, 'success', 'Success!', 'Log created successfully');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -48,6 +42,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logDailyHelperVisit(g.society, widget.id, 'entry');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -56,7 +51,7 @@ class _CodeApprovalState extends State<CodeApproval> {
       try {
         setState(() => loading = true);
         await Database().logPreApproval(g.society, widget.id, 'entryTime');
-        showToast(context, 'success', 'Success!', 'Log created successfully');
+        showToast(context, 'success', 'Success!', 'Log was made successfully');
       } catch (e) {
         print(e.toString());
       }
@@ -89,13 +84,17 @@ class _CodeApprovalState extends State<CodeApproval> {
                           Text(
                             '${widget.name} . ${widget.purpose}',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 10),
                           Text(
                             '${widget.type}',
                             style: GoogleFonts.sourceSansPro(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 20),
                           Row(
@@ -125,8 +124,9 @@ class _CodeApprovalState extends State<CodeApproval> {
                                       Text(
                                         'Entry',
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
                                     ],
                                   ),
@@ -137,38 +137,42 @@ class _CodeApprovalState extends State<CodeApproval> {
                                 width: 1,
                                 height: 25,
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: TextButton(
-                                  onPressed: () async {
-                                    bool confirmation =
-                                        await showConfirmationDialog(
-                                            context,
-                                            'Alert!',
-                                            'Are you sure you want to make this entry?');
-                                    if (confirmation) {
-                                      await handleExit();
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.logout,
-                                        color: Colors.grey,
+                              widget.type == "Daily Helper"
+                                  ? Expanded(
+                                      flex: 1,
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          bool confirmation =
+                                              await showConfirmationDialog(
+                                                  context,
+                                                  'Alert!',
+                                                  'Are you sure you want to make this entry?');
+                                          if (confirmation) {
+                                            await handleExit();
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.logout,
+                                              color: Colors.grey,
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Exit',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Exit',
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : SizedBox(),
                               Container(
                                 color: Colors.grey[400],
                                 width: 1,
@@ -191,8 +195,9 @@ class _CodeApprovalState extends State<CodeApproval> {
                                       Text(
                                         'Cancel',
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       )
                                     ],
                                   ),

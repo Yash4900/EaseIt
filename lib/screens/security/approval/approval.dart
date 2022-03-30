@@ -1,7 +1,7 @@
 import 'package:ease_it/screens/security/approval/add_daily_visitor.dart';
 import 'package:ease_it/screens/security/approval/approve_visitor.dart';
-import 'package:ease_it/screens/security/approval/past_approvals.dart';
-import 'package:ease_it/screens/security/approval/recent_approvals.dart';
+import 'package:ease_it/screens/security/approval/approvals_list.dart';
+import 'package:ease_it/screens/security/approval/pre_approvals_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,62 +53,58 @@ class _ApprovalState extends State<Approval> {
                 ),
               ),
               TextButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(23),
-                        side: BorderSide(
-                          color: Color(0xff037DD6),
-                          width: 2,
-                        ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(23),
+                      side: BorderSide(
+                        color: Color(0xff037DD6),
+                        width: 2,
                       ),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ApproveVisitor()));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    child: Row(children: [
-                      Icon(
-                        Icons.how_to_reg,
-                        color: Color(0xff037DD6),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Approve visitor',
-                        style: TextStyle(
-                            color: Color(0xff037DD6),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ]),
-                  ))
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ApproveVisitor()));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                  child: Text(
+                    'Approve visitor',
+                    style: TextStyle(
+                        color: Color(0xff037DD6), fontWeight: FontWeight.bold),
+                  ),
+                ),
+              )
             ],
           ),
           SizedBox(height: 15),
           TabBar(
               indicatorColor: Color(0xff037DD6),
               labelColor: Colors.black,
+              unselectedLabelColor: Colors.black38,
               indicatorWeight: 2.5,
               labelStyle: GoogleFonts.sourceSansPro(
-                  fontSize: 16, fontWeight: FontWeight.w600),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
               tabs: [
                 Tab(
-                  text: 'Today',
+                  text: 'Approvals',
                 ),
                 Tab(
-                  text: 'Past',
-                )
+                  text: 'Pre Approvals',
+                ),
               ]),
           Expanded(
             child: TabBarView(children: [
-              RecentApproval(),
-              PastApproval(),
+              ApprovalsList(),
+              PreApprovals(),
             ]),
           ),
         ]),

@@ -33,75 +33,83 @@ class _AllotmentsState extends State<Allotments> {
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 2),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[200],
-                            blurRadius: 3.0,
-                            spreadRadius: 1.0,
-                          ),
-                        ],
+                        border: Border(
+                          bottom: BorderSide(color: Colors.grey[300]),
+                        ),
                       ),
                       child: ListTile(
-                        onTap: () {
-                          Navigator.push(
+                          onTap: () {
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ParkingStatus(
-                                      ds.id,
-                                      ds['owner'],
-                                      ds['phoneNum'],
-                                      ds['licensePlateNo'],
-                                      ds['parkingSpace'],
-                                      ds['timestamp'].toDate())));
-                        },
-                        title: Text(
-                          ds['licensePlateNo'],
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  color: Colors.black,
-                                  size: 20,
+                                builder: (context) => ParkingStatus(
+                                  ds.id,
+                                  ds['owner'],
+                                  ds['phoneNum'],
+                                  ds['licensePlateNo'],
+                                  ds['parkingSpace'],
+                                  ds['timestamp'].toDate(),
                                 ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Owner',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                )
-                              ],
-                            ),
+                              ),
+                            );
+                          },
+                          title: Row(children: [
                             Text(
-                              '${ds['owner']}',
+                              ds['licensePlateNo'],
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black54,
-                                  fontSize: 15),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ],
-                        ),
-                        trailing: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                          decoration: BoxDecoration(
-                              color: Color(0xff037DD6).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text(
-                            ds['parkingSpace'],
-                            style: TextStyle(
-                                color: Color(0xff037DD6),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
+                            SizedBox(width: 10),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 2,
+                                horizontal: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xff037DD6).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                ds['parkingSpace'],
+                                style: TextStyle(
+                                  color: Color(0xff037DD6),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ]),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ds['owner'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                '+91-${ds['phoneNum']}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black54,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
+                          trailing: DateTime.now().isAfter(ds['timestamp']
+                                  .toDate()
+                                  .add(Duration(hours: ds['stayTime'])))
+                              ? Icon(
+                                  Icons.warning,
+                                  color: Color(0xffcb6f10).withOpacity(0.7),
+                                )
+                              : null),
                     );
                   })
               : Center(

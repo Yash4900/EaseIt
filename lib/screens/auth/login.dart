@@ -120,13 +120,17 @@ class _LoginPageState extends State<LoginPage> {
                                 emailController.text, passwordController.text);
                             setState(() => loading = false);
                             if (result == null) {
-                              showMessageDialog(context, "Oops!",
-                                  "Could not Log In with those credentials. Make sure you have an account and entered valid credentials.");
+                              showMessageDialog(context, "Oops!", [
+                                Text(
+                                    "Could not Log In with those credentials. Make sure you have an account and entered valid credentials.")
+                              ]);
                             }
                           } else {
                             setState(() => loading = false);
-                            showMessageDialog(context, "Oops!",
-                                "User not found for the selected society! Please register into your society.");
+                            showMessageDialog(context, "Oops!", [
+                              Text(
+                                  "User not found for the selected society! Please register into your society.")
+                            ]);
                           }
                         }
                       },

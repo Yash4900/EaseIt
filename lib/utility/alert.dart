@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-Future<void> showMessageDialog(BuildContext context, String title,
-    [String message, List<Widget> content]) async {
+Future<void> showMessageDialog(
+    BuildContext context, String title, List<Widget> content) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -17,18 +17,7 @@ Future<void> showMessageDialog(BuildContext context, String title,
           ),
         ),
         content: SingleChildScrollView(
-          child: ListBody(
-            children: content != null
-                ? content
-                : <Widget>[
-                    Center(
-                      child: Text(
-                        message,
-                        style: TextStyle(color: Colors.grey[600], fontSize: 15),
-                      ),
-                    ),
-                  ],
-          ),
+          child: ListBody(children: content),
         ),
         actions: <Widget>[
           Center(

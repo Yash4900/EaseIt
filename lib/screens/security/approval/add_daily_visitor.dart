@@ -1,12 +1,22 @@
+// Add Daily Helper
+
 import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/flat_data.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/pick_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'dart:io';
+import 'package:collection/collection.dart';
+
+import 'package:image_cropper/image_cropper.dart';
+
+typedef void MapCallback(Map<String, String> val);
 
 class AddDailyVisitor extends StatefulWidget {
   @override
@@ -39,11 +49,24 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _flatController = TextEditingController();
   TextEditingController _wingController = TextEditingController();
+  Map<String, String> flat = {};
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   String dropDownValue = "Maid";
+  String errorText = "";
+  List<Map<String, String>> flatsNew = [];
   List<String> flats = [];
   File _profilePicture;
+
+  bool alreadyPresent(
+      List<Map<String, String>> flats, Map<String, String> flat) {
+    for (Map<String, String> i in flats) {
+      if (DeepCollectionEquality().equals(i, flat)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   int generateCode() {
     var random = Random();
@@ -55,43 +78,46 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
   }
 
   // Dialog to select flat
-  Future<String> showFlatDialog() {
+  Future<Map<String, String>> showFlatDialog() {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Choose Flat'),
         content: Container(
-          child: Row(
-            children: [
-              Flexible(
-                flex: 1,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Wing',
-                    hintStyle: TextStyle(fontSize: 16),
-                  ),
-                  controller: _wingController,
-                ),
-              ),
-              SizedBox(width: 10),
-              Flexible(
-                flex: 1,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Flat No',
-                    hintStyle: TextStyle(fontSize: 16),
-                  ),
-                  controller: _flatController,
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-            ],
+          child: DailyVisitorFlatAcceptance(
+            callback: (val) => setState(() => flat = val),
           ),
+          // child: Row(
+          //   children: [
+          //     Flexible(
+          //       flex: 1,
+          //       child: TextFormField(
+          //         decoration: InputDecoration(
+          //           hintText: 'Wing',
+          //           hintStyle: TextStyle(fontSize: 16),
+          //         ),
+          //         controller: _wingController,
+          //       ),
+          //     ),
+          //     SizedBox(width: 10),
+          //     Flexible(
+          //       flex: 1,
+          //       child: TextFormField(
+          //         decoration: InputDecoration(
+          //           hintText: 'Flat No',
+          //           hintStyle: TextStyle(fontSize: 16),
+          //         ),
+          //         controller: _flatController,
+          //         keyboardType: TextInputType.number,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop("");
+              Navigator.of(context).pop(<String, String>{});
             },
             style: ButtonStyle(
               backgroundColor:
@@ -113,11 +139,11 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
           ),
           TextButton(
             onPressed: () {
-              if (_wingController.text == "" || _flatController.text == "") {
+              print("Flat Value is: $flat");
+              if (flat.isEmpty) {
                 Navigator.of(context).pop("");
               } else {
-                Navigator.of(context)
-                    .pop(_wingController.text + "-" + _flatController.text);
+                Navigator.of(context).pop(flat);
               }
             },
             style: ButtonStyle(
@@ -190,7 +216,22 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      _profilePicture = await PickImage().showPicker(context);
+                      _profilePicture =
+                          await PickImage().showPicker(context, 50);
+                      if (_profilePicture != null) {
+                        _profilePicture = await ImageCropper.cropImage(
+                          sourcePath: _profilePicture.path,
+                          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+                          androidUiSettings: AndroidUiSettings(
+                            toolbarTitle: 'Crop Image',
+                            toolbarColor: Colors.black,
+                            activeControlsWidgetColor: Color(0xff037DD6),
+                            toolbarWidgetColor: Colors.white,
+                            initAspectRatio: CropAspectRatioPreset.original,
+                            lockAspectRatio: true,
+                          ),
+                        );
+                      }
                       setState(() {});
                     },
                     child: Container(
@@ -256,11 +297,18 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                           SizedBox(width: 10),
                           InkWell(
                             onTap: () async {
-                              String flat = await showFlatDialog();
-                              if (flat != "") {
-                                flats.add(flat);
+                              Map<String, String> flatValueReceived =
+                                  await showFlatDialog();
+                              if (flatValueReceived.isNotEmpty) {
+                                print("Flat Value received:$flatValueReceived");
+                                if (!alreadyPresent(
+                                    flatsNew, flatValueReceived))
+                                  flatsNew.add(
+                                      <String, String>{...flatValueReceived});
                                 setState(() {});
                               }
+                              print("FlatsNew: $flatsNew");
+                              flat.clear();
                               _wingController.clear();
                               _flatController.clear();
                             },
@@ -285,38 +333,58 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                         ]),
                         SizedBox(height: 5),
                         Wrap(
-                          children: flats
-                              .map(
-                                (flat) => InkWell(
-                                  onTap: () {
-                                    flats.remove(flat);
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.all(5),
-                                    padding: EdgeInsets.symmetric(vertical: 5),
-                                    width: 90,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 15),
-                                        Text(flat),
-                                        SizedBox(width: 5),
-                                        Icon(
-                                          Icons.clear,
-                                          size: 15,
-                                        ),
-                                      ],
-                                    ),
+                          children: flatsNew.map((flat) {
+                            print("FlatsNew: $flatsNew");
+                            print(flat);
+                            return InkWell(
+                              onTap: () {
+                                flatsNew.remove(flat);
+                                setState(() {});
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                // constraints: BoxConstraints(
+                                //   maxWidth: 300,
+                                // ),
+                                //width: 90,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
                                   ),
                                 ),
-                              )
-                              .toList(),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(width: 15),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 1,
+                                      ),
+                                      child: Text(FlatDataOperations(
+                                              hierarchy: g.hierarchy,
+                                              flatNum: flat)
+                                          .returnStringFormOfFlatMap()),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 3, right: 15),
+                                      child: Icon(
+                                        Icons.clear,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        Text(
+                          errorText,
+                          style: TextStyle(color: Colors.red),
                         ),
                         SizedBox(width: 20),
                         Row(children: [
@@ -347,58 +415,67 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                bool confirmation = await showConfirmationDialog(
-                                    context,
-                                    "Alert!",
-                                    "Are you sure you want to add to daily helper?");
-                                if (confirmation) {
-                                  setState(() => loading = true);
-                                  String id = DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString();
-                                  String imageUrl = _profilePicture == null
-                                      ? ""
-                                      : await Storage().storeImage(
-                                          'dailyHelpers', id, _profilePicture);
-                                  int code = generateCode();
-                                  await Database()
-                                      .addDailyHelper(
-                                          g.society,
-                                          _nameController.text,
-                                          _phoneController.text,
-                                          flats,
-                                          imageUrl,
-                                          dropDownValue,
-                                          code)
-                                      .then((value) {
-                                    setState(() => loading = false);
-                                    showMessageDialog(
-                                        context,
-                                        'Daily visitor added successfully!',
-                                        '', [
-                                      Center(
-                                        child: Image.asset(
-                                          'assets/success.png',
-                                          width: 230,
+                                if (flatsNew.isNotEmpty) {
+                                  setState(() {
+                                    errorText = "";
+                                  });
+                                  bool confirmation = await showConfirmationDialog(
+                                      context,
+                                      "Alert!",
+                                      "Are you sure you want to add to daily helper?");
+                                  if (confirmation) {
+                                    setState(() => loading = true);
+                                    String id = DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString();
+                                    String imageUrl = _profilePicture == null
+                                        ? ""
+                                        : await Storage().storeImage(
+                                            'dailyHelpers',
+                                            id,
+                                            _profilePicture);
+                                    int code = generateCode();
+                                    await Database()
+                                        .addDailyHelper(
+                                            g.society,
+                                            _nameController.text,
+                                            _phoneController.text,
+                                            flatsNew,
+                                            imageUrl,
+                                            dropDownValue,
+                                            code)
+                                        .then((value) {
+                                      setState(() => loading = false);
+                                      showMessageDialog(context,
+                                          'Daily visitor added successfully!', [
+                                        Center(
+                                          child: Image.asset(
+                                            'assets/success.png',
+                                            width: 230,
+                                          ),
                                         ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          'Approval code for the visitor is',
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontSize: 16),
+                                        Center(
+                                          child: Text(
+                                            'Approval code for the visitor is',
+                                            style: TextStyle(
+                                                color: Colors.black45,
+                                                fontSize: 16),
+                                          ),
                                         ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          code.toString(),
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    ]);
+                                        Center(
+                                          child: Text(
+                                            code.toString(),
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      ]);
+                                    });
+                                  }
+                                } else {
+                                  setState(() {
+                                    errorText = "Add Atleast 1 flat";
                                   });
                                 }
                               }
@@ -431,5 +508,131 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
               ),
       ),
     );
+  }
+}
+
+class DailyVisitorFlatAcceptance extends StatefulWidget {
+  MapCallback callback;
+
+  DailyVisitorFlatAcceptance({Key key, @required this.callback})
+      : super(key: key);
+
+  @override
+  State<DailyVisitorFlatAcceptance> createState() =>
+      _DailyVisitorFlatAcceptanceState();
+}
+
+class _DailyVisitorFlatAcceptanceState
+    extends State<DailyVisitorFlatAcceptance> {
+  FlatData flatVar = FlatData();
+  Globals g = Globals();
+  bool loading = false;
+  String errorText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getSocietyStructure(g.society);
+  }
+
+  void _update() {
+    setState(() {});
+    if (!flatVar.flatValue.contains(null)) {
+      flatVar.createMapFromListForFlat();
+      widget.callback(flatVar.flatNum);
+    }
+  }
+
+  void getSocietyStructure(String societyValue) async {
+    setState(() => loading = true);
+    //print(List<String>.from(societyStructureWidget[societyStructureWidget["Hierarchy"][0]]));
+    //Empty all previous data and set new data
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print("Set error text to null");
+    errorText = "";
+    //print("Clearing the Widget form that I have created");
+    flatVar.clearFlatWidgetForm();
+    //print("Clearing the flat values map");
+    flatVar.clearFlatNum();
+    //print("Clearing the flat value list");
+    flatVar.clearFlatValue();
+    //print("Setting current level");
+    flatVar.setCurrentLevel = 1;
+    //print("Setting widget flat form to empty");
+    flatVar.setFlatWidgetForm = [];
+    //print("Setting all update functions to null");
+    flatVar.setAllUpdateFunctions = [];
+
+    //get society info
+    Map<dynamic, dynamic> tempSnapData =
+        await Database().getSocietyInfo(societyValue);
+    //print("The data: $tempSnapData");
+
+    //set structure
+    //print("Setting the structure to incoming data");
+    flatVar.setStructure = Map<String, dynamic>.from(tempSnapData);
+    //print("Setting the total levels of hierarchy");
+    flatVar.setTotalLevels =
+        tempSnapData["Hierarchy"].length; // set total levels
+    //print("Flat value list to null");
+    flatVar.setFlatValue =
+        List<String>.filled(flatVar.totalLevels, null, growable: true);
+    //print("Adding initial dropdown to the flatWidgetForm that is the list");
+    flatVar.addInFlatWidgetForm(CustomDropDown(
+      options: flatVar.getILevelInHierarchy(flatVar.currentLevel),
+      typeText: flatVar.getTypeText(flatVar.currentLevel),
+      flatVariable: flatVar,
+      update: _update,
+    ));
+    //print(
+    //    "%%%%%%%%%%%%%%%%%%%%% getSocietyStructure is called %%%%%%%%%%%%%%%%%%%%%");
+    //print(societyStructureWidget);
+    setState(() => loading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loading
+        ? Loading()
+        : Container(
+            child: Column(
+            mainAxisSize: MainAxisSize.min,
+            //physics: ClampingScrollPhysics(),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(flatVar.flatWidgetForm.length, (i) {
+              //return flatVar.flatWidgetForm[i];
+              if ((i + 1) % 2 == 1) {
+                if (i + 1 < flatVar.flatWidgetForm.length) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: flatVar.flatWidgetForm[i],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: flatVar.flatWidgetForm[i + 1],
+                      ),
+                    ],
+                  );
+                } else {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: flatVar.flatWidgetForm[i],
+                      ),
+                    ],
+                  );
+                }
+              } else {
+                return SizedBox();
+              }
+            }),
+          ));
   }
 }
