@@ -16,7 +16,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
   bool visibilityPaid = false;
   Globals g = Globals();
   final db = FirebaseFirestore.instance;
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,8 +52,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                 // scrollDirection: Axis.vertical,
                 // shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
-                  if(doc["status"] == "Pending" && flatNoMap["Flat"].toString() == Globals().flatNo && flatNoMap["Wing"].toString() == Globals().wing){                  
+                  var flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
+                  if(doc["status"] == "Pending"  && flatNoMap["Flat"].toString() == g.flat["Flat"].toString() && flatNoMap["Wing"].toString() == g.flat["Wing"].toString()){                  
                     return TransactionBill(
                       name: doc["name"],
                       wing: flatNoMap["Wing"].toString(),
@@ -97,8 +97,9 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                 // scrollDirection: Axis.vertical,
                 // shrinkWrap: true,
                 children: snapshot.data.docs.map((doc) {
-                  final flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
-                  if(doc["status"] == "Paid" && flatNoMap["Flat"].toString() == Globals().flatNo && flatNoMap["Wing"].toString() == Globals().wing){                  
+                  var flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
+                  print(doc["status"] + " hhh " + flatNoMap["Flat"].toString() + " "+ g.flat["Flat"].toString());
+                  if(doc["status"] == "Paid" && flatNoMap["Flat"].toString() == g.flat["Flat"].toString() && flatNoMap["Wing"].toString() == g.flat["Wing"].toString()){                  
                     return TransactionBill(
                       name: doc["name"],
                       wing: flatNoMap["Wing"].toString(),
@@ -107,7 +108,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                       transactionDate: "",
                       month: doc["month"],
                       status: doc["status"],
-                      payable: false
+                      payable: false                      
                     );
                   }
                   else
