@@ -157,7 +157,7 @@ class _ApprovalsListState extends State<ApprovalsList> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey[500],
-                                      fontSize: 10,
+                                      fontSize: 15,
                                     ),
                                   ),
                                   Row(children: [
