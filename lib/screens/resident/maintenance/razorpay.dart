@@ -3,23 +3,22 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:ease_it/utility/flat_data_operations.dart';
 
 class RazorPay extends StatefulWidget {
   final String month, billAmount;
-  RazorPay({this.month, this.billAmount});
+  RazorPay({this.month, this.billAmount });
   @override
   _RazorPayState createState() => _RazorPayState();
 }
 
 class _RazorPayState extends State<RazorPay> {
   Globals g = Globals();
-  Razorpay _razorpay;
+  Razorpay _razorpay;  
 
   @override
   void initState() {
     super.initState();
-    _razorpay = new Razorpay();
+    _razorpay = new Razorpay();  
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -34,32 +33,40 @@ class _RazorPayState extends State<RazorPay> {
   void openCheckOut() {
     var options = {
       'key': 'rzp_test_x6c7Awv9gO6JkK',
-      'amount': num.parse(widget.billAmount) *
-          100, //in the smallest currency sub-unit.
+      'amount': num.parse(widget.billAmount)*100, //in the smallest currency sub-unit.
       'name': 'Ease It',
       // 'order_id': 'order_EMBFqjDHEEn80l', // Generate order_id using Orders API
-      'description':
-          'Maintenance Bill of ${g.fname} ${g.lname}, residing in ${g.society} ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: g.flat).returnStringFormOfFlatMap()} for ${widget.month}',
+      'description': 'Maintenance Bill of ${g.fname} ${g.lname}, residing in ${g.society} ${g.flat["Wing"]}-${g.flat["Flat"]} for ${widget.month}',
       'timeout': 180, // in seconds
-      'prefill': {'contact': g.phoneNum, 'email': g.email}
+      'prefill': {
+        'contact': g.phoneNum,
+        'email': g.email
+      }
     };
     try {
       _razorpay.open(options);
-    } catch (e) {
+    }
+    catch(e) {
       debugPrint(e.toString());
     }
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Database()
-        .markMaintenanceAsPaid(
-            g.society, g.wing, g.flatNo, widget.month, widget.billAmount)
-        .then((value) {
-      showToast(context, "success", "Success",
-          "Maintenance for ${widget.month} Paid Successfully");
-      Navigator.pop(context);
+      .markMaintenanceAsPaid(
+        g.society,
+        g.flat["Wing"],
+        g.flat["Flat"],
+        widget.month,
+        widget.billAmount
+        )
+      .then((value) {
+    showToast(context, "success", "Success",
+        "Maintenance for ${widget.month} Paid Successfully");
+    Navigator.pop(context);
     }).catchError((onError) {
-      showToast(context, "error", "Error", onError.toString());
+      showToast(
+          context, "error", "Error", onError.toString());
     });
   }
 
@@ -121,30 +128,34 @@ class _RazorPayState extends State<RazorPay> {
               children: [
                 Text(
                   'Month',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
                   widget.month,
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, fontSize: 14),
                 ),
                 SizedBox(height: 20),
                 Text(
                   'Bill Amount',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
                   widget.billAmount,
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal, fontSize: 14),
                 ),
                 SizedBox(height: 50),
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      openCheckOut();
+                      openCheckOut();                             
                     },
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 3),
                       child: Text(
                         'Pay',
                         style: TextStyle(
@@ -154,9 +165,10 @@ class _RazorPayState extends State<RazorPay> {
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff037DD6)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color(0xff037DD6)),
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -165,10 +177,10 @@ class _RazorPayState extends State<RazorPay> {
                   ),
                 )
               ],
-            ),
+            ),                  
           ],
         ),
       ),
     );
   }
-}
+} 
