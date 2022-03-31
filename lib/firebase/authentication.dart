@@ -38,7 +38,7 @@ class Auth {
 
       // Store new user's data in firestore database
       await Database().createUser(society, user.uid, fname, lname, email,
-          phoneNum, role, flat, wing, flatNo);
+          phoneNum, role, "Owner", flat, wing, flatNo);
       return user;
     } catch (e) {
       print(e.toString());

@@ -15,25 +15,22 @@ class SecurityGuardInfo extends StatefulWidget {
 }
 
 class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
-  Future<Widget> _securityGuardInfoWidget;
+  //Future<Widget> _securityGuardInfoWidget;
   Globals g = Globals();
+  bool loading = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _securityGuardInfoWidget = getListOfSecurityGuards();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _securityGuardInfoWidget = getListOfSecurityGuards();
+  // }
 
-  void refreshPage() {
-    setState(() {
-      _securityGuardInfoWidget = getListOfSecurityGuards();
-    });
-  }
-
-  Future<Widget> getListOfSecurityGuards() async {
+  Widget getListOfSecurityGuards(QuerySnapshot listOfSG) {
     Widget toDisplay;
-    QuerySnapshot listOfSG =
-        await Database().getSecurityGuardsOfSociety(g.society);
+    // QuerySnapshot listOfSG =
+    //     await Database().getSecurityGuardsOfSociety(g.society);
+    //print(listOfSG);
+    //print(listOfSG.docs[0].data());
     if (listOfSG.docs.length == 0) {
       toDisplay = Padding(
         padding: const EdgeInsets.symmetric(
@@ -64,6 +61,7 @@ class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
     } else {
       List<Widget> temp = [];
       for (int i = 0; i < listOfSG.docs.length; i++) {
+        print(listOfSG.docs[i]["email"]);
         temp.add(
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -78,19 +76,14 @@ class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
           ),
         );
       }
-      toDisplay = Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 20,
-        ),
-        child: RefreshIndicator(
-          onRefresh: refreshPage,
-          child: ListView(
-            children: temp,
-          ),
-        ),
+      print(temp);
+      print("toDispla else y");
+      toDisplay = ListView(
+        children: temp,
       );
+      print("Complete");
     }
+    print("In function: $toDisplay");
     return toDisplay;
   }
 
@@ -112,32 +105,38 @@ class _SecurityGuardInfoState extends State<SecurityGuardInfo> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          child: FutureBuilder(
-            future: _securityGuardInfoWidget,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data;
-              } else if (snapshot.hasError) {
-                return Text(
-                  "Could not load data",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              } else {
-                return Loading();
-              }
-            },
-          ),
-        ),
-      ),
+      body: loading
+          ? Loading()
+          : SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                child: StreamBuilder(
+                  stream: Database().getSecurityGuardsOfSociety(g.society),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      Widget tempWidget =
+                          getListOfSecurityGuards(snapshot.data);
+                      return tempWidget;
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Loading();
+                    } else {
+                      print(snapshot.data);
+                      return Text(
+                        "Could not load data",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
     );
   }
 }
@@ -156,6 +155,8 @@ class SecurityGuardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Building user card");
+    print("username: $userName");
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10,
@@ -177,7 +178,7 @@ class SecurityGuardCard extends StatelessWidget {
         ],
       ),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
