@@ -149,30 +149,36 @@ class PendingRequestCard extends StatefulWidget {
 
 class _PendingRequestCardState extends State<PendingRequestCard> {
   Globals g = Globals();
-  List<String> dropDownItemsRoles = [];
-  String selectedRole;
+  // List<String> dropDownItemsRoles = [];
+  // String selectedRole;
+  String roleToCheckTheStreamFor;
 
-  void setDropDownListAndValue() async {
-    bool result = await Database().isOwnerPresent(
-        g.society, Map<String, String>.from(widget.singleUserData["flat"]));
-    print("Result obtaine is: $result");
-    if (result) {
-      setState(() {
-        dropDownItemsRoles = ["Owner", "Resident", "Tenant"];
-        selectedRole = dropDownItemsRoles[0];
-      });
-    } else {
-      setState(() {
-        dropDownItemsRoles = ["Owner"];
-        selectedRole = dropDownItemsRoles[0];
-      });
-    }
-  }
+  // void setDropDownListAndValue() async {
+  //   bool result = await Database().isOwnerPresent(
+  //       g.society, Map<String, String>.from(widget.singleUserData["flat"]));
+  //   print("Result obtaine is: $result");
+  //   if (result) {
+  //     setState(() {
+  //       dropDownItemsRoles = ["Owner", "Resident", "Tenant"];
+  //       selectedRole = dropDownItemsRoles[0];
+  //     });
+  //   } else {
+  //     setState(() {
+  //       dropDownItemsRoles = ["Owner"];
+  //       selectedRole = dropDownItemsRoles[0];
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    setDropDownListAndValue();
+    roleToCheckTheStreamFor = widget.singleUserData["homeRole"] == "Owner"
+        ? "Owner"
+        : widget.singleUserData["homeRole"] == "Resident"
+            ? "Tenant"
+            : "Resident";
+    //setDropDownListAndValue();
   }
 
   @override
@@ -292,37 +298,21 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                       ),
                       Padding(
                         padding: EdgeInsets.all(3),
-                        child: Padding(
-                          padding: EdgeInsets.all(1),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Select Type",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              DropdownButton(
-                                value: selectedRole,
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                items: dropDownItemsRoles.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(
-                                      items,
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    selectedRole = value;
-                                  });
-                                },
-                              ),
-                            ],
+                        child: Text(
+                          (widget.singleUserData["role"]).toString(),
+                          style: TextStyle(
+                            color: Color(0xff707070),
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(3),
+                        child: Text(
+                          (widget.singleUserData["homeRole"]).toString(),
+                          style: TextStyle(
+                            color: Color(0xff707070),
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -365,43 +355,90 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: TextButton(
-                      onPressed: () async {
-                        bool result = await Database().updateStatus(
-                          g.society,
-                          widget.singleUserData["email"],
-                          "accepted",
-                          selectedRole,
-                        );
-                        if (result) {
-                          showToast(context, "success", "Success",
-                              "Request Accepted");
-                        } else {
-                          showToast(context, "error", "Error",
-                              "Oops! Something went wrong");
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle_outline_outlined,
-                            color: Colors.greenAccent,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "Accept",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.greenAccent,
+                  StreamBuilder<QuerySnapshot>(
+                    stream: Database().getStreamOfRoleOfParticularUser(
+                      g.society,
+                      Map<String, String>.from(widget.singleUserData["flat"]),
+                      roleToCheckTheStreamFor,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        return Expanded(
+                          flex: 1,
+                          child: TextButton(
+                            onPressed: widget.singleUserData["role"] == "Owner"
+                                ? snapshot.data.docs.length == 1
+                                    ? null
+                                    : () async {
+                                        bool result =
+                                            await Database().updateStatus(
+                                          g.society,
+                                          widget.singleUserData["email"],
+                                          "accepted",
+                                        );
+                                        if (result) {
+                                          showToast(context, "success",
+                                              "Success", "Request Accepted");
+                                        } else {
+                                          showToast(context, "error", "Error",
+                                              "Oops! Something went wrong");
+                                        }
+                                      }
+                                : snapshot.data.docs.length >= 1
+                                    ? null
+                                    : () async {
+                                        bool result =
+                                            await Database().updateStatus(
+                                          g.society,
+                                          widget.singleUserData["email"],
+                                          "accepted",
+                                        );
+                                        if (result) {
+                                          showToast(context, "success",
+                                              "Success", "Request Accepted");
+                                        } else {
+                                          showToast(context, "error", "Error",
+                                              "Oops! Something went wrong");
+                                        }
+                                      },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline_outlined,
+                                  color: widget.singleUserData["homeRole"] ==
+                                          "Owner"
+                                      ? snapshot.data.docs.length == 1
+                                          ? Colors.grey[500]
+                                          : Colors.greenAccent
+                                      : snapshot.data.docs.length >= 1
+                                          ? Colors.grey[500]
+                                          : Colors.greenAccent,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "Accept",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: widget.singleUserData["homeRole"] ==
+                                            "Owner"
+                                        ? snapshot.data.docs.length == 1
+                                            ? Colors.grey[500]
+                                            : Colors.greenAccent
+                                        : snapshot.data.docs.length >= 1
+                                            ? Colors.grey[500]
+                                            : Colors.greenAccent,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
                   ),
                   VerticalDivider(
                     color: Color(0xffa0a0a0),
@@ -414,7 +451,6 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                           g.society,
                           widget.singleUserData["email"],
                           "rejected",
-                          selectedRole,
                         );
                         if (result) {
                           showToast(context, "success", "Success",

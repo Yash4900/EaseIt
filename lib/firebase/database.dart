@@ -53,14 +53,17 @@ class Database {
   }
 
   Future createUser(String society, String uid, String fname, String lname,
-      String email, String phoneNum, String role, String homeRole,
-      [Map<dynamic, dynamic> flat, String wing, String flatNo]) async {
+      String email, String phoneNum, String role,
+      [String homeRole,
+      Map<dynamic, dynamic> flat,
+      String wing,
+      String flatNo]) async {
     // Generate unique token for device to send notification
     String token = await FirebaseMessaging.instance.getToken();
 
     FirebaseMessaging.instance.subscribeToTopic('general');
     try {
-      if (role == 'Resident' || role == 'Tenant') {
+      if (role == 'Resident') {
         await _firestore
             .collection(society)
             .doc('users')
@@ -1331,8 +1334,7 @@ class Database {
     return false;
   }
 
-  Future<bool> updateStatus(String society, String email, String status,
-      String homeResidentType) async {
+  Future<bool> updateStatus(String society, String email, String status) async {
     try {
       await _firestore
           .collection(society)
@@ -1342,8 +1344,7 @@ class Database {
           .get()
           .then((val) {
         val.docs.forEach((doc) {
-          doc.reference
-              .update({"status": status, "homeRole": homeResidentType});
+          doc.reference.update({"status": status});
         });
       });
       return true;
@@ -1374,5 +1375,47 @@ class Database {
       print(e.toString());
     }
     return false;
+  }
+
+  Future<bool> isAcceptedParticularHomeRoleForFlatPresent(String society,
+      Map<String, String> flat, String homeRoleToBeFound) async {
+    try {
+      QuerySnapshot userOfParticularFlat = await _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flat)
+          .where('status', isEqualTo: "accepted")
+          .where('homeRole', isEqualTo: homeRoleToBeFound)
+          .get();
+      print(userOfParticularFlat.docs);
+      if (userOfParticularFlat.docs.length >= 1) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+  Stream<QuerySnapshot> getStreamOfRoleOfParticularUser(
+    String society,
+    Map<String, String> flat,
+    String roleToCheck,
+  ) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('flat', isEqualTo: flat)
+          .where('homeRole', isEqualTo: roleToCheck)
+          .where('status', isEqualTo: "accepted")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 }

@@ -15,6 +15,7 @@ class Globals {
   List<String> _hierarchy;
   dynamic _structure;
   String _status;
+  String _homeRole;
 
   static final Globals _instance = Globals._internal();
 
@@ -37,6 +38,7 @@ class Globals {
   List<String> get hierarchy => _hierarchy;
   dynamic get structure => _structure;
   String get status => _status;
+  String get homeRole => _homeRole;
 
   //   Setters
   set setSociety(String society) => _society = society;
@@ -53,4 +55,5 @@ class Globals {
   set setHierarchy(List<String> hierarchy) => _hierarchy = hierarchy;
   set setStructure(dynamic structure) => _structure = structure;
   set setStatus(String status) => _status = status;
+  set setHomeRole(String homeRole) => _homeRole = homeRole;
 }
