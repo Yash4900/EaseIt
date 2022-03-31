@@ -1,7 +1,9 @@
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ease_it/utility/globals.dart';
 
 class VisitorProfile extends StatefulWidget {
   final dynamic visitorData;
@@ -12,6 +14,7 @@ class VisitorProfile extends StatefulWidget {
 
 class _VisitorProfileState extends State<VisitorProfile> {
   List<dynamic> flatList;
+  Globals g = Globals();
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +104,15 @@ class _VisitorProfileState extends State<VisitorProfile> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: flatList
-                            .map((e) =>
-                                customOutlinedButton(e, Icons.call, () => {}))
+                            .map((e) => customOutlinedButton(
+                                FlatDataOperations(
+                                  hierarchy: g.hierarchy,
+                                  flatNum: Map<String, String>.from(
+                                    e,
+                                  ),
+                                ).returnStringFormOfFlatMap(),
+                                Icons.call,
+                                () => {}))
                             .toList(),
                       ),
                     )

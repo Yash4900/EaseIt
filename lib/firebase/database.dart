@@ -53,7 +53,7 @@ class Database {
   }
 
   Future createUser(String society, String uid, String fname, String lname,
-      String email, String phoneNum, String role,
+      String email, String phoneNum, String role, String homeRole,
       [Map<dynamic, dynamic> flat, String wing, String flatNo]) async {
     // Generate unique token for device to send notification
     String token = await FirebaseMessaging.instance.getToken();
@@ -75,6 +75,7 @@ class Database {
           'role': role,
           'flat': flat,
           'wing': wing,
+          'homeRole': homeRole,
           'flatNo': flatNo,
           'status': 'pending',
           'token': token,
@@ -1251,14 +1252,14 @@ class Database {
     return null;
   }
 
-  Future<QuerySnapshot> getSecurityGuardsOfSociety(String society) async {
+  Stream<QuerySnapshot> getSecurityGuardsOfSociety(String society) {
     try {
-      return await _firestore
+      return _firestore
           .collection(society)
           .doc('users')
           .collection('User')
           .where('role', isEqualTo: "Security Guard")
-          .get();
+          .snapshots();
     } catch (e) {
       print(e.toString());
     }
