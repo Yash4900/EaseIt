@@ -159,7 +159,7 @@ class _PreApprovalsState extends State<PreApprovals> {
                                 children: [
                                   SizedBox(height: 5),
                                   Text(
-                                    '${ds['purpose']} . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(g.flat)).returnStringFormOfFlatMap()}',
+                                    '${ds['purpose']} . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey[500],

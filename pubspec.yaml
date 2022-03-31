@@ -59,7 +59,6 @@ dependencies:
   carousel_slider: ^4.0.0
   flutter_share: ^2.0.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

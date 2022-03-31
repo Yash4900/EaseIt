@@ -168,7 +168,7 @@ class Database {
         'likes': Map<String, dynamic>(),
       });
       sendNotification(
-          '/topics/general', 'New complaint posted by $postedBy', title);
+          '/topics/general', 'New complaint posted by someone', title);
     } catch (e) {
       print(e.toString());
     }
@@ -368,7 +368,7 @@ class Database {
       String flatNo, String month, String billAmount) async {
     // print("12Inside Add Maintenance");
     String docID = "";
-    Map<String, String> flatNoMap = {'Flat':flatNo, 'Wing': wing};
+    Map<String, String> flatNoMap = {'Flat': flatNo, 'Wing': wing};
     QuerySnapshot snap = await _firestore
         .collection(societyName)
         .doc('maintenance')
@@ -389,7 +389,7 @@ class Database {
         .collection(societyName)
         .doc('maintenance')
         .collection('Maintenance')
-        .doc(docID)        
+        .doc(docID)
         .update({'status': "Paid", 'datePaid': formattedDate});
   }
 
@@ -641,6 +641,7 @@ class Database {
           .doc('childApprovals')
           .collection('ChildApproval')
           .where('date', isLessThan: DateTime.now().subtract(Duration(days: 1)))
+          .orderBy('date', descending: true)
           .snapshots();
     } catch (e) {
       print(e.toString());
@@ -657,6 +658,7 @@ class Database {
           .where('date',
               isGreaterThanOrEqualTo:
                   DateTime.now().subtract(Duration(days: 1)))
+          .orderBy('date', descending: true)
           .snapshots();
     } catch (e) {
       print(e.toString());
