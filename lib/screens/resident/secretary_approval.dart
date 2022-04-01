@@ -6,6 +6,7 @@ import 'package:ease_it/utility/loading.dart';
 import 'package:ease_it/utility/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ease_it/utility/alert.dart';
 
 class SecretaryApproval extends StatefulWidget {
   const SecretaryApproval({Key key}) : super(key: key);
@@ -368,7 +369,23 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                           child: TextButton(
                             onPressed: widget.singleUserData["role"] == "Owner"
                                 ? snapshot.data.docs.length == 1
-                                    ? null
+                                    ? () {
+                                        showMessageDialog(
+                                          context,
+                                          "Alert",
+                                          [
+                                            Text(
+                                              "There is already an owner present for the flat ${FlatDataOperations(
+                                                hierarchy: g.hierarchy,
+                                                flatNum:
+                                                    Map<String, String>.from(
+                                                        widget.singleUserData[
+                                                            "flat"]),
+                                              ).returnStringFormOfFlatMap()} you cannot aceept another owner's request",
+                                            ),
+                                          ],
+                                        );
+                                      }
                                     : () async {
                                         bool result =
                                             await Database().updateStatus(
@@ -385,7 +402,23 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                                         }
                                       }
                                 : snapshot.data.docs.length >= 1
-                                    ? null
+                                    ? () {
+                                        showMessageDialog(
+                                          context,
+                                          "Alert",
+                                          [
+                                            Text(
+                                              "Since there are already $roleToCheckTheStreamFor(s) present in the ${FlatDataOperations(
+                                                hierarchy: g.hierarchy,
+                                                flatNum:
+                                                    Map<String, String>.from(
+                                                        widget.singleUserData[
+                                                            "flat"]),
+                                              ).returnStringFormOfFlatMap()} you cannot accept ${widget.singleUserData["role"]} for the flat",
+                                            ),
+                                          ],
+                                        );
+                                      }
                                     : () async {
                                         bool result =
                                             await Database().updateStatus(

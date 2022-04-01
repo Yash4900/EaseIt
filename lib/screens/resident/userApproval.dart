@@ -4,6 +4,7 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/drawer.dart';
 
 // class ResidentApproval extends StatefulWidget {
@@ -80,7 +81,12 @@ class _PendingState extends State<Pending> {
                     size: 45,
                   ),
                   Text(
-                    "Your residence joining request is pending",
+                    g.role == "Resident" || g.role == "Secretary"
+                        ? "Your Residence joining request as ${g.homeRole} for the flat ${FlatDataOperations(
+                            hierarchy: g.hierarchy,
+                            flatNum: g.flat,
+                          ).returnStringFormOfFlatMap()} in ${g.society} is pending"
+                        : "Your Residence joining request as ${g.role} in ${g.society} is pending()",
                     style: TextStyle(
                       color: Color(0xffffb30f),
                       fontSize: 20,
@@ -164,34 +170,37 @@ class _ReApprovalState extends State<ReApproval> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReApply(),
+                    g.role == "Security Guard"
+                        ? SizedBox()
+                        : TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReApply(),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff037DD6)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
+                              child: Text(
+                                'ReApply',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff037DD6)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(50, 8, 50, 8),
-                        child: Text(
-                          'ReApply',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
