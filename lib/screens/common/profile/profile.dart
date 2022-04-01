@@ -61,8 +61,8 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(FlatDataOperations(hierarchy: g.hierarchy, structure: g.structure)
-        .findingCombinations());
+    // print(FlatDataOperations(hierarchy: g.hierarchy, structure: g.structure)
+    //     .findingCombinations());
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 10,
@@ -135,6 +135,26 @@ class _ProfileCardState extends State<ProfileCard> {
                                     color: Color(0xffa0a0a0),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                snapshot.data["status"] == "accepted" &&
+                                        (snapshot.data["role"] == "Resident" ||
+                                            snapshot.data["role"] ==
+                                                "Secretary")
+                                    ? Text(
+                                        FlatDataOperations(
+                                                hierarchy: g.hierarchy,
+                                                flatNum:
+                                                    Map<String, String>.from(
+                                                        g.flat))
+                                            .returnStringFormOfFlatMap(),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Color(0xffa0a0a0),
+                                        ),
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                           ),

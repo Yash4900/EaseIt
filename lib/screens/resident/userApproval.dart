@@ -4,7 +4,10 @@ import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/drawer.dart';
+import 'package:ease_it/utility/alert.dart';
+//import 'package:flutter/services.dart';
 
 // class ResidentApproval extends StatefulWidget {
 //   ResidentApproval({Key key}) : super(key: key);
@@ -47,6 +50,8 @@ class _PendingState extends State<Pending> {
 
   @override
   Widget build(BuildContext context) {
+    //print("Normal ${g.flat}");
+    //print("Changed: ${Map<String, String>.from(g.flat)}");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -80,7 +85,12 @@ class _PendingState extends State<Pending> {
                     size: 45,
                   ),
                   Text(
-                    "Your residence joining request is pending",
+                    g.role == "Resident" || g.role == "Secretary"
+                        ? "Your Residence joining request as ${g.homeRole} for the flat ${FlatDataOperations(
+                            hierarchy: g.hierarchy,
+                            flatNum: Map<String, String>.from(g.flat),
+                          ).returnStringFormOfFlatMap()} in ${g.society} is pending"
+                        : "Your Residence joining request as ${g.role} in ${g.society} is pending",
                     style: TextStyle(
                       color: Color(0xffffb30f),
                       fontSize: 20,
@@ -154,7 +164,12 @@ class _ReApprovalState extends State<ReApproval> {
                       height: 20,
                     ),
                     Text(
-                      "Your residence joining request has been cancelled by secretary",
+                      g.role == "Resident"
+                          ? "Your residence joining request as ${g.role} of ${FlatDataOperations(
+                              hierarchy: g.hierarchy,
+                              flatNum: Map<String, String>.from(g.flat),
+                            ).returnStringFormOfFlatMap()} in ${g.society} has been cancelled by secretary"
+                          : "Your residence joining request as ${g.role} in ${g.society} has been cancelled by the secretary",
                       style: TextStyle(
                         color: Colors.redAccent,
                         fontSize: 20,
@@ -165,14 +180,19 @@ class _ReApprovalState extends State<ReApproval> {
                       height: 20,
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReApply(),
-                          ),
-                        );
-                      },
+                      onPressed: g.role == "Security Guard"
+                          ? () {
+                              Database()
+                                  .updateStatus(g.society, g.email, "pending");
+                            }
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReApply(),
+                                ),
+                              );
+                            },
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Color(0xff037DD6)),
@@ -218,6 +238,8 @@ class _ReApplyState extends State<ReApply> {
   bool loading;
   String errorText = "";
   FlatData flatVar = FlatData();
+  List<String> secondDropDownItems = ["Owner", "Resident", "Tenant"];
+  String secondDropDownValue = "Owner";
 
   void _update() {
     setState(() {});
@@ -353,6 +375,40 @@ class _ReApplyState extends State<ReApply> {
                 ),
               ],
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Text("I\'m a"),
+                SizedBox(
+                  width: 20,
+                ),
+                DropdownButton(
+                  value: secondDropDownValue,
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  items: secondDropDownItems.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(
+                        items,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String value) {
+                    setState(() => secondDropDownValue = value);
+                  },
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text("of the flat"),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Column(
               //physics: ClampingScrollPhysics(),
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,8 +463,103 @@ class _ReApplyState extends State<ReApply> {
                   setState(() {
                     loading = true;
                   });
-                  bool result = await Database()
-                      .reApplication(g.society, g.uid, flatVar.flatNum);
+                  List<bool> booleanValuesForRoles = [];
+                  //String errorMsg = "";
+                  //print(secondDropDownItems.length);
+                  for (int i = 0; i < secondDropDownItems.length; i++) {
+                    print(i);
+                    bool temp = await Database()
+                        .isAcceptedParticularHomeRoleForFlatPresent(
+                      selectedSociety,
+                      flatVar.flatNum,
+                      secondDropDownItems[i],
+                    );
+                    booleanValuesForRoles.add(temp);
+                  }
+                  if (secondDropDownValue == "Owner" &&
+                      booleanValuesForRoles[0]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                            "Each flat can have only one owner and the flat you are registering for already has one"),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else if (secondDropDownValue == "Resident" &&
+                      !booleanValuesForRoles[0]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                          "The flat you are registering for does not have a owner so you cannot apply as Resident",
+                        ),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else if (secondDropDownValue == "Resident" &&
+                      booleanValuesForRoles[2]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                          "The flat has Tenant(s) you cannot register as Resident",
+                        ),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else if (secondDropDownValue == "Tenant" &&
+                      !booleanValuesForRoles[0]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                          "The flat you are registering for does not have a owner so you cannot apply as Tenant",
+                        ),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else if (secondDropDownValue == "Tenant" &&
+                      booleanValuesForRoles[1]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                          "The flat has Resident(s) you cannot register as Tenant",
+                        ),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else {}
+                  g.setRole = secondDropDownValue;
+                  print(secondDropDownValue);
+                  bool result = await Database().reApplication(
+                      g.society, g.uid, flatVar.flatNum, secondDropDownValue);
                   setState(() {
                     loading = false;
                   });

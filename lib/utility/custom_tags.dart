@@ -32,7 +32,7 @@ class CustomTag extends StatelessWidget {
           text,
           style: TextStyle(
             color: textColor,
-            fontSize: 15,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             fontFamily: 'Roboto',
           ),

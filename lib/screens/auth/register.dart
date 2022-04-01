@@ -26,7 +26,9 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController flatController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  List<String> dropDownItems = ["Resident", "Tenant", "Security Guard"];
+  List<String> dropDownItems = ["Resident", "Security Guard"];
+  List<String> secondDropDownItems = ["Owner", "Resident", "Tenant"];
+  String secondDropDownValue = "Owner";
   String dropDownValue = "Resident";
   String selectedSociety;
   String errorText = "";
@@ -179,6 +181,37 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
+                    dropDownValue == "Security Guard"
+                        ? SizedBox()
+                        : Row(
+                            children: [
+                              Text("I\'m a"),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              DropdownButton(
+                                value: secondDropDownValue,
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                items: secondDropDownItems.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (String value) {
+                                  setState(() => secondDropDownValue = value);
+                                },
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text("of the flat"),
+                            ],
+                          ),
                     SizedBox(height: 10),
                     Row(
                       children: [
@@ -388,6 +421,104 @@ class _RegisterPageState extends State<RegisterPage> {
                             flatVar.createMapFromListForFlat();
                             //print(flatVar.flatNum);
                             setState(() => loading = true);
+                            if (dropDownValue != "Security Guard") {
+                              List<bool> booleanValuesForRoles = [];
+                              //String errorMsg = "";
+                              print(secondDropDownItems.length);
+                              for (int i = 0;
+                                  i < secondDropDownItems.length;
+                                  i++) {
+                                print(i);
+                                bool temp = await Database()
+                                    .isAcceptedParticularHomeRoleForFlatPresent(
+                                  selectedSociety,
+                                  flatVar.flatNum,
+                                  secondDropDownItems[i],
+                                );
+                                booleanValuesForRoles.add(temp);
+                              }
+                              if (secondDropDownValue == "Owner" &&
+                                  booleanValuesForRoles[0]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                        "Each flat can have only one owner and the flat you are registering for already has one"),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else if (secondDropDownValue == "Resident" &&
+                                  !booleanValuesForRoles[0]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                      "The flat you are registering for does not have a owner so you cannot apply as Resident",
+                                    ),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else if (secondDropDownValue == "Resident" &&
+                                  booleanValuesForRoles[2]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                      "The flat has Tenant(s) you cannot register as Resident",
+                                    ),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else if (secondDropDownValue == "Tenant" &&
+                                  !booleanValuesForRoles[0]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                      "The flat you are registering for does not have a owner so you cannot apply as Tenant",
+                                    ),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else if (secondDropDownValue == "Tenant" &&
+                                  booleanValuesForRoles[1]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                      "The flat has Resident(s) you cannot register as Tenant",
+                                    ),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else {}
+                            }
+                            print("Am I here");
                             dynamic result = await Auth().register(
                                 selectedSociety,
                                 fnameController.text,
@@ -396,9 +527,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 phoneController.text,
                                 passwordController.text,
                                 dropDownValue,
+                                secondDropDownValue,
                                 flatVar.flatNum,
                                 wingController.text,
                                 flatController.text);
+                            print("Here I Am");
                             if (result == null) {
                               setState(() => loading = false);
                               showMessageDialog(context, "Oops!", [
@@ -407,6 +540,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                           } else {
                             setState(() {
+                              loading = false;
                               errorText = "Please fill all the flat fields";
                             });
                           }
