@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -91,8 +92,14 @@ class _VehicleLogState extends State<VehicleLog> {
                                         color: Colors.grey,
                                         size: 20,
                                       ),
+                                      SizedBox(width: 5),
                                       Text(
-                                        '  ${ds['wing']}-${ds['flatNo']}',
+                                        FlatDataOperations(
+                                                hierarchy: g.hierarchy,
+                                                flatNum:
+                                                    Map<String, String>.from(
+                                                        ds['flat']))
+                                            .returnStringFormOfFlatMap(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600),
                                       )

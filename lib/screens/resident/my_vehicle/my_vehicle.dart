@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/flask/api.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:ease_it/utility/loading.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _MyVehicleState extends State<MyVehicle> {
       String licensePlateNo,
       String model,
       String type,
-      String owner,
+      Map<String, dynamic> flat,
       String parkinSpaceNo,
       List<dynamic> exitTime,
       List<dynamic> entryTime,
@@ -74,10 +75,14 @@ class _MyVehicleState extends State<MyVehicle> {
                             ),
                             title: Text(
                               licensePlateNo,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 17),
                             ),
                             subtitle: Text(
-                              'Owner . $owner',
+                              FlatDataOperations(
+                                      hierarchy: g.hierarchy,
+                                      flatNum: Map<String, String>.from(flat))
+                                  .returnStringFormOfFlatMap(),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
