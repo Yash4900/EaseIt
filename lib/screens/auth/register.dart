@@ -450,6 +450,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         "Each flat can have only one owner and the flat you are registering for already has one"),
                                   ],
                                 );
+                                getSocietyStructure(selectedSociety);
                                 return;
                               } else if (secondDropDownValue == "Resident" &&
                                   !booleanValuesForRoles[0]) {
@@ -465,6 +466,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ],
                                 );
+                                getSocietyStructure(selectedSociety);
                                 return;
                               } else if (secondDropDownValue == "Resident" &&
                                   booleanValuesForRoles[2]) {
@@ -480,24 +482,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ],
                                 );
+                                getSocietyStructure(selectedSociety);
                                 return;
                               } else if (secondDropDownValue == "Tenant" &&
                                   !booleanValuesForRoles[0]) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                showMessageDialog(
-                                  context,
-                                  "Alert",
-                                  [
-                                    Text(
-                                      "The flat has Resident(s) you cannot register as Resident",
-                                    ),
-                                  ],
-                                );
-                                return;
-                              } else if (secondDropDownValue == "Tenant" &&
-                                  booleanValuesForRoles[1]) {
                                 setState(() {
                                   loading = false;
                                 });
@@ -510,6 +498,23 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ],
                                 );
+                                getSocietyStructure(selectedSociety);
+                                return;
+                              } else if (secondDropDownValue == "Tenant" &&
+                                  booleanValuesForRoles[1]) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showMessageDialog(
+                                  context,
+                                  "Alert",
+                                  [
+                                    Text(
+                                      "The flat has Resident(s) you cannot register as Tenant",
+                                    ),
+                                  ],
+                                );
+                                getSocietyStructure(selectedSociety);
                                 return;
                               } else {}
                             }

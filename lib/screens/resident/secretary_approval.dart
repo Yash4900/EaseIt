@@ -59,11 +59,16 @@ class _SecretaryApprovalState extends State<SecretaryApproval> {
                   return ListView.builder(
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
-                      return StreamBuilder(
-                          stream: Database().streamOfUserBasedOnFlatNumber(
-                              g.society,
-                              Map<String, String>.from(
-                                  snapshot.data.docs[index]["flat"])),
+                      //print("Where I am");
+                      //print("${snapshot.data.docs[index]["role"]}");
+                      return StreamBuilder<QuerySnapshot>(
+                          stream: snapshot.data.docs[index]["role"] ==
+                                  "Security Guard"
+                              ? Database().getSecurityGuardsOfSociety(g.society)
+                              : Database().streamOfUserBasedOnFlatNumber(
+                                  g.society,
+                                  Map<String, String>.from(
+                                      snapshot.data.docs[index]["flat"])),
                           builder: (context, usersSnapshot) {
                             if (usersSnapshot.connectionState ==
                                 ConnectionState.active) {
@@ -174,11 +179,13 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
   @override
   void initState() {
     super.initState();
-    roleToCheckTheStreamFor = widget.singleUserData["homeRole"] == "Owner"
-        ? "Owner"
-        : widget.singleUserData["homeRole"] == "Resident"
-            ? "Tenant"
-            : "Resident";
+    if (widget.singleUserData["role"] != "Security Guard") {
+      roleToCheckTheStreamFor = widget.singleUserData["homeRole"] == "Owner"
+          ? "Owner"
+          : widget.singleUserData["homeRole"] == "Resident"
+              ? "Tenant"
+              : "Resident";
+    }
     //setDropDownListAndValue();
   }
 
@@ -279,44 +286,48 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                           (widget.singleUserData["email"]).toString(),
                           style: TextStyle(
                             color: Color(0xff707070),
-                            fontSize: 15,
+                            fontSize: 12,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(3),
-                        child: Text(
-                          FlatDataOperations(
-                            hierarchy: g.hierarchy,
-                            flatNum: Map<String, String>.from(
-                                widget.singleUserData["flat"]),
-                          ).returnStringFormOfFlatMap(),
-                          style: TextStyle(
-                            color: Color(0xff707070),
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
+                      widget.singleUserData["role"] == "Security Guard"
+                          ? SizedBox()
+                          : Padding(
+                              padding: EdgeInsets.all(3),
+                              child: Text(
+                                FlatDataOperations(
+                                  hierarchy: g.hierarchy,
+                                  flatNum: Map<String, String>.from(
+                                      widget.singleUserData["flat"]),
+                                ).returnStringFormOfFlatMap(),
+                                style: TextStyle(
+                                  color: Color(0xff707070),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: EdgeInsets.all(3),
                         child: Text(
                           "Society Designation: ${(widget.singleUserData["role"]).toString()}",
                           style: TextStyle(
                             color: Color(0xff707070),
-                            fontSize: 15,
+                            fontSize: 10,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(3),
-                        child: Text(
-                          "Flat Designation: ${(widget.singleUserData["homeRole"]).toString()}",
-                          style: TextStyle(
-                            color: Color(0xff707070),
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
+                      widget.singleUserData["role"] == "Security Guard"
+                          ? SizedBox()
+                          : Padding(
+                              padding: EdgeInsets.all(3),
+                              child: Text(
+                                "Flat Designation: ${(widget.singleUserData["homeRole"]).toString()}",
+                                style: TextStyle(
+                                  color: Color(0xff707070),
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -356,96 +367,29 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  StreamBuilder<QuerySnapshot>(
-                    stream: Database().getStreamOfRoleOfParticularUser(
-                      g.society,
-                      Map<String, String>.from(widget.singleUserData["flat"]),
-                      roleToCheckTheStreamFor,
-                    ),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        return Expanded(
+                  widget.singleUserData["role"] == "Security Guard"
+                      ? Expanded(
                           flex: 1,
                           child: TextButton(
-                            onPressed: widget.singleUserData["role"] == "Owner"
-                                ? snapshot.data.docs.length == 1
-                                    ? () {
-                                        showMessageDialog(
-                                          context,
-                                          "Alert",
-                                          [
-                                            Text(
-                                              "There is already an owner present for the flat ${FlatDataOperations(
-                                                hierarchy: g.hierarchy,
-                                                flatNum:
-                                                    Map<String, String>.from(
-                                                        widget.singleUserData[
-                                                            "flat"]),
-                                              ).returnStringFormOfFlatMap()} you cannot aceept another owner's request",
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                    : () async {
-                                        bool result =
-                                            await Database().updateStatus(
-                                          g.society,
-                                          widget.singleUserData["email"],
-                                          "accepted",
-                                        );
-                                        if (result) {
-                                          showToast(context, "success",
-                                              "Success", "Request Accepted");
-                                        } else {
-                                          showToast(context, "error", "Error",
-                                              "Oops! Something went wrong");
-                                        }
-                                      }
-                                : snapshot.data.docs.length >= 1
-                                    ? () {
-                                        showMessageDialog(
-                                          context,
-                                          "Alert",
-                                          [
-                                            Text(
-                                              "Since there are already $roleToCheckTheStreamFor(s) present in the ${FlatDataOperations(
-                                                hierarchy: g.hierarchy,
-                                                flatNum:
-                                                    Map<String, String>.from(
-                                                        widget.singleUserData[
-                                                            "flat"]),
-                                              ).returnStringFormOfFlatMap()} you cannot accept ${widget.singleUserData["role"]} for the flat",
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                    : () async {
-                                        bool result =
-                                            await Database().updateStatus(
-                                          g.society,
-                                          widget.singleUserData["email"],
-                                          "accepted",
-                                        );
-                                        if (result) {
-                                          showToast(context, "success",
-                                              "Success", "Request Accepted");
-                                        } else {
-                                          showToast(context, "error", "Error",
-                                              "Oops! Something went wrong");
-                                        }
-                                      },
+                            onPressed: () async {
+                              bool result = await Database().updateStatus(
+                                g.society,
+                                widget.singleUserData["email"],
+                                "accepted",
+                              );
+                              if (result) {
+                                showToast(context, "success", "Success",
+                                    "Request accepted");
+                              } else {
+                                showToast(context, "error", "Error",
+                                    "Oops! Something went wrong");
+                              }
+                            },
                             child: Row(
                               children: [
                                 Icon(
                                   Icons.check_circle_outline_outlined,
-                                  color: widget.singleUserData["homeRole"] ==
-                                          "Owner"
-                                      ? snapshot.data.docs.length == 1
-                                          ? Colors.grey[500]
-                                          : Colors.greenAccent
-                                      : snapshot.data.docs.length >= 1
-                                          ? Colors.grey[500]
-                                          : Colors.greenAccent,
+                                  color: Colors.greenAccent,
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -454,25 +398,150 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                                   "Accept",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: widget.singleUserData["homeRole"] ==
-                                            "Owner"
-                                        ? snapshot.data.docs.length == 1
-                                            ? Colors.grey[500]
-                                            : Colors.greenAccent
-                                        : snapshot.data.docs.length >= 1
-                                            ? Colors.grey[500]
-                                            : Colors.greenAccent,
+                                    color: Colors.greenAccent,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    },
-                  ),
+                        )
+                      : StreamBuilder<QuerySnapshot>(
+                          stream: Database().getStreamOfRoleOfParticularUser(
+                            g.society,
+                            Map<String, String>.from(
+                                widget.singleUserData["flat"]),
+                            roleToCheckTheStreamFor,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              //print(widget.singleUserData["role"]);
+                              //print(snapshot.data.docs.length);
+                              return Expanded(
+                                flex: 1,
+                                child: TextButton(
+                                  onPressed: widget
+                                              .singleUserData["homeRole"] ==
+                                          "Owner"
+                                      ? snapshot.data.docs.length >= 1
+                                          ? () {
+                                              showMessageDialog(
+                                                context,
+                                                "Alert",
+                                                [
+                                                  Text(
+                                                    "There is already an owner present for the flat ${FlatDataOperations(
+                                                      hierarchy: g.hierarchy,
+                                                      flatNum: Map<String,
+                                                              String>.from(
+                                                          widget.singleUserData[
+                                                              "flat"]),
+                                                    ).returnStringFormOfFlatMap()} you cannot accept another owner's request",
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          : () async {
+                                              bool result =
+                                                  await Database().updateStatus(
+                                                g.society,
+                                                widget.singleUserData["email"],
+                                                "accepted",
+                                              );
+                                              if (result) {
+                                                showToast(
+                                                    context,
+                                                    "success",
+                                                    "Success",
+                                                    "Request Accepted");
+                                              } else {
+                                                showToast(
+                                                    context,
+                                                    "error",
+                                                    "Error",
+                                                    "Oops! Something went wrong");
+                                              }
+                                            }
+                                      : snapshot.data.docs.length >= 1
+                                          ? () {
+                                              showMessageDialog(
+                                                context,
+                                                "Alert",
+                                                [
+                                                  Text(
+                                                    "Since there are already $roleToCheckTheStreamFor(s) present in the ${FlatDataOperations(
+                                                      hierarchy: g.hierarchy,
+                                                      flatNum: Map<String,
+                                                              String>.from(
+                                                          widget.singleUserData[
+                                                              "flat"]),
+                                                    ).returnStringFormOfFlatMap()} you cannot accept ${widget.singleUserData["role"]} for the flat",
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          : () async {
+                                              bool result =
+                                                  await Database().updateStatus(
+                                                g.society,
+                                                widget.singleUserData["email"],
+                                                "accepted",
+                                              );
+                                              if (result) {
+                                                showToast(
+                                                    context,
+                                                    "success",
+                                                    "Success",
+                                                    "Request Accepted");
+                                              } else {
+                                                showToast(
+                                                    context,
+                                                    "error",
+                                                    "Error",
+                                                    "Oops! Something went wrong");
+                                              }
+                                            },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle_outline_outlined,
+                                        color:
+                                            widget.singleUserData["homeRole"] ==
+                                                    "Owner"
+                                                ? snapshot.data.docs.length == 1
+                                                    ? Colors.grey[500]
+                                                    : Colors.greenAccent
+                                                : snapshot.data.docs.length >= 1
+                                                    ? Colors.grey[500]
+                                                    : Colors.greenAccent,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: widget.singleUserData[
+                                                      "homeRole"] ==
+                                                  "Owner"
+                                              ? snapshot.data.docs.length == 1
+                                                  ? Colors.grey[500]
+                                                  : Colors.greenAccent
+                                              : snapshot.data.docs.length >= 1
+                                                  ? Colors.grey[500]
+                                                  : Colors.greenAccent,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          },
+                        ),
                   VerticalDivider(
                     color: Color(0xffa0a0a0),
                   ),

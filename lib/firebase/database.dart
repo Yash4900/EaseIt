@@ -96,7 +96,7 @@ class Database {
           'email': email,
           'phoneNum': phoneNum,
           'role': role,
-          'status': 'accepted',
+          'status': 'pending',
           'token': token,
         });
       }
@@ -1232,6 +1232,7 @@ class Database {
           .doc('users')
           .collection('User')
           .where('flat', isEqualTo: flatNumber)
+          .where('status', isEqualTo: "accepted")
           .get();
     } catch (e) {
       print(e.toString());
@@ -1273,8 +1274,10 @@ class Database {
     String society,
     String uid,
     Map<String, String> newSocietyValue,
+    String newRole,
   ) async {
     Globals g = Globals();
+    //print("Databse.dart $newRole");
     try {
       if (DeepCollectionEquality().equals(g.flat, newSocietyValue)) {
         await _firestore
@@ -1282,7 +1285,10 @@ class Database {
             .doc('users')
             .collection('User')
             .doc(g.uid)
-            .update({"status": "pending"});
+            .update({
+          "status": "pending",
+          "homeRole": newRole,
+        });
         return true;
       } else {
         await _firestore
@@ -1290,7 +1296,11 @@ class Database {
             .doc('users')
             .collection('User')
             .doc(g.uid)
-            .update({"status": "pending", "flat": newSocietyValue});
+            .update({
+          "status": "pending",
+          "flat": newSocietyValue,
+          "homeRole": newRole,
+        });
         return true;
       }
     } catch (e) {
@@ -1412,6 +1422,20 @@ class Database {
           .where('flat', isEqualTo: flat)
           .where('homeRole', isEqualTo: roleToCheck)
           .where('status', isEqualTo: "accepted")
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot> streamOfSecurityGuardsOfSociety(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('users')
+          .collection('User')
+          .where('role', isEqualTo: "Security Guard")
           .snapshots();
     } catch (e) {
       print(e.toString());

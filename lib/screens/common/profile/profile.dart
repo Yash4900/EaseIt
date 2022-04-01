@@ -61,8 +61,8 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(FlatDataOperations(hierarchy: g.hierarchy, structure: g.structure)
-        .findingCombinations());
+    // print(FlatDataOperations(hierarchy: g.hierarchy, structure: g.structure)
+    //     .findingCombinations());
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 10,

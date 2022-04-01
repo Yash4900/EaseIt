@@ -7,6 +7,7 @@ import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/drawer.dart';
 import 'package:ease_it/utility/alert.dart';
+//import 'package:flutter/services.dart';
 
 // class ResidentApproval extends StatefulWidget {
 //   ResidentApproval({Key key}) : super(key: key);
@@ -49,6 +50,8 @@ class _PendingState extends State<Pending> {
 
   @override
   Widget build(BuildContext context) {
+    //print("Normal ${g.flat}");
+    //print("Changed: ${Map<String, String>.from(g.flat)}");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -87,7 +90,7 @@ class _PendingState extends State<Pending> {
                             hierarchy: g.hierarchy,
                             flatNum: Map<String, String>.from(g.flat),
                           ).returnStringFormOfFlatMap()} in ${g.society} is pending"
-                        : "Your Residence joining request as ${g.role} in ${g.society} is pending()",
+                        : "Your Residence joining request as ${g.role} in ${g.society} is pending",
                     style: TextStyle(
                       color: Color(0xffffb30f),
                       fontSize: 20,
@@ -486,6 +489,7 @@ class _ReApplyState extends State<ReApply> {
                             "Each flat can have only one owner and the flat you are registering for already has one"),
                       ],
                     );
+                    getSocietyStructure(selectedSociety);
                     return;
                   } else if (secondDropDownValue == "Resident" &&
                       !booleanValuesForRoles[0]) {
@@ -501,6 +505,7 @@ class _ReApplyState extends State<ReApply> {
                         ),
                       ],
                     );
+                    getSocietyStructure(selectedSociety);
                     return;
                   } else if (secondDropDownValue == "Resident" &&
                       booleanValuesForRoles[2]) {
@@ -516,24 +521,10 @@ class _ReApplyState extends State<ReApply> {
                         ),
                       ],
                     );
+                    getSocietyStructure(selectedSociety);
                     return;
                   } else if (secondDropDownValue == "Tenant" &&
                       !booleanValuesForRoles[0]) {
-                    setState(() {
-                      loading = false;
-                    });
-                    showMessageDialog(
-                      context,
-                      "Alert",
-                      [
-                        Text(
-                          "The flat has Resident(s) you cannot register as Resident",
-                        ),
-                      ],
-                    );
-                    return;
-                  } else if (secondDropDownValue == "Tenant" &&
-                      booleanValuesForRoles[1]) {
                     setState(() {
                       loading = false;
                     });
@@ -546,10 +537,29 @@ class _ReApplyState extends State<ReApply> {
                         ),
                       ],
                     );
+                    getSocietyStructure(selectedSociety);
+                    return;
+                  } else if (secondDropDownValue == "Tenant" &&
+                      booleanValuesForRoles[1]) {
+                    setState(() {
+                      loading = false;
+                    });
+                    showMessageDialog(
+                      context,
+                      "Alert",
+                      [
+                        Text(
+                          "The flat has Resident(s) you cannot register as Tenant",
+                        ),
+                      ],
+                    );
+                    getSocietyStructure(selectedSociety);
                     return;
                   } else {}
-                  bool result = await Database()
-                      .reApplication(g.society, g.uid, flatVar.flatNum);
+                  g.setRole = secondDropDownValue;
+                  print(secondDropDownValue);
+                  bool result = await Database().reApplication(
+                      g.society, g.uid, flatVar.flatNum, secondDropDownValue);
                   setState(() {
                     loading = false;
                   });
