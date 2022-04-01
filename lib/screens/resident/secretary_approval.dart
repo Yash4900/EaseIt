@@ -300,7 +300,7 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                       Padding(
                         padding: EdgeInsets.all(3),
                         child: Text(
-                          (widget.singleUserData["role"]).toString(),
+                          "Society Designation: ${(widget.singleUserData["role"]).toString()}",
                           style: TextStyle(
                             color: Color(0xff707070),
                             fontSize: 15,
@@ -310,7 +310,7 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
                       Padding(
                         padding: EdgeInsets.all(3),
                         child: Text(
-                          (widget.singleUserData["homeRole"]).toString(),
+                          "Flat Designation: ${(widget.singleUserData["homeRole"]).toString()}",
                           style: TextStyle(
                             color: Color(0xff707070),
                             fontSize: 15,

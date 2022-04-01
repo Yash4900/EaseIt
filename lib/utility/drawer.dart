@@ -3,6 +3,7 @@ import 'package:ease_it/screens/common/daily_helpers/daily_helpers_list.dart';
 import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile/profile.dart';
 import 'package:ease_it/screens/common/info/all_residents_info.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/info/all_security_guards_info.dart';
@@ -48,11 +49,28 @@ Container showDrawer(BuildContext context) {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Text(
-              g.role,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  g.role,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                g.status == "accepted" &&
+                        (g.role == "Resident" || g.role == "Secretary")
+                    ? Text(
+                        FlatDataOperations(
+                          hierarchy: g.hierarchy,
+                          flatNum: Map<String, String>.from(g.flat),
+                        ).returnStringFormOfFlatMap(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : SizedBox(),
+              ],
             ),
           ),
           Container(
