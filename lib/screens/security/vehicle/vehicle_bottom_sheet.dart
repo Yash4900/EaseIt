@@ -98,12 +98,12 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
       // Visitor
       if (widget.isEntry) {
         setState(() => loading = true);
-        print("Modal bootom sheet ${flatVar.flatValue}");
         try {
           if (!flatVar.flatValue.contains(null)) {
             setState(() {
               errorText = "";
             });
+            flatVar.createMapFromListForFlat();
             await Database().logVisitorVehicleEntry(
                 g.society,
                 _licensePlateController.text,
@@ -369,7 +369,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 30),
+                                    SizedBox(height: 10),
                                     Text(
                                       'Visit Information',
                                       style: TextStyle(
@@ -430,7 +430,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                       errorText,
                                       style: TextStyle(color: Colors.red),
                                     ),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: 10),
                                     Text(
                                       'PURPOSE',
                                       style: TextStyle(
@@ -445,7 +445,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                           ? 'Enter purpose'
                                           : null,
                                     ),
-                                    SizedBox(height: 30),
+                                    SizedBox(height: 20),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,

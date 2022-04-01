@@ -302,7 +302,10 @@ class _ApproveVisitorState extends State<ApproveVisitor> {
                                 value: items,
                                 child: Text(
                                   items,
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               );
                             }).toList(),

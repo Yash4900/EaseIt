@@ -114,7 +114,11 @@ Future<bool> showAlertDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(title),
+        title: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
@@ -128,24 +132,27 @@ Future<bool> showAlertDialog(
         ),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+            ),
             child: Text(
-              "Yes",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+              'Yes',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
             ),
             onPressed: () {
               Navigator.pop(context, true);
             },
           ),
           TextButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.grey[300]),
+            ),
             child: Text(
-              "No",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+              'No',
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
             ),
             onPressed: () {
               Navigator.pop(context, false);

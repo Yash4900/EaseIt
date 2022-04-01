@@ -14,6 +14,28 @@ class DailyHelpersList extends StatefulWidget {
 
 class _DailyHelpersListState extends State<DailyHelpersList> {
   Globals g = Globals();
+  String category = 'All';
+  List<String> dropDownItems = [
+    "All",
+    "Maid",
+    "Cook",
+    "Driver",
+    "Milkman",
+    "Newspaper",
+    "Laundry",
+    "Car Cleaner",
+    "Gym Instructor",
+    "Tution Teacher",
+    "Mechanic",
+    "Plumber",
+    "Delivery",
+    "Technician",
+    "Nanny",
+    "Salesman",
+    "Electrician",
+    "Water Supplier"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +68,49 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
           children: [
             Expanded(
               flex: 1,
-              child: Text(
-                'Daily Helpers',
-                style: GoogleFonts.sourceSansPro(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Daily Helpers',
+                      style: GoogleFonts.sourceSansPro(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.black54,
+                        ),
+                        SizedBox(width: 10),
+                        DropdownButton(
+                          value: category,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.black54,
+                          ),
+                          onChanged: (value) =>
+                              setState(() => category = value),
+                          items: dropDownItems.map((String item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
             Expanded(
               flex: 11,
@@ -67,90 +125,99 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.85,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]),
-                                  ),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                  vertical: 3,
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DailyHelper(ds),
-                                      ),
-                                    );
-                                  },
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.grey[300],
-                                    radius: 30,
-                                    backgroundImage: ds['imageUrl'] == ""
-                                        ? AssetImage('assets/dummy_image.jpg')
-                                        : NetworkImage(ds['imageUrl']),
-                                  ),
-                                  title: Row(children: [
-                                    Text(
-                                      ds['name'],
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              if (category == 'All' ||
+                                  ds['purpose'] == category) {
+                                return Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                      bottom:
+                                          BorderSide(color: Colors.grey[300]),
                                     ),
-                                    SizedBox(width: 10),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color:
-                                            Color(0xffcb6f10).withOpacity(0.2),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 1, horizontal: 7),
-                                        child: Text(
-                                          ds['purpose'],
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xffcb6f10),
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 3,
+                                  ),
+                                  child: ListTile(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DailyHelper(ds),
+                                        ),
+                                      );
+                                    },
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.grey[300],
+                                      radius: 30,
+                                      backgroundImage: ds['imageUrl'] == ""
+                                          ? AssetImage('assets/dummy_image.jpg')
+                                          : NetworkImage(ds['imageUrl']),
+                                    ),
+                                    title: Row(children: [
+                                      Text(
+                                        ds['name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    )
-                                  ]),
-                                  subtitle: Text(
-                                    '+91-${ds['phoneNum']}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black87,
-                                      fontSize: 16,
+                                      SizedBox(width: 10),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Color(0xffcb6f10)
+                                              .withOpacity(0.2),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 1, horizontal: 7),
+                                          child: Text(
+                                            ds['purpose'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xffcb6f10),
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                                    subtitle: Text(
+                                      '+91-${ds['phoneNum']}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                  trailing: CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: Colors.black12,
-                                    child: IconButton(
-                                      onPressed: () async {
-                                        try {
-                                          await launch('tel:${ds['phoneNum']}');
-                                        } catch (e) {
-                                          print(e.toString());
-                                        }
-                                      },
-                                      icon: Icon(
-                                        Icons.phone,
-                                        color: Colors.black45,
+                                    trailing: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: Colors.black12,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          try {
+                                            await launch(
+                                                'tel:${ds['phoneNum']}');
+                                          } catch (e) {
+                                            print(e.toString());
+                                          }
+                                        },
+                                        icon: Icon(
+                                          Icons.phone,
+                                          color: Colors.black45,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else {
+                                return SizedBox();
+                              }
                             },
                           )
                         : Center(
