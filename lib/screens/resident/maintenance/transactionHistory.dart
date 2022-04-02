@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/razorpay.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TransactionHistory extends StatefulWidget {
@@ -63,8 +65,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                     g.flat["Wing"].toString()) {
                               return TransactionBill(
                                   name: doc["name"],
-                                  wing: flatNoMap["Wing"].toString(),
-                                  flatNo: flatNoMap["Flat"].toString(),
+                                  flat: flatNoMap,
                                   transactionAmount: doc["billAmount"],
                                   transactionDate: "",
                                   month: doc["month"],
@@ -113,8 +114,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                     g.flat["Wing"].toString()) {
                               return TransactionBill(
                                   name: doc["name"],
-                                  wing: flatNoMap["Wing"].toString(),
-                                  flatNo: flatNoMap["Flat"].toString(),
+                                  flat: flatNoMap,
                                   transactionAmount: doc["billAmount"],
                                   transactionDate: doc["datePaid"],
                                   month: doc["month"],
@@ -139,18 +139,12 @@ enum TransactionType { received, pending }
 
 class TransactionBill extends StatelessWidget {
   final bool payable;
-  final String name,
-      status,
-      wing,
-      flatNo,
-      month,
-      transactionAmount,
-      transactionDate;
-  const TransactionBill(
+  final String name, status, month, transactionAmount, transactionDate;
+  final Map<String, dynamic> flat;
+  TransactionBill(
       {Key key,
       this.name,
-      this.wing,
-      this.flatNo,
+      this.flat,
       this.status,
       this.transactionAmount,
       this.transactionDate,
@@ -197,9 +191,7 @@ class TransactionBill extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       // "$name",
-                      flatNo == g.flatNo && wing == g.wing
-                          ? "${g.fname}"
-                          : "$name",
+                      mapEquals(g.flat, flat) ? "${g.fname}" : "$name",
                       style: TextStyle(fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -217,7 +209,10 @@ class TransactionBill extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "$wing-$flatNo",
+                      FlatDataOperations(
+                              hierarchy: g.hierarchy,
+                              flatNum: Map<String, String>.from(flat))
+                          .returnStringFormOfFlatMap(),
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     if (transactionName == "Paid")
