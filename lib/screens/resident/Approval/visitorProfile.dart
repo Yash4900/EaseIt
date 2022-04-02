@@ -2,8 +2,10 @@ import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ease_it/utility/variables/globals.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class VisitorProfile extends StatefulWidget {
   final dynamic visitorData;
@@ -15,6 +17,10 @@ class VisitorProfile extends StatefulWidget {
 class _VisitorProfileState extends State<VisitorProfile> {
   List<dynamic> flatList;
   Globals g = Globals();
+
+  _callNumber(dynamic number) async{
+    bool res=await FlutterPhoneDirectCaller.callNumber(number);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +73,17 @@ class _VisitorProfileState extends State<VisitorProfile> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.call),
+                              IconButton(icon: Icon(Icons.call),
+                              onPressed:(){
+                                _callNumber(widget.visitorData['phoneNum']);
+                              }),
                               SizedBox(
                                 width: 10,
                               ),
-                              Icon(Icons.share)
+                              IconButton(icon:Icon(Icons.share),
+                              onPressed: (){
+                                FlutterShare.share(title: "DailyHelper Number",text: widget.visitorData['name']+" : "+widget.visitorData['phoneNum']);
+                              },)
                             ],
                           )
                         ],
