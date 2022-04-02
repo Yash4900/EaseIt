@@ -5,10 +5,10 @@ import 'package:ease_it/firebase/database.dart';
 
 import 'package:ease_it/screens/resident/userApproval.dart';
 
-import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/screens/resident/resident.dart';
 import 'package:ease_it/screens/security/security.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,8 +51,8 @@ class _HomeState extends State<Home> {
     if (role != 'Security Guard') {
       g.setHomeRole = snapshot.get('homeRole');
       g.setFlat = snapshot.get('flat');
-      g.setFlatNo = snapshot.get('flatNo');
-      g.setWing = snapshot.get('wing');
+      //g.setFlatNo = snapshot.get('flatNo');
+      //g.setWing = snapshot.get('wing');
     }
 
     setState(() => loading = false);

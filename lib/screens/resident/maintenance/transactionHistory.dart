@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/razorpay.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 
 class TransactionHistory extends StatefulWidget {
-  const TransactionHistory({ Key key }) : super(key: key);
+  const TransactionHistory({Key key}) : super(key: key);
 
   @override
   _TransactionHistoryState createState() => _TransactionHistoryState();
@@ -19,111 +19,124 @@ class _TransactionHistoryState extends State<TransactionHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [ 
-        Expanded(
-          flex: 4,
-      // child: SingleChildScrollView(        
-      //         physics: ClampingScrollPhysics(),
-      //         scrollDirection: Axis.vertical,
-      child: ListView(
-              physics: ClampingScrollPhysics(),
-      shrinkWrap: true, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [                  
-          Text("Pending", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          IconButton(
-            icon: visibilityPending ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down),
-            tooltip: 'Show/Hide Pending Bills',
-            onPressed: () {
-              setState(() {
-                visibilityPending = !visibilityPending;
-              });
-            },
-          ),
-        ]),
-        SizedBox(height: 5),
-        visibilityPending ? StreamBuilder<QuerySnapshot>(
-          stream: Database().fetchMaintenance(g.society),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(              
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                children: snapshot.data.docs.map((doc) {
-                  var flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
-                  if(doc["status"] == "Pending"  && flatNoMap["Flat"].toString() == g.flat["Flat"].toString() && flatNoMap["Wing"].toString() == g.flat["Wing"].toString()){                  
-                    return TransactionBill(
-                      name: doc["name"],
-                      wing: flatNoMap["Wing"].toString(),
-                      flatNo: flatNoMap["Flat"].toString(),
-                      transactionAmount: doc["billAmount"],
-                      transactionDate: "",
-                      month: doc["month"],
-                      status: doc["status"],
-                      payable: true
-                    );
-                  }
-                  else
-                    return Container();
-                }).toList(),            
-            );
-          }
-        else
-          return Container();
-        }):Container(),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [                  
-          Text("Paid", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          IconButton(
-            icon: visibilityPaid ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down),
-            tooltip: 'Show/Hide Paid Bills',
-            onPressed: () {
-              setState(() {
-                visibilityPaid = !visibilityPaid;
-              });
-            },
-          ),
-        ]),
-        SizedBox(height: 5),
-        visibilityPaid ? StreamBuilder<QuerySnapshot>(
-          stream:  Database().fetchMaintenance(g.society),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(              
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                children: snapshot.data.docs.map((doc) {
-                  var flatNoMap = new Map<String, dynamic>.from(doc["flat"]);
-                  print(doc["status"] + " hhh " + flatNoMap["Flat"].toString() + " "+ g.flat["Flat"].toString());
-                  if(doc["status"] == "Paid" && flatNoMap["Flat"].toString() == g.flat["Flat"].toString() && flatNoMap["Wing"].toString() == g.flat["Wing"].toString()){                  
-                    return TransactionBill(
-                      name: doc["name"],
-                      wing: flatNoMap["Wing"].toString(),
-                      flatNo: flatNoMap["Flat"].toString(),
-                      transactionAmount: doc["billAmount"],
-                      transactionDate: "",
-                      month: doc["month"],
-                      status: doc["status"],
-                      payable: false                      
-                    );
-                  }
-                  else
-                    return Container();
-                }).toList(),           
-            );
-          }
-        else
-          return Container();
-        }):Container(),
-      ],
-    ),
-    )
-    ]
-    );
+    return Column(children: [
+      Expanded(
+        flex: 4,
+        // child: SingleChildScrollView(
+        //         physics: ClampingScrollPhysics(),
+        //         scrollDirection: Axis.vertical,
+        child: ListView(
+          physics: ClampingScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text("Pending",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              IconButton(
+                icon: visibilityPending
+                    ? Icon(Icons.arrow_drop_up)
+                    : Icon(Icons.arrow_drop_down),
+                tooltip: 'Show/Hide Pending Bills',
+                onPressed: () {
+                  setState(() {
+                    visibilityPending = !visibilityPending;
+                  });
+                },
+              ),
+            ]),
+            SizedBox(height: 5),
+            visibilityPending
+                ? StreamBuilder<QuerySnapshot>(
+                    stream: Database().fetchMaintenance(g.society),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          // scrollDirection: Axis.vertical,
+                          // shrinkWrap: true,
+                          children: snapshot.data.docs.map((doc) {
+                            var flatNoMap =
+                                new Map<String, dynamic>.from(doc["flat"]);
+                            if (doc["status"] == "Pending" &&
+                                flatNoMap["Flat"].toString() ==
+                                    g.flat["Flat"].toString() &&
+                                flatNoMap["Wing"].toString() ==
+                                    g.flat["Wing"].toString()) {
+                              return TransactionBill(
+                                  name: doc["name"],
+                                  wing: flatNoMap["Wing"].toString(),
+                                  flatNo: flatNoMap["Flat"].toString(),
+                                  transactionAmount: doc["billAmount"],
+                                  transactionDate: "",
+                                  month: doc["month"],
+                                  status: doc["status"],
+                                  payable: true);
+                            } else
+                              return Container();
+                          }).toList(),
+                        );
+                      } else
+                        return Container();
+                    })
+                : Container(),
+            SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text("Paid",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              IconButton(
+                icon: visibilityPaid
+                    ? Icon(Icons.arrow_drop_up)
+                    : Icon(Icons.arrow_drop_down),
+                tooltip: 'Show/Hide Paid Bills',
+                onPressed: () {
+                  setState(() {
+                    visibilityPaid = !visibilityPaid;
+                  });
+                },
+              ),
+            ]),
+            SizedBox(height: 5),
+            visibilityPaid
+                ? StreamBuilder<QuerySnapshot>(
+                    stream: Database().fetchMaintenance(g.society),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          // scrollDirection: Axis.vertical,
+                          // shrinkWrap: true,
+                          children: snapshot.data.docs.map((doc) {
+                            var flatNoMap =
+                                new Map<String, dynamic>.from(doc["flat"]);
+                            print(doc["status"] +
+                                " hhh " +
+                                flatNoMap["Flat"].toString() +
+                                " " +
+                                g.flat["Flat"].toString());
+                            if (doc["status"] == "Paid" &&
+                                flatNoMap["Flat"].toString() ==
+                                    g.flat["Flat"].toString() &&
+                                flatNoMap["Wing"].toString() ==
+                                    g.flat["Wing"].toString()) {
+                              return TransactionBill(
+                                  name: doc["name"],
+                                  wing: flatNoMap["Wing"].toString(),
+                                  flatNo: flatNoMap["Flat"].toString(),
+                                  transactionAmount: doc["billAmount"],
+                                  transactionDate: "",
+                                  month: doc["month"],
+                                  status: doc["status"],
+                                  payable: false);
+                            } else
+                              return Container();
+                          }).toList(),
+                        );
+                      } else
+                        return Container();
+                    })
+                : Container(),
+          ],
+        ),
+      )
+    ]);
   }
 }
 
@@ -131,7 +144,13 @@ enum TransactionType { received, pending }
 
 class TransactionBill extends StatelessWidget {
   final bool payable;
-  final String name, status, wing, flatNo, month, transactionAmount, transactionDate;
+  final String name,
+      status,
+      wing,
+      flatNo,
+      month,
+      transactionAmount,
+      transactionDate;
   const TransactionBill(
       {Key key,
       this.name,
@@ -183,7 +202,9 @@ class TransactionBill extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       // "$name",
-                      flatNo == g.flatNo && wing == g.wing ? "${g.fname}" : "$name",
+                      flatNo == g.flatNo && wing == g.wing
+                          ? "${g.fname}"
+                          : "$name",
                       style: TextStyle(fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -204,11 +225,11 @@ class TransactionBill extends StatelessWidget {
                       "$wing-$flatNo",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
-                    if(transactionName == "Paid")
-                    Text(
-                      "Paid: $transactionDate",
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
+                    if (transactionName == "Paid")
+                      Text(
+                        "Paid: $transactionDate",
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
                     Text(
                       "$transactionName",
                       style: TextStyle(
@@ -217,25 +238,28 @@ class TransactionBill extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),                
-                if(payable)
-                Center(child: SizedBox(
-                  width: 100.0,
-                  height: 25.0,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 15)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RazorPay(
-                          month: month, 
-                          billAmount: transactionAmount)),
-                      );                      
-                    },
-                    child: const Text('Pay Now'),
-                  ),   
-                ),  
-                ),                            
+                ),
+                if (payable)
+                  Center(
+                    child: SizedBox(
+                      width: 100.0,
+                      height: 25.0,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            textStyle: TextStyle(fontSize: 15)),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RazorPay(
+                                    month: month,
+                                    billAmount: transactionAmount)),
+                          );
+                        },
+                        child: const Text('Pay Now'),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -246,6 +270,7 @@ class TransactionBill extends StatelessWidget {
 }
 
 int monthNumber = 0;
+
 class SendScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

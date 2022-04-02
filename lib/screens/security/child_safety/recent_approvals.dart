@@ -2,11 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:ease_it/utility/flat_data.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:flutter/material.dart';

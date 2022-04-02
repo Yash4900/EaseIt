@@ -1,7 +1,7 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/visitorProfile.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/helper.dart';
+import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
 
 class DailyHelpers extends StatefulWidget {

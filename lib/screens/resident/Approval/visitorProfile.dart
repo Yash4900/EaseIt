@@ -1,9 +1,9 @@
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
-import 'package:ease_it/utility/helper.dart';
+import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 
 class VisitorProfile extends StatefulWidget {
   final dynamic visitorData;

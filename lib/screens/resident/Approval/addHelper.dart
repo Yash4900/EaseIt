@@ -1,5 +1,5 @@
 import 'package:ease_it/screens/resident/Approval/helpers.dart';
-import 'package:ease_it/utility/helper.dart';
+import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
 
 class AddHelper extends StatefulWidget {
@@ -73,7 +73,9 @@ class _AddHelperState extends State<AddHelper> {
                             return Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DailyHelpers(dailyHelperType: e['name'],),
+                                builder: (context) => DailyHelpers(
+                                  dailyHelperType: e['name'],
+                                ),
                               ),
                             );
                           },

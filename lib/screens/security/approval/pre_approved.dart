@@ -1,5 +1,5 @@
 import 'package:ease_it/utility/flat_data_operations.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 
 class PreApproved extends StatefulWidget {

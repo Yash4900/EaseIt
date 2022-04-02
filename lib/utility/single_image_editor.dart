@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:ease_it/utility/pick_image.dart';
+import 'package:ease_it/utility/image/pick_image.dart';
 import 'dart:io';
 
 class SingleImageEditor extends StatefulWidget {

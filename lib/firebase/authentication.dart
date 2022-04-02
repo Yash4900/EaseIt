@@ -26,10 +26,7 @@ class Auth {
 
   Future register(String society, String fname, String lname, String email,
       String phoneNum, String password, String role,
-      [String homeRole,
-      Map<dynamic, dynamic> flat,
-      String wing,
-      String flatNo]) async {
+      [String homeRole, Map<dynamic, dynamic> flat]) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       // Save society name in local memory
@@ -41,7 +38,7 @@ class Auth {
 
       // Store new user's data in firestore database
       await Database().createUser(society, user.uid, fname, lname, email,
-          phoneNum, role, homeRole, flat, wing, flatNo);
+          phoneNum, role, homeRole, flat);
       return user;
     } catch (e) {
       print(e.toString());

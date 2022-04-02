@@ -4,8 +4,8 @@ import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -22,8 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController lnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController wingController = TextEditingController();
-  TextEditingController flatController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   List<String> dropDownItems = ["Resident", "Security Guard"];
@@ -520,17 +518,16 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                             print("Am I here");
                             dynamic result = await Auth().register(
-                                selectedSociety,
-                                fnameController.text,
-                                lnameController.text,
-                                emailController.text,
-                                phoneController.text,
-                                passwordController.text,
-                                dropDownValue,
-                                secondDropDownValue,
-                                flatVar.flatNum,
-                                wingController.text,
-                                flatController.text);
+                              selectedSociety,
+                              fnameController.text,
+                              lnameController.text,
+                              emailController.text,
+                              phoneController.text,
+                              passwordController.text,
+                              dropDownValue,
+                              secondDropDownValue,
+                              flatVar.flatNum,
+                            );
                             print("Here I Am");
                             if (result == null) {
                               setState(() => loading = false);
