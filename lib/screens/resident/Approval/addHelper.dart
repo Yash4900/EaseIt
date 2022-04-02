@@ -16,7 +16,16 @@ class _AddHelperState extends State<AddHelper> {
     {"name": "WaterSupplier", "imageLink": "assets/003-water-bottle.png"},
     {"name": "Driver", "imageLink": "assets/004-driver.png"},
     {"name": "Laundry", "imageLink": "assets/005-washing.png"},
-    {"name": "Tuition Teacher", "imageLink": "assets/006-teacher.png"}
+    {"name": "Tuition Teacher", "imageLink": "assets/006-teacher.png"},
+    {"name": "Cook", "imageLink": "assets/cooking.png"},
+    {"name": "Car Cleaner", "imageLink": "assets/car-service.png"},
+    {"name": "Gym Instructor", "imageLink": "assets/workout.png"},
+    {"name": "Mechanic", "imageLink": "assets/mechanic.png"},
+    {"name": "Plumber", "imageLink": "assets/plumber.png"},
+    {"name": "Delivery", "imageLink": "assets/delivery.png"},
+    {"name": "Technician", "imageLink": "assets/technical-support.png"},
+    {"name": "Nannny", "imageLink": "assets/mother.png"},
+    {"name": "Salesman", "imageLink": "assets/salesman.png"},
   ];
 
   @override
