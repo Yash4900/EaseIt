@@ -13,7 +13,7 @@ class _AddHelperState extends State<AddHelper> {
     {"name": "Newspaper", "imageLink": "assets/newspaper.png"},
     {"name": "Maid", "imageLink": "assets/001-maid.png"},
     {"name": "Electrician", "imageLink": "assets/002-electrician.png"},
-    {"name": "WaterSupplier", "imageLink": "assets/003-water-bottle.png"},
+    {"name": "Water Supplier", "imageLink": "assets/003-water-bottle.png"},
     {"name": "Driver", "imageLink": "assets/004-driver.png"},
     {"name": "Laundry", "imageLink": "assets/005-washing.png"},
     {"name": "Tuition Teacher", "imageLink": "assets/006-teacher.png"},
