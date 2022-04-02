@@ -20,13 +20,18 @@ class _VisitorProfileState extends State<VisitorProfile> {
   List<dynamic> flatList;
   Globals g = Globals();
 
-  _callNumber(dynamic number) async{
-    bool res=await FlutterPhoneDirectCaller.callNumber(number);
+  @override
+  void initState() {
+    super.initState();
+    flatList = widget.visitorData['worksAt'];
+  }
+
+  _callNumber(dynamic number) async {
+    bool res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
   @override
   Widget build(BuildContext context) {
-    flatList = widget.visitorData['worksAt'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -75,17 +80,24 @@ class _VisitorProfileState extends State<VisitorProfile> {
                           ),
                           Row(
                             children: [
-                              IconButton(icon: Icon(Icons.call),
-                              onPressed:(){
-                                _callNumber(widget.visitorData['phoneNum']);
-                              }),
+                              IconButton(
+                                  icon: Icon(Icons.call),
+                                  onPressed: () {
+                                    _callNumber(widget.visitorData['phoneNum']);
+                                  }),
                               SizedBox(
                                 width: 10,
                               ),
-                              IconButton(icon:Icon(Icons.share),
-                              onPressed: (){
-                                FlutterShare.share(title: "DailyHelper Number",text: widget.visitorData['name']+" : "+widget.visitorData['phoneNum']);
-                              },)
+                              IconButton(
+                                icon: Icon(Icons.share),
+                                onPressed: () {
+                                  FlutterShare.share(
+                                      title: "DailyHelper Number",
+                                      text: widget.visitorData['name'] +
+                                          " : " +
+                                          widget.visitorData['phoneNum']);
+                                },
+                              )
                             ],
                           )
                         ],
@@ -127,8 +139,15 @@ class _VisitorProfileState extends State<VisitorProfile> {
                                 ).returnStringFormOfFlatMap(),
                                 Icons.call,
                                 () => {
-                                  Database().getUserDetailsBasedOnFlatNumber(g.society, g.flat).then((value) => _callNumber(value.docs[0].get('phoneNum'))).onError((error, stackTrace) => showToast(context, "Urgent", "Error", error))
-                                }))
+                                      Database()
+                                          .getUserDetailsBasedOnFlatNumber(
+                                              g.society, g.flat)
+                                          .then((value) => _callNumber(
+                                              value.docs[0].get('phoneNum')))
+                                          .onError((error, stackTrace) =>
+                                              showToast(context, "Urgent",
+                                                  "Error", error))
+                                    }))
                             .toList(),
                       ),
                     )
@@ -136,8 +155,17 @@ class _VisitorProfileState extends State<VisitorProfile> {
                 ),
               ),
             ),
-            
-            IconButton(onPressed: (){}, icon: Icon(Icons.add))
+            customOutlinedButton(
+                "Add Helper",
+                Icons.add,
+                () async => {
+                      await Database().addDailyHelperForGivenFlat(
+                          g.society, widget.visitorData.id, g.flat),
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => super.widget))
+                    }),
           ],
         ),
       ),

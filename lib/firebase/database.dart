@@ -849,6 +849,18 @@ class Database {
     }
   }
 
+  // Add a user in daily Visitor array - Resident
+  Future<void> addDailyHelperForGivenFlat(String society,String id,Map<dynamic,dynamic> flat) async
+  {
+    try{
+      await _firestore.collection(society).doc('dailyHelpers').collection('Daily Helper').doc(id).update({'worksAt':FieldValue.arrayUnion([flat])});
+    }
+    catch(e){
+      print(e.toString());
+    }
+  }
+
+
   // Log daily helper visit
   Future<void> logDailyHelperVisit(
       String society, String docId, String activity) async {
@@ -1444,4 +1456,7 @@ class Database {
     }
     return null;
   }
+
+
+
 }
