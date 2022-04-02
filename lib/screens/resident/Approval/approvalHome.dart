@@ -9,7 +9,7 @@ import 'package:ease_it/screens/resident/Approval/allActivities.dart';
 import 'package:ease_it/screens/resident/Approval/preapproval.dart';
 import 'package:ease_it/screens/resident/Approval/visitorProfile.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/helper.dart';
+import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter/rendering.dart';

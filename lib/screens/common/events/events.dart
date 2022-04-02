@@ -1,7 +1,7 @@
 import 'package:ease_it/screens/common/events/add_event.dart';
 import 'package:ease_it/screens/common/events/past_events.dart';
 import 'package:ease_it/screens/common/events/upcoming_events.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

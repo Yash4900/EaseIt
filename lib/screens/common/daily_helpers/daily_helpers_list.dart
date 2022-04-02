@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/daily_helpers/daily_helper_profile.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -1,8 +1,8 @@
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:ease_it/screens/security/vehicle/vehicle_bottom_sheet.dart';
-import 'package:ease_it/utility/firebase_ml_api.dart';
-import 'package:ease_it/utility/pick_image.dart';
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/image/firebase_ml_api.dart';
+import 'package:ease_it/utility/image/pick_image.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 

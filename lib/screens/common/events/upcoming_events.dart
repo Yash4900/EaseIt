@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 

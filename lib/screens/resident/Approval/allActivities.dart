@@ -1,7 +1,7 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/helper.dart';
-import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/variables/helper.dart';
+import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
 
 class ActivityLog extends StatefulWidget {
@@ -76,33 +76,39 @@ class _ActivityLogState extends State<ActivityLog> {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: ListView(
-                          children: visitorLog.length>0?
-                              visitorLog.map(
-                                (e) => ResidentialLogCard(
-                                  e: e,
-                                ),
-                              )
-                              .toList():[Container(
-                    // width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/no_data.png',
-                            width: 300,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'No activities found',
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    )
-                  )],
+                          children: visitorLog.length > 0
+                              ? visitorLog
+                                  .map(
+                                    (e) => ResidentialLogCard(
+                                      e: e,
+                                    ),
+                                  )
+                                  .toList()
+                              : [
+                                  Container(
+                                      // width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      color: Colors.white,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/no_data.png',
+                                              width: 300,
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              'No activities found',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            )
+                                          ],
+                                        ),
+                                      ))
+                                ],
                         ),
                       );
                     } else {

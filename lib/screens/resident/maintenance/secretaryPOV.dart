@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/screens/resident/maintenance/recentPayments.dart';
 import 'package:ease_it/screens/resident/maintenance/residentStatus.dart';
 import 'package:ease_it/screens/resident/maintenance/transactionHistory.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 

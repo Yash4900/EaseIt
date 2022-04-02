@@ -1,10 +1,10 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
-import 'package:ease_it/utility/alert.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/pick_image.dart';
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/image/pick_image.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/multiple_image_editor.dart';
 import 'package:carousel_slider/carousel_slider.dart';

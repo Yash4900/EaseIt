@@ -2,8 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/notification.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/acknowledgement/notification.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -52,12 +52,17 @@ class Database {
     return false;
   }
 
-  Future createUser(String society, String uid, String fname, String lname,
-      String email, String phoneNum, String role,
-      [String homeRole,
-      Map<dynamic, dynamic> flat,
-      String wing,
-      String flatNo]) async {
+  Future createUser(
+    String society,
+    String uid,
+    String fname,
+    String lname,
+    String email,
+    String phoneNum,
+    String role, [
+    String homeRole,
+    Map<dynamic, dynamic> flat,
+  ]) async {
     // Generate unique token for device to send notification
     String token = await FirebaseMessaging.instance.getToken();
 
@@ -77,9 +82,7 @@ class Database {
           'phoneNum': phoneNum,
           'role': role,
           'flat': flat,
-          'wing': wing,
           'homeRole': homeRole,
-          'flatNo': flatNo,
           'status': 'pending',
           'token': token,
         });

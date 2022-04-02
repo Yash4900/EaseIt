@@ -1,12 +1,12 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/flask/api.dart';
-import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:ease_it/utility/flat_data.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/pick_image.dart';
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/image/pick_image.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
@@ -23,8 +23,6 @@ class _AddVehicleState extends State<AddVehicle> {
   TextEditingController _licensePlateController = TextEditingController();
   TextEditingController _modelController = TextEditingController();
   TextEditingController _parkingNumberController = TextEditingController();
-  //TextEditingController _wingController = TextEditingController();
-  //TextEditingController _flatNoController = TextEditingController();
 
   String dropDownValue = "Four Wheeler";
   List<String> dropDownItems = ["Four Wheeler", "Two Wheeler"];
@@ -104,14 +102,18 @@ class _AddVehicleState extends State<AddVehicle> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.keyboard_backspace, color: Colors.black),
+              Icon(
+                Icons.keyboard_backspace,
+                color: Colors.black,
+              ),
               SizedBox(width: 5),
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -125,17 +127,25 @@ class _AddVehicleState extends State<AddVehicle> {
                 children: [
                   Text(
                     'Add Vehicle',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(height: 5),
                   Text(
                     'Add details of vehicle below',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
                   ),
                   SizedBox(height: 30),
                   Text(
                     'IMAGE',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -185,7 +195,9 @@ class _AddVehicleState extends State<AddVehicle> {
                           Text(
                             'LICENSE PLATE NO',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                           TextFormField(
                             decoration: InputDecoration(
@@ -199,7 +211,9 @@ class _AddVehicleState extends State<AddVehicle> {
                           Text(
                             'MODEL',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                           TextFormField(
                             decoration:
@@ -214,7 +228,9 @@ class _AddVehicleState extends State<AddVehicle> {
                             Text(
                               'VEHICLE TYPE',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
                             ),
                             SizedBox(width: 15),
                             DropdownButton(
@@ -243,7 +259,9 @@ class _AddVehicleState extends State<AddVehicle> {
                           Text(
                             'PARKING SPACE',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                           TextFormField(
                             decoration: InputDecoration(
@@ -254,18 +272,22 @@ class _AddVehicleState extends State<AddVehicle> {
                                 : null,
                           ),
                           SizedBox(height: 20),
-                          Text("Owner",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey)),
+                          Text(
+                            "Owner",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
                           SizedBox(height: 5),
                           Text(
                             'FLAT DETAILS',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                           Column(
-                            //physics: ClampingScrollPhysics(),
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: List.generate(
                                 flatVar.flatWidgetForm.length, (i) {
@@ -306,38 +328,6 @@ class _AddVehicleState extends State<AddVehicle> {
                             errorText,
                             style: TextStyle(color: Colors.red),
                           ),
-                          // Row(
-                          //   children: [
-                          //     Flexible(
-                          //       flex: 1,
-                          //       child: TextFormField(
-                          //         decoration: InputDecoration(
-                          //           hintText: 'Wing',
-                          //           hintStyle: TextStyle(fontSize: 16),
-                          //         ),
-                          //         controller: _wingController,
-                          //         validator: (value) => value.length == 0
-                          //             ? 'Please enter wing'
-                          //             : null,
-                          //       ),
-                          //     ),
-                          //     SizedBox(width: 10),
-                          //     Flexible(
-                          //       flex: 1,
-                          //       child: TextFormField(
-                          //         decoration: InputDecoration(
-                          //           hintText: 'Flat No',
-                          //           hintStyle: TextStyle(fontSize: 16),
-                          //         ),
-                          //         keyboardType: TextInputType.number,
-                          //         controller: _flatNoController,
-                          //         validator: (value) => value.length == 0
-                          //             ? 'Please enter flat number'
-                          //             : null,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                           SizedBox(height: 40),
                           Center(
                             child: TextButton(
@@ -363,12 +353,12 @@ class _AddVehicleState extends State<AddVehicle> {
                                           ? ""
                                           : await Storage().storeImage(
                                               'vehicles', id, _profilePicture);
-                                      await API().addVehicle(
-                                          g.society
-                                              .replaceAll(" ", "")
-                                              .toLowerCase(),
-                                          _licensePlateController.text,
-                                          _parkingNumberController.text);
+                                      // await API().addVehicle(
+                                      //     g.society
+                                      //         .replaceAll(" ", "")
+                                      //         .toLowerCase(),
+                                      //     _licensePlateController.text,
+                                      //     _parkingNumberController.text);
                                       Database()
                                           .addVehicle(
                                         g.society,
@@ -379,8 +369,6 @@ class _AddVehicleState extends State<AddVehicle> {
                                         dropDownValue,
                                         flatVar.flatNum,
                                       )
-                                          //_wingController.text,
-                                          //_flatNoController.text)
                                           .then((value) {
                                         setState(() => loading = false);
                                         Navigator.pop(context);
@@ -419,8 +407,9 @@ class _AddVehicleState extends State<AddVehicle> {
                                 child: Text(
                                   'Add Vehicle',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
