@@ -1226,7 +1226,7 @@ class Database {
   }
 
   Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
-      String society, Map<String, String> flatNumber) async {
+      String society, Map<dynamic,dynamic> flatNumber) async {
     try {
       //print(flatNumber);
       return await _firestore

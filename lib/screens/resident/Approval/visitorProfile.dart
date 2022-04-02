@@ -1,4 +1,6 @@
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
@@ -124,14 +126,18 @@ class _VisitorProfileState extends State<VisitorProfile> {
                                   ),
                                 ).returnStringFormOfFlatMap(),
                                 Icons.call,
-                                () => {}))
+                                () => {
+                                  Database().getUserDetailsBasedOnFlatNumber(g.society, g.flat).then((value) => _callNumber(value.docs[0].get('phoneNum'))).onError((error, stackTrace) => showToast(context, "Urgent", "Error", error))
+                                }))
                             .toList(),
                       ),
                     )
                   ],
                 ),
               ),
-            )
+            ),
+            
+            IconButton(onPressed: (){}, icon: Icon(Icons.add))
           ],
         ),
       ),
