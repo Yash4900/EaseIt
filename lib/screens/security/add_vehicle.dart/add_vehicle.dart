@@ -353,12 +353,12 @@ class _AddVehicleState extends State<AddVehicle> {
                                           ? ""
                                           : await Storage().storeImage(
                                               'vehicles', id, _profilePicture);
-                                      // await API().addVehicle(
-                                      //     g.society
-                                      //         .replaceAll(" ", "")
-                                      //         .toLowerCase(),
-                                      //     _licensePlateController.text,
-                                      //     _parkingNumberController.text);
+                                      await API().addVehicle(
+                                          g.society
+                                              .replaceAll(" ", "")
+                                              .toLowerCase(),
+                                          _licensePlateController.text,
+                                          _parkingNumberController.text);
                                       Database()
                                           .addVehicle(
                                         g.society,

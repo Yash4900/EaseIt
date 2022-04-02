@@ -20,7 +20,7 @@ class _VehicleState extends State<Vehicle> {
           Text(
             'Vehicle Management',
             style: GoogleFonts.sourceSansPro(
-              fontSize: 25,
+              fontSize: 22,
               fontWeight: FontWeight.w900,
             ),
           ),

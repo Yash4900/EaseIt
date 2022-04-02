@@ -59,7 +59,7 @@ class _EventsViewState extends State<EventsView> {
                 child: Text(
                   'Events',
                   style: GoogleFonts.sourceSansPro(
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
