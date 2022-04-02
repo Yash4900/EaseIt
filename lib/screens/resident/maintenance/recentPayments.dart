@@ -39,8 +39,7 @@ class _RecentPaymentsState extends State<RecentPayments> {
                           noOfBills++;
                           return TransactionBill(
                               name: doc["name"],
-                              wing: flatNoMap["Wing"].toString(),
-                              flatNo: flatNoMap["Flat"].toString(),
+                              flat: flatNoMap,
                               transactionAmount: doc["billAmount"],
                               transactionDate: doc["datePaid"],
                               month: doc["month"],

@@ -81,8 +81,7 @@ class _ResidentStatusState extends State<ResidentStatus> {
                                           doc["flat"]);
                                   return TransactionBill(
                                       name: doc["name"],
-                                      wing: flatNoMap["Wing"].toString(),
-                                      flatNo: flatNoMap["Flat"].toString(),
+                                      flat: flatNoMap,
                                       transactionAmount: doc["billAmount"],
                                       transactionDate: "",
                                       month: doc["month"],
@@ -131,8 +130,7 @@ class _ResidentStatusState extends State<ResidentStatus> {
                                           doc["flat"]);
                                   return TransactionBill(
                                       name: doc["name"],
-                                      wing: flatNoMap["Wing"].toString(),
-                                      flatNo: flatNoMap["Flat"].toString(),
+                                      flat: flatNoMap,
                                       transactionAmount: doc["billAmount"],
                                       transactionDate: doc["datePaid"],
                                       month: doc["month"],
