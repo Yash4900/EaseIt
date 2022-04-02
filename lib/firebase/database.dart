@@ -352,6 +352,7 @@ class Database {
         .collection(societyName)
         .doc('users')
         .collection('User')
+        .where('status', isEqualTo: "accepted")
         .where('homeRole', isEqualTo: "Owner")
         .get();
 
@@ -371,16 +372,14 @@ class Database {
     });
   }
 
-  Future<void> markMaintenanceAsPaid(String societyName, String wing,
-      String flatNo, String month, String billAmount) async {
+  Future<void> markMaintenanceAsPaid(String societyName, String month, String billAmount) async {
     // print("12Inside Add Maintenance");
     String docID = "";
-    Map<String, String> flatNoMap = {'Flat': flatNo, 'Wing': wing};
     QuerySnapshot snap = await _firestore
         .collection(societyName)
         .doc('maintenance')
         .collection('Maintenance')
-        .where('flat', isEqualTo: flatNoMap)
+        .where('flat', isEqualTo: Map<String,String>.from(g.flat))
         .where('month', isEqualTo: month)
         .get();
 

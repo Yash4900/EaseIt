@@ -3,6 +3,7 @@ import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:ease_it/utility/flat_data_operations.dart';
 
 class RazorPay extends StatefulWidget {
   final String month, billAmount;
@@ -38,7 +39,7 @@ class _RazorPayState extends State<RazorPay> {
       'name': 'Ease It',
       // 'order_id': 'order_EMBFqjDHEEn80l', // Generate order_id using Orders API
       'description':
-          'Maintenance Bill of ${g.fname} ${g.lname}, residing in ${g.society} ${g.flat["Wing"]}-${g.flat["Flat"]} for ${widget.month}',
+          'Maintenance Bill of ${g.fname} ${g.lname}, residing in ${g.society} ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(g.flat)).returnStringFormOfFlatMap()} for ${widget.month}',
       'timeout': 180, // in seconds
       'prefill': {'contact': g.phoneNum, 'email': g.email}
     };
@@ -51,8 +52,7 @@ class _RazorPayState extends State<RazorPay> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Database()
-        .markMaintenanceAsPaid(g.society, g.flat["Wing"], g.flat["Flat"],
-            widget.month, widget.billAmount)
+        .markMaintenanceAsPaid(g.society, widget.month, widget.billAmount)
         .then((value) {
       showToast(context, "success", "Success",
           "Maintenance for ${widget.month} Paid Successfully");
