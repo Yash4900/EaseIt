@@ -1,9 +1,13 @@
+import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ease_it/utility/variables/globals.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class VisitorProfile extends StatefulWidget {
   final dynamic visitorData;
@@ -17,8 +21,17 @@ class _VisitorProfileState extends State<VisitorProfile> {
   Globals g = Globals();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     flatList = widget.visitorData['worksAt'];
+  }
+
+  _callNumber(dynamic number) async {
+    bool res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -67,11 +80,24 @@ class _VisitorProfileState extends State<VisitorProfile> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.call),
+                              IconButton(
+                                  icon: Icon(Icons.call),
+                                  onPressed: () {
+                                    _callNumber(widget.visitorData['phoneNum']);
+                                  }),
                               SizedBox(
                                 width: 10,
                               ),
-                              Icon(Icons.share)
+                              IconButton(
+                                icon: Icon(Icons.share),
+                                onPressed: () {
+                                  FlutterShare.share(
+                                      title: "DailyHelper Number",
+                                      text: widget.visitorData['name'] +
+                                          " : " +
+                                          widget.visitorData['phoneNum']);
+                                },
+                              )
                             ],
                           )
                         ],
@@ -112,14 +138,34 @@ class _VisitorProfileState extends State<VisitorProfile> {
                                   ),
                                 ).returnStringFormOfFlatMap(),
                                 Icons.call,
-                                () => {}))
+                                () => {
+                                      Database()
+                                          .getUserDetailsBasedOnFlatNumber(
+                                              g.society, g.flat)
+                                          .then((value) => _callNumber(
+                                              value.docs[0].get('phoneNum')))
+                                          .onError((error, stackTrace) =>
+                                              showToast(context, "Urgent",
+                                                  "Error", error))
+                                    }))
                             .toList(),
                       ),
                     )
                   ],
                 ),
               ),
-            )
+            ),
+            customOutlinedButton(
+                "Add Helper",
+                Icons.add,
+                () async => {
+                      await Database().addDailyHelperForGivenFlat(
+                          g.society, widget.visitorData.id, g.flat),
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => super.widget))
+                    }),
           ],
         ),
       ),

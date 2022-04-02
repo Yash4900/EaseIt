@@ -58,6 +58,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0
   carousel_slider: ^4.0.0
   flutter_share: ^2.0.0
+  flutter_phone_direct_caller: ^2.1.0
 
 dev_dependencies:
   flutter_test:
