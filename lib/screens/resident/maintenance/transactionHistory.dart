@@ -106,11 +106,6 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                           children: snapshot.data.docs.map((doc) {
                             var flatNoMap =
                                 new Map<String, dynamic>.from(doc["flat"]);
-                            print(doc["status"] +
-                                " hhh " +
-                                flatNoMap["Flat"].toString() +
-                                " " +
-                                g.flat["Flat"].toString());
                             if (doc["status"] == "Paid" &&
                                 flatNoMap["Flat"].toString() ==
                                     g.flat["Flat"].toString() &&
@@ -121,7 +116,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                   wing: flatNoMap["Wing"].toString(),
                                   flatNo: flatNoMap["Flat"].toString(),
                                   transactionAmount: doc["billAmount"],
-                                  transactionDate: "",
+                                  transactionDate: doc["datePaid"],
                                   month: doc["month"],
                                   status: doc["status"],
                                   payable: false);
