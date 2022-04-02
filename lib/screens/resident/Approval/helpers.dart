@@ -61,7 +61,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.fromLTRB(8, 10, 8,10),
                                         child: Container(
                                           width: 50,
                                           height: 50,
@@ -81,28 +81,28 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                           Row(
                                             children: [
                                               Text(e["name"],
-                                                  style: Helper().mediumStyle)
+                                                  style: TextStyle(fontSize: 18,color: Colors.grey[700],fontWeight: FontWeight.bold))
                                             ],
                                           ),
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text("Rating ",
-                                                  style: Helper().mediumStyle),
-                                              Text("5",
-                                                  style: Helper().mediumStyle),
-                                              Image(
-                                                image: AssetImage(
-                                                    'assets/star.png'),
-                                                width: 20,
-                                                height: 20,
-                                              )
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.start,
+                                          //   children: [
+                                          //     Text("Rating ",
+                                          //         style: Helper().mediumStyle),
+                                          //     Text("5",
+                                          //         style: Helper().mediumStyle),
+                                          //     Image(
+                                          //       image: AssetImage(
+                                          //           'assets/star.png'),
+                                          //       width: 20,
+                                          //       height: 20,
+                                          //     )
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ],
