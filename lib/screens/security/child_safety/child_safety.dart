@@ -17,39 +17,44 @@ class _ChildSafetyState extends State<ChildSafety> {
       length: 2,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            'Child Approval',
-            style: GoogleFonts.sourceSansPro(
-              fontSize: 25,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          SizedBox(height: 15),
-          TabBar(
-              indicatorColor: Color(0xff037DD6),
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.black38,
-              indicatorWeight: 2.5,
-              labelStyle: GoogleFonts.sourceSansPro(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Child Approval',
+              style: GoogleFonts.sourceSansPro(
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
               ),
-              tabs: [
-                Tab(
-                  text: 'Today',
+            ),
+            SizedBox(height: 15),
+            TabBar(
+                indicatorColor: Color(0xff037DD6),
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.black38,
+                indicatorWeight: 2.5,
+                labelStyle: GoogleFonts.sourceSansPro(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
                 ),
-                Tab(
-                  text: 'Past',
-                )
-              ]),
-          Expanded(
-            child: TabBarView(children: [
-              RecentApproval(),
-              PastApproval(),
-            ]),
-          ),
-        ]),
+                tabs: [
+                  Tab(
+                    text: 'Today',
+                  ),
+                  Tab(
+                    text: 'Past',
+                  )
+                ]),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  RecentApproval(),
+                  PastApproval(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
