@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/security/approval/code_approval.dart';
-import 'package:ease_it/utility/alert.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

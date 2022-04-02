@@ -3,12 +3,12 @@
 import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
-import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/pick_image.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/image/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'dart:io';

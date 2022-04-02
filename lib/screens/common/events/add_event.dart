@@ -1,8 +1,8 @@
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/utility/alert.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/loading.dart';
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/display/loading.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 
 class AddEvent extends StatefulWidget {

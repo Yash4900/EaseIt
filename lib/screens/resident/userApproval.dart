@@ -1,12 +1,12 @@
-import 'package:ease_it/utility/toast.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/drawer.dart';
-import 'package:ease_it/utility/alert.dart';
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 //import 'package:flutter/services.dart';
 
 // class ResidentApproval extends StatefulWidget {
@@ -84,6 +84,7 @@ class _PendingState extends State<Pending> {
                     color: Color(0xffffb30f),
                     size: 45,
                   ),
+                  SizedBox(height: 20),
                   Text(
                     g.role == "Resident" || g.role == "Secretary"
                         ? "Your Residence joining request as ${g.homeRole} for the flat ${FlatDataOperations(
@@ -91,9 +92,10 @@ class _PendingState extends State<Pending> {
                             flatNum: Map<String, String>.from(g.flat),
                           ).returnStringFormOfFlatMap()} in ${g.society} is pending"
                         : "Your Residence joining request as ${g.role} in ${g.society} is pending",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xffffb30f),
-                      fontSize: 20,
+                      color: Colors.black,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

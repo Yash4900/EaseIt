@@ -4,7 +4,7 @@ import 'package:ease_it/screens/common/events/events.dart';
 import 'package:ease_it/screens/common/profile/profile.dart';
 import 'package:ease_it/screens/common/info/all_residents_info.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
-import 'package:ease_it/utility/globals.dart';
+import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/screens/common/info/all_security_guards_info.dart';
 

@@ -1,13 +1,12 @@
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/globals.dart';
-import 'package:ease_it/utility/helper.dart';
-import 'package:ease_it/utility/loading.dart';
+import 'package:ease_it/utility/variables/globals.dart';
+import 'package:ease_it/utility/variables/helper.dart';
+import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_share/flutter_share.dart';
-
 
 class ResidentHome extends StatefulWidget {
   @override
@@ -17,9 +16,9 @@ class ResidentHome extends StatefulWidget {
 class _ResidentHomeState extends State<ResidentHome> {
   Globals g = Globals();
 
-
-  Future<void> share(String code) async{
-    await FlutterShare.share(title: "EaseIt PreapprovalCode",text: "PreApproval Code : "+code);
+  Future<void> share(String code) async {
+    await FlutterShare.share(
+        title: "EaseIt PreapprovalCode", text: "PreApproval Code : " + code);
   }
 
   @override
@@ -162,8 +161,10 @@ class _ResidentHomeState extends State<ResidentHome> {
                                                         Helper().headingStyle,
                                                   ),
                                                   Text(
-                                                    Helper().convertToTime(data['postedOn'])
-                                                            .toString(),
+                                                    Helper()
+                                                        .convertToTime(
+                                                            data['postedOn'])
+                                                        .toString(),
                                                     style:
                                                         Helper().headingStyle,
                                                   )
@@ -237,12 +238,15 @@ class _ResidentHomeState extends State<ResidentHome> {
                                                               g.society,
                                                               data.id,
                                                               false),
-                                                      Navigator.of(context).pop()
+                                                      Navigator.of(context)
+                                                          .pop()
                                                     }),
-                                                    popup.button(
+                                            popup.button(
                                                 label: 'Share Code ',
                                                 onPressed: () => {
-                                                      share(data['generatedToken'].toString()),
+                                                      share(
+                                                          data['generatedToken']
+                                                              .toString()),
                                                     }),
                                           ],
                                           // bool barrierDismissible = false,
