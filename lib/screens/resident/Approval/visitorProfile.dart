@@ -34,9 +34,25 @@ class _VisitorProfileState extends State<VisitorProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: GoogleFonts.montserrat(textStyle: Helper().headingStyle),
+        elevation: 0,
+        leadingWidth: MediaQuery.of(context).size.width * 0.3,
+        backgroundColor: Colors.white,
+        leading: TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Row(
+            children: [
+              Icon(Icons.keyboard_backspace, color: Colors.black),
+              SizedBox(width: 5),
+              Text(
+                'Profile',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       body: Padding(
@@ -45,7 +61,8 @@ class _VisitorProfileState extends State<VisitorProfile> {
           children: [
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                 child: Row(
                   children: [
                     Container(
@@ -54,27 +71,34 @@ class _VisitorProfileState extends State<VisitorProfile> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(widget.visitorData['imageUrl']),
-                            fit: BoxFit.fill),
+                          image: NetworkImage(widget.visitorData['imageUrl']),
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.visitorData['name'],
-                            style: GoogleFonts.montserrat(
-                              textStyle: Helper().mediumStyle,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text(widget.visitorData['phoneNum'],
-                              style: GoogleFonts.montserrat(
-                                  textStyle: Helper().normalStyle)),
+                          Text(
+                            '+91-${widget.visitorData['phoneNum']}',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54),
+                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -121,14 +145,19 @@ class _VisitorProfileState extends State<VisitorProfile> {
                         SizedBox(
                           width: 10.0,
                         ),
-                        Text("WORK IN BELOW HOUSES",
-                            style: GoogleFonts.montserrat(
-                                textStyle: Helper().mediumStyle)),
+                        Text(
+                          "Works in flats",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ],
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: flatList
                             .map((e) => customOutlinedButton(
                                 FlatDataOperations(
@@ -144,9 +173,13 @@ class _VisitorProfileState extends State<VisitorProfile> {
                                               g.society, g.flat)
                                           .then((value) => _callNumber(
                                               value.docs[0].get('phoneNum')))
-                                          .onError((error, stackTrace) =>
-                                              showToast(context, "Urgent",
-                                                  "Error", error))
+                                          .onError(
+                                            (error, stackTrace) => showToast(
+                                                context,
+                                                "Urgent",
+                                                "Error",
+                                                error),
+                                          )
                                     }))
                             .toList(),
                       ),
@@ -156,16 +189,20 @@ class _VisitorProfileState extends State<VisitorProfile> {
               ),
             ),
             customOutlinedButton(
-                "Add Helper",
-                Icons.add,
-                () async => {
-                      await Database().addDailyHelperForGivenFlat(
-                          g.society, widget.visitorData.id, g.flat),
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => super.widget))
-                    }),
+              "Add Helper",
+              Icons.add,
+              () async => {
+                await Database().addDailyHelperForGivenFlat(
+                    g.society, widget.visitorData.id, g.flat),
+                showToast(context, 'success', 'Success!',
+                    'Helper successfully added to flat!'),
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => super.widget),
+                )
+              },
+            ),
           ],
         ),
       ),

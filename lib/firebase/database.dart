@@ -144,13 +144,24 @@ class Database {
   }
 
   // Complaints queries
-  Stream<QuerySnapshot> fetchComplaints(String societyName) {
+  Stream<QuerySnapshot> fetchComplaints(String societyName,
+      [bool recent = false]) {
     try {
-      return _firestore
-          .collection(societyName)
-          .doc('complaints')
-          .collection('Complaint')
-          .snapshots();
+      if (recent) {
+        return _firestore
+            .collection(societyName)
+            .doc('complaints')
+            .collection('Complaint')
+            .where('postedOn',
+                isGreaterThan: DateTime.now().subtract(Duration(days: 1)))
+            .snapshots();
+      } else {
+        return _firestore
+            .collection(societyName)
+            .doc('complaints')
+            .collection('Complaint')
+            .snapshots();
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -210,13 +221,24 @@ class Database {
   }
 
   // Notice queries
-  Stream<QuerySnapshot> fetchNotices(String societyName) {
+  Stream<QuerySnapshot> fetchNotices(String societyName,
+      [bool recent = false]) {
     try {
-      return _firestore
-          .collection(societyName)
-          .doc('notices')
-          .collection('Notice')
-          .snapshots();
+      if (recent) {
+        return _firestore
+            .collection(societyName)
+            .doc('notices')
+            .collection('Notice')
+            .where('postedOn',
+                isGreaterThan: DateTime.now().subtract(Duration(days: 1)))
+            .snapshots();
+      } else {
+        return _firestore
+            .collection(societyName)
+            .doc('notices')
+            .collection('Notice')
+            .snapshots();
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -372,14 +394,15 @@ class Database {
     });
   }
 
-  Future<void> markMaintenanceAsPaid(String societyName, String month, String billAmount) async {
+  Future<void> markMaintenanceAsPaid(
+      String societyName, String month, String billAmount) async {
     // print("12Inside Add Maintenance");
     String docID = "";
     QuerySnapshot snap = await _firestore
         .collection(societyName)
         .doc('maintenance')
         .collection('Maintenance')
-        .where('flat', isEqualTo: Map<String,String>.from(g.flat))
+        .where('flat', isEqualTo: Map<String, String>.from(g.flat))
         .where('month', isEqualTo: month)
         .get();
 
@@ -850,16 +873,21 @@ class Database {
   }
 
   // Add a user in daily Visitor array - Resident
-  Future<void> addDailyHelperForGivenFlat(String society,String id,Map<dynamic,dynamic> flat) async
-  {
-    try{
-      await _firestore.collection(society).doc('dailyHelpers').collection('Daily Helper').doc(id).update({'worksAt':FieldValue.arrayUnion([flat])});
-    }
-    catch(e){
+  Future<void> addDailyHelperForGivenFlat(
+      String society, String id, Map<dynamic, dynamic> flat) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .update({
+        'worksAt': FieldValue.arrayUnion([flat])
+      });
+    } catch (e) {
       print(e.toString());
     }
   }
-
 
   // Log daily helper visit
   Future<void> logDailyHelperVisit(
@@ -1238,7 +1266,7 @@ class Database {
   }
 
   Future<QuerySnapshot> getUserDetailsBasedOnFlatNumber(
-      String society, Map<dynamic,dynamic> flatNumber) async {
+      String society, Map<dynamic, dynamic> flatNumber) async {
     try {
       //print(flatNumber);
       return await _firestore
@@ -1456,7 +1484,4 @@ class Database {
     }
     return null;
   }
-
-
-
 }
