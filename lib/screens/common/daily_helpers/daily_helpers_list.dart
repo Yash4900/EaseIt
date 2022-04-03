@@ -196,8 +196,8 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                       ),
                                     ),
                                     trailing: CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.black12,
+                                      radius: 20,
+                                      backgroundColor: Colors.grey[200],
                                       child: IconButton(
                                         onPressed: () async {
                                           try {

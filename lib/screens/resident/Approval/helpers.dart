@@ -18,10 +18,11 @@ class _DailyHelpersState extends State<DailyHelpers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Add Helper", style: Helper().headingStyle),
-          backgroundColor: Colors.white,
-          shadowColor: Colors.white24,
-          iconTheme: IconThemeData(color: Colors.black)),
+        title: Text(widget.dailyHelperType, style: Helper().headingStyle),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white24,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -61,7 +62,8 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.fromLTRB(8, 10, 8,10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8, 10, 8, 10),
                                         child: Container(
                                           width: 50,
                                           height: 50,
@@ -78,14 +80,24 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(e["name"],
-                                                  style: TextStyle(fontSize: 18,color: Colors.grey[700],fontWeight: FontWeight.bold))
-                                            ],
+                                          Text(
+                                            e["name"],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            '+91-${e['phoneNum']}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black54,
+                                            ),
                                           ),
                                           // Row(
                                           //   mainAxisAlignment:

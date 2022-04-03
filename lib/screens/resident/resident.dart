@@ -28,6 +28,11 @@ class _ResidentState extends State<Resident> {
   int _pageIndex = 0;
   bool loading = false;
   int numOfPendingRequests;
+
+  void changeIndex(int index) {
+    _pageIndex = index;
+  }
+
   List<Widget> pages = [
     ResidentHome(),
     MyVehicle(),
