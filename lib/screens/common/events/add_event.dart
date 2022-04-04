@@ -22,18 +22,18 @@ class _AddEventState extends State<AddEvent> {
   bool isFullDayEvent = false;
 
   List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
   ];
 
   Future<void> _selectDate(BuildContext context) async {

@@ -9,7 +9,7 @@ import 'package:ease_it/utility/image/pick_image.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 

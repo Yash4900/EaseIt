@@ -1,6 +1,6 @@
 // Register page
 
-import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';

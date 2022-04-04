@@ -1,7 +1,7 @@
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
-import 'package:ease_it/utility/single_image_viewer.dart';
+import 'package:ease_it/utility/image/single_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/utility/image/pick_image.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:ease_it/utility/single_image_editor.dart';
+import 'package:ease_it/utility/image/single_image_editor.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'dart:io';

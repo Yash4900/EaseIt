@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
+import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
-import 'package:ease_it/utility/multiple_image_viewer.dart';
+import 'package:ease_it/utility/image/multiple_image_viewer.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,20 +30,6 @@ class SingleComplaint extends StatefulWidget {
 class _SingleComplaintState extends State<SingleComplaint> {
   Globals g = Globals();
   DateTime date;
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
 
   String getInitials(String name) {
     List<String> words = name.split(" ");
@@ -276,7 +263,7 @@ class _SingleComplaintState extends State<SingleComplaint> {
                         ),
                       ),
                       Text(
-                        "${date.day} ${days[date.month - 1]}, ${date.year}",
+                        timeAgo(date),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

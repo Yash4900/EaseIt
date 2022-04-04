@@ -9,7 +9,7 @@ import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'allocate_parking.dart';
-import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 
 class VehicleBottomSheet extends StatefulWidget {
   final String licensePlateNo;

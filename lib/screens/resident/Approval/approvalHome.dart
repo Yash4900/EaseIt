@@ -24,9 +24,9 @@ class _ApprovalState extends State<Approval> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
+      // decoration: BoxDecoration(
+      //     image: DecorationImage(
+      //         image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
       child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
@@ -34,13 +34,19 @@ class _ApprovalState extends State<Approval> {
             child: Column(
               children: [
                 Row(children: [
-                  Text('Recent Visitor', style: Helper().headingStyle)
+                  Text(
+                    'Recent Visitor',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ]),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue[50],
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(25),
                     ),
                     width: MediaQuery.of(context).size.width,
@@ -254,7 +260,10 @@ class _ApprovalState extends State<Approval> {
                   children: [
                     Text(
                       "Daily Helper",
-                      style: Helper().headingStyle,
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -262,7 +271,7 @@ class _ApprovalState extends State<Approval> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue[50],
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(25),
                     ),
                     width: MediaQuery.of(context).size.width,
@@ -328,7 +337,13 @@ class _ApprovalState extends State<Approval> {
                 ),
                 Row(
                   children: [
-                    Text("Child Approval", style: Helper().headingStyle),
+                    Text(
+                      "Child Approval",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
                 Padding(
@@ -687,20 +702,25 @@ class CircularImageIcon extends StatelessWidget {
 Widget customOutlinedButton(String name, IconData icon, Function operation) {
   return OutlinedButton.icon(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-          if (!states.contains(MaterialState.pressed))
-            return Helper().button.withOpacity(1);
-          return null; // Use the component's default.
-        },
+      backgroundColor: MaterialStateProperty.all<Color>(Color(0xff037DD6)),
+      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(23),
+        ),
       ),
     ),
     onPressed: operation,
-    label: Text(name, style: Helper().buttonTextStyle),
+    label: Text(
+      name,
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
     icon: Icon(
       icon,
-      size: 15,
-      color: Colors.blue,
+      size: 18,
+      color: Colors.white,
     ),
   );
 }

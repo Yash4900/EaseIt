@@ -4,6 +4,8 @@ import 'package:ease_it/screens/common/complaints/single_complaint.dart';
 import 'package:ease_it/screens/common/notice/single_notice.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
+import 'package:ease_it/utility/display/custom_tags.dart';
+import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/variables/helper.dart';
@@ -43,6 +45,7 @@ class _ResidentHomeState extends State<ResidentHome> {
               'Hello, ${g.fname}',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
+
             Text(
               FlatDataOperations(
                 hierarchy: g.hierarchy,
@@ -428,7 +431,7 @@ class _ResidentHomeState extends State<ResidentHome> {
                           ],
                         ),
                         Container(
-                          height: 150,
+                          height: 180,
                           child: ListView.builder(
                             itemCount: snapshot.data.docs.length,
                             scrollDirection: Axis.horizontal,
@@ -472,6 +475,8 @@ class _ResidentHomeState extends State<ResidentHome> {
                                     children: [
                                       Text(
                                         ds['title'],
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -487,6 +492,15 @@ class _ResidentHomeState extends State<ResidentHome> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        timeAgo(ds['postedOn'].toDate()),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -609,9 +623,10 @@ class _ResidentHomeState extends State<ResidentHome> {
                                               width: double.infinity,
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        ds['imageUrl'][0]),
-                                                    fit: BoxFit.cover),
+                                                  image: NetworkImage(
+                                                      ds['imageUrl'][0]),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                             Container(
@@ -645,23 +660,43 @@ class _ResidentHomeState extends State<ResidentHome> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.all(3),
+                                        padding: EdgeInsets.all(4),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
-                                              size: 20,
-                                            ),
-                                            SizedBox(width: 5),
                                             Text(
-                                              ds['likes'].length.toString(),
+                                              timeAgo(ds['postedOn'].toDate()),
                                               style: TextStyle(
-                                                color: Colors.black54,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey,
+                                                fontSize: 12,
                                               ),
-                                            )
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 2, horizontal: 5),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      ds['status'] == 'Resolved'
+                                                          ? Color(0xff107154)
+                                                              .withOpacity(0.2)
+                                                          : Color(0xffbb121a)
+                                                              .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Text(
+                                                ds['status'].toUpperCase(),
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ds['status'] ==
+                                                            'Resolved'
+                                                        ? Color(0xff107154)
+                                                        : Color(0xffbb121a)),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       )
