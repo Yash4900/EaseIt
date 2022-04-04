@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/notice/add_notice.dart';
 import 'package:ease_it/screens/common/notice/single_notice.dart';
+import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +15,6 @@ class NoticeView extends StatefulWidget {
 
 class _NoticeViewState extends State<NoticeView> {
   Globals g = Globals();
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +93,7 @@ class _NoticeViewState extends State<NoticeView> {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            "${date.day} ${days[date.month - 1]}, ${date.year}",
+                                            timeAgo(date),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey),

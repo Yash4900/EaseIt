@@ -8,7 +8,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/utility/display/loading.dart';
-import 'package:ease_it/utility/custom_tags.dart';
+import 'package:ease_it/utility/display/custom_tags.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'dart:math';
 //import 'package:flutter_beautiful_popup/main.dart';

@@ -298,7 +298,7 @@ class _MyVehicleState extends State<MyVehicle> {
                     child: Text(
                       'My Vehicles',
                       style: GoogleFonts.sourceSansPro(
-                        fontSize: 25,
+                        fontSize: 22,
                         fontWeight: FontWeight.w900,
                       ),
                     ),

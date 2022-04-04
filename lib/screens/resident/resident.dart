@@ -9,7 +9,7 @@ import 'package:ease_it/screens/resident/maintenance/maintenance.dart';
 import 'package:ease_it/screens/resident/my_vehicle/my_vehicle.dart';
 import 'package:ease_it/screens/resident/residentHome.dart';
 import 'package:ease_it/screens/resident/secretary_approval.dart';
-import 'package:ease_it/utility/drawer.dart';
+import 'package:ease_it/utility/display/drawer.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';

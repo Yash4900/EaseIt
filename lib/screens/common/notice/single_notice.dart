@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,20 +13,6 @@ class SingleNotice extends StatefulWidget {
 }
 
 class _SingleNoticeState extends State<SingleNotice> {
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
   DateTime date;
   @override
   void initState() {
@@ -66,7 +53,9 @@ class _SingleNoticeState extends State<SingleNotice> {
             child: Text(
               widget.title,
               style: GoogleFonts.sourceSansPro(
-                  fontSize: 22, fontWeight: FontWeight.bold),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Padding(
@@ -85,9 +74,11 @@ class _SingleNoticeState extends State<SingleNotice> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "${date.day} ${days[date.month - 1]}, ${date.year}",
+                  timeAgo(date),
                   style: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 )
               ],
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 
 class FlatData {
   Map<String, dynamic> _structure; //Stores the structure of the society

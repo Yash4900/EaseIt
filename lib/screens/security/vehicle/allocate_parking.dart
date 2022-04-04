@@ -7,7 +7,7 @@ import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:ease_it/utility/custom_dropdown_widget.dart';
+import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 
 class AllocateParking extends StatefulWidget {
   final String licensePlateNo;
@@ -311,6 +311,7 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         )
                                       ]);
                                     }
+                                    flatVar.createMapFromListForFlat();
                                     Database().logVisitorVehicleEntry(
                                         g.society,
                                         widget.licensePlateNo,

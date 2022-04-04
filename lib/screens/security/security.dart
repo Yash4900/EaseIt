@@ -4,7 +4,7 @@ import 'package:ease_it/screens/common/forum.dart';
 import 'package:ease_it/screens/security/child_safety/child_safety.dart';
 import 'package:ease_it/screens/security/vehicle/vehicle.dart';
 import 'package:ease_it/screens/security/home/securityHome.dart';
-import 'package:ease_it/utility/drawer.dart';
+import 'package:ease_it/utility/display/drawer.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:flutter/material.dart';
 

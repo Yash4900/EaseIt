@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/common/complaints/add_complaint.dart';
 import 'package:ease_it/screens/common/complaints/single_complaint.dart';
+import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
@@ -17,20 +18,6 @@ class ComplaintView extends StatefulWidget {
 
 class _ComplaintViewState extends State<ComplaintView> {
   Globals g = Globals();
-  List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
 
   String getInitials(String name) {
     List<String> words = name.split(" ");
@@ -190,7 +177,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                                 ),
                                               ),
                                               Text(
-                                                "${date.day} ${days[date.month - 1]}, ${date.year}",
+                                                timeAgo(date),
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.grey,
