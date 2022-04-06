@@ -84,56 +84,67 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              ds['name'],
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: colors[index % 4],
-                                                  fontSize: 16),
+                                            Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ds['name'],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: colors[index % 4],
+                                                    fontSize: 16),
+                                              ),
                                             ),
-                                            InkWell(
-                                              onTap: () async {
-                                                final Event event = Event(
-                                                  title: ds['name'],
-                                                  description: 'Society event',
-                                                  location: ds['venue'],
-                                                  allDay: ds['isFullDay'],
-                                                  startDate: ds['isFullDay']
-                                                      ? date
-                                                      : DateTime(
-                                                          date.year,
-                                                          date.month,
-                                                          date.day,
-                                                          int.parse(ds['from']
-                                                              .split(':')[0]),
-                                                          int.parse(ds['from']
-                                                              .split(':')[1])),
-                                                  endDate: ds['isFullDay']
-                                                      ? date
-                                                      : DateTime(
-                                                          date.year,
-                                                          date.month,
-                                                          date.day,
-                                                          int.parse(ds['to']
-                                                              .split(':')[0]),
-                                                          int.parse(ds['to']
-                                                              .split(':')[1])),
-                                                );
-                                                Add2Calendar.addEvent2Cal(
-                                                    event);
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 3, horizontal: 5),
-                                                decoration: BoxDecoration(
-                                                  color: colors[index % 4]
-                                                      .withOpacity(0.3),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Icon(
-                                                  Icons.event,
-                                                  color: colors[index % 4],
+                                            Expanded(
+                                              flex: 2,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  final Event event = Event(
+                                                    title: ds['name'],
+                                                    description:
+                                                        'Society event',
+                                                    location: ds['venue'],
+                                                    allDay: ds['isFullDay'],
+                                                    startDate: ds['isFullDay']
+                                                        ? date
+                                                        : DateTime(
+                                                            date.year,
+                                                            date.month,
+                                                            date.day,
+                                                            int.parse(ds['from']
+                                                                .split(':')[0]),
+                                                            int.parse(ds['from']
+                                                                .split(
+                                                                    ':')[1])),
+                                                    endDate: ds['isFullDay']
+                                                        ? date
+                                                        : DateTime(
+                                                            date.year,
+                                                            date.month,
+                                                            date.day,
+                                                            int.parse(ds['to']
+                                                                .split(':')[0]),
+                                                            int.parse(ds['to']
+                                                                .split(
+                                                                    ':')[1])),
+                                                  );
+                                                  Add2Calendar.addEvent2Cal(
+                                                      event);
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 3,
+                                                      horizontal: 5),
+                                                  decoration: BoxDecoration(
+                                                    color: colors[index % 4]
+                                                        .withOpacity(0.3),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.event,
+                                                    color: colors[index % 4],
+                                                  ),
                                                 ),
                                               ),
                                             )

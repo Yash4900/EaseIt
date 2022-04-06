@@ -14,18 +14,18 @@ class DailyHelperLog extends StatefulWidget {
 class _DailyHelperLogState extends State<DailyHelperLog> {
   Globals g = Globals();
   List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
   ];
 
   @override
@@ -100,7 +100,7 @@ class _DailyHelperLogState extends State<DailyHelperLog> {
                               ),
                               SizedBox(width: 15),
                               Text(
-                                '${date.day} ${days[date.month]}, ${date.year}   ${date.hour}:${date.minute}:${date.second}',
+                                '${date.day} ${days[date.month - 1]}, ${date.year}   ${date.hour}:${date.minute}:${date.second}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
