@@ -15,18 +15,18 @@ class PastApproval extends StatefulWidget {
 class _PastApprovalState extends State<PastApproval> {
   bool loading = false;
   List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
   ];
   Globals g = Globals();
 

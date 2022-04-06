@@ -191,7 +191,7 @@ class _ComplaintViewState extends State<ComplaintView> {
                                           child: Row(
                                             children: [
                                               Expanded(
-                                                flex: 8,
+                                                flex: 9,
                                                 child: Row(
                                                   children: [
                                                     ds['likes'].containsKey(
@@ -322,24 +322,27 @@ class _ComplaintViewState extends State<ComplaintView> {
                                                 flex: 3,
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      vertical: 2,
-                                                      horizontal: 10),
+                                                    vertical: 2,
+                                                  ),
                                                   color: (ds['status'] ==
                                                           "Resolved")
                                                       ? Color(0xff107154)
                                                           .withOpacity(0.2)
                                                       : Colors.grey
                                                           .withOpacity(0.2),
-                                                  child: Text(
-                                                    ds['status'],
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: (ds['status'] ==
-                                                                "Resolved")
-                                                            ? Color(0xff107154)
-                                                            : Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.w600),
+                                                  child: Center(
+                                                    child: Text(
+                                                      ds['status'],
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: (ds['status'] ==
+                                                                  "Resolved")
+                                                              ? Color(
+                                                                  0xff107154)
+                                                              : Colors.grey,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
                                                   ),
                                                 ),
                                               ),

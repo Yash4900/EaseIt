@@ -157,7 +157,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                           ? AssetImage('assets/dummy_image.jpg')
                                           : NetworkImage(ds['imageUrl']),
                                     ),
-                                    title: Row(children: [
+                                    title: Wrap(children: [
                                       Text(
                                         ds['name'],
                                         style: TextStyle(
