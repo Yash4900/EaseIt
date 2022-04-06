@@ -193,7 +193,7 @@ class _PreApprovalsState extends State<PreApprovals> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month]} ${exitTime.year}",
+                                            "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month - 1]} ${exitTime.year}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.grey[500],

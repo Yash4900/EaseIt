@@ -65,7 +65,6 @@ class Database {
   ]) async {
     // Generate unique token for device to send notification
     String token = await FirebaseMessaging.instance.getToken();
-
     FirebaseMessaging.instance.subscribeToTopic('general');
     try {
       if (role == 'Resident') {
@@ -484,6 +483,19 @@ class Database {
           .collection('Vehicle')
           .where('licensePlateNo', isEqualTo: licensePlateNo)
           .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Stream<QuerySnapshot> getAllVehicles(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('vehicles')
+          .collection('Vehicle')
+          .snapshots();
     } catch (e) {
       print(e.toString());
     }

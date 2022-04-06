@@ -1,5 +1,6 @@
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
 import 'package:ease_it/screens/security/vehicle/vehicle_bottom_sheet.dart';
+import 'package:ease_it/screens/security/vehicle/vehicle_list.dart';
 import 'package:ease_it/utility/image/firebase_ml_api.dart';
 import 'package:ease_it/utility/image/pick_image.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
@@ -126,6 +127,37 @@ class _ActionListState extends State<ActionList> {
             ),
             title: Text(
               "Register Vehicle",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VehicleList(),
+                ),
+              );
+            },
+            leading: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              child: Icon(
+                Icons.emoji_transportation,
+                color: Colors.grey[700],
+              ),
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey,
+              size: 16,
+            ),
+            title: Text(
+              "Vehicle List",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -180,11 +180,46 @@ class _MyVehicleState extends State<MyVehicle> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    'Usage Pattern',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
+                  margin: EdgeInsets.symmetric(vertical: 7),
+                  child: Row(children: [
+                    Text(
+                      'Usage Pattern',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      color: Colors.green,
+                      height: 12,
+                      width: 12,
+                    ),
+                    Text('In Use'),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      color: Colors.green.withOpacity(0.4),
+                      height: 12,
+                      width: 12,
+                    ),
+                    Text('Parked'),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      color: Colors.red.withOpacity(0.4),
+                      height: 12,
+                      width: 12,
+                    ),
+                    Text('Not used on day'),
+                  ]),
                 ),
                 Container(
                   child: Column(
