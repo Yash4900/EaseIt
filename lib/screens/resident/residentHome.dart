@@ -681,7 +681,7 @@ class _ResidentHomeState extends State<ResidentHome> {
                                                       ds['status'] == 'Resolved'
                                                           ? Color(0xff107154)
                                                               .withOpacity(0.2)
-                                                          : Color(0xffbb121a)
+                                                          : Colors.grey
                                                               .withOpacity(0.2),
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -694,7 +694,7 @@ class _ResidentHomeState extends State<ResidentHome> {
                                                     color: ds['status'] ==
                                                             'Resolved'
                                                         ? Color(0xff107154)
-                                                        : Color(0xffbb121a)),
+                                                        : Colors.grey[600]),
                                               ),
                                             ),
                                           ],

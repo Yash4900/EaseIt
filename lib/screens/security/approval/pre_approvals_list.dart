@@ -18,18 +18,18 @@ class PreApprovals extends StatefulWidget {
 class _PreApprovalsState extends State<PreApprovals> {
   Globals g = Globals();
   List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
   ];
 
   Color getColor(String status) {
@@ -114,7 +114,7 @@ class _PreApprovalsState extends State<PreApprovals> {
                                     : NetworkImage(ds['imageUrl']),
                               ),
                               title: Container(
-                                child: Row(children: [
+                                child: Wrap(children: [
                                   InkWell(
                                     onTap: () async {
                                       try {
@@ -176,7 +176,7 @@ class _PreApprovalsState extends State<PreApprovals> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month]} ${entryTime.year}",
+                                            "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month - 1]} ${entryTime.year}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.grey[500],

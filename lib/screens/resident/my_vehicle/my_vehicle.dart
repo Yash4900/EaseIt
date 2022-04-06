@@ -443,11 +443,13 @@ class _MyVehicleState extends State<MyVehicle> {
                                           horizontal: 5, vertical: 10),
                                       child: ListTile(
                                         onTap: () async {
+                                          setState(() => loading = true);
                                           var response = await API().getUsage(
                                               g.society
                                                   .replaceAll(" ", "")
                                                   .toLowerCase(),
                                               ds['licensePlateNo']);
+                                          setState(() => loading = false);
                                           Map<String, dynamic> map =
                                               jsonDecode(response);
                                           showBottomSheeet(

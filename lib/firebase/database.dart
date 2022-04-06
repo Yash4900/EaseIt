@@ -160,6 +160,7 @@ class Database {
             .collection(societyName)
             .doc('complaints')
             .collection('Complaint')
+            .orderBy('postedOn', descending: true)
             .snapshots();
       }
     } catch (e) {
