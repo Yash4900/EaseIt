@@ -348,7 +348,6 @@ class Database {
           'venue': venue,
           'date': date,
         });
-        sendNotification('/topics/general', 'New event', name);
       } else {
         await _firestore
             .collection(societyName)
@@ -363,6 +362,7 @@ class Database {
           'to': to
         });
       }
+      sendNotification('/topics/general', 'New event', name);
     } catch (e) {
       print(e.toString());
     }

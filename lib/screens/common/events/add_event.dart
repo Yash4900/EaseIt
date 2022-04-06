@@ -191,6 +191,9 @@ class _AddEventState extends State<AddEvent> {
                               children: [
                                 Text(
                                   '${selectedDate.day} ${days[selectedDate.month - 1]} ${selectedDate.year}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 SizedBox(width: 10),
                                 Icon(
@@ -249,6 +252,9 @@ class _AddEventState extends State<AddEvent> {
                                           children: [
                                             Text(
                                               getTime(selectedStartTime),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                             SizedBox(width: 10),
                                             Icon(
@@ -291,6 +297,9 @@ class _AddEventState extends State<AddEvent> {
                                           children: [
                                             Text(
                                               getTime(selectedEndTime),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                             SizedBox(width: 10),
                                             Icon(
