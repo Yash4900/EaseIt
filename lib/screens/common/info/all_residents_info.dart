@@ -433,8 +433,8 @@ class UserCard extends StatelessWidget {
                     ),
                   )
                 : Container(
-                    height: 70,
-                    width: 70,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
                       shape: BoxShape.circle,

@@ -178,14 +178,14 @@ class SecurityGuardCard extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 1),
             child: imageUrl == ""
                 ? Container(
-                    height: 70,
-                    width: 70,
+                    height: 50,
+                    width: 50,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xffd3d3d3),
@@ -193,12 +193,12 @@ class SecurityGuardCard extends StatelessWidget {
                     child: const Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 35,
+                      size: 25,
                     ),
                   )
                 : Container(
-                    height: 70,
-                    width: 70,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
                       shape: BoxShape.circle,
@@ -227,7 +227,7 @@ class SecurityGuardCard extends StatelessWidget {
                   const SizedBox(width: 10),
                 ],
               ),
-              const SizedBox(height: 10),
+              //const SizedBox(height: 10),
               CustomTag(
                 text: "Security",
                 backgroundColor: Colors.cyan[100],
