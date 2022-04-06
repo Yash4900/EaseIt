@@ -18,18 +18,18 @@ class ApprovalsList extends StatefulWidget {
 class _ApprovalsListState extends State<ApprovalsList> {
   Globals g = Globals();
   List<String> days = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
   ];
 
   Color getColor(String status) {
@@ -185,7 +185,7 @@ class _ApprovalsListState extends State<ApprovalsList> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month]} ${exitTime.year}",
+                                            "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month - 1]} ${exitTime.year}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.grey[500],
