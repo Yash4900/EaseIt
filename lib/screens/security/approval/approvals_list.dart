@@ -168,7 +168,7 @@ class _ApprovalsListState extends State<ApprovalsList> {
                                     ),
                                     SizedBox(width: 5),
                                     Text(
-                                      "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month]} ${entryTime.year}",
+                                      "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month - 1]} ${entryTime.year}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.grey[500],
