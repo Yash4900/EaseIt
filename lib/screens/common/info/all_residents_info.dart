@@ -417,11 +417,11 @@ class UserCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 1),
             child: imageUrl == ""
                 ? Container(
-                    height: 70,
-                    width: 70,
+                    height: 50,
+                    width: 50,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xffd3d3d3),
@@ -429,7 +429,7 @@ class UserCard extends StatelessWidget {
                     child: const Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 35,
+                      size: 25,
                     ),
                   )
                 : Container(
