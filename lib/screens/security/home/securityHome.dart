@@ -30,7 +30,9 @@ class _SecurityHomeState extends State<SecurityHome> {
             flex: 1,
             child: Center(
               child: _codeController.text == ""
-                  ? Text('Enter code', style: TextStyle(fontSize: 25))
+                  ? Text('Enter Visitor Code in the Keypad',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
                   : Text(
                       _codeController.text,
                       style:
@@ -89,6 +91,7 @@ class _SecurityHomeState extends State<SecurityHome> {
                             }
                           },
                           child: Container(
+                            color: Colors.grey[100],
                             margin: EdgeInsets.all(3),
                             child:
                                 Center(child: Icon(Icons.backspace_outlined)),
@@ -204,6 +207,7 @@ class Button extends StatelessWidget {
           }
         },
         child: Container(
+          color: Colors.grey[100],
           margin: EdgeInsets.all(3),
           child: Center(
             child: Text(
