@@ -26,11 +26,16 @@ class API {
 
   // To log resident's vehicle exit in database
   Future vehicleExit(String society, String licensePlateNo) async {
+    DateTime now = DateTime.now();
+    String time = '{${now.hour}:${now.minute}:${now.second}}';
     var url = Uri.parse(
-        '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo');
+        '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo&time=$time');
     http.Response response;
     try {
-      response = await http.post(url);
+      response = await http.post(
+        url,
+        headers: {'Content-type': 'application/json'},
+      );
     } catch (e) {
       print(e.toString());
     }
@@ -45,11 +50,16 @@ class API {
 
   // To log resident's vehicle entry in database
   Future vehicleEntry(String society, String licensePlateNo) async {
+    DateTime now = DateTime.now();
+    String time = '{${now.hour}:${now.minute}:${now.second}}';
     var url = Uri.parse(
-        '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo');
+        '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo&time=$time');
     http.Response response;
     try {
-      response = await http.post(url);
+      response = await http.post(
+        url,
+        headers: {'Content-type': 'application/json'},
+      );
     } catch (e) {
       print(e.toString());
     }

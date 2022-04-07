@@ -138,8 +138,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
       if (widget.isEntry) {
         setState(() => loading = true);
         try {
-          await API().vehicleEntry(
-              g.society.replaceAll(" ", ""), _licensePlateController.text);
+          await API().vehicleEntry(g.society.replaceAll(" ", "").toLowerCase(),
+              _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
         } catch (e) {
@@ -149,8 +149,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
       } else {
         setState(() => loading = true);
         try {
-          await API().vehicleExit(
-              g.society.replaceAll(" ", ""), _licensePlateController.text);
+          await API().vehicleExit(g.society.replaceAll(" ", "").toLowerCase(),
+              _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
         } catch (e) {
@@ -223,7 +223,7 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                       subtitle: Text(
                                         qs.size == 0
                                             ? 'Visitor'
-                                            : 'Owner . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: qs.docs[0]['flat']).returnStringFormOfFlatMap()}', //${qs.docs[0]["wing"]}-${qs.docs[0]["flatNo"]}',
+                                            : 'Owner . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(qs.docs[0]['flat'])).returnStringFormOfFlatMap()}', //${qs.docs[0]["wing"]}-${qs.docs[0]["flatNo"]}',
                                         style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),

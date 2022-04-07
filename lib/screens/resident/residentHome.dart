@@ -4,7 +4,6 @@ import 'package:ease_it/screens/common/complaints/single_complaint.dart';
 import 'package:ease_it/screens/common/notice/single_notice.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
-import 'package:ease_it/utility/display/custom_tags.dart';
 import 'package:ease_it/utility/display/time_ago.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
