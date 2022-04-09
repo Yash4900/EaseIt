@@ -9,6 +9,7 @@ import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ease_it/screens/common/complaints/complaint_status_page.dart';
 
 class SingleComplaint extends StatefulWidget {
   final String id;
@@ -287,55 +288,90 @@ class _SingleComplaintState extends State<SingleComplaint> {
                           )
                         ])
                       : g.role == "Secretary"
-                          ? TextButton(
-                              onPressed: () async {
-                                bool confirmation = await showConfirmationDialog(
-                                    context,
-                                    "Alert!",
-                                    "Are you sure you want to mark this issue as 'Resolved'?");
-                                if (confirmation) {
-                                  Database()
-                                      .markResolved(widget.id, g.society)
-                                      .then((value) {
-                                    setState(() => loading = false);
-                                    showToast(context, "success", "Success!",
-                                        "Complaint marked as Resolved!");
-                                    Navigator.pop(context);
-                                  });
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(23),
-                                    side: BorderSide(
-                                      color: Color(0xff037DD6),
-                                      width: 2,
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      bool confirmation =
+                                          await showConfirmationDialog(
+                                              context,
+                                              "Alert!",
+                                              "Are you sure you want to mark this issue as 'Resolved'?");
+                                      if (confirmation) {
+                                        Database()
+                                            .markResolved(widget.id, g.society)
+                                            .then((value) {
+                                          setState(() => loading = false);
+                                          showToast(
+                                              context,
+                                              "success",
+                                              "Success!",
+                                              "Complaint marked as Resolved!");
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(23),
+                                          side: BorderSide(
+                                            color: Color(0xff037DD6),
+                                            width: 2,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          color: Color(0xff037DD6),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'Mark as Resolved',
+                                          style: TextStyle(
+                                            color: Color(0xff037DD6),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Color(0xff037DD6),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    'Mark as Resolved',
-                                    style: TextStyle(
-                                      color: Color(0xff037DD6),
-                                      fontWeight: FontWeight.w600,
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ComplaintStatusPage(),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.fact_check,
+                                      size: 37.5,
+                                      color: Color(0xff037dd6),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             )
                           : Row(
                               children: [

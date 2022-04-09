@@ -168,8 +168,14 @@ class Database {
     return null;
   }
 
-  Future<void> addComplaint(String id, String societyName, String title,
-      String description, List<String> imageUrl, String postedBy) async {
+  Future<void> addComplaint(
+      String id,
+      String societyName,
+      String title,
+      String description,
+      List<String> imageUrl,
+      String postedBy,
+      List statusObjectMap) async {
     try {
       await _firestore
           .collection(societyName)
@@ -184,6 +190,7 @@ class Database {
         'postedBy': postedBy,
         'postedOn': DateTime.now(),
         'likes': Map<String, dynamic>(),
+        'progress': statusObjectMap,
       });
       sendNotification(
           '/topics/general', 'New complaint posted by someone', title);
