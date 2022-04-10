@@ -554,6 +554,8 @@ class _ResidentHomeState extends State<ResidentHome> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
+                              Map<String, dynamic> temp =
+                                  Map<String, dynamic>.from(ds.data());
                               return InkWell(
                                 onTap: () async {
                                   DocumentSnapshot userSnapshot =
@@ -588,7 +590,8 @@ class _ResidentHomeState extends State<ResidentHome> {
                                           ds['status'],
                                           likedBy,
                                           likes,
-                                          ids),
+                                          ids,
+                                          ds['progress']),
                                     ),
                                   );
                                 },
@@ -622,8 +625,13 @@ class _ResidentHomeState extends State<ResidentHome> {
                                               width: double.infinity,
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      ds['imageUrl'][0]),
+                                                  image: temp.containsKey(
+                                                              "imageUrl") ||
+                                                          ds["imageUrl"].isEmpty
+                                                      ? AssetImage(
+                                                          'assets/dummy_image.jpg')
+                                                      : NetworkImage(
+                                                          ds['imageUrl'][0]),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),

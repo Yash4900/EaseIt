@@ -168,8 +168,14 @@ class Database {
     return null;
   }
 
-  Future<void> addComplaint(String id, String societyName, String title,
-      String description, List<String> imageUrl, String postedBy) async {
+  Future<void> addComplaint(
+      String id,
+      String societyName,
+      String title,
+      String description,
+      List<String> imageUrl,
+      String postedBy,
+      List statusObjectMap) async {
     try {
       await _firestore
           .collection(societyName)
@@ -184,6 +190,7 @@ class Database {
         'postedBy': postedBy,
         'postedOn': DateTime.now(),
         'likes': Map<String, dynamic>(),
+        'progress': statusObjectMap,
       });
       sendNotification(
           '/topics/general', 'New complaint posted by someone', title);
@@ -207,14 +214,17 @@ class Database {
     }
   }
 
-  Future<void> markResolved(String id, String societyName) async {
+  Future<void> markResolved(String id, String societyName, List temp) async {
     try {
       await _firestore
           .collection(societyName)
           .doc('complaints')
           .collection('Complaint')
           .doc(id)
-          .update({'status': 'Resolved'});
+          .update({
+        'status': 'Resolved',
+        'progress': temp,
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -1496,5 +1506,36 @@ class Database {
       print(e.toString());
     }
     return null;
+  }
+
+  Stream<DocumentSnapshot> streamOfAParticularComplaintFromSociety(
+      String society, String complaintId) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('complaints')
+          .collection('Complaint')
+          .doc(complaintId)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  Future<bool> updateProgressOfTheComplaint(
+      String society, String complaintId, List progress) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc("complaints")
+          .collection("Complaint")
+          .doc(complaintId)
+          .update({"progress": progress});
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
   }
 }

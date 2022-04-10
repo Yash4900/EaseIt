@@ -7,7 +7,6 @@ import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -89,7 +88,8 @@ class _ComplaintViewState extends State<ComplaintView> {
                                             ds['status'],
                                             likedBy,
                                             likes,
-                                            ids),
+                                            ids,
+                                            ds["progress"]),
                                       ),
                                     );
                                   },

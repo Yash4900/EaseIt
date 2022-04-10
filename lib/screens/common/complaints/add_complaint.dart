@@ -333,7 +333,9 @@ class _AddComplaintState extends State<AddComplaint> {
                                 if (confirmation) {
                                   setState(() => loading = true);
                                   List<String> linkOfImages = [];
-                                  String id = DateTime.now()
+                                  DateTime currentDateTimeObject =
+                                      DateTime.now();
+                                  String id = currentDateTimeObject
                                       .millisecondsSinceEpoch
                                       .toString();
                                   if (imageFiles.length != 0) {
@@ -362,15 +364,19 @@ class _AddComplaintState extends State<AddComplaint> {
                                   //     ? ""
                                   //     : await Storage().storeImage(
                                   //         'complaints', id, _profilePicture);
-                                  Database()
-                                      .addComplaint(
-                                          id,
-                                          g.society,
-                                          _titleController.text,
-                                          _descController.text,
-                                          linkOfImages,
-                                          g.uid)
-                                      .then((value) {
+                                  Map<String, String> progressObjectMap = {
+                                    "postedBy": g.uid,
+                                    "content": "Complaint Lodged",
+                                    "time": currentDateTimeObject.toString(),
+                                  };
+                                  Database().addComplaint(
+                                      id,
+                                      g.society,
+                                      _titleController.text,
+                                      _descController.text,
+                                      linkOfImages,
+                                      g.uid,
+                                      [progressObjectMap]).then((value) {
                                     setState(() => loading = false);
                                     showToast(context, "success", "Success!",
                                         "Complaint added successfully");
