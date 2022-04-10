@@ -192,8 +192,8 @@ class Database {
         'likes': Map<String, dynamic>(),
         'progress': statusObjectMap,
       });
-      // sendNotification(
-      //     '/topics/general', 'New complaint posted by someone', title);
+      sendNotification(
+          '/topics/general', 'New complaint posted by someone', title);
     } catch (e) {
       print(e.toString());
     }
