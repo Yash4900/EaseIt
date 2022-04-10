@@ -590,7 +590,8 @@ class _ResidentHomeState extends State<ResidentHome> {
                                           ds['status'],
                                           likedBy,
                                           likes,
-                                          ids),
+                                          ids,
+                                          ds['progress']),
                                     ),
                                   );
                                 },

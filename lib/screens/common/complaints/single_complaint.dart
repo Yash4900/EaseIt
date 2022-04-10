@@ -22,8 +22,19 @@ class SingleComplaint extends StatefulWidget {
   final int likedBy;
   final Map<String, dynamic> likes;
   final List<String> ids;
-  SingleComplaint(this.id, this.title, this.desc, this.image, this.postedOn,
-      this.postedBy, this.status, this.likedBy, this.likes, this.ids);
+  final List progress;
+  SingleComplaint(
+      this.id,
+      this.title,
+      this.desc,
+      this.image,
+      this.postedOn,
+      this.postedBy,
+      this.status,
+      this.likedBy,
+      this.likes,
+      this.ids,
+      this.progress);
   @override
   _SingleComplaintState createState() => _SingleComplaintState();
 }
@@ -218,227 +229,336 @@ class _SingleComplaintState extends State<SingleComplaint> {
       ),
       body: loading
           ? Loading()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                widget.image == null || widget.image.isEmpty
-                    ? Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/dummy_image.jpg'),
-                              fit: BoxFit.cover),
-                        ),
-                      )
-                    : returnCarouselWidget(widget.image),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    widget.title,
-                    style: GoogleFonts.sourceSansPro(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    widget.desc,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          : StreamBuilder<DocumentSnapshot>(
+              stream: Database().streamOfAParticularComplaintFromSociety(
+                g.society,
+                widget.id,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Loading();
+                } else if (snapshot.connectionState == ConnectionState.active) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.postedBy,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                      widget.image == null || widget.image.isEmpty
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/dummy_image.jpg'),
+                                    fit: BoxFit.cover),
+                              ),
+                            )
+                          : returnCarouselWidget(widget.image),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          widget.title,
+                          style: GoogleFonts.sourceSansPro(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      Text(
-                        timeAgo(date),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          widget.desc,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[600],
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: widget.status == "Resolved"
-                      ? Row(children: [
-                          Icon(Icons.check_circle_outline_rounded,
-                              color: Color(0xff107154)),
-                          SizedBox(width: 10),
-                          Text(
-                            'Resolved',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )
-                        ])
-                      : g.role == "Secretary"
-                          ? Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      bool confirmation =
-                                          await showConfirmationDialog(
-                                              context,
-                                              "Alert!",
-                                              "Are you sure you want to mark this issue as 'Resolved'?");
-                                      if (confirmation) {
-                                        Database()
-                                            .markResolved(widget.id, g.society)
-                                            .then((value) {
-                                          setState(() => loading = false);
-                                          showToast(
-                                              context,
-                                              "success",
-                                              "Success!",
-                                              "Complaint marked as Resolved!");
-                                          Navigator.pop(context);
-                                        });
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(23),
-                                          side: BorderSide(
-                                            color: Color(0xff037DD6),
-                                            width: 2,
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.postedBy,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              timeAgo(date),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: snapshot.data["status"] == "Resolved"
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.check_circle_outline_rounded,
+                                      color: Color(0xff107154)),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Resolved',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ComplaintStatusPage(
+                                              complaintID: widget.id,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.fact_check,
+                                        size: 37.5,
+                                        color: Color(0xff037dd6),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : g.role == "Secretary"
+                                ? Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 5,
+                                        child: TextButton(
+                                          onPressed: () async {
+                                            bool confirmation =
+                                                await showConfirmationDialog(
+                                                    context,
+                                                    "Alert!",
+                                                    "Are you sure you want to mark this issue as 'Resolved'?");
+                                            if (confirmation) {
+                                              String dayResolved =
+                                                  DateTime.now().toString();
+                                              List temp =
+                                                  snapshot.data["progress"];
+                                              temp.add({
+                                                "content": "Complaint Resolved",
+                                                "postedBy": g.uid,
+                                                "time": dayResolved,
+                                              });
+                                              Database()
+                                                  .markResolved(
+                                                widget.id,
+                                                g.society,
+                                                temp,
+                                              )
+                                                  .then((value) {
+                                                //ssetState(() => loading = false);
+                                                showToast(
+                                                    context,
+                                                    "success",
+                                                    "Success!",
+                                                    "Complaint marked as Resolved!");
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                          },
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.white),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(23),
+                                                side: BorderSide(
+                                                  color: Color(0xff037DD6),
+                                                  width: 2,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.check,
+                                                color: Color(0xff037DD6),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Text(
+                                                'Mark as Resolved',
+                                                style: TextStyle(
+                                                  color: Color(0xff037DD6),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.check,
-                                          color: Color(0xff037DD6),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          'Mark as Resolved',
-                                          style: TextStyle(
-                                            color: Color(0xff037DD6),
-                                            fontWeight: FontWeight.w600,
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComplaintStatusPage(
+                                                  complaintID: widget.id,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.fact_check,
+                                            size: 37.5,
+                                            color: Color(0xff037dd6),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ComplaintStatusPage(),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.cancel_outlined,
+                                        color: Color(0xffbb121a),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Unresolved',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.fact_check,
-                                      size: 37.5,
-                                      color: Color(0xff037dd6),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ComplaintStatusPage(
+                                                  complaintID: widget.id,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.fact_check,
+                                            size: 37.5,
+                                            color: Color(0xff037dd6),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Divider(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'Liked by',
+                          style: GoogleFonts.sourceSansPro(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            for (int i = 0; i < widget.likedBy; i++)
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: colors[i],
+                                      child: Text(
+                                        getInitials(
+                                            widget.likes[widget.ids[i]]),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(width: 20),
+                                    Text(
+                                      widget.likes[widget.ids[i]],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    )
+                                  ],
                                 ),
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                Icon(
-                                  Icons.cancel_outlined,
-                                  color: Color(0xffbb121a),
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'Unresolved',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              ],
-                            ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: Divider(
-                    color: Colors.grey,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Liked by',
-                    style: GoogleFonts.sourceSansPro(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      for (int i = 0; i < widget.likedBy; i++)
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: colors[i],
-                                child: Text(
-                                  getInitials(widget.likes[widget.ids[i]]),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                widget.likes[widget.ids[i]],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
                               )
-                            ],
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.highlight_off_outlined,
+                          color: Colors.redAccent,
+                          size: 25,
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Could not load complaint data",
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                      ],
+                    ),
+                  );
+                }
+              }),
     );
   }
 }
