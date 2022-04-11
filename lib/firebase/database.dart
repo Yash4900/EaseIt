@@ -1538,4 +1538,34 @@ class Database {
     }
     return false;
   }
+
+  Future<bool> uploadSocietyRegisterationRequest({
+    String flatNumber,
+    String societyName,
+    String addressOfSociety,
+    String landMarkOfScoiety,
+    String emailId,
+    String phoneNumber,
+    String time,
+    List imageLinkList,
+  }) async {
+    try {
+      await _firestore
+          .collection("Society Registeration Request")
+          .doc(time)
+          .set({
+        "flatNumber": flatNumber,
+        "societyName": societyName,
+        "address": addressOfSociety,
+        "landmark": landMarkOfScoiety,
+        "email": emailId,
+        "phoneNum": phoneNumber,
+        "imageLinkList": imageLinkList,
+      });
+      return true;
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
 }
