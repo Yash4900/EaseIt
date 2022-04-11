@@ -2,6 +2,7 @@
 
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';
+import 'package:ease_it/screens/auth/society_registeration.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +169,39 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Text(
                             'Sign Up',
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xff037DD6)),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Want your society on our app ',
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[700]),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SocietyRegisteration(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Society Registeration',
                             style: TextStyle(
                                 fontSize: 16, color: Color(0xff037DD6)),
                           ),
