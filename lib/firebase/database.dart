@@ -945,6 +945,24 @@ class Database {
     return null;
   }
 
+  // Rate daily helper
+  Future<void> rateDailyHelper(String society, String id, String uid,
+      double rating, String comment) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .update({
+        'ratings.$uid.rating': rating,
+        'ratings.$uid.comment': comment,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   // Visitor approval - Security
   Future<void> sendApproval(
     String society,
