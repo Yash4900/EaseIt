@@ -10,14 +10,14 @@ import 'package:ease_it/firebase/database.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-class SocietyRegisteration extends StatefulWidget {
-  const SocietyRegisteration({Key key}) : super(key: key);
+class SocietyRegistration extends StatefulWidget {
+  const SocietyRegistration({Key key}) : super(key: key);
 
   @override
-  State<SocietyRegisteration> createState() => _SocietyRegisterationState();
+  State<SocietyRegistration> createState() => _SocietyRegistrationState();
 }
 
-class _SocietyRegisterationState extends State<SocietyRegisteration> {
+class _SocietyRegistrationState extends State<SocietyRegistration> {
   TextEditingController _flatController = TextEditingController();
   TextEditingController _societyController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
@@ -213,7 +213,7 @@ class _SocietyRegisterationState extends State<SocietyRegisteration> {
                             ),
                             Expanded(
                               child: Text(
-                                "Your society will be contacted in few days after your request for society registeration",
+                                "Your society will be contacted in few days after your request for society registration",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
@@ -483,7 +483,7 @@ class _SocietyRegisterationState extends State<SocietyRegisteration> {
                             bool confirmation = await showConfirmationDialog(
                                 context,
                                 "Alert!",
-                                "Are you sure you want to submit your society registeration request");
+                                "Are you sure you want to submit your society registration request");
                             if (confirmation) {
                               setState(() {
                                 loading = true;
@@ -495,7 +495,7 @@ class _SocietyRegisterationState extends State<SocietyRegisteration> {
                               if (imageFiles.length != 0) {
                                 for (int i = 0; i < imageFiles.length; i++) {
                                   String newImageUrl = await Storage().storeImage(
-                                      "Society Registeration Request/$timeAtWhichUploaded",
+                                      "Society Registration Request/$timeAtWhichUploaded",
                                       "${timeAtWhichUploaded}_$i",
                                       imageFiles[i]);
                                   if (newImageUrl == null) {
@@ -511,7 +511,7 @@ class _SocietyRegisterationState extends State<SocietyRegisteration> {
                                 }
                               }
                               bool status = await Database()
-                                  .uploadSocietyRegisterationRequest(
+                                  .uploadSocietyRegistrationRequest(
                                 flatNumber: _flatController.text,
                                 societyName: _societyController.text,
                                 addressOfSociety: _addressController.text,
@@ -527,7 +527,7 @@ class _SocietyRegisterationState extends State<SocietyRegisteration> {
                               if (status) {
                                 Navigator.pop(context);
                                 showToast(context, "success", "Success",
-                                    "Your society registeration request was submitted successfully");
+                                    "Your society registration request was submitted successfully");
                               } else {
                                 showToast(context, "error", "Error",
                                     "Unable to post your request");

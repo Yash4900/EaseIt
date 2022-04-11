@@ -2,7 +2,7 @@
 
 import 'package:ease_it/firebase/authentication.dart';
 import 'package:ease_it/firebase/database.dart';
-import 'package:ease_it/screens/auth/society_registeration.dart';
+import 'package:ease_it/screens/auth/society_registration.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:flutter/material.dart';
@@ -196,12 +196,12 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SocietyRegisteration(),
+                                builder: (context) => SocietyRegistration(),
                               ),
                             );
                           },
                           child: Text(
-                            'Society Registeration',
+                            'Society Registration',
                             style: TextStyle(
                                 fontSize: 16, color: Color(0xff037DD6)),
                           ),

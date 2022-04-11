@@ -1539,7 +1539,7 @@ class Database {
     return false;
   }
 
-  Future<bool> uploadSocietyRegisterationRequest({
+  Future<bool> uploadSocietyRegistrationRequest({
     String flatNumber,
     String societyName,
     String addressOfSociety,
@@ -1551,7 +1551,7 @@ class Database {
   }) async {
     try {
       await _firestore
-          .collection("Society Registeration Request")
+          .collection("Society Registration Request")
           .doc(time)
           .set({
         "flatNumber": flatNumber,
