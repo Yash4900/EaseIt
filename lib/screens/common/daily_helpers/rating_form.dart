@@ -45,7 +45,7 @@ class _RatingFormState extends State<RatingForm> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.4,
                 decoration: BoxDecoration(
@@ -65,17 +65,22 @@ class _RatingFormState extends State<RatingForm> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Slider(
-                        value: rating.toDouble(),
-                        onChanged: (val) {
-                          rating = val;
-                        },
-                        min: 0,
-                        max: 5,
-                        divisions: 1,
-                        label: '*',
-                        activeColor: Color(0xff037DD6),
-                        inactiveColor: Colors.black45,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          for (int i = 0; i < 5; i++)
+                            InkWell(
+                              onTap: () {
+                                setState(() => rating = (i + 1).toDouble());
+                              },
+                              child: Icon(
+                                Icons.star,
+                                size: 40,
+                                color:
+                                    rating > i ? Colors.amber : Colors.black12,
+                              ),
+                            )
+                        ],
                       ),
                       Text(
                         'Comment',
@@ -92,44 +97,74 @@ class _RatingFormState extends State<RatingForm> {
                       SizedBox(
                         height: 20,
                       ),
-                      TextButton(
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            try {
-                              await Database().rateDailyHelper(
-                                  g.society,
-                                  widget.id,
-                                  FirebaseAuth.instance.currentUser.uid,
-                                  rating,
-                                  _controller.text);
-                              showToast(context, 'success', 'Success!',
-                                  'Comment added successfully');
-                            } catch (e) {
-                              print(e.toString());
-                            }
-                          }
-                        },
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                          child: Text(
-                            'Publish',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff037DD6)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.grey[200]),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
+                            TextButton(
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  try {
+                                    await Database().rateDailyHelper(
+                                        g.society,
+                                        widget.id,
+                                        FirebaseAuth.instance.currentUser.uid,
+                                        rating,
+                                        _controller.text);
+                                    showToast(context, 'success', 'Success!',
+                                        'Comment added successfully');
+                                    int count = 0;
+                                    Navigator.popUntil(context, (route) {
+                                      return count++ == 2;
+                                    });
+                                  } catch (e) {
+                                    print(e.toString());
+                                  }
+                                }
+                              },
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xff037DD6)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ])
                     ],
                   ),
                 ),

@@ -142,78 +142,78 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                     vertical: 3,
                                   ),
                                   child: ListTile(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DailyHelper(ds),
-                                        ),
-                                      );
-                                    },
-                                    leading: CircleAvatar(
-                                      backgroundColor: Colors.grey[300],
-                                      radius: 30,
-                                      backgroundImage: ds['imageUrl'] == ""
-                                          ? AssetImage('assets/dummy_image.jpg')
-                                          : NetworkImage(ds['imageUrl']),
-                                    ),
-                                    title: Wrap(children: [
-                                      Text(
-                                        ds['name'],
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DailyHelper(ds),
+                                          ),
+                                        );
+                                      },
+                                      leading: CircleAvatar(
+                                        backgroundColor: Colors.grey[300],
+                                        radius: 30,
+                                        backgroundImage: ds['imageUrl'] == ""
+                                            ? AssetImage(
+                                                'assets/dummy_image.jpg')
+                                            : NetworkImage(ds['imageUrl']),
                                       ),
-                                      SizedBox(width: 10),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          color: Color(0xffcb6f10)
-                                              .withOpacity(0.2),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 1, horizontal: 7),
-                                          child: Text(
-                                            ds['purpose'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xffcb6f10),
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                      title: Wrap(children: [
+                                        Text(
+                                          ds['name'],
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      )
-                                    ]),
-                                    subtitle: Text(
-                                      '+91-${ds['phoneNum']}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black87,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    trailing: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.grey[200],
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          try {
-                                            await launch(
-                                                'tel:${ds['phoneNum']}');
-                                          } catch (e) {
-                                            print(e.toString());
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.phone,
-                                          color: Colors.black45,
+                                        SizedBox(width: 10),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: Color(0xffcb6f10)
+                                                .withOpacity(0.2),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 7),
+                                            child: Text(
+                                              ds['purpose'],
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xffcb6f10),
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ]),
+                                      subtitle: Text(
+                                        '+91-${ds['phoneNum']}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black87,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                    ),
-                                  ),
+                                      trailing: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffe68619),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          ds['overallRating']
+                                              .toStringAsFixed(1),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )),
                                 );
                               } else {
                                 return SizedBox();
