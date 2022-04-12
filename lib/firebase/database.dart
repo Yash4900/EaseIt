@@ -945,6 +945,69 @@ class Database {
     return null;
   }
 
+  // Rate daily helper
+  Future<void> rateDailyHelper(String society, String id, String uid,
+      double rating, String comment) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .update({
+        'ratings.$uid.rating': rating,
+        'ratings.$uid.comment': comment,
+      });
+      await updateOverallRating(society, id);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Delete Rating
+  Future<void> deleteRating(String society, String id, String uid) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .update({
+        'ratings.$uid': null,
+      });
+      await updateOverallRating(society, id);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> updateOverallRating(String society, String id) async {
+    try {
+      DocumentSnapshot ds = await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .get();
+      Map<String, dynamic> ratings = Map<String, dynamic>.from(ds['ratings']);
+      double sum = 0, len = 0;
+      ratings.forEach((key, value) {
+        if (value != null) {
+          sum = sum + value['rating'];
+          len = len + 1;
+        }
+      });
+      await _firestore
+          .collection(society)
+          .doc('dailyHelpers')
+          .collection('Daily Helper')
+          .doc(id)
+          .update({'overallRating': len == 0 ? 0 : sum / len});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   // Visitor approval - Security
   Future<void> sendApproval(
     String society,

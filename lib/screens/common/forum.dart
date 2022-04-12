@@ -27,7 +27,7 @@ class _ForumState extends State<Forum> {
             ),
             SizedBox(height: 5),
             TabBar(
-                indicatorColor: Color(0xff1a73e8),
+                indicatorColor: Color(0xff037DD6),
                 unselectedLabelColor: Colors.black38,
                 labelColor: Colors.black,
                 indicatorWeight: 2.5,
