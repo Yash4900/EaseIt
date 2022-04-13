@@ -1,4 +1,5 @@
 import 'package:ease_it/screens/security/add_vehicle.dart/add_vehicle.dart';
+import 'package:ease_it/screens/security/vehicle/parking_space_list.dart';
 import 'package:ease_it/screens/security/vehicle/vehicle_bottom_sheet.dart';
 import 'package:ease_it/screens/security/vehicle/vehicle_list.dart';
 import 'package:ease_it/utility/image/firebase_ml_api.dart';
@@ -165,6 +166,37 @@ class _ActionListState extends State<ActionList> {
                   ),
                   title: Text(
                     "Vehicle List",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ParkingSpaceList(),
+                      ),
+                    );
+                  },
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.local_parking,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.grey,
+                    size: 16,
+                  ),
+                  title: Text(
+                    "Parking Spaces",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

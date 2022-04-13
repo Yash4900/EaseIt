@@ -1,5 +1,4 @@
 // Cloud Firestore functions
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/variables/globals.dart';
@@ -462,6 +461,20 @@ class Database {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  // get parking space details
+  Stream<QuerySnapshot> getAllParkingSpace(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('parkingSpaces')
+          .collection('Parking Space')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   Future<QuerySnapshot> getMyVehicle(
