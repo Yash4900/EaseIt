@@ -134,7 +134,7 @@ class _ParkingSpaceListState extends State<ParkingSpaceList> {
                               ),
                               child: ListTile(
                                 title: Text(
-                                  ds['number'],
+                                  ds.id,
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -156,18 +156,25 @@ class _ParkingSpaceListState extends State<ParkingSpaceList> {
                                     ),
                                   ),
                                 ]),
-                                trailing: CircleAvatar(
-                                  backgroundColor: ds['occupied']
-                                      ? Color(0xffda7b11).withOpacity(0.3)
-                                      : Color(0xff268e6c).withOpacity(0.3),
-                                  radius: 17,
+                                trailing: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 2,
+                                    horizontal: 7,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ds['occupied']
+                                        ? Color(0xffda7b11).withOpacity(0.2)
+                                        : Color(0xff268e6c).withOpacity(0.2),
+                                  ),
                                   child: Text(
-                                    ds['occupied'] ? 'NA' : 'A',
+                                    ds['occupied'] ? 'Occupied' : 'Available',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
                                       color: ds['occupied']
                                           ? Color(0xffda7b11)
                                           : Color(0xff268e6c),
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
