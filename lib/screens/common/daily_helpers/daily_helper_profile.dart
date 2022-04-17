@@ -332,8 +332,10 @@ class _RatingListState extends State<RatingList> {
             ),
           )
         else
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            TextButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -346,11 +348,15 @@ class _RatingListState extends State<RatingList> {
                 },
                 child: Text(
                   'Add Rating',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-          ]),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         for (String key in widget.ratings.keys)
-          if (key != uid)
+          if (key != uid && widget.ratings['key'] != null)
             ListTile(
               contentPadding: EdgeInsets.all(2),
               title: Row(
@@ -367,11 +373,12 @@ class _RatingListState extends State<RatingList> {
               subtitle: Text(
                 widget.ratings[key]['comment'],
                 style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black45,
-                    fontWeight: FontWeight.bold),
+                  fontSize: 15,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )
+            ),
       ],
     );
   }

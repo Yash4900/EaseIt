@@ -14,6 +14,12 @@ class DailyHelpers extends StatefulWidget {
 class _DailyHelpersState extends State<DailyHelpers> {
   // Map<String,String> totalHelper={};
 
+  Color getRatingColor(dynamic rating) {
+    if (rating >= 4.0) return Color(0xff268e6c);
+    if (rating >= 2.0) return Color(0xffda7b11);
+    return Color(0xffd7373f);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +43,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: list
-                        .map((e) => Padding(
+                        .map((ds) => Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                 // width: 45,
@@ -51,7 +57,7 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => VisitorProfile(
-                                          visitorData: e,
+                                          visitorData: ds,
                                         ),
                                       ),
                                     );
@@ -70,8 +76,8 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
-                                                image:
-                                                    NetworkImage(e["imageUrl"]),
+                                                image: NetworkImage(
+                                                    ds["imageUrl"]),
                                                 fit: BoxFit.fill),
                                           ),
                                         ),
@@ -80,25 +86,54 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            e["name"],
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          Wrap(
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.center,
+                                            children: [
+                                              Text(
+                                                ds["name"],
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: getRatingColor(
+                                                      ds['overallRating']),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Text(
+                                                  ds['overallRating']
+                                                      .toStringAsFixed(1),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(
                                             height: 5,
                                           ),
                                           Text(
-                                            '+91-${e['phoneNum']}',
+                                            '+91-${ds['phoneNum']}',
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black54,
                                             ),
                                           ),
+
                                           // Row(
                                           //   mainAxisAlignment:
                                           //       MainAxisAlignment.start,

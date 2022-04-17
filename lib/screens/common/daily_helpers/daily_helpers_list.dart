@@ -5,7 +5,6 @@ import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DailyHelpersList extends StatefulWidget {
   @override
@@ -36,6 +35,12 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
     "Water Supplier"
   ];
 
+  Color getRatingColor(dynamic rating) {
+    if (rating >= 4.0) return Color(0xff268e6c);
+    if (rating >= 2.0) return Color(0xffda7b11);
+    return Color(0xffd7373f);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,14 +53,18 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
           onPressed: () => Navigator.pop(context),
           child: Row(
             children: [
-              Icon(Icons.keyboard_backspace, color: Colors.black),
+              Icon(
+                Icons.keyboard_backspace,
+                color: Colors.black,
+              ),
               SizedBox(width: 5),
               Text(
                 'Back',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -84,7 +93,9 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                           Icons.filter_alt_outlined,
                           color: Colors.black54,
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(
+                          width: 10,
+                        ),
                         DropdownButton(
                           value: category,
                           icon: Icon(
@@ -142,78 +153,81 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                     vertical: 3,
                                   ),
                                   child: ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DailyHelper(ds),
-                                          ),
-                                        );
-                                      },
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.grey[300],
-                                        radius: 30,
-                                        backgroundImage: ds['imageUrl'] == ""
-                                            ? AssetImage(
-                                                'assets/dummy_image.jpg')
-                                            : NetworkImage(ds['imageUrl']),
-                                      ),
-                                      title: Wrap(children: [
-                                        Text(
-                                          ds['name'],
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DailyHelper(ds),
                                         ),
-                                        SizedBox(width: 10),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: Color(0xffcb6f10)
-                                                .withOpacity(0.2),
+                                      );
+                                    },
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.grey[300],
+                                      radius: 30,
+                                      backgroundImage: ds['imageUrl'] == ""
+                                          ? AssetImage('assets/dummy_image.jpg')
+                                          : NetworkImage(ds['imageUrl']),
+                                    ),
+                                    title: Wrap(children: [
+                                      Text(
+                                        ds['name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Color(0xffcb6f10)
+                                              .withOpacity(0.2),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 1,
+                                            horizontal: 7,
                                           ),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 1, horizontal: 7),
-                                            child: Text(
-                                              ds['purpose'],
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xffcb6f10),
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                          child: Text(
+                                            ds['purpose'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xffcb6f10),
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        )
-                                      ]),
-                                      subtitle: Text(
-                                        '+91-${ds['phoneNum']}',
+                                        ),
+                                      )
+                                    ]),
+                                    subtitle: Text(
+                                      '+91-${ds['phoneNum']}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    trailing: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            getRatingColor(ds['overallRating']),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        ds['overallRating'].toStringAsFixed(1),
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      trailing: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xffe68619),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Text(
-                                          ds['overallRating']
-                                              .toStringAsFixed(1),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      )),
+                                    ),
+                                  ),
                                 );
                               } else {
                                 return SizedBox();
@@ -228,10 +242,14 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                   'assets/no_data.png',
                                   width: 300,
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Text(
                                   'No daily helpers found',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
                                 )
                               ],
                             ),
