@@ -45,7 +45,7 @@ class _RatingFormState extends State<RatingForm> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(25),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.4,
                 decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class _RatingFormState extends State<RatingForm> {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           for (int i = 0; i < 5; i++)
                             InkWell(
@@ -82,6 +82,9 @@ class _RatingFormState extends State<RatingForm> {
                             )
                         ],
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text(
                         'Comment',
                         style: TextStyle(
@@ -89,7 +92,7 @@ class _RatingFormState extends State<RatingForm> {
                       ),
                       TextFormField(
                         controller: _controller,
-                        decoration: InputDecoration(hintText: 'Enter comments'),
+                        decoration: InputDecoration(hintText: 'Enter comment'),
                         validator: (value) => value.length == 0
                             ? 'This is a required field'
                             : null,
@@ -146,11 +149,15 @@ class _RatingFormState extends State<RatingForm> {
                                   }
                                 }
                               },
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               style: ButtonStyle(
                                 backgroundColor:

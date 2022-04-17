@@ -221,36 +221,11 @@ class _AllocateParkingState extends State<AllocateParking> {
                           errorText,
                           style: TextStyle(color: Colors.red),
                         ),
-                        // Row(
-                        //   children: [
-                        //     Flexible(
-                        //       child: TextFormField(
-                        //         decoration:
-                        //             InputDecoration(hintText: 'Enter wing'),
-                        //         controller: _wingController,
-                        //         validator: (value) =>
-                        //             value.length == 0 ? 'Enter wing' : null,
-                        //       ),
-                        //     ),
-                        //     SizedBox(width: 10),
-                        //     Flexible(
-                        //       child: TextFormField(
-                        //         decoration: InputDecoration(
-                        //             hintText: 'Enter visiting flat'),
-                        //         controller: _flatController,
-                        //         validator: (value) => value.length == 0
-                        //             ? 'Enter flat number'
-                        //             : null,
-                        //       ),
-                        //     ),
-                        //     SizedBox(width: 10),
                         TextFormField(
                           decoration: InputDecoration(
                               hintText: 'Enter expected stay time'),
                           controller: _stayTimeController,
                         ),
-                        //   ],
-                        // ),
                         SizedBox(height: 50),
                         Center(
                           child: TextButton(
@@ -267,21 +242,32 @@ class _AllocateParkingState extends State<AllocateParking> {
                                           "Are you sure you want to proceed?");
                                   if (confirmation) {
                                     setState(() => loading = true);
-                                    var response = await API().allocateParking(
-                                        g.society
-                                            .replaceAll(" ", "")
-                                            .toLowerCase(),
-                                        _stayTimeController.text);
-                                    Map<String, dynamic> map =
-                                        jsonDecode(response);
+                                    QuerySnapshot qs = await Database()
+                                        .findGuestSpace(g.society);
+                                    String parkingSpaceAllocated;
+                                    if (qs.docs.length == 0) {
+                                      var response = await API()
+                                          .allocateParking(
+                                              g.society
+                                                  .replaceAll(" ", "")
+                                                  .toLowerCase(),
+                                              _stayTimeController.text);
+                                      Map<String, dynamic> map =
+                                          jsonDecode(response);
+                                      parkingSpaceAllocated =
+                                          map['parking_space'];
+                                    } else {
+                                      parkingSpaceAllocated = qs.docs[0].id;
+                                    }
+                                    print(parkingSpaceAllocated);
                                     DocumentReference dr;
-                                    if (map['parking_space'] != '') {
+                                    if (parkingSpaceAllocated != '') {
                                       dr = await Database().saveParkingDetails(
                                         g.society,
                                         widget.licensePlateNo,
                                         _nameController.text,
                                         _phoneController.text,
-                                        map['parking_space'],
+                                        parkingSpaceAllocated,
                                         int.parse(_stayTimeController.text),
                                       );
                                       setState(() => loading = false);
@@ -303,23 +289,23 @@ class _AllocateParkingState extends State<AllocateParking> {
                                         ),
                                         Center(
                                           child: Text(
-                                            map['parking_space'],
+                                            parkingSpaceAllocated,
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )
                                       ]);
+                                      flatVar.createMapFromListForFlat();
+                                      Database().logVisitorVehicleEntry(
+                                          g.society,
+                                          widget.licensePlateNo,
+                                          flatVar.flatNum,
+                                          _purposeController.text,
+                                          dr.id);
                                     }
-                                    flatVar.createMapFromListForFlat();
-                                    Database().logVisitorVehicleEntry(
-                                        g.society,
-                                        widget.licensePlateNo,
-                                        flatVar.flatNum,
-                                        //_flatController.text,
-                                        //_wingController.text,
-                                        _purposeController.text,
-                                        dr.id);
+                                    Database().updateParkingStatus(
+                                        g.society, parkingSpaceAllocated, true);
                                   }
                                   int count = 0;
                                   Navigator.popUntil(context, (route) {

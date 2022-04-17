@@ -1,3 +1,4 @@
+import 'package:ease_it/utility/acknowledgement/alert.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
@@ -18,19 +19,19 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.5,
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           "Your Profile",
           style: TextStyle(
             color: Color(0xff000000),
           ),
         ),
         leading: IconButton(
-          color: const Color(0xff000000),
+          color: Color(0xff000000),
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back,
+          icon: Icon(
+            Icons.keyboard_backspace,
           ),
         ),
       ),
@@ -121,10 +122,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                 Text(
                                   "+91-" + phoneNum,
                                   style: TextStyle(
-                                    color: Color(
-                                      0xffa0a0a0,
-                                    ),
+                                    color: Colors.black87,
                                     fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 SizedBox(height: 10),
@@ -132,7 +132,8 @@ class _ProfileCardState extends State<ProfileCard> {
                                   email,
                                   style: TextStyle(
                                     fontSize: 15,
-                                    color: Color(0xffa0a0a0),
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 SizedBox(
@@ -151,7 +152,8 @@ class _ProfileCardState extends State<ProfileCard> {
                                             .returnStringFormOfFlatMap(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color(0xffa0a0a0),
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       )
                                     : SizedBox(),
@@ -165,7 +167,7 @@ class _ProfileCardState extends State<ProfileCard> {
                           child: InkWell(
                             child: const Icon(
                               Icons.edit_rounded,
-                              size: 40,
+                              size: 30,
                               color: Color(0xff707070),
                             ),
                             onTap: () async {
@@ -213,8 +215,9 @@ class _ProfileCardState extends State<ProfileCard> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: g.imageUrl == ""
-                              ? AssetImage("assets/default_profile_picture.png")
+                              ? AssetImage("assets/profile_dummy.png")
                               : NetworkImage(g.imageUrl),
+                          fit: BoxFit.cover,
                         ),
                         shape: BoxShape.circle,
                         color: const Color(0xfff3f3f3),
@@ -288,8 +291,12 @@ class ButtonOptions extends StatelessWidget {
               ),
             ),
             ButtonOption(
-              onTapFunction: () {
-                Auth().logout();
+              onTapFunction: () async {
+                bool confirmation = await showConfirmationDialog(
+                    context, 'Alert!', 'Are you sure you want to logout?');
+                if (confirmation) {
+                  Auth().logout();
+                }
                 Navigator.pop(context);
               },
               iconData: Icons.logout,

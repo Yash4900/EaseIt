@@ -1,5 +1,4 @@
 // Cloud Firestore functions
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ease_it/flask/api.dart';
 import 'package:ease_it/utility/variables/globals.dart';
@@ -464,6 +463,51 @@ class Database {
     }
   }
 
+  // get parking space details
+  Stream<QuerySnapshot> getAllParkingSpace(String society) {
+    try {
+      return _firestore
+          .collection(society)
+          .doc('parkingSpaces')
+          .collection('Parking Space')
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  // Update parking status
+  Future<void> updateParkingStatus(
+      String society, String parkingSpace, bool status) async {
+    try {
+      await _firestore
+          .collection(society)
+          .doc('parkingSpaces')
+          .collection('Parking Space')
+          .doc(parkingSpace)
+          .update({'occupied': status});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // Find guest space
+  Future<QuerySnapshot> findGuestSpace(String society) async {
+    try {
+      return await _firestore
+          .collection(society)
+          .doc('parkingSpaces')
+          .collection('Parking Space')
+          .where('occupied', isEqualTo: false)
+          .limit(1)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
   Future<QuerySnapshot> getMyVehicle(
     String societyName,
     //String wing,
@@ -584,8 +628,17 @@ class Database {
           .get();
       if (qs.size > 0) {
         qs.docs.forEach((doc) async {
-          await API().disAllocateParking(
-              society.replaceAll(" ", "").toLowerCase(), doc['parkingSpace']);
+          DocumentSnapshot ds = await _firestore
+              .collection(society)
+              .doc('parkingSpaces')
+              .collection('Parking Space')
+              .doc(doc['parkingSpace'])
+              .get();
+          if (ds['type'] == 'RESIDENT') {
+            await API().disAllocateParking(
+                society.replaceAll(" ", "").toLowerCase(), doc['parkingSpace']);
+          }
+          await updateParkingStatus(society, doc['parkingSpace'], false);
           await _firestore
               .collection(society)
               .doc('parkingAssignment')
