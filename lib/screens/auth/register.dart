@@ -1,5 +1,6 @@
 // Register page
 
+import 'package:ease_it/screens/auth/otp_screen.dart';
 import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
@@ -517,6 +518,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               } else {}
                             }
                             print("Am I here");
+                            bool authResult = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OtpScreen(
+                                  phoneNumber: phoneController.text,
+                                ),
+                              ),
+                            );
                             dynamic result = await Auth().register(
                               selectedSociety,
                               fnameController.text,

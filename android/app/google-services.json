@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "675362611661",
+    "firebase_url": "https://ease-it-bfceb-default-rtdb.firebaseio.com",
     "project_id": "ease-it-bfceb",
     "storage_bucket": "ease-it-bfceb.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "675362611661-2cp04juoomhqdiccusg89ph8nh7rid3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ease_it",
+            "certificate_hash": "f0bcf57dc6ea1e307c2a2e44a64cca37c6774510"
+          }
+        },
         {
           "client_id": "675362611661-ttcafrc0spvvkmenulugs0c3mrdf5de9.apps.googleusercontent.com",
           "client_type": 3
