@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ease_it/utility/acknowledgement/input_dialog.dart';
 
 class OtpScreen extends StatefulWidget {
   String phoneNumber;
@@ -20,13 +21,29 @@ class _OtpScreenState extends State<OtpScreen> {
   void sendOtp(String phoneNumber) async {
     await auth.verifyPhoneNumber(
       phoneNumber: finalPhoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationCompleted: (PhoneAuthCredential credential) {
+        print("------------------------------------");
+        print("I am in verification completed");
+        if (credential != null) {
+          Navigator.pop(context, true);
+        }
+      },
       verificationFailed: (FirebaseAuthException e) {},
-      codeSent: (String verificationId, int resendToken) {
+      codeSent: (String verificationId, int resendToken) async {
         print("The Verification ID obtained is: $verificationId");
+        String returnedOtp = await showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return InputDialog();
+          },
+          barrierColor: Color(
+            0xaaa0a0a0,
+          ),
+        );
         PhoneAuthCredential authCredential = PhoneAuthProvider.credential(
           verificationId: verificationId,
-          smsCode: "111111",
+          smsCode: returnedOtp,
         );
         print(authCredential);
       },
