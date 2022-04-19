@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'com.example.ease_it', 'EaseIt', 'Notification fot the app',
@@ -54,7 +55,11 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(MyApp());
+  });
+  //runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

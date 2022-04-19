@@ -522,26 +522,35 @@ class _RegisterPageState extends State<RegisterPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => OtpScreen(
-                                  phoneNumber: phoneController.text,
+                                  emailId: emailController.text,
                                 ),
                               ),
                             );
-                            dynamic result = await Auth().register(
-                              selectedSociety,
-                              fnameController.text,
-                              lnameController.text,
-                              emailController.text,
-                              phoneController.text,
-                              passwordController.text,
-                              dropDownValue,
-                              secondDropDownValue,
-                              flatVar.flatNum,
-                            );
-                            print("Here I Am");
-                            if (result == null) {
-                              setState(() => loading = false);
+                            if (authResult) {
+                              dynamic result = await Auth().register(
+                                selectedSociety,
+                                fnameController.text,
+                                lnameController.text,
+                                emailController.text,
+                                phoneController.text,
+                                passwordController.text,
+                                dropDownValue,
+                                secondDropDownValue,
+                                flatVar.flatNum,
+                              );
+                              print("Here I Am");
+                              if (result == null) {
+                                setState(() => loading = false);
+                                showMessageDialog(context, "Oops!", [
+                                  Text("Something went wrong please try again!")
+                                ]);
+                              }
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
                               showMessageDialog(context, "Oops!", [
-                                Text("Something went wrong please try again!")
+                                Text("Could not complete OTP verification")
                               ]);
                             }
                           } else {
