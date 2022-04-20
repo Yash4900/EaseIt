@@ -47,3 +47,4 @@ app.*.map.json
 
 # Important keys stored here
 .lib/secret/
+.lib/config/
