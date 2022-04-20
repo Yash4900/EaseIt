@@ -149,7 +149,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    //sendOtp(widget.emailId);
+                                    sendOtp(widget.emailId);
                                     setState(() {
                                       timerOn = true;
                                     });
@@ -181,7 +181,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    //sendOtp(widget.emailId);
+                                    sendOtp(widget.emailId);
                                     setState(() {
                                       timerOn = true;
                                     });
@@ -243,7 +243,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          //sendOtp(widget.emailId);
+                          sendOtp(widget.emailId);
                           setState(() {
                             firstTimeOtpRequested = true;
                             timerOn = true;
