@@ -1,5 +1,7 @@
 // Register page
 
+import 'package:ease_it/screens/auth/otp_screen.dart';
+import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/firebase/authentication.dart';
@@ -174,6 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             );
                           }).toList(),
                           onChanged: (String value) {
+                            getSocietyStructure(selectedSociety);
                             setState(() => dropDownValue = value);
                           },
                         ),
@@ -516,23 +519,59 @@ class _RegisterPageState extends State<RegisterPage> {
                                 return;
                               } else {}
                             }
+                            int timeToWait = await Database()
+                                .isInEmailWaitingList(emailController.text);
+                            print(timeToWait);
+                            if (timeToWait != -1) {
+                              showMessageDialog(context, "Attention", [
+                                Text(
+                                    "Please wait for ${2 - timeToWait} hours before registering")
+                              ]);
+                              setState(() {
+                                loading = false;
+                              });
+                              return;
+                            }
                             print("Am I here");
-                            dynamic result = await Auth().register(
-                              selectedSociety,
-                              fnameController.text,
-                              lnameController.text,
-                              emailController.text,
-                              phoneController.text,
-                              passwordController.text,
-                              dropDownValue,
-                              secondDropDownValue,
-                              flatVar.flatNum,
+                            bool authResult = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OtpScreen(
+                                  emailId: emailController.text,
+                                ),
+                              ),
                             );
-                            print("Here I Am");
-                            if (result == null) {
-                              setState(() => loading = false);
+                            if (authResult) {
+                              // setState(() {
+                              //   loading = false;
+                              // });
+                              // print("Otp received successfully");
+                              showToast(context, "success", "Success",
+                                  "OTP Verified. Registeration Successful");
+                              dynamic result = await Auth().register(
+                                selectedSociety,
+                                fnameController.text,
+                                lnameController.text,
+                                emailController.text,
+                                phoneController.text,
+                                passwordController.text,
+                                dropDownValue,
+                                secondDropDownValue,
+                                flatVar.flatNum,
+                              );
+                              print("Here I Am");
+                              if (result == null) {
+                                setState(() => loading = false);
+                                showMessageDialog(context, "Oops!", [
+                                  Text("Something went wrong please try again!")
+                                ]);
+                              }
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
                               showMessageDialog(context, "Oops!", [
-                                Text("Something went wrong please try again!")
+                                Text("Could not complete OTP verification")
                               ]);
                             }
                           } else {
@@ -540,7 +579,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               loading = false;
                               errorText = "Please fill all the flat fields";
                             });
-                          }
+                          } // Closed if after validate one
                         }
                       },
                       style: ButtonStyle(
