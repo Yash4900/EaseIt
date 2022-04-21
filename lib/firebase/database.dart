@@ -1684,4 +1684,45 @@ class Database {
     }
     return false;
   }
+
+  Future<void> addEmailInWaitingList(String email, DateTime time) async {
+    try {
+      await _firestore.collection('emailWaitList').doc(email).set({
+        'lastTry': time.toString(),
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<int> isInEmailWaitingList(String email) async {
+    try {
+      DocumentSnapshot docSnap =
+          await _firestore.collection('emailWaitList').doc(email).get();
+      if (docSnap.exists) {
+        DateTime timeData = DateTime.parse(docSnap["lastTry"]);
+        DateTime currentTime = DateTime.now();
+        int val = currentTime.difference(timeData).inHours.round();
+        if (val < 2) {
+          return val;
+        } else {
+          return -1;
+        }
+      } else {
+        return -1;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return -1;
+  }
+
+  Future<void> deleteEmailFromWaitList(String email) async {
+    try {
+      await _firestore.collection('emailWaitList').doc(email).delete();
+    } catch (e) {
+      print(e.toString());
+    }
+    return;
+  }
 }
