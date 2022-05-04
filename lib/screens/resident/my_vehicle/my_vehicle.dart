@@ -445,7 +445,7 @@ class _MyVehicleState extends State<MyVehicle> {
                   //   ),
                   // ),
                   Expanded(
-                    flex: 8,
+                    flex: 10,
                     child: FutureBuilder(
                       future: Database().getMyVehicle(
                         g.society,

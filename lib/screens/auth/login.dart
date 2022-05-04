@@ -170,7 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             'Sign Up',
                             style: TextStyle(
-                                fontSize: 16, color: Color(0xff037DD6)),
+                              fontSize: 16,
+                              color: Color(0xff037DD6),
+                            ),
                           ),
                         )
                       ],
@@ -178,35 +180,28 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 15,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Want your society on our app ',
-                          style:
-                              TextStyle(fontSize: 16, color: Colors.grey[700]),
-                        ),
-                      ],
+                    Center(
+                      child: Text(
+                        'Want your society on our app ',
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SocietyRegistration(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Society Registration',
-                            style: TextStyle(
-                                fontSize: 16, color: Color(0xff037DD6)),
-                          ),
-                        )
-                      ],
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SocietyRegistration(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Society Registration',
+                          style:
+                              TextStyle(fontSize: 16, color: Color(0xff037DD6)),
+                        ),
+                      ),
                     )
                   ],
                 ),
