@@ -22,7 +22,7 @@ class _AddHelperState extends State<AddHelper> {
     {"name": "Gym Instructor", "imageLink": "assets/workout.png"},
     {"name": "Mechanic", "imageLink": "assets/mechanic.png"},
     {"name": "Plumber", "imageLink": "assets/plumber.png"},
-    {"name": "Delivery", "imageLink": "assets/delivery.png"},
+    {"name": "Delivery", "imageLink": "assets/delivery-man.png"},
     {"name": "Technician", "imageLink": "assets/technical-support.png"},
     {"name": "Nannny", "imageLink": "assets/mother.png"},
     {"name": "Salesman", "imageLink": "assets/salesman.png"},
@@ -91,8 +91,9 @@ class _AddHelperState extends State<AddHelper> {
                                   decoration: BoxDecoration(
                                     // shape: BoxShape.circle,
                                     image: DecorationImage(
-                                        image: AssetImage(e["imageLink"]),
-                                        fit: BoxFit.fill),
+                                      image: AssetImage(e["imageLink"]),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),

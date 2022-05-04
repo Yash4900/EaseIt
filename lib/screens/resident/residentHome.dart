@@ -30,12 +30,6 @@ class _ResidentHomeState extends State<ResidentHome> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      // decoration: BoxDecoration(
-      //   image: DecorationImage(
-      //     image: AssetImage('assets/bg.jpg'),
-      //     fit: BoxFit.cover,
-      //   ),
-      // ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: ListView(
@@ -62,7 +56,7 @@ class _ResidentHomeState extends State<ResidentHome> {
               height: 30,
             ),
             Text(
-              'Approve Visitor',
+              'Visitor Approval',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -113,8 +107,8 @@ class _ResidentHomeState extends State<ResidentHome> {
                             );
                           } else {
                             return CircularButtonIcon(
-                                firstName: "No",
-                                lastName: "Visitors",
+                                firstName: "No Pending",
+                                lastName: "Request",
                                 imageLink: 'assets/guest.png');
                           }
                         }),
@@ -299,7 +293,7 @@ class _ResidentHomeState extends State<ResidentHome> {
               ),
             ),
             Text(
-              'Approve Child Exit',
+              'Child Approval',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -311,7 +305,6 @@ class _ResidentHomeState extends State<ResidentHome> {
                   stream: Database().getPendingChildApproval(
                     g.society,
                     Map<String, String>.from(g.flat),
-                    //g.wing,
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -350,9 +343,9 @@ class _ResidentHomeState extends State<ResidentHome> {
                         return Row(
                           children: [
                             CircularButtonIcon(
-                              firstName: "No",
-                              lastName: "Approvals",
-                              imageLink: "assets/child.png",
+                              firstName: "No Pending",
+                              lastName: "Requests",
+                              imageLink: "assets/children.png",
                             ),
                           ],
                         );
@@ -373,30 +366,54 @@ class _ResidentHomeState extends State<ResidentHome> {
                     Radius.circular(12.0),
                   ),
                   color: Colors.grey.withOpacity(0.2)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CircularButtonIcon(
-                    firstName: "Add",
-                    lastName: "Complaint",
-                    imageLink: "assets/complaint.png",
-                    type: "complaint",
-                  ),
-                  CircularButtonIcon(
-                    firstName: "Pre",
-                    lastName: "Approval",
-                    imageLink: "assets/add-user.png",
-                    type: "preApprove",
-                  ),
-                  CircularButtonIcon(
-                    firstName: "Add",
-                    lastName: "Helper",
-                    imageLink: "assets/001-maid.png",
-                    type: "addHelper",
-                  ),
-                  // CircularButtonIcon(firstName: "Add",lastName: "Complaint",imageLink: "assets/complaint.png",type: "complaint",),
-                ],
-              ),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CircularButtonIcon(
+                      firstName: "Add",
+                      lastName: "Complaint",
+                      imageLink: "assets/complaint.png",
+                      type: "complaint",
+                    ),
+                    CircularButtonIcon(
+                      firstName: "Pre",
+                      lastName: "Approval",
+                      imageLink: "assets/approval.png",
+                      type: "preApprove",
+                    ),
+                    CircularButtonIcon(
+                      firstName: "Add",
+                      lastName: "Helper",
+                      imageLink: "assets/001-maid.png",
+                      type: "addHelper",
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CircularButtonIcon(
+                      firstName: "Resident",
+                      lastName: "Directory",
+                      imageLink: "assets/ancestors.png",
+                      type: "resident",
+                    ),
+                    CircularButtonIcon(
+                      firstName: "Security",
+                      lastName: "Guards",
+                      imageLink: "assets/policeman.png",
+                      type: "security",
+                    ),
+                    CircularButtonIcon(
+                      firstName: "Event",
+                      lastName: "Calendar",
+                      imageLink: "assets/planner.png",
+                      type: "event",
+                    ),
+                  ],
+                )
+              ]),
             ),
             // Show recent notices
             StreamBuilder(
