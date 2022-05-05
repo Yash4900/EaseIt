@@ -193,15 +193,20 @@ class _ResidentState extends State<Resident> {
               selectedFontSize: 15,
               items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined), label: 'Home'),
+                    icon: Image.asset('assets/home.png', height: 20),
+                    label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.car), label: 'My Vehicle'),
+                    icon: Image.asset('assets/vehicle.png', width: 20),
+                    label: 'My Vehicle'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.people_alt_outlined), label: 'Forum'),
+                    icon: Image.asset('assets/forum.png', height: 20),
+                    label: 'Forum'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.security_outlined), label: 'Approvals'),
+                    icon: Image.asset('assets/approve.png', height: 20),
+                    label: 'Approvals'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.build_outlined), label: 'Maintenance')
+                    icon: Image.asset('assets/maintenance.png', height: 20),
+                    label: 'Maintenance')
               ],
             ),
           );

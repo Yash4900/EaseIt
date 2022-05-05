@@ -80,10 +80,7 @@ Container showDrawer(BuildContext context) {
             ),
           ),
           ListTile(
-            leading: Icon(
-              Icons.person_outline_sharp,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/profile.png', width: 20),
             title: Text(
               'Profile',
               style: TextStyle(
@@ -98,10 +95,7 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.calendar_today_rounded,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/calendar.png', width: 20),
             title: Text(
               'Events',
               style: TextStyle(
@@ -117,10 +111,7 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.group_outlined,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/users.png', width: 20),
             title: Text(
               'All Members',
               style: TextStyle(
@@ -136,10 +127,7 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.person_add_alt,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/user-plus.png', width: 20),
             title: Text(
               'Daily Visitors',
               style: TextStyle(
@@ -155,10 +143,7 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.security_outlined,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/shield.png', width: 20),
             title: Text(
               'Security Guards',
               style: TextStyle(
@@ -174,10 +159,7 @@ Container showDrawer(BuildContext context) {
             },
           ),
           ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: Colors.black87,
-            ),
+            leading: Image.asset('assets/logout.png', width: 20),
             title: Text(
               'Logout',
               style: TextStyle(

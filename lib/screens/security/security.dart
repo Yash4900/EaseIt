@@ -48,22 +48,21 @@ class _SecurityState extends State<Security> {
         selectedItemColor: Color(0xff037DD6),
         unselectedItemColor: Colors.black54,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        showUnselectedLabels: false,
         selectedFontSize: 15,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 25), label: 'Home'),
+              icon: Image.asset('assets/home.png', height: 20), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.how_to_reg_outlined, size: 25),
+              icon: Image.asset('assets/approve.png', height: 20),
               label: 'Approval'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.directions_car_outlined, size: 25),
+              icon: Image.asset('assets/parking.png', height: 20),
               label: 'Vehicle'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.child_care_outlined, size: 25),
+              icon: Image.asset('assets/child-safety.png', height: 20),
               label: 'Child Safety'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people_alt_outlined, size: 25), label: 'Forum')
+              icon: Image.asset('assets/forum.png', height: 20), label: 'Forum')
         ],
       ),
     );
