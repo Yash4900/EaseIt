@@ -256,80 +256,6 @@ class _ApprovalState extends State<Approval> {
                 ),
               ),
               Text(
-                "Daily Helper",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // NewWidget(),
-                        CircularButtonIcon(
-                            firstName: "Add",
-                            lastName: "Helper",
-                            imageLink: 'assets/add-user.png',
-                            type: "addHelper"),
-                        StreamBuilder(
-                            stream: Database().getAllDailyHelperForGivenFlat(
-                              g.society,
-                              Map<String, String>.from(g.flat),
-                              //g.wing,
-                            ),
-                            builder: (context, snapshot) {
-                              // print(snapshot.data.docs.length);
-                              if (snapshot.hasData &&
-                                  snapshot.data.docs.length > 0) {
-                                List<dynamic> list = snapshot.data.docs;
-                                return Row(
-                                  children: list
-                                      .map(
-                                        (data) => CircularImageIcon(
-                                            operation: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      VisitorProfile(
-                                                    visitorData: data,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            firstName:
-                                                data['name'].split(' ')[0],
-                                            lastName:
-                                                data['name'].split(' ').length >
-                                                        1
-                                                    ? data['name'].split(' ')[1]
-                                                    : "",
-                                            imageLink: data['imageUrl']),
-                                      )
-                                      .toList(),
-                                );
-                              } else {
-                                return Container();
-                              }
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Text(
                 "Child Approval",
                 style: TextStyle(
                   fontSize: 17,
@@ -491,6 +417,80 @@ class _ApprovalState extends State<Approval> {
                         );
                       }
                     }),
+              ),
+              Text(
+                "Your Daily Visitors",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // NewWidget(),
+                        CircularButtonIcon(
+                            firstName: "Add",
+                            lastName: "Visitor",
+                            imageLink: 'assets/add-user.png',
+                            type: "addHelper"),
+                        StreamBuilder(
+                            stream: Database().getAllDailyHelperForGivenFlat(
+                              g.society,
+                              Map<String, String>.from(g.flat),
+                              //g.wing,
+                            ),
+                            builder: (context, snapshot) {
+                              // print(snapshot.data.docs.length);
+                              if (snapshot.hasData &&
+                                  snapshot.data.docs.length > 0) {
+                                List<dynamic> list = snapshot.data.docs;
+                                return Row(
+                                  children: list
+                                      .map(
+                                        (data) => CircularImageIcon(
+                                            operation: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VisitorProfile(
+                                                    visitorData: data,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            firstName:
+                                                data['name'].split(' ')[0],
+                                            lastName:
+                                                data['name'].split(' ').length >
+                                                        1
+                                                    ? data['name'].split(' ')[1]
+                                                    : "",
+                                            imageLink: data['imageUrl']),
+                                      )
+                                      .toList(),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               Center(
                 child: customOutlinedButton(

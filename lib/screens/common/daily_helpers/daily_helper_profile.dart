@@ -356,7 +356,7 @@ class _RatingListState extends State<RatingList> {
             ],
           ),
         for (String key in widget.ratings.keys)
-          if (key != uid && widget.ratings['key'] != null)
+          if (key != uid && widget.ratings[key] != null)
             ListTile(
               contentPadding: EdgeInsets.all(2),
               title: Row(

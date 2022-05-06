@@ -180,25 +180,23 @@ class SecurityGuardCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 1),
+          Expanded(
+            flex: 1,
             child: imageUrl == ""
                 ? Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 25,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/profile_dummy.png'),
+                      ),
                     ),
                   )
                 : Container(
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
                       shape: BoxShape.circle,
@@ -208,56 +206,64 @@ class SecurityGuardCard extends StatelessWidget {
                     ),
                   ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: <Widget>[
-                  Text(
-                    userName,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Color(0xff707070),
-                      fontWeight: FontWeight.bold,
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: <Widget>[
+                    Text(
+                      userName,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff707070),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              //const SizedBox(height: 10),
-              CustomTag(
-                text: "Security",
-                backgroundColor: Colors.cyan[100],
-                textColor: Colors.cyan,
-              ),
-              const SizedBox(
-                height: 1,
-              ),
-              Text(
-                email,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xffa0a0a0),
+                    SizedBox(width: 10),
+                  ],
                 ),
-              ),
-            ],
+                Container(
+                  width: 100,
+                  child: CustomTag(
+                    text: "Security",
+                    backgroundColor: Colors.cyan[100],
+                    textColor: Colors.cyan,
+                  ),
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Text(
+                  email,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xffa0a0a0),
+                  ),
+                ),
+              ],
+            ),
           ),
-          InkWell(
-            splashColor: Color(0xffd0d0d0),
-            child: GestureDetector(
-                child: Image.asset('assets/phone.png', height: 20),
-                onTap: () async {
-                  try {
-                    await launch('tel:$phoneNumber');
-                  } catch (e) {
-                    print(e.toString());
-                    showToast(context, "error", "Error",
-                        "Oops! Something went wrong");
-                  }
-                }),
+          Expanded(
+            flex: 1,
+            child: InkWell(
+              splashColor: Color(0xffd0d0d0),
+              child: GestureDetector(
+                  child: Image.asset('assets/phone.png', height: 20),
+                  onTap: () async {
+                    try {
+                      await launch('tel:$phoneNumber');
+                    } catch (e) {
+                      print(e.toString());
+                      showToast(context, "error", "Error",
+                          "Oops! Something went wrong");
+                    }
+                  }),
+            ),
           ),
         ],
       ),

@@ -104,141 +104,144 @@ class _PreApprovalsState extends State<PreApprovals> {
                                 bottom: BorderSide(color: Colors.grey[300]),
                               ),
                             ),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(5),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey[300],
-                                radius: 30,
-                                backgroundImage: ds['imageUrl'] == ""
-                                    ? AssetImage('assets/dummy_image.jpg')
-                                    : NetworkImage(ds['imageUrl']),
-                              ),
-                              title: Container(
-                                child: Wrap(children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      try {
-                                        await launch('tel:${ds['phoneNum']}');
-                                      } catch (e) {
-                                        showToast(context, 'error', 'Oops!',
-                                            'Something went wrong!');
-                                      }
-                                    },
-                                    child: Text(
-                                      ds['name'],
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                            child: Column(children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.all(5),
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.grey[300],
+                                  radius: 30,
+                                  backgroundImage: ds['imageUrl'] == ""
+                                      ? AssetImage('assets/dummy_image.jpg')
+                                      : NetworkImage(ds['imageUrl']),
+                                ),
+                                title: Container(
+                                  child: Wrap(children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        try {
+                                          await launch('tel:${ds['phoneNum']}');
+                                        } catch (e) {
+                                          showToast(context, 'error', 'Oops!',
+                                              'Something went wrong!');
+                                        }
+                                      },
+                                      child: Text(
+                                        ds['name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 2, horizontal: 5),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color:
-                                          getColor(ds['status'].toUpperCase())
-                                              .withOpacity(0.2),
+                                    SizedBox(width: 10),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            getColor(ds['status'].toUpperCase())
+                                                .withOpacity(0.2),
+                                      ),
+                                      child: Text(
+                                        ds['status'].toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: getColor(
+                                              ds['status'].toUpperCase()),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ),
-                                    child: Text(
-                                      ds['status'].toUpperCase(),
+                                  ]),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 5),
+                                    Text(
+                                      '${ds['purpose']} . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}',
                                       style: TextStyle(
-                                        fontSize: 12,
-                                        color: getColor(
-                                            ds['status'].toUpperCase()),
                                         fontWeight: FontWeight.w600,
+                                        color: Colors.grey[500],
+                                        fontSize: 16,
                                       ),
                                     ),
-                                  ),
-                                ]),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 5),
-                                  Text(
-                                    '${ds['purpose']} . ${FlatDataOperations(hierarchy: g.hierarchy, flatNum: Map<String, String>.from(ds['flat'])).returnStringFormOfFlatMap()}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[500],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  ds['entryTime'] == null
-                                      ? SizedBox()
-                                      : Row(children: [
-                                          Icon(
-                                            Icons.login,
-                                            color: Colors.grey,
-                                            size: 17,
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month - 1]} ${entryTime.year}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey[500],
+                                    ds['entryTime'] == null
+                                        ? SizedBox()
+                                        : Row(children: [
+                                            Icon(
+                                              Icons.login,
+                                              color: Colors.grey,
+                                              size: 17,
                                             ),
-                                          ),
-                                        ]),
-                                  ds['exitTime'] == null
-                                      ? SizedBox()
-                                      : Row(children: [
-                                          Icon(
-                                            Icons.logout,
-                                            color: Colors.grey,
-                                            size: 17,
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month - 1]} ${exitTime.year}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey[500],
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "${formatValue(entryTime.hour)}:${formatValue(entryTime.minute)}, ${entryTime.day} ${days[entryTime.month - 1]} ${entryTime.year}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.grey[500],
+                                              ),
                                             ),
-                                          ),
-                                        ]),
-                                ],
+                                          ]),
+                                    ds['exitTime'] == null
+                                        ? SizedBox()
+                                        : Row(children: [
+                                            Icon(
+                                              Icons.logout,
+                                              color: Colors.grey,
+                                              size: 17,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "${formatValue(exitTime.hour)}:${formatValue(exitTime.minute)}, ${exitTime.day} ${days[exitTime.month - 1]} ${exitTime.year}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                          ]),
+                                  ],
+                                ),
                               ),
-                              trailing: ds['exitTime'] == null
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.grey[200],
-                                      radius: 20,
-                                      child: Center(
-                                        child: IconButton(
-                                          onPressed: () async {
-                                            bool confirmation =
-                                                await showConfirmationDialog(
-                                                    context,
-                                                    'Alert!',
-                                                    'Are you sure you want to log visitor exit?');
-                                            if (confirmation) {
-                                              try {
-                                                await Database().logPreApproval(
-                                                    g.society,
-                                                    ds.id,
-                                                    'exitTime');
-                                                showToast(
-                                                    context,
-                                                    'success',
-                                                    'Success!',
-                                                    'Log made successfully');
-                                              } catch (e) {
-                                                print(e.toString());
-                                              }
+                              ds['exitTime'] == null
+                                  ? Container(
+                                      width: double.infinity,
+                                      child: TextButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                            Color(0xffe34850),
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          bool confirmation =
+                                              await showConfirmationDialog(
+                                                  context,
+                                                  'Alert!',
+                                                  'Are you sure you want to log visitor exit?');
+                                          if (confirmation) {
+                                            try {
+                                              await Database().logPreApproval(
+                                                  g.society, ds.id, 'exitTime');
+                                              showToast(
+                                                  context,
+                                                  'success',
+                                                  'Success!',
+                                                  'Log made successfully');
+                                            } catch (e) {
+                                              print(e.toString());
                                             }
-                                          },
-                                          icon: Icon(
-                                            Icons.directions_run,
-                                            color: Colors.black54,
-                                          ),
+                                          }
+                                        },
+                                        child: Text(
+                                          'MARK EXIT',
+                                          style: TextStyle(color: Colors.white),
                                         ),
                                       ),
                                     )
-                                  : SizedBox(),
-                            ),
+                                  : SizedBox()
+                            ]),
                           );
                         } else {
                           return SizedBox();
