@@ -5,7 +5,7 @@ import 'package:email_auth/email_auth.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:ease_it/utility/display/count_down_timer.dart';
-import 'package:ease_it/config/auth.config.dart';
+// import 'package:ease_it/config/auth.config.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -46,6 +46,11 @@ class _OtpScreenState extends State<OtpScreen> {
   bool verifyOtp(String emailId, String pin) {
     return emailAuth.validateOtp(recipientMail: emailId, userOtp: pin);
   }
+
+  var remoteServerConfiguration = {
+  "server": "https://ease-it-email-server.herokuapp.com",
+  "serverKey": "FRd1iB"
+};
 
   @override
   void initState() {

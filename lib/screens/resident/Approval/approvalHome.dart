@@ -689,8 +689,18 @@ class CircularImageIcon extends StatelessWidget {
                       image: NetworkImage(imageLink), fit: BoxFit.fill),
                 ),
               ),
-              Text(firstName, style: Helper().normalStyle),
-              Text(lastName, style: Helper().normalStyle)
+              Text(
+                firstName,
+                style: Helper().normalStyle,
+                maxLines: 1,
+                overflow: TextOverflow.visible,
+              ),
+              Text(
+                lastName,
+                style: Helper().normalStyle,
+                maxLines: 1,
+                overflow: TextOverflow.visible,
+              )
             ],
           ),
         ),

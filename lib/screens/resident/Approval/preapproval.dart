@@ -78,7 +78,7 @@ class CircularButtonIcon2 extends StatelessWidget {
   final String firstName, lastName, type, imageLink;
 
   final String guestImageLink =
-      "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351";
+      "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Fguest.png?alt=media&token=fc905aca-7189-442d-b3a2-5b3dee65d12e";
   int generateCode() {
     var random = Random();
     int code = 0;
@@ -132,7 +132,7 @@ class CircularButtonIcon2 extends StatelessWidget {
                             image: DecorationImage(
                                 image: AssetImage("assets/bg.jpg"),
                                 fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
