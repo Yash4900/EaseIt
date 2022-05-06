@@ -14,7 +14,6 @@ import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Resident extends StatefulWidget {
   @override

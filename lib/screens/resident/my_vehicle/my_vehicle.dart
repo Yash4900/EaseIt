@@ -7,7 +7,6 @@ import 'package:ease_it/utility/variables/globals.dart';
 import 'package:ease_it/utility/display/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyVehicle extends StatefulWidget {
@@ -524,8 +523,11 @@ class _MyVehicleState extends State<MyVehicle> {
                                         ),
                                         trailing: ds['vehicleType'] ==
                                                 'Four Wheeler'
-                                            ? Icon(FontAwesomeIcons.car)
-                                            : Icon(FontAwesomeIcons.motorcycle),
+                                            ? Image.asset('assets/parking.png',
+                                                height: 20)
+                                            : Image.asset(
+                                                'assets/motor-bike.png',
+                                                height: 20),
                                       ),
                                     );
                                   })
@@ -533,11 +535,8 @@ class _MyVehicleState extends State<MyVehicle> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        FontAwesomeIcons.car,
-                                        size: 50,
-                                        color: Colors.grey[300],
-                                      ),
+                                      Image.asset('assets/parking.png',
+                                          height: 20),
                                       SizedBox(height: 10),
                                       Text(
                                         'No vehicles found',

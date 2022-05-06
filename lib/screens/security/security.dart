@@ -48,6 +48,7 @@ class _SecurityState extends State<Security> {
         selectedItemColor: Color(0xff037DD6),
         unselectedItemColor: Colors.black54,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        showUnselectedLabels: true,
         selectedFontSize: 15,
         items: [
           BottomNavigationBarItem(

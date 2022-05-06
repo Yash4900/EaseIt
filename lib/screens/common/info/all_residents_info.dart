@@ -500,12 +500,12 @@ class UserCard extends StatelessWidget {
                               text: "Resident"),
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 height: 1,
               ),
               Text(
                 email,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xffa0a0a0),
                 ),
@@ -515,10 +515,7 @@ class UserCard extends StatelessWidget {
           InkWell(
             splashColor: Color(0xffd0d0d0),
             child: GestureDetector(
-              child: Icon(
-                Icons.phone_outlined,
-                size: 27.5,
-              ),
+              child: Image.asset('assets/phone.png', height: 20),
               onTap: () async {
                 try {
                   await launch('tel:$phoneNumber');

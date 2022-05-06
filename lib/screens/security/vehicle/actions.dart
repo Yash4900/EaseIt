@@ -8,8 +8,6 @@ import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class ActionList extends StatefulWidget {
   @override
   _ActionListState createState() => _ActionListState();
@@ -123,10 +121,7 @@ class _ActionListState extends State<ActionList> {
                   },
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      FontAwesomeIcons.car,
-                      color: Colors.grey[700],
-                    ),
+                    child: Image.asset('assets/parking.png', height: 20),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios_rounded,
