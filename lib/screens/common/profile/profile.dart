@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
+      backgroundColor: Color(0xffffffff),
       appBar: AppBar(
         elevation: 0.5,
         backgroundColor: Colors.white,
@@ -38,7 +38,6 @@ class ProfilePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView(
-          //crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfileCard(),
             SizedBox(height: 25),
@@ -96,9 +95,8 @@ class _ProfileCardState extends State<ProfileCard> {
                 children: <Widget>[
                   Container(
                     //Container for displaying data
-                    //margin: EdgeInsets.all(15),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Padding(
@@ -119,22 +117,34 @@ class _ProfileCardState extends State<ProfileCard> {
                                   ),
                                 ),
                                 SizedBox(height: 20),
-                                Text(
-                                  "+91-" + phoneNum,
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/phone.png', height: 15),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "+91-" + phoneNum,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(height: 10),
-                                Text(
-                                  email,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/mail.png', height: 15),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      email,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -161,14 +171,20 @@ class _ProfileCardState extends State<ProfileCard> {
                             ),
                           ),
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width / 4),
                         Material(
                           color: Colors.white,
                           child: InkWell(
-                            child: const Icon(
-                              Icons.edit_rounded,
-                              size: 30,
-                              color: Color(0xff707070),
+                            child: Row(
+                              children: [
+                                Image.asset('assets/edit.png', width: 15),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15),
+                                )
+                              ],
                             ),
                             onTap: () async {
                               File _profilePicture = await Navigator.push(
@@ -281,7 +297,7 @@ class ButtonOptions extends StatelessWidget {
                   ),
                 );
               },
-              iconData: Icons.feedback,
+              icon: 'feedback',
               iconText: "Support and Feedback",
             ),
             Padding(
@@ -299,7 +315,7 @@ class ButtonOptions extends StatelessWidget {
                 }
                 Navigator.pop(context);
               },
-              iconData: Icons.logout,
+              icon: 'logout',
               iconText: "Logout",
             )
           ],
@@ -312,12 +328,12 @@ class ButtonOptions extends StatelessWidget {
 class ButtonOption extends StatelessWidget {
   const ButtonOption(
       {Key key,
-      @required this.iconData,
+      @required this.icon,
       @required this.iconText,
       @required this.onTapFunction})
       : super(key: key);
 
-  final IconData iconData;
+  final String icon;
   final String iconText;
   final Function onTapFunction;
 
@@ -337,11 +353,11 @@ class ButtonOption extends StatelessWidget {
               Container(
                 height: 50,
                 width: 50,
-                child: Icon(
-                  iconData,
-                  color: const Color(0xff707070),
+                child: Padding(
+                  padding: EdgeInsets.all(13),
+                  child: Image.asset('assets/$icon.png'),
                 ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xfff3f3f3),
                 ),

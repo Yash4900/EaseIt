@@ -93,8 +93,10 @@ class _SecurityHomeState extends State<SecurityHome> {
                           child: Container(
                             color: Colors.grey[100],
                             margin: EdgeInsets.all(3),
-                            child:
-                                Center(child: Icon(Icons.backspace_outlined)),
+                            child: Center(
+                              child:
+                                  Image.asset('assets/cancel.png', height: 25),
+                            ),
                           ),
                         ),
                       ),

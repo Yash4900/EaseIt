@@ -89,10 +89,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          Icons.filter_alt_outlined,
-                          color: Colors.black54,
-                        ),
+                        Image.asset('assets/filter.png', height: 17),
                         SizedBox(
                           width: 10,
                         ),
@@ -100,7 +97,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                           value: category,
                           icon: Icon(
                             Icons.keyboard_arrow_down,
-                            color: Colors.black54,
+                            color: Colors.black,
                           ),
                           onChanged: (value) =>
                               setState(() => category = value),
@@ -113,7 +110,7 @@ class _DailyHelpersListState extends State<DailyHelpersList> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black54,
+                                  color: Colors.black,
                                 ),
                               ),
                             );

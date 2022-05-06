@@ -36,8 +36,6 @@ dependencies:
   firebase_core: ^1.10.5
   firebase_storage: ^9.0.0
   intl: ^0.17.0
-  # animate_icons: ^2.0.0
-  font_awesome_flutter: ^9.2.0
   flutter_masked_text: ^0.8.0
   cached_network_image: ^3.2.0
   otp_text_field: ^1.1.2

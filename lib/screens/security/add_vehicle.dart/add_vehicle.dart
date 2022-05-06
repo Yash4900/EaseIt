@@ -10,7 +10,6 @@ import 'package:ease_it/utility/acknowledgement/toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:ease_it/utility/display/custom_dropdown_widget.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class AddVehicle extends StatefulWidget {
@@ -242,9 +241,11 @@ class _AddVehicleState extends State<AddVehicle> {
                                 return DropdownMenuItem(
                                   value: item,
                                   child: Row(children: [
-                                    Icon(item == "Two Wheeler"
-                                        ? FontAwesomeIcons.motorcycle
-                                        : FontAwesomeIcons.car),
+                                    item == "Two Wheeler"
+                                        ? Image.asset('assets/motor-bike.png',
+                                            height: 20)
+                                        : Image.asset('assets/parking.png',
+                                            height: 20),
                                     SizedBox(width: 10),
                                     Text(
                                       item,

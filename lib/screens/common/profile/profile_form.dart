@@ -56,11 +56,10 @@ class _ProfileFormState extends State<ProfileForm> {
     setState(() {
       isLoading = true;
     });
-    final byteData =
-        await rootBundle.load('assets/default_profile_picture.png');
+    final byteData = await rootBundle.load('assets/profile_dummy.png');
 
-    final tempFile = File(
-        "${(await getTemporaryDirectory()).path}/default_profile_picutre.png");
+    final tempFile =
+        File("${(await getTemporaryDirectory()).path}/profile_dummy.png");
     _defaultProfilePicture = await tempFile.writeAsBytes(
       byteData.buffer
           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
@@ -72,8 +71,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   void initState() {
-    imageUrl =
-        g.imageUrl == '' ? 'assets/default_profile_picture.png' : g.imageUrl;
+    imageUrl = g.imageUrl == '' ? 'assets/profile_dummy.png' : g.imageUrl;
     fnameController.text = g.fname;
     lnameController.text = g.lname;
     emailController.text = g.email;

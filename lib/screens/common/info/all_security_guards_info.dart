@@ -248,10 +248,7 @@ class SecurityGuardCard extends StatelessWidget {
           InkWell(
             splashColor: Color(0xffd0d0d0),
             child: GestureDetector(
-                child: Icon(
-                  Icons.phone,
-                  size: 25,
-                ),
+                child: Image.asset('assets/phone.png', height: 20),
                 onTap: () async {
                   try {
                     await launch('tel:$phoneNumber');
