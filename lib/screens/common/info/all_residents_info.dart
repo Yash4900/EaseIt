@@ -420,21 +420,19 @@ class UserCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 1),
             child: imageUrl == ""
                 ? Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 25,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/profile_dummy.png'),
+                      ),
                     ),
                   )
                 : Container(
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                       color: Color(0xffd3d3d3),
                       shape: BoxShape.circle,
