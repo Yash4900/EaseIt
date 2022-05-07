@@ -153,19 +153,26 @@ class _ProfileCardState extends State<ProfileCard> {
                                         (snapshot.data["role"] == "Resident" ||
                                             snapshot.data["role"] ==
                                                 "Secretary")
-                                    ? Text(
-                                        FlatDataOperations(
-                                                hierarchy: g.hierarchy,
-                                                flatNum:
-                                                    Map<String, String>.from(
-                                                        g.flat))
-                                            .returnStringFormOfFlatMap(),
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.bold,
+                                    ? Row(children: [
+                                        Image.asset(
+                                          'assets/home.png',
+                                          width: 15,
                                         ),
-                                      )
+                                        SizedBox(width: 10),
+                                        Text(
+                                          FlatDataOperations(
+                                                  hierarchy: g.hierarchy,
+                                                  flatNum:
+                                                      Map<String, String>.from(
+                                                          g.flat))
+                                              .returnStringFormOfFlatMap(),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ])
                                     : SizedBox(),
                               ],
                             ),

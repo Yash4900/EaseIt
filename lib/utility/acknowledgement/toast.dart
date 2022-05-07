@@ -41,31 +41,39 @@ showToast(BuildContext context, String type, String title, String message) {
       margin: EdgeInsets.all(15),
       backgroundColor: getColor(type),
       behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      content: Row(children: [
-        getIcon(type),
-        SizedBox(width: 10),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.inter(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      content: Row(
+        children: [
+          getIcon(type),
+          SizedBox(width: 10),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.sourceSansPro(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ),
-              SizedBox(height: 5),
-              Text(
-                message,
-                style: GoogleFonts.inter(color: Colors.white, fontSize: 13),
-              ),
-            ],
+                    fontSize: 17,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  message,
+                  style: GoogleFonts.sourceSansPro(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     ),
   );
 }
