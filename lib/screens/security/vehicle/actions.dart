@@ -46,10 +46,7 @@ class _ActionListState extends State<ActionList> {
                   },
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.login,
-                      color: Colors.grey[700],
-                    ),
+                    child: Image.asset('assets/vehicle-entry.png', height: 20),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios_rounded,
@@ -90,10 +87,7 @@ class _ActionListState extends State<ActionList> {
                   },
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.logout,
-                      color: Colors.grey[700],
-                    ),
+                    child: Image.asset('assets/vehicle-exit.png', height: 20),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios_rounded,
@@ -149,10 +143,7 @@ class _ActionListState extends State<ActionList> {
                   },
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.emoji_transportation,
-                      color: Colors.grey[700],
-                    ),
+                    child: Image.asset('assets/vehicle-list.png', height: 20),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios_rounded,
@@ -180,10 +171,7 @@ class _ActionListState extends State<ActionList> {
                   },
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.local_parking,
-                      color: Colors.grey[700],
-                    ),
+                    child: Image.asset('assets/parking-spaces.png', height: 20),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios_rounded,
