@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/screens/resident/Approval/approvalHome.dart';
 import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
+import 'package:ease_it/utility/display/qr_code.dart';
 import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
@@ -155,93 +156,96 @@ class CircularButtonIcon2 extends StatelessWidget {
                                           if (permissionStatus ==
                                               PermissionStatus.granted) {
                                             List<Contact> _contacts =
-                                                await ContactsService.getContacts(
-                                                    withThumbnails: false);
-                              
+                                                await ContactsService
+                                                    .getContacts(
+                                                        withThumbnails: false);
+
                                             return showDialog(
                                                 context: context,
-                                                builder: (context) => AlertDialog(
-                                                      title: Text(
-                                                          "Select from the below contact"),
-                                                      content: Container(
-                                                          child: ListView.builder(
-                                                        itemCount:
-                                                            _contacts?.length ??
+                                                builder:
+                                                    (context) => AlertDialog(
+                                                          title: Text(
+                                                              "Select from the below contact"),
+                                                          content: Container(
+                                                              child: ListView
+                                                                  .builder(
+                                                            itemCount: _contacts
+                                                                    ?.length ??
                                                                 0,
-                                                        itemBuilder:
-                                                            (BuildContext context,
-                                                                int index) {
-                                                          Contact contact =
-                                                              _contacts
-                                                                  ?.elementAt(
-                                                                      index);
-                                                          if (contact
-                                                                  .phones.length >
-                                                              0) {
-                                                            return ListTile(
-                                                              onTap: () {
-                                                                nameController
-                                                                        .text =
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              Contact contact =
+                                                                  _contacts
+                                                                      ?.elementAt(
+                                                                          index);
+                                                              if (contact.phones
+                                                                      .length >
+                                                                  0) {
+                                                                return ListTile(
+                                                                  onTap: () {
+                                                                    nameController
+                                                                            .text =
+                                                                        contact
+                                                                            .displayName;
+                                                                    // Item x=contact.phones[0];
                                                                     contact
-                                                                        .displayName;
-                                                                // Item x=contact.phones[0];
-                                                                contact.phones.map(
-                                                                    (e) => print(
-                                                                        e.value));
-                                                                contact.emails.map(
-                                                                    (e) => print(
-                                                                        e.value));
-                                                                print("Hello");
-                                                                // contact..map((e) => print(e.value));
-                              
-                                                                phoneController
-                                                                        .text =
+                                                                        .phones
+                                                                        .map((e) =>
+                                                                            print(e.value));
                                                                     contact
-                                                                        .phones[0]
-                                                                        .value
-                                                                        .toString();
-                              
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                              contentPadding:
-                                                                  const EdgeInsets
+                                                                        .emails
+                                                                        .map((e) =>
+                                                                            print(e.value));
+                                                                    print(
+                                                                        "Hello");
+                                                                    // contact..map((e) => print(e.value));
+
+                                                                    phoneController
+                                                                            .text =
+                                                                        contact
+                                                                            .phones[0]
+                                                                            .value
+                                                                            .toString();
+
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  contentPadding: const EdgeInsets
                                                                           .symmetric(
-                                                                      vertical: 2,
+                                                                      vertical:
+                                                                          2,
                                                                       horizontal:
                                                                           18),
-                                                              leading: (contact
-                                                                              .avatar !=
-                                                                          null &&
-                                                                      contact
-                                                                          .avatar
-                                                                          .isNotEmpty)
-                                                                  ? CircleAvatar(
-                                                                      backgroundImage:
-                                                                          MemoryImage(
-                                                                              contact.avatar),
-                                                                    )
-                                                                  : CircleAvatar(
-                                                                      child: Text(
+                                                                  leading: (contact.avatar !=
+                                                                              null &&
                                                                           contact
-                                                                              .initials()),
-                                                                      backgroundColor:
-                                                                          Theme.of(context)
-                                                                              .accentColor,
-                                                                    ),
-                                                              title: Text(contact
-                                                                      .displayName ??
-                                                                  ''),
-                                                              //This can be further expanded to showing contacts detail
-                                                              // onPressed().
-                                                            );
-                                                          } else {
-                                                            return Container();
-                                                          }
-                                                        },
-                                                      )),
-                                                    ));
+                                                                              .avatar
+                                                                              .isNotEmpty)
+                                                                      ? CircleAvatar(
+                                                                          backgroundImage:
+                                                                              MemoryImage(contact.avatar),
+                                                                        )
+                                                                      : CircleAvatar(
+                                                                          child:
+                                                                              Text(contact.initials()),
+                                                                          backgroundColor:
+                                                                              Theme.of(context).accentColor,
+                                                                        ),
+                                                                  title: Text(
+                                                                      contact.displayName ??
+                                                                          ''),
+                                                                  //This can be further expanded to showing contacts detail
+                                                                  // onPressed().
+                                                                );
+                                                              } else {
+                                                                return Container();
+                                                              }
+                                                            },
+                                                          )),
+                                                        ));
                                           } else {
                                             final snackBar = SnackBar(
                                                 content: Text(
@@ -257,14 +261,12 @@ class CircularButtonIcon2 extends StatelessWidget {
                                         hintStyle: TextStyle(fontSize: 14),
                                       ),
                                       controller: nameController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
                                       },
-                                      
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
@@ -274,13 +276,10 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       keyboardType: TextInputType.number,
                                       controller: phoneController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
-                                        }
-                                        else if(value.length!=10)
-                                        {
+                                        } else if (value.length != 10) {
                                           return 'Please enter valid number';
                                         }
                                         return null;
@@ -296,9 +295,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       // keyboardType: TextInputType.number,
                                       controller: vehicleNo,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
@@ -309,54 +307,56 @@ class CircularButtonIcon2 extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        if(_globalKey.currentState.validate())
-                                        {
-                                        int code = generateCode();
-                                        await Database().addPreApprovalEntry(
-                                            g.society,
-                                            nameController.text,
-                                            phoneController.text,
-                                            vehicleNo.text,
-                                            Map<String, String>.from(g.flat),
-                                            //g.flatNo,
-                                            //g.wing,
-                                            code.toString(),
-                                            "Guest",
-                                            "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351");
-                              
-                                        final popup = BeautifulPopup(
-                                          context: context,
-                                          template: TemplateNotification,
-                                        );
-                              
-                                        popup.show(
-                                            title: "TOKEN",
-                                            content: Column(
-                                              children: [
-                                                Text(
-                                                  code.toString(),
-                                                  style: Helper().headingStyle,
-                                                )
-                                              ],
-                                            ),
-                                            actions: [
-                                              popup.close,
-                                              popup.button(
-                                                label: 'Close',
-                                                onPressed: () {
-                                                  int count = 2;
-                                                  Navigator.of(context).popUntil(
-                                                      (_) => count-- <= 0);
-                                                },
-                                              ),
-                                              popup.button(
-                                                label: 'Share Code',
-                                                onPressed: () {
-                                                  share(code.toString());
-                                                },
-                                              ),
-                                            ]);
-                                      }
+                                        if (_globalKey.currentState
+                                            .validate()) {
+                                          int code = generateCode();
+                                          await Database().addPreApprovalEntry(
+                                              g.society,
+                                              nameController.text,
+                                              phoneController.text,
+                                              vehicleNo.text,
+                                              Map<String, String>.from(g.flat),
+                                              //g.flatNo,
+                                              //g.wing,
+                                              code.toString(),
+                                              "Guest",
+                                              "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351");
+                                          await showQRDialog(
+                                              context, code.toString());
+                                          Navigator.pop(context);
+                                          // final popup = BeautifulPopup(
+                                          //   context: context,
+                                          //   template: TemplateNotification,
+                                          // );
+
+                                          // popup.show(
+                                          //     title: "TOKEN",
+                                          //     content: Column(
+                                          //       children: [
+                                          //         Text(
+                                          //           code.toString(),
+                                          //           style: Helper().headingStyle,
+                                          //         )
+                                          //       ],
+                                          //     ),
+                                          //     actions: [
+                                          //       popup.close,
+                                          //       popup.button(
+                                          //         label: 'Close',
+                                          //         onPressed: () {
+                                          //           int count = 2;
+                                          //           Navigator.of(context).popUntil(
+                                          //               (_) => count-- <= 0);
+                                          //         },
+                                          //       ),
+                                          //       popup.button(
+                                          //         label: 'Share Code',
+                                          //         onPressed: () {
+                                          //           share(code.toString());
+                                          //         },
+                                          //       ),
+                                          //     ]);
+                                        }
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -463,47 +463,51 @@ class CircularButtonIcon2 extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        if(_globalKey.currentState.validate())
-                                        {
-                                        int code = generateCode();
-                                        Database().addPreApprovalEntry(
-                                            g.society,
-                                            nameController.text,
-                                            phoneController.text,
-                                            carController.text,
-                                            g.flat,
-                                            //g.wing,
-                                            code.toString(),
-                                            "Cab",
-                                            "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Ftaxi.png?alt=media&token=f73f031a-b1fc-4537-84ed-b8a67db4941b");
-                                        final popup = BeautifulPopup(
-                                          context: context,
-                                          template: TemplateNotification,
-                                        );
+                                        if (_globalKey.currentState
+                                            .validate()) {
+                                          int code = generateCode();
+                                          Database().addPreApprovalEntry(
+                                              g.society,
+                                              nameController.text,
+                                              phoneController.text,
+                                              carController.text,
+                                              g.flat,
+                                              //g.wing,
+                                              code.toString(),
+                                              "Cab",
+                                              "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Ftaxi.png?alt=media&token=f73f031a-b1fc-4537-84ed-b8a67db4941b");
+                                          await showQRDialog(
+                                              context, code.toString());
+                                          Navigator.pop(context);
+                                          // final popup = BeautifulPopup(
+                                          //   context: context,
+                                          //   template: TemplateNotification,
+                                          // );
 
-                                        popup.show(
-                                            title: "TOKEN",
-                                            content: Column(
-                                              children: [
-                                                Text(
-                                                  code.toString(),
-                                                  style: Helper().headingStyle,
-                                                )
-                                              ],
-                                            ),
-                                            actions: [
-                                              popup.close,
-                                              popup.button(
-                                                label: 'Close',
-                                                onPressed: () {
-                                                  int count = 2;
-                                                  Navigator.of(context)
-                                                      .popUntil(
-                                                          (_) => count-- <= 0);
-                                                },
-                                              ),
-                                            ]);
-                                      }
+                                          // popup.show(
+                                          //     title: "TOKEN",
+                                          //     content: Column(
+                                          //       children: [
+                                          //         Text(
+                                          //           code.toString(),
+                                          //           style:
+                                          //               Helper().headingStyle,
+                                          //         )
+                                          //       ],
+                                          //     ),
+                                          //     actions: [
+                                          //       popup.close,
+                                          //       popup.button(
+                                          //         label: 'Close',
+                                          //         onPressed: () {
+                                          //           int count = 2;
+                                          //           Navigator.of(context)
+                                          //               .popUntil((_) =>
+                                          //                   count-- <= 0);
+                                          //         },
+                                          //       ),
+                                          //     ]);
+                                        }
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
@@ -566,9 +570,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                         hintStyle: TextStyle(fontSize: 14),
                                       ),
                                       controller: nameController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
@@ -584,13 +587,10 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       keyboardType: TextInputType.number,
                                       controller: phoneController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
-                                        }
-                                        else if (value.length!=10)
-                                        {
+                                        } else if (value.length != 10) {
                                           return 'Please enter valid number';
                                         }
                                         return null;
@@ -606,9 +606,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: vehicleController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
@@ -619,47 +618,52 @@ class CircularButtonIcon2 extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        if(_globalKey.currentState.validate()){
-                                        int code = generateCode();
-                                        Database().addPreApprovalEntry(
-                                            g.society,
-                                            nameController.text,
-                                            phoneController.text,
-                                            vehicleController.text,
-                                            g.flat,
-                                            //g.flatNo,
-                                            //g.wing,
-                                            code.toString(),
-                                            "Delivery",
-                                            "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Fdelivery-man.png?alt=media&token=470a51fa-b95a-44ef-a486-b1e297555c45");
-                              
-                                        final popup = BeautifulPopup(
-                                          context: context,
-                                          template: TemplateNotification,
-                                        );
-                              
-                                        popup.show(
-                                            title: "TOKEN",
-                                            content: Column(
-                                              children: [
-                                                Text(
-                                                  code.toString(),
-                                                  style: Helper().headingStyle,
-                                                )
-                                              ],
-                                            ),
-                                            actions: [
-                                              popup.close,
-                                              popup.button(
-                                                label: 'Close',
-                                                onPressed: () {
-                                                  int count = 2;
-                                                  Navigator.of(context).popUntil(
-                                                      (_) => count-- <= 0);
-                                                },
-                                              ),
-                                            ]);
-                                      }
+                                        if (_globalKey.currentState
+                                            .validate()) {
+                                          int code = generateCode();
+                                          Database().addPreApprovalEntry(
+                                              g.society,
+                                              nameController.text,
+                                              phoneController.text,
+                                              vehicleController.text,
+                                              g.flat,
+                                              //g.flatNo,
+                                              //g.wing,
+                                              code.toString(),
+                                              "Delivery",
+                                              "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Fdelivery-man.png?alt=media&token=470a51fa-b95a-44ef-a486-b1e297555c45");
+                                          await showQRDialog(
+                                              context, code.toString());
+                                          Navigator.pop(context);
+                                          // final popup = BeautifulPopup(
+                                          //   context: context,
+                                          //   template: TemplateNotification,
+                                          // );
+
+                                          // popup.show(
+                                          //     title: "TOKEN",
+                                          //     content: Column(
+                                          //       children: [
+                                          //         Text(
+                                          //           code.toString(),
+                                          //           style:
+                                          //               Helper().headingStyle,
+                                          //         )
+                                          //       ],
+                                          //     ),
+                                          //     actions: [
+                                          //       popup.close,
+                                          //       popup.button(
+                                          //         label: 'Close',
+                                          //         onPressed: () {
+                                          //           int count = 2;
+                                          //           Navigator.of(context)
+                                          //               .popUntil((_) =>
+                                          //                   count-- <= 0);
+                                          //         },
+                                          //       ),
+                                          //     ]);
+                                        }
                                         //   Navigator.of(context).pop();
                                         // Navigator.of(context).pop();
                                       },
@@ -693,7 +697,7 @@ class CircularButtonIcon2 extends StatelessWidget {
               TextEditingController nameController = TextEditingController();
               TextEditingController vehicleController = TextEditingController();
               TextEditingController phoneController = TextEditingController();
-              final _globalKey  = GlobalKey<FormState>();
+              final _globalKey = GlobalKey<FormState>();
               return showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -723,9 +727,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                         hintStyle: TextStyle(fontSize: 14),
                                       ),
                                       controller: nameController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
@@ -739,13 +742,10 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       keyboardType: TextInputType.number,
                                       controller: phoneController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
-                                        }
-                                        else if(value.length!=10)
-                                        {
+                                        } else if (value.length != 10) {
                                           return 'Please enter valid number';
                                         }
                                         return null;
@@ -759,9 +759,8 @@ class CircularButtonIcon2 extends StatelessWidget {
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: vehicleController,
-                                      validator: (value){
-                                        if(value==null || value.isEmpty)
-                                        {
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
                                         }
                                         return null;
@@ -784,33 +783,36 @@ class CircularButtonIcon2 extends StatelessWidget {
                                             code.toString(),
                                             "VisitingHelp",
                                             "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Ftechnical-support.png?alt=media&token=4ca03201-fc97-4082-9461-fedd196aa757");
-                              
-                                        final popup = BeautifulPopup(
-                                          context: context,
-                                          template: TemplateNotification,
-                                        );
-                              
-                                        popup.show(
-                                            title: "TOKEN",
-                                            content: Column(
-                                              children: [
-                                                Text(
-                                                  code.toString(),
-                                                  style: Helper().headingStyle,
-                                                )
-                                              ],
-                                            ),
-                                            actions: [
-                                              popup.close,
-                                              popup.button(
-                                                label: 'Close',
-                                                onPressed: () {
-                                                  int count = 2;
-                                                  Navigator.of(context).popUntil(
-                                                      (_) => count-- <= 0);
-                                                },
-                                              ),
-                                            ]);
+                                        await showQRDialog(
+                                            context, code.toString());
+                                        Navigator.pop(context);
+                                        // final popup = BeautifulPopup(
+                                        //   context: context,
+                                        //   template: TemplateNotification,
+                                        // );
+
+                                        // popup.show(
+                                        //     title: "TOKEN",
+                                        //     content: Column(
+                                        //       children: [
+                                        //         Text(
+                                        //           code.toString(),
+                                        //           style: Helper().headingStyle,
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //     actions: [
+                                        //       popup.close,
+                                        //       popup.button(
+                                        //         label: 'Close',
+                                        //         onPressed: () {
+                                        //           int count = 2;
+                                        //           Navigator.of(context)
+                                        //               .popUntil(
+                                        //                   (_) => count-- <= 0);
+                                        //         },
+                                        //       ),
+                                        //     ]);
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
