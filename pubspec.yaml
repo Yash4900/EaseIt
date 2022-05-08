@@ -59,7 +59,9 @@ dependencies:
   flutter_phone_direct_caller: ^2.1.0
   timeline_tile: ^2.0.0
   email_auth: ^1.0.0
-
+  qr_flutter: ^3.1.0
+  barcode_scan2: ^4.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

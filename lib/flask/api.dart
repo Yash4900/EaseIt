@@ -4,10 +4,6 @@
 import 'package:http/http.dart' as http;
 
 class API {
-  String FLASK_API_URL = 'https://parking-model.herokuapp.com';
-String FCM_KEY =
-    'AAAAnT6_oc0:APA91bGLoDSYcS-S5XHl29kCGPFp-_taOb7j-Wdu5fB6qzzMTF79RJiZA1P9O_KZIW_FVzRWHr-Luvu-pSQi37ZX3XoiN5ywJ59rEor9TKSE1d-X6c-2ZVUsZpb3iVmyvSIrRYEiMkET';
-
   String _domain = 'https://parking-model.herokuapp.com';
   // String _domain = 'http://192.168.0.113:5000';
 

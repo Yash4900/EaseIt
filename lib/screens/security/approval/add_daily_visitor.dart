@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:ease_it/firebase/database.dart';
 import 'package:ease_it/firebase/storage.dart';
 import 'package:ease_it/utility/acknowledgement/alert.dart';
+import 'package:ease_it/utility/display/qr_code.dart';
 import 'package:ease_it/utility/flat_data.dart';
 import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:ease_it/utility/variables/globals.dart';
@@ -87,32 +88,6 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
           child: DailyVisitorFlatAcceptance(
             callback: (val) => setState(() => flat = val),
           ),
-          // child: Row(
-          //   children: [
-          //     Flexible(
-          //       flex: 1,
-          //       child: TextFormField(
-          //         decoration: InputDecoration(
-          //           hintText: 'Wing',
-          //           hintStyle: TextStyle(fontSize: 16),
-          //         ),
-          //         controller: _wingController,
-          //       ),
-          //     ),
-          //     SizedBox(width: 10),
-          //     Flexible(
-          //       flex: 1,
-          //       child: TextFormField(
-          //         decoration: InputDecoration(
-          //           hintText: 'Flat No',
-          //           hintStyle: TextStyle(fontSize: 16),
-          //         ),
-          //         controller: _flatController,
-          //         keyboardType: TextInputType.number,
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ),
         actions: [
           TextButton(
@@ -446,34 +421,10 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                             flatsNew,
                                             imageUrl,
                                             dropDownValue,
-                                            code)
+                                            code.toString())
                                         .then((value) {
                                       setState(() => loading = false);
-                                      showMessageDialog(context,
-                                          'Daily visitor added successfully!', [
-                                        Center(
-                                          child: Image.asset(
-                                            'assets/success.png',
-                                            width: 230,
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            'Approval code for the visitor is',
-                                            style: TextStyle(
-                                                color: Colors.black45,
-                                                fontSize: 16),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            code.toString(),
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      ]);
+                                      showQRDialog(context, code.toString());
                                     });
                                   }
                                 } else {

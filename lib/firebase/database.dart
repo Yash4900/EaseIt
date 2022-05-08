@@ -929,7 +929,7 @@ class Database {
       List<Map<String, String>> worksAt,
       String imageUrl,
       String purpose,
-      int code) async {
+      String code) async {
     try {
       await _firestore
           .collection(society)
@@ -1381,7 +1381,8 @@ class Database {
     }
   }
 
-  Future<QueryDocumentSnapshot> verifyByCode(String society, int code) async {
+  Future<QueryDocumentSnapshot> verifyByCode(
+      String society, String code) async {
     try {
       QuerySnapshot qs;
       qs = await _firestore
@@ -1395,7 +1396,7 @@ class Database {
           .collection(society)
           .doc('PreApprovals')
           .collection('preApproval')
-          .where('generatedToken', isEqualTo: code.toString())
+          .where('generatedToken', isEqualTo: code)
           .get();
       if (qs.size > 0) return qs.docs[0];
     } catch (e) {
