@@ -5,7 +5,7 @@ import 'package:ease_it/utility/flat_data_operations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:ease_it/utility/variables/globals.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VisitorProfile extends StatefulWidget {
   final dynamic visitorData;
@@ -24,8 +24,12 @@ class _VisitorProfileState extends State<VisitorProfile> {
     flatList = widget.visitorData['worksAt'];
   }
 
-  _callNumber(dynamic number) async {
-    bool res = await FlutterPhoneDirectCaller.callNumber(number);
+  void _callNumber(dynamic number) async {
+    try {
+      await launch('tel:$number');
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override

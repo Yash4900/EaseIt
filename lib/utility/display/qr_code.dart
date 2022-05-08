@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -36,18 +37,24 @@ Future<bool> showQRDialog(BuildContext context, String code) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(
-          "Visiting Pass Generated Successfully!",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
         content: SingleChildScrollView(
           child: RepaintBoundary(
             key: globalKey,
             child: Container(
               color: Colors.white,
+              padding: EdgeInsets.all(10),
               child: ListBody(
                 children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Visitor Gate Pass',
+                      style: GoogleFonts.sourceSansPro(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
                   Center(
                     child: Container(
                       width: 200,
@@ -57,15 +64,25 @@ Future<bool> showQRDialog(BuildContext context, String code) async {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   Center(
                     child: Text(
                       code,
                       style: TextStyle(
                         letterSpacing: 2,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Center(
+                    child: Text(
+                      'Show QR Code at security desk.',
+                      style: TextStyle(
+                        color: Colors.black38,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   )
                 ],
