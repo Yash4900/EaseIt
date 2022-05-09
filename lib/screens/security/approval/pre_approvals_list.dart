@@ -204,7 +204,8 @@ class _PreApprovalsState extends State<PreApprovals> {
                                   ],
                                 ),
                               ),
-                              ds['exitTime'] == null
+                              ds['exitTime'] == null &&
+                                      ds['status'] != 'Pending'
                                   ? Container(
                                       width: double.infinity,
                                       child: TextButton(

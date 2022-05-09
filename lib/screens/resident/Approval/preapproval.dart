@@ -6,7 +6,6 @@ import 'package:ease_it/screens/resident/maintenance/secretaryPOV.dart';
 import 'package:ease_it/utility/display/qr_code.dart';
 import 'package:ease_it/utility/variables/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beautiful_popup/main.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -320,7 +319,7 @@ class CircularButtonIcon2 extends StatelessWidget {
                                               //g.wing,
                                               code.toString(),
                                               "Guest",
-                                              "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/UtilityImage%2Fguest.png?alt=media&token=47e030f6-4c04-49b6-a3e7-90b440776351");
+                                              "https://firebasestorage.googleapis.com/v0/b/ease-it-bfceb.appspot.com/o/utility%2Fguest.png?alt=media&token=fc905aca-7189-442d-b3a2-5b3dee65d12e");
                                           await showQRDialog(
                                               context, code.toString());
                                           Navigator.pop(context);
