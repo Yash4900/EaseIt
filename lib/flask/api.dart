@@ -4,8 +4,8 @@
 import 'package:http/http.dart' as http;
 
 class API {
-  String _domain = 'https://parking-model.herokuapp.com';
-  // String _domain = 'http://192.168.0.113:5000';
+  // String _domain = 'https://parking-model.herokuapp.com';
+  String _domain = 'http://192.168.0.112:5000';
 
   // Get usage of vehicle
   Future getUsage(String society, String licensePlateNo) async {

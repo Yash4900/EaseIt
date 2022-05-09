@@ -43,7 +43,7 @@ class _SecurityHomeState extends State<SecurityHome> {
         ),
       ]);
     } else {
-      int code;
+      String code;
       try {
         code = qds['code'];
       } catch (e) {

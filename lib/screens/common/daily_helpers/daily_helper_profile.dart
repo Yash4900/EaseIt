@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:collection/collection.dart';
 import 'daily_helper_log.dart';
 
 class DailyHelper extends StatefulWidget {
@@ -192,12 +192,17 @@ class _DailyHelperState extends State<DailyHelper> {
                       child: TabBarView(
                         children: [
                           FlatList(
-                              flats: List<Map<String, dynamic>>.from(
-                                  widget.ds['worksAt'])),
+                            flats: List<Map<String, dynamic>>.from(
+                                widget.ds['worksAt']),
+                          ),
                           RatingList(
                             ratings: Map<String, Map<String, dynamic>>.from(
                                 widget.ds['ratings']),
                             id: widget.ds.id,
+                            canRate: widget.ds['worksAt'].any(
+                              (element) => DeepCollectionEquality()
+                                  .equals(element, g.flat),
+                            ),
                           ),
                         ],
                       ),
@@ -244,8 +249,13 @@ class FlatList extends StatelessWidget {
 class RatingList extends StatefulWidget {
   final String id;
   final Map<String, Map<String, dynamic>> ratings;
+  final bool canRate;
 
-  RatingList({Key key, @required this.ratings, @required this.id})
+  RatingList(
+      {Key key,
+      @required this.ratings,
+      @required this.id,
+      @required this.canRate})
       : super(key: key);
 
   @override
@@ -287,7 +297,12 @@ class _RatingListState extends State<RatingList> {
         if (widget.ratings.containsKey(uid) && widget.ratings[uid] != null)
           Container(
             decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey[300],
+                ),
+              ),
+            ),
             child: ListTile(
               contentPadding: EdgeInsets.all(2),
               title: Row(
@@ -332,29 +347,31 @@ class _RatingListState extends State<RatingList> {
             ),
           )
         else
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (context, _, __) =>
-                          RatingForm(rating: 0, comment: '', id: widget.id),
+          widget.canRate
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (context, _, __) => RatingForm(
+                                rating: 0, comment: '', id: widget.id),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Add Rating',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                child: Text(
-                  'Add Rating',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
+                  ],
+                )
+              : SizedBox(),
         for (String key in widget.ratings.keys)
           if (key != uid && widget.ratings[key] != null)
             ListTile(

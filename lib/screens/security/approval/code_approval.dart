@@ -61,6 +61,7 @@ class _CodeApprovalState extends State<CodeApproval> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.type);
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Scaffold(
