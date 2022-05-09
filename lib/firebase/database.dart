@@ -941,7 +941,9 @@ class Database {
         'worksAt': worksAt,
         'imageUrl': imageUrl,
         'purpose': purpose,
-        'code': code
+        'code': code,
+        'overallRating': 0,
+        'ratings': {}
       });
     } catch (e) {
       print(e.toString());

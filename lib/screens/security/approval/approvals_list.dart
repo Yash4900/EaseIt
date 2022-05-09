@@ -200,7 +200,8 @@ class _ApprovalsListState extends State<ApprovalsList> {
                                     ],
                                   ),
                                 ),
-                                ds['exitTime'] == null
+                                ds['exitTime'] == null &&
+                                        ds['status'] != 'Pending'
                                     ? Container(
                                         width: double.infinity,
                                         child: TextButton(
