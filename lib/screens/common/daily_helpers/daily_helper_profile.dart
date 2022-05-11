@@ -199,10 +199,11 @@ class _DailyHelperState extends State<DailyHelper> {
                             ratings: Map<String, Map<String, dynamic>>.from(
                                 widget.ds['ratings']),
                             id: widget.ds.id,
-                            canRate: widget.ds['worksAt'].any(
-                              (element) => DeepCollectionEquality()
-                                  .equals(element, g.flat),
-                            ),
+                            canRate: g.role != 'Security' &&
+                                widget.ds['worksAt'].any(
+                                  (element) => DeepCollectionEquality()
+                                      .equals(element, g.flat),
+                                ),
                           ),
                         ],
                       ),
