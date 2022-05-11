@@ -422,9 +422,11 @@ class _AddDailyVisitorState extends State<AddDailyVisitor> {
                                             imageUrl,
                                             dropDownValue,
                                             code.toString())
-                                        .then((value) {
+                                        .then((value) async {
                                       setState(() => loading = false);
-                                      showQRDialog(context, code.toString());
+                                      await showQRDialog(
+                                          context, code.toString());
+                                      Navigator.pop(context);
                                     });
                                   }
                                 } else {

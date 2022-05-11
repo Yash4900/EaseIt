@@ -186,237 +186,232 @@ class _AddVehicleState extends State<AddVehicle> {
                     ),
                   ),
                   Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 20),
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          'LICENSE PLATE NO',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              hintText: 'Enter license plate number'),
+                          controller: _licensePlateController,
+                          validator: (value) => value.length == 0
+                              ? 'Please enter license plate number'
+                              : null,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'MODEL',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(hintText: 'Enter model'),
+                          controller: _modelController,
+                          validator: (value) => value.length == 0
+                              ? 'Please enter vehicle number'
+                              : null,
+                        ),
+                        SizedBox(width: 20),
+                        Row(children: [
                           Text(
-                            'LICENSE PLATE NO',
+                            'VEHICLE TYPE',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
                             ),
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter license plate number'),
-                            controller: _licensePlateController,
-                            validator: (value) => value.length == 0
-                                ? 'Please enter license plate number'
-                                : null,
+                          SizedBox(width: 15),
+                          DropdownButton(
+                            value: dropDownValue,
+                            icon: Icon(Icons.keyboard_arrow_down),
+                            onChanged: (value) =>
+                                setState(() => dropDownValue = value),
+                            items: dropDownItems.map((String item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Row(children: [
+                                  item == "Two Wheeler"
+                                      ? Image.asset('assets/motor-bike.png',
+                                          height: 20)
+                                      : Image.asset('assets/parking.png',
+                                          height: 20),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    item,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ]),
+                              );
+                            }).toList(),
                           ),
-                          SizedBox(height: 20),
-                          Text(
-                            'MODEL',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
+                        ]),
+                        SizedBox(height: 10),
+                        Text(
+                          'PARKING SPACE',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
                           ),
-                          TextFormField(
-                            decoration:
-                                InputDecoration(hintText: 'Enter model'),
-                            controller: _modelController,
-                            validator: (value) => value.length == 0
-                                ? 'Please enter vehicle number'
-                                : null,
+                        ),
+                        TextFormField(
+                          decoration:
+                              InputDecoration(hintText: 'Parking space number'),
+                          controller: _parkingNumberController,
+                          validator: (value) => value.length == 0
+                              ? 'Please enter parking space number'
+                              : null,
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Owner",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
                           ),
-                          SizedBox(width: 20),
-                          Row(children: [
-                            Text(
-                              'VEHICLE TYPE',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                            SizedBox(width: 15),
-                            DropdownButton(
-                              value: dropDownValue,
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              onChanged: (value) =>
-                                  setState(() => dropDownValue = value),
-                              items: dropDownItems.map((String item) {
-                                return DropdownMenuItem(
-                                  value: item,
-                                  child: Row(children: [
-                                    item == "Two Wheeler"
-                                        ? Image.asset('assets/motor-bike.png',
-                                            height: 20)
-                                        : Image.asset('assets/parking.png',
-                                            height: 20),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      item,
-                                      style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'FLAT DETAILS',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                              List.generate(flatVar.flatWidgetForm.length, (i) {
+                            //return flatVar.flatWidgetForm[i];
+                            if ((i + 1) % 2 == 1) {
+                              if (i + 1 < flatVar.flatWidgetForm.length) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
                                     ),
-                                  ]),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i + 1],
+                                    ),
+                                  ],
                                 );
-                              }).toList(),
-                            ),
-                          ]),
-                          SizedBox(height: 10),
-                          Text(
-                            'PARKING SPACE',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                hintText: 'Parking space number'),
-                            controller: _parkingNumberController,
-                            validator: (value) => value.length == 0
-                                ? 'Please enter parking space number'
-                                : null,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            "Owner",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'FLAT DETAILS',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                                flatVar.flatWidgetForm.length, (i) {
-                              //return flatVar.flatWidgetForm[i];
-                              if ((i + 1) % 2 == 1) {
-                                if (i + 1 < flatVar.flatWidgetForm.length) {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: flatVar.flatWidgetForm[i],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: flatVar.flatWidgetForm[i + 1],
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: flatVar.flatWidgetForm[i],
-                                      ),
-                                    ],
-                                  );
-                                }
                               } else {
-                                return SizedBox();
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: flatVar.flatWidgetForm[i],
+                                    ),
+                                  ],
+                                );
                               }
-                            }),
-                          ),
-                          Text(
-                            errorText,
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          SizedBox(height: 40),
-                          Center(
-                            child: TextButton(
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  //print(flatVar.flatValue);
-                                  if (!flatVar.flatValue.contains(null)) {
-                                    setState(() {
-                                      errorText = "";
-                                    });
-                                    flatVar.createMapFromListForFlat();
-                                    bool confirmation =
-                                        await showConfirmationDialog(
-                                            context,
-                                            "Alert!",
-                                            "Are you sure you want to register this vehicle?");
-                                    if (confirmation) {
-                                      setState(() => loading = true);
-                                      String id = DateTime.now()
-                                          .millisecondsSinceEpoch
-                                          .toString();
-                                      String imageUrl = _profilePicture == null
-                                          ? ""
-                                          : await Storage().storeImage(
-                                              'vehicles', id, _profilePicture);
-                                      await API().addVehicle(
-                                          g.society
-                                              .replaceAll(" ", "")
-                                              .toLowerCase(),
-                                          _licensePlateController.text,
-                                          _parkingNumberController.text);
-                                      Database()
-                                          .addVehicle(
-                                        g.society,
-                                        imageUrl,
+                            } else {
+                              return SizedBox();
+                            }
+                          }),
+                        ),
+                        Text(
+                          errorText,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        SizedBox(height: 40),
+                        Center(
+                          child: TextButton(
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                //print(flatVar.flatValue);
+                                if (!flatVar.flatValue.contains(null)) {
+                                  setState(() {
+                                    errorText = "";
+                                  });
+                                  flatVar.createMapFromListForFlat();
+                                  bool confirmation = await showConfirmationDialog(
+                                      context,
+                                      "Alert!",
+                                      "Are you sure you want to register this vehicle?");
+                                  if (confirmation) {
+                                    setState(() => loading = true);
+                                    String id = DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString();
+                                    String imageUrl = _profilePicture == null
+                                        ? ""
+                                        : await Storage().storeImage(
+                                            'vehicles', id, _profilePicture);
+                                    await API().addVehicle(
+                                        g.society
+                                            .replaceAll(" ", "")
+                                            .toLowerCase(),
                                         _licensePlateController.text,
-                                        _modelController.text,
-                                        _parkingNumberController.text,
-                                        dropDownValue,
-                                        flatVar.flatNum,
-                                      )
-                                          .then((value) {
-                                        setState(() => loading = false);
-                                        Navigator.pop(context);
-                                        showToast(
-                                            context,
-                                            "success",
-                                            "Success!",
-                                            "Vehicle added successfully in the database.");
-                                      }).catchError(() {
-                                        setState(() => loading = false);
-                                        showToast(context, "error", "Oops!",
-                                            "Something went wrong");
-                                      });
-                                    }
-                                  } else {
-                                    setState(() {
-                                      errorText =
-                                          "Please fill all the flat fields";
+                                        _parkingNumberController.text);
+                                    Database()
+                                        .addVehicle(
+                                      g.society,
+                                      imageUrl,
+                                      _licensePlateController.text,
+                                      _modelController.text,
+                                      _parkingNumberController.text,
+                                      dropDownValue,
+                                      flatVar.flatNum,
+                                    )
+                                        .then((value) {
+                                      setState(() => loading = false);
+                                      Navigator.pop(context);
+                                      showToast(context, "success", "Success!",
+                                          "Vehicle added successfully in the database.");
+                                    }).catchError(() {
+                                      setState(() => loading = false);
+                                      showToast(context, "error", "Oops!",
+                                          "Something went wrong");
                                     });
                                   }
+                                } else {
+                                  setState(() {
+                                    errorText =
+                                        "Please fill all the flat fields";
+                                  });
                                 }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color(0xff037DD6)),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22),
-                                  ),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(20, 3, 20, 3),
-                                child: Text(
-                                  'Add Vehicle',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xff037DD6)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(22),
                                 ),
                               ),
                             ),
-                          )
-                        ],
-                      ))
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(20, 3, 20, 3),
+                              child: Text(
+                                'Add Vehicle',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
