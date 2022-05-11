@@ -167,19 +167,29 @@ class _ParkingStatusState extends State<ParkingStatus> {
                                       g.society.replaceAll(" ", ""),
                                       widget.parkedAt);
                                   setState(() => loading = true);
-                                  var response = await API().allocateParking(
-                                      g.society
-                                          .replaceAll(" ", "")
-                                          .toLowerCase(),
-                                      _stayTimeController.text);
-                                  Map<String, dynamic> map =
-                                      jsonDecode(response);
-                                  if (map['parking_space'] != '') {
+                                  QuerySnapshot qs = await Database()
+                                      .findGuestSpace(g.society);
+                                  String parkingSpaceAllocated;
+                                  if (qs.docs.length == 0) {
+                                    var response = await API().allocateParking(
+                                        g.society
+                                            .replaceAll(" ", "")
+                                            .toLowerCase(),
+                                        _stayTimeController.text);
+                                    Map<String, dynamic> map =
+                                        jsonDecode(response);
+                                    parkingSpaceAllocated =
+                                        map['parking_space'];
+                                  } else {
+                                    parkingSpaceAllocated = qs.docs[0].id;
+                                  }
+                                  print(parkingSpaceAllocated);
+                                  if (parkingSpaceAllocated != '') {
                                     setState(() => loading = false);
                                     await Database().updateParkingSpace(
                                         g.society,
                                         widget.docId,
-                                        map['parking_space']);
+                                        parkingSpaceAllocated);
                                     await showMessageDialog(
                                         context, 'Parking Assignment', [
                                       Center(
@@ -198,13 +208,15 @@ class _ParkingStatusState extends State<ParkingStatus> {
                                       ),
                                       Center(
                                         child: Text(
-                                          map['parking_space'],
+                                          parkingSpaceAllocated,
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       )
                                     ]);
+                                    Database().updateParkingStatus(
+                                        g.society, parkingSpaceAllocated, true);
                                   }
                                 },
                                 child: Text(

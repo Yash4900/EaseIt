@@ -142,6 +142,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
               _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
+          await Database().updateParkingStatus(
+              g.society, qs.docs[0]['parkingSpaceNo'], true);
         } catch (e) {
           showToast(context, "error", "Oops!", e.toString());
         }
@@ -153,6 +155,8 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
               _licensePlateController.text);
           showToast(
               context, "success", "Success!", "Log generated successfully");
+          await Database().updateParkingStatus(
+              g.society, qs.docs[0]['parkingSpaceNo'], false);
         } catch (e) {
           showToast(context, "error", "Oops!", e.toString());
         }
@@ -327,12 +331,14 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                             ? TextButton(
                                                 onPressed: () async {
                                                   Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AllocateParking(
-                                                                  _licensePlateController
-                                                                      .text)));
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AllocateParking(
+                                                              _licensePlateController
+                                                                  .text),
+                                                    ),
+                                                  );
                                                 },
                                                 style: ButtonStyle(
                                                   backgroundColor:
@@ -355,9 +361,10 @@ class _VehicleBottomSheetState extends State<VehicleBottomSheet> {
                                                   child: Text(
                                                     'Assign Parking',
                                                     style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
                                                 ),
                                               )

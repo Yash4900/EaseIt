@@ -27,9 +27,9 @@ class API {
   // To log resident's vehicle exit in database
   Future vehicleExit(String society, String licensePlateNo) async {
     DateTime now = DateTime.now();
-    String time = '{${now.hour}:${now.minute}:${now.second}}';
     var url = Uri.parse(
-        '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo&time=$time');
+        '$_domain/exit?society=$society&licensePlateNo=$licensePlateNo&hour=${now.hour}&min=${now.minute}&sec=${now.second}');
+    print(url);
     http.Response response;
     try {
       response = await http.post(
@@ -51,9 +51,8 @@ class API {
   // To log resident's vehicle entry in database
   Future vehicleEntry(String society, String licensePlateNo) async {
     DateTime now = DateTime.now();
-    String time = '{${now.hour}:${now.minute}:${now.second}}';
     var url = Uri.parse(
-        '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo&time=$time');
+        '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo&hour=${now.hour}&min=${now.minute}&sec=${now.second}');
     http.Response response;
     try {
       response = await http.post(
