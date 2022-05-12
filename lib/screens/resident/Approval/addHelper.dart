@@ -9,7 +9,7 @@ class AddHelper extends StatefulWidget {
 
 class _AddHelperState extends State<AddHelper> {
   List<Map<String, String>> totalHelper = [
-    {"name": "MilkMan", "imageLink": "assets/milk.png"},
+    {"name": "Milkman", "imageLink": "assets/milk.png"},
     {"name": "Newspaper", "imageLink": "assets/newspaper.png"},
     {"name": "Maid", "imageLink": "assets/001-maid.png"},
     {"name": "Electrician", "imageLink": "assets/002-electrician.png"},
