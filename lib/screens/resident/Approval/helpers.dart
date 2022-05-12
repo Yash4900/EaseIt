@@ -101,25 +101,30 @@ class _DailyHelpersState extends State<DailyHelpers> {
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 8,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: getRatingColor(
-                                                      ds['overallRating']),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  ds['overallRating']
-                                                      .toStringAsFixed(1),
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
+                                              ds['overallRating'] > 0
+                                                  ? Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: getRatingColor(
+                                                            ds['overallRating']),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Text(
+                                                        ds['overallRating']
+                                                            .toStringAsFixed(1),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
                                             ],
                                           ),
                                           SizedBox(

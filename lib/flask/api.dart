@@ -1,11 +1,9 @@
 // Fetch data from flask API
-
-// import 'package:ease_it/secret/secret.dart';
 import 'package:http/http.dart' as http;
 
 class API {
-  // String _domain = 'https://parking-model.herokuapp.com';
-  String _domain = 'http://192.168.0.112:5000';
+  String _domain = 'https://parking-model.herokuapp.com';
+  // String _domain = 'http://192.168.0.112:5000';
 
   // Get usage of vehicle
   Future getUsage(String society, String licensePlateNo) async {
@@ -40,8 +38,10 @@ class API {
       print(e.toString());
     }
     if (response == null) {
+      print('null-response');
       throw Exception('Server down! Try again later');
     } else if (response.statusCode == 400) {
+      print('400-response');
       throw Exception('Something went wrong!');
     } else {
       return response.body;
@@ -63,8 +63,10 @@ class API {
       print(e.toString());
     }
     if (response == null) {
+      print('null-response');
       throw Exception('Server down! Try again later');
     } else if (response.statusCode == 400) {
+      print('400-response');
       throw Exception('Something went wrong!');
     } else {
       return response.body;
