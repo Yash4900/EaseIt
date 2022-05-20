@@ -7,11 +7,14 @@ class API {
 
   // Get usage of vehicle
   Future getUsage(String society, String licensePlateNo) async {
+    Stopwatch stopwatch = Stopwatch();
+    stopwatch.start();
     var url = Uri.parse(
         '$_domain/usage?society=$society&licensePlateNo=$licensePlateNo');
     http.Response response;
     try {
       response = await http.get(url);
+      print('API RESPONSE TIME: ${stopwatch.elapsedMilliseconds / 1000}');
     } catch (e) {
       print(e.toString());
     }
@@ -30,10 +33,13 @@ class API {
     print(url);
     http.Response response;
     try {
+      Stopwatch stopwatch = Stopwatch();
+      stopwatch.start();
       response = await http.post(
         url,
         headers: {'Content-type': 'application/json'},
       );
+      print('API RESPONSE TIME: ${stopwatch.elapsedMilliseconds / 1000}');
     } catch (e) {
       print(e.toString());
     }
@@ -55,10 +61,13 @@ class API {
         '$_domain/entry?society=$society&licensePlateNo=$licensePlateNo&hour=${now.hour}&min=${now.minute}&sec=${now.second}');
     http.Response response;
     try {
+      Stopwatch stopwatch = Stopwatch();
+      stopwatch.start();
       response = await http.post(
         url,
         headers: {'Content-type': 'application/json'},
       );
+      print('API RESPONSE TIME: ${stopwatch.elapsedMilliseconds / 1000}');
     } catch (e) {
       print(e.toString());
     }
@@ -78,7 +87,10 @@ class API {
     var url = Uri.parse('$_domain/allocate?society=$society&time=$stayTime');
     http.Response response;
     try {
+      Stopwatch stopwatch = Stopwatch();
+      stopwatch.start();
       response = await http.get(url);
+      print('API RESPONSE TIME: ${stopwatch.elapsedMilliseconds / 1000}');
     } catch (e) {
       print(e.toString());
     }
